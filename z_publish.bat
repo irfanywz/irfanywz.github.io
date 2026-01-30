@@ -2,4 +2,4 @@
 git add .
 git commit -m "update"
 git push origin main --force
-timeout 5
+pause

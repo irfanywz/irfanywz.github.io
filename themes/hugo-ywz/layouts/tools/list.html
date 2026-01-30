@@ -10,7 +10,8 @@
                 {
                     title: {{ .Title | lower | jsonify }},
                     description: {{ .Params.description | default .Summary | lower | jsonify }},
-                    permalink: {{ .RelPermalink | jsonify }},
+                    permalink: {{ if .Params.link }}{{ .Params.link | jsonify }}{{ else }}{{ .RelPermalink | jsonify }}{{ end }},
+                    isExternal: {{ if .Params.link }}true{{ else }}false{{ end }},
                     displayTitle: {{ .Title | jsonify }},
                     displayDesc: {{ .Params.description | default .Summary | jsonify }},
                     icon: {{ or .Params.icon "icon-[ri--wrench-line]" | jsonify }},
@@ -45,6 +46,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <template x-for="item in items">
                         <a :href="item.permalink" 
+                           :target="item.isExternal ? '_blank' : ''"
+                           :rel="item.isExternal ? 'noopener noreferrer' : ''"
                            x-show="search === '' || item.title.includes(search.toLowerCase()) || item.description.includes(search.toLowerCase())"
                            class="group block bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
                             
@@ -61,7 +64,10 @@
                             <p class="text-gray-600 dark:text-gray-300 text-sm line-clamp-2 mb-4" x-text="item.displayDesc"></p>
                             
                             <div class="pt-4 border-t border-gray-100 dark:border-gray-700 flex items-center justify-end text-sm font-medium text-indigo-600 dark:text-indigo-400">
-                                <span class="flex items-center gap-1">Buka <i class="icon-[ri--arrow-right-line] transition-transform group-hover:translate-x-1"></i></span>
+                                <span class="flex items-center gap-1">
+                                    <span x-text="item.isExternal ? 'Kunjungi' : 'Buka'"></span> 
+                                    <i :class="item.isExternal ? 'icon-[ri--external-link-line]' : 'icon-[ri--arrow-right-line]'" class="transition-transform group-hover:translate-x-1"></i>
+                                </span>
                             </div>
                         </a>
                     </template>
