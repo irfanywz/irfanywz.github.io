@@ -1,0 +1,35 @@
+<section class="py-16 bg-gray-50 dark:bg-gray-800/50">
+    <div class="container max-w-6xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-10 flex items-center gap-3">
+            <span class="icon-[ri--service-line] w-8 h-8 text-indigo-600 dark:text-indigo-400"></span>
+            {{ .Params.servicetitle }}
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {{- range $index, $element := .Params.service -}}
+                <div class="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:border-indigo-500/30 transition-all duration-300 relative overflow-hidden">
+                    <!-- Decorative background blob -->
+                    <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-indigo-50 dark:bg-indigo-900/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <span class="{{ $element.icon }} w-7 h-7 text-indigo-600 dark:text-indigo-400"></span>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                            {{ $element.title }}
+                        </h3>
+                        
+                        <ul class="space-y-3">
+                            {{ range $element.jobs }}
+                                <li class="flex items-start gap-3 text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                    <span class="icon-[ri--checkbox-circle-line] w-5 h-5 text-indigo-500 flex-shrink-0 mt-0.5"></span>
+                                    <span>{{ . }}</span>
+                                </li>
+                            {{ end }}
+                        </ul>
+                    </div>
+                </div>
+             {{ end }}
+        </div>
+    </div>
+</section>

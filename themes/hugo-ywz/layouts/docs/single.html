@@ -1,0 +1,131 @@
+{{ define "head" }}
+{{ end }}
+
+{{ define "config" }}
+    {{ .Scratch.Set "hideHeader" true }} 
+    {{ .Scratch.Set "hideFooter" true }} 
+{{ end }}
+
+{{ define "main" }}
+<main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300" 
+      x-data="{ 
+          tocOpen: false,
+          activeSection: '',
+          init() {
+              const observer = new IntersectionObserver((entries) => {
+                  entries.forEach(entry => {
+                      if (entry.isIntersecting) {
+                          this.activeSection = entry.target.id;
+                      }
+                  });
+              }, { rootMargin: '-100px 0px -60% 0px' });
+              
+              document.querySelectorAll('.prose h2[id], .prose h3[id], .prose h4[id]').forEach(section => {
+                  observer.observe(section);
+              });
+
+              this.$watch('activeSection', (id) => {
+                  if(id) {
+                      // Scroll sidebar link into view
+                      const activeLink = document.querySelector(`aside a[href='#${id}']`);
+                      if(activeLink) {
+                          activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                      }
+                  }
+              });
+          }
+      }">
+    <!-- Header Minimalis & Sticky -->
+    <header class="sticky top-0 z-40 w-full border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md print:hidden">
+        <div class="container max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <!-- Tombol Menu Mobile -->
+                <button @click="tocOpen = !tocOpen" class="lg:hidden p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
+                    <i class="icon-[ri--menu-2-line] text-xl"></i>
+                </button>
+                
+                <!-- Breadcrumbs Sederhana -->
+                <nav class="hidden sm:flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+                    <a href="{{ .CurrentSection.RelPermalink }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                        <i class="icon-[ri--file-text-line] text-indigo-500 align-bottom"></i>
+                        {{ .CurrentSection.Title }}
+                    </a>
+                    <i class="icon-[ri--arrow-right-s-line]"></i>
+                    <span class="text-gray-900 dark:text-white truncate max-w-[200px]">{{ .Title }}</span>
+                </nav>
+            </div>
+
+            {{ if .Params.project_url }}
+            <a href="{{ $.Site.BaseURL }}{{ .Params.project_url }}" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
+                Ke Proyek <i class="icon-[ri--arrow-right-line]"></i>
+            </a>
+            {{ end }}
+        </div>
+    </header>
+
+    <div class="container max-w-7xl mx-auto px-4">
+        <div class="flex flex-col lg:flex-row relative">
+            
+            {{/* Sidebar Kiri (Daftar Isi / Navigasi) */}}
+            <aside class="hidden lg:block lg:w-72 flex-shrink-0 border-r border-gray-200 dark:border-gray-800 print:hidden">
+                <div class="sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto py-8 pr-6 custom-scrollbar">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Contents</h4>
+                        <button onclick="window.print()" class="p-1.5 text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all" title="Cetak PDF">
+                            <span class="icon-[ri--printer-line] w-4 h-4"></span>
+                        </button>
+                    </div>
+                    {{ partial "docs/toc.html" . }}
+                </div>
+            </aside>
+
+            <!-- Mobile Sidebar (Offcanvas) -->
+            <div x-show="tocOpen" 
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="-translate-x-full"
+                    x-transition:enter-end="translate-x-0"
+                    x-transition:leave="transition ease-in duration-300"
+                    x-transition:leave-start="translate-x-0"
+                    x-transition:leave-end="-translate-x-full"
+                    class="fixed inset-y-0 left-0 w-80 bg-white dark:bg-gray-900 shadow-2xl z-50 p-6 overflow-y-auto lg:hidden print:hidden"
+                    @click.outside="tocOpen = false"
+                    style="display: none;">
+                <div class="flex items-center justify-between mb-6">
+                    <h4 class="text-lg font-bold text-gray-900 dark:text-white">Contents</h4>
+                    <button @click="tocOpen = false" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                        <i class="icon-[ri--close-line] text-xl"></i>
+                    </button>
+                </div>
+                <div class="prose-toc">
+                    {{ partial "docs/toc.html" . }}
+                </div>
+            </div>
+            
+            <!-- Backdrop -->
+            <div x-show="tocOpen" x-transition.opacity class="fixed inset-0 bg-black/50 z-40 lg:hidden" @click="tocOpen = false" style="display: none;"></div>
+    
+            {{/* Konten Utama Dokumentasi */}}
+            <article class="flex-grow min-w-0 py-10 lg:px-12 print:w-full print:px-0">
+                <div class="mb-10">
+                    <div class="flex items-center gap-4 mb-6">
+                        {{ if .Params.app_icon }}
+                            <img src="{{ .Params.app_icon }}" alt="{{ .Title }} icon" class="w-12 h-12 object-contain">
+                        {{ end }}
+                        <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">{{ .Title }}</h1>
+                    </div>
+                    {{ if .Description }}
+                        <p class="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">{{ .Description }}</p>
+                    {{ end }}
+                </div>
+                
+                <div class="prose prose-slate dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-headings:font-bold prose-a:text-indigo-600 dark:prose-a:text-indigo-400 hover:prose-a:text-indigo-500">
+                    {{ .Content }}
+                </div>
+            </article>
+        </div>
+    </div>
+</main>
+{{ end }}
+
+{{ define "footer" }}
+{{ end }}

@@ -1,0 +1,133 @@
+{{ define "head" }}
+{{ end }}
+
+{{ define "main" }}
+    <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300"
+        x-data="{
+            search: new URLSearchParams(window.location.search).get('search') || '',
+            genre: new URLSearchParams(window.location.search).get('genre') || 'all',
+            
+            updateUrl() {
+                const url = new URL(window.location);
+                if (this.search) url.searchParams.set('search', this.search);
+                else url.searchParams.delete('search');
+                
+                if (this.genre !== 'all') url.searchParams.set('genre', this.genre);
+                else url.searchParams.delete('genre');
+                
+                window.history.pushState({}, '', url);
+            },
+
+            items: [
+                {{ range .Pages }}
+                {
+                    title: {{ .Title | lower | jsonify }},
+                    genres: {{ .Params.genres | default (slice) | jsonify }}
+                },
+                {{ end }}
+            ],
+
+            get hasResults() {
+                const s = this.search.toLowerCase();
+                return this.items.some(i => {
+                    return (this.genre === 'all' || i.genres.map(g => g.toLowerCase()).includes(this.genre)) &&
+                           (this.search === '' || i.title.includes(s));
+                });
+            }
+        }"
+        @popstate.window="
+            search = new URLSearchParams(window.location.search).get('search') || '';
+            genre = new URLSearchParams(window.location.search).get('genre') || 'all';
+        ">
+        <section class="py-16 bg-gray-50 dark:bg-gray-800/50">
+            <div class="container max-w-6xl mx-auto px-4 text-center">
+                <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-3">
+                    <span class="icon-[ri--movie-2-line] w-10 h-10 text-rose-500"></span>
+                    {{.Title}}
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">{{ .Description }}</p>
+            </div>
+        </section>
+
+        <section class="py-16">
+            <div class="container max-w-6xl mx-auto px-4">
+                
+                <!-- Controls -->
+                <div class="flex flex-col md:flex-row gap-4 mb-12 max-w-4xl mx-auto">
+                    <div class="relative flex-grow">
+                        <i class="icon-[ri--search-line] absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="search" x-model="search" @input.debounce.300ms="updateUrl()" placeholder="Cari Judul Film..." 
+                            class="w-full pl-11 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all shadow-sm">
+                    </div>
+                    
+                    <div class="relative min-w-[200px]">
+                        <i class="icon-[ri--filter-3-line] absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <select x-model="genre" @change="updateUrl()" class="w-full pl-11 pr-10 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none appearance-none cursor-pointer shadow-sm">
+                            <option value="all">Semua Genre</option>                            
+                            {{ $allGenres := slice }}
+                            {{ range .Pages }}
+                                {{ range .Params.genres }}
+                                    {{ $allGenres = $allGenres | append . }}
+                                {{ end }}
+                            {{ end }}
+                            {{ $uniqueGenres := uniq $allGenres }}
+                            {{ range sort $uniqueGenres }}
+                                <option value="{{ . | lower }}">{{ . | humanize | title }}</option>
+                            {{ end }}
+                        </select>
+                        <i class="icon-[ri--arrow-down-s-line] absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                    </div>
+                </div>
+
+                <!-- Movie Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                    {{ range .Pages }}
+                    <a href="{{ .RelPermalink }}" 
+                       x-show='(genre === "all" || {{ .Params.genres | default (slice) | jsonify }}.map(g => g.toLowerCase()).includes(genre)) && (search === "" || {{ .Title | lower | jsonify }}.includes(search.toLowerCase()))'
+                       class="group block bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                        
+                        <div class="relative aspect-[2/3] overflow-hidden bg-gray-100 dark:bg-gray-700">
+                            <img src="{{ .Params.poster }}" alt="Poster Film {{ .Title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            
+                            <div class="absolute top-2 right-2">
+                                <span class="px-2 py-1 bg-black/70 backdrop-blur-sm text-white text-xs font-bold rounded-md flex items-center gap-1">
+                                    <i class="icon-[ri--star-fill] text-yellow-400"></i> {{ .Params.rating }}
+                                </span>
+                            </div>
+
+                            {{ if eq (lower .Params.status) "setengah menonton" }}
+                            <div class="absolute bottom-0 left-0 right-0 bg-indigo-600/90 text-white text-xs font-bold py-1 text-center backdrop-blur-sm">
+                                Setengah Menonton
+                            </div>
+                            {{ else if eq (lower .Params.status) "belum ditonton" }}
+                            <div class="absolute bottom-0 left-0 right-0 bg-gray-800/90 text-white text-xs font-bold py-1 text-center backdrop-blur-sm">
+                                Belum Ditonton
+                            </div>
+                            {{ end }}
+                        </div>
+
+                        <div class="p-4">
+                            <h2 class="text-base font-bold text-gray-900 dark:text-white leading-tight mb-1 line-clamp-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{{ .Title }}</h2>
+                            <div class="text-xs text-gray-500 dark:text-gray-400 flex flex-wrap gap-x-2 gap-y-1">
+                                <span>{{ .Params.year }}</span>
+                                <span>•</span>
+                                <span class="truncate">{{ index .Params.genres 0 | humanize | title }}</span>
+                            </div>
+                        </div>
+                    </a>
+                    {{ end }}
+                    <div x-show="!hasResults" x-transition class="col-span-full text-center py-16" style="display: none;">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
+                            <i class="icon-[ri--film-line] text-2xl text-gray-400"></i>
+                        </div>
+                        <p class="text-gray-500 dark:text-gray-400 text-lg">Film tidak ditemukan.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+{{ end }}
+
+{{ define "footer" }}
+{{ end }}

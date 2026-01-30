@@ -1,0 +1,25 @@
+{{ if .Params.feature }}
+    <div class="mb-16">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8 flex items-center gap-3">
+            <span class="icon-[heroicons--puzzle-piece] w-8 h-8 text-indigo-600 dark:text-indigo-400"></span>
+            Fitur Utama
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            {{ range $index, $element := .Params.feature }}
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 text-center hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                    <div class="text-4xl font-extrabold text-indigo-600 dark:text-indigo-400 mb-2 flex justify-center">
+                        {{ with $element.icon }}
+                            <i class="{{ . }}"></i>
+                        {{ else }}
+                            <span class="icon-[heroicons--document-text] w-10 h-10"></span>
+                        {{ end }}
+                    </div>
+                    <div class="text-lg font-bold text-gray-900 dark:text-white mb-3">{{ $element.name }}</div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">{{ $element.description }}</p>
+                </div>
+            {{ end }}
+
+        </div>
+    </div>
+{{ end }}

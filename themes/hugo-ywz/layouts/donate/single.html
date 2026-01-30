@@ -1,0 +1,118 @@
+{{ define "head" }}
+{{ end }}
+
+{{ define "config" }}
+    {{ .Scratch.Set "hideHeader" true }} 
+    {{ .Scratch.Set "hideFooter" true }} 
+{{ end }}
+
+{{ define "main" }}
+<main class="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" 
+    x-data="{
+        copyToClipboard(text, el) {
+        navigator.clipboard.writeText(text).then(() => {
+                const originalIcon = el.innerHTML;
+                const originalText = el.querySelector('span').innerText;
+                el.querySelector('i').className = 'icon-[ri--check-line] text-green-500';
+                el.querySelector('span').innerText = 'Tersalin';
+                el.disabled = true;
+                setTimeout(() => {
+                    el.innerHTML = originalIcon;
+                    el.querySelector('span').innerText = originalText;
+                    el.disabled = false;
+                }, 2000);
+        });
+    }
+}">
+    <div class="w-full max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            
+            <!-- Left Column: Information -->
+            <div class="lg:sticky lg:top-12">
+                {{ with .Params.image }}
+                <img src="{{ . }}" alt="Ilustrasi Donasi" class="w-48 h-auto mx-auto mb-8 opacity-80 animate-pulse">
+                {{ end }}
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white text-center lg:text-left mb-6">{{ .Title }}</h1>
+                <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed text-center lg:text-left mb-8">{{ .Description }}</p>
+                <div class="prose prose-lg dark:prose-invert max-w-none text-center lg:text-left">
+                    {{ .Content }}
+                </div>
+                <div class="mt-12 text-center lg:text-left">
+                    <a href="/" class="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-semibold transition-colors">
+                        <i class="icon-[ri--arrow-left-line]"></i>
+                        <span>Kembali ke Halaman Utama</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Column: Donation Methods -->
+            <div class="space-y-8">
+                {{ with .Params.qr }}
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3"><i class="icon-[ri--qr-code-line] text-indigo-500"></i><span>Scan QRIS</span></h2>
+                    <div class="flex flex-col sm:flex-row items-center gap-6">
+                        <div class="p-3 bg-white rounded-lg border border-gray-200 shadow-sm inline-block">
+                            <img src="{{ . }}" alt="QR Code" class="w-100 object-contain cursor-pointer" 
+                                 @click="$store.lightbox.open('{{ . }}', 'QRIS', '')"/>
+                        </div>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm sm:text-base text-center sm:text-left">
+                            Gunakan aplikasi perbankan atau e-wallet Anda untuk memindai kode QR ini. Mendukung semua pembayaran (GoPay, OVO, DANA, ShopeePay, Mobile Banking, dll).
+                        </p>
+                    </div>
+                </div>
+                {{ end }}
+
+                {{ with .Params.funding }}
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3"><i class="icon-[ri--bank-line] text-indigo-500"></i><span>{{ $.Params.funding_title | default "Transfer Bank & E-Wallet" }}</span></h2>
+                    <div class="space-y-4">
+                        {{ range . }}
+                        <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700">
+                            <div class="overflow-hidden">
+                                <div class="text-sm font-semibold text-gray-800 dark:text-gray-200">{{ .type }}</div>
+                                <div class="font-mono text-gray-900 dark:text-white truncate my-1 select-all">{{ .value }}</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">a/n {{ .owner }}</div>
+                            </div>
+                            <button @click="copyToClipboard('{{ .value }}', $el)" class="flex-shrink-0 ml-4 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg text-sm font-semibold hover:bg-gray-100 dark:hover:bg-gray-700 transition-all shadow-sm flex items-center gap-2 disabled:opacity-50">
+                                <i class="icon-[ri--file-copy-line]"></i>
+                                <span>Salin</span>
+                            </button>
+                        </div>
+                        {{ end }}
+                    </div>
+                </div>
+                {{ end }}
+                
+                {{ if or .Params.paypal_email .Params.paypal_me }}
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3"><i class="icon-[ri--paypal-line] text-indigo-500"></i><span>PayPal</span></h2>
+                    <div class="space-y-4">
+                        {{ with .Params.paypal_email }}
+                        <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-600">
+                            <div class="overflow-hidden">
+                                <div class="text-sm font-semibold text-gray-800 dark:text-gray-200">Email PayPal</div>
+                                <div class="font-mono text-gray-900 dark:text-white truncate my-1 select-all">{{ . }}</div>
+                            </div>
+                            <button @click="copyToClipboard('{{ . }}', $el)" class="flex-shrink-0 ml-4 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg text-sm font-semibold hover:bg-gray-100 dark:hover:bg-gray-700 transition-all shadow-sm flex items-center gap-2 disabled:opacity-50">
+                                <i class="icon-[ri--file-copy-line]"></i>
+                                <span>Salin</span>
+                            </button>
+                        </div>
+                        {{ end }}
+                        
+                        {{ with .Params.paypal_me }}
+                        <div class="pt-2">
+                            <a href="{{ . }}" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-2 px-6 py-3 bg-[#0070ba] text-white rounded-lg font-bold hover:bg-[#005ea6] transition-colors shadow-sm">
+                                <i class="icon-[ri--paypal-fill] text-xl"></i>
+                                <span>Donasi dengan PayPal.Me</span>
+                            </a>
+                        </div>
+                        {{ end }}
+                    </div>
+                </div>
+                {{ end }}
+            </div>
+        </div>
+    </div>
+</main>
+{{ end }}

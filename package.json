@@ -1,0 +1,34 @@
+{
+  "name": "irfanywz.github.io",
+  "version": "1.0.0",
+  "description": "Situs personal yang dibuat menggunakan hugo",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx @tailwindcss/cli -i ./themes/hugo-ywz/assets/css/input.css -o ./themes/hugo-ywz/assets/css/output.css --watch",
+    "build": "npx @tailwindcss/cli -i ./themes/hugo-ywz/assets/css/input.css -o ./themes/hugo-ywz/assets/css/output.css --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/irfanywz/irfanywz.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/irfanywz/irfanywz.github.io/issues"
+  },
+  "homepage": "https://github.com/irfanywz/irfanywz.github.io#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "@tailwindcss/typography": "^0.5.16",
+    "alpinejs": "^3.15.4",
+    "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "@iconify-json/heroicons": "^1.2.3",
+    "@iconify-json/lucide": "^1.2.85",
+    "@iconify-json/ri": "^1.2.7",
+    "@iconify/tailwind4": "^1.2.1"
+  }
+}

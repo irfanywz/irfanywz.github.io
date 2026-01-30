@@ -1,0 +1,217 @@
+baseURL = "https://irfanywz.web.id/"
+theme = "hugo-ywz"
+languageCode = "en-us"
+title = "irfanywz"
+copyright = "irfanywz"
+
+enableEmoji = true
+enableGitInfo = true
+enableRobotsTXT = true
+canonifyURLs = true
+
+
+pagination.pagerSize = 6
+
+pygmentsstyle = "vs"
+pygmentscodefences = true
+pygmentscodefencesguesssyntax = true
+
+
+[params]
+  version = "2.0.9"
+	# browser icon
+	# favicon = "https://avatars.githubusercontent.com/u/117440754?v=4"
+  favicon = "favicon.ico"
+
+	# Optional 64x64 avatar image.
+	# avatar = "https://avatars.githubusercontent.com/u/117440754?v=4"
+  avatar = "avatar.avif"
+
+  author = "Muhamad Irfan"
+  description = "Website pribadi dan portofolio Muhamad Irfan, seorang IT Specialist yang berlokasi di Bogor, Indonesia."
+  keywords = "Muhamad Irfan, IT Specialist Bogor, Web Developer, Portfolio, Programmer, Indonesia, irfanywz"
+
+# Menu Header
+[[menu.main]]
+name = "Beranda"
+url = "/"
+pre = "icon-[ri--home-line]"
+weight = 10
+
+[[menu.main]]
+name = "Proyek"
+url = "/projects/"
+pre = "icon-[ri--briefcase-2-line]"
+weight = 20
+
+[[menu.main]]
+name = "Tulisan"
+url = "/posts/"
+pre = "icon-[ri--article-line]"
+weight = 30
+
+
+[[menu.main]]
+name = "Toko"
+url = "/shop/"
+pre = "icon-[ri--shopping-bag-line]"
+weight = 35
+
+[[menu.main]]
+name = "Kontak"
+url = "/contact/"
+pre = "icon-[ri--mail-line]"
+weight = 40
+
+# menu offcanvas
+# ======================
+
+[[menu.footer]]
+name = "Jurnal"
+url = "/journal/"
+pre = "icon-[ri--newspaper-line]"
+weight = 20
+[menu.footer.params]
+  color = "text-amber-500"
+
+[[menu.footer]]
+name = "Belajar"
+url = "/learn/"
+pre = "icon-[ri--lightbulb-line]"
+weight = 30
+[menu.footer.params]
+  color = "text-sky-500"
+
+[[menu.footer]]
+name = "Buku"
+url = "/book-lesson/"
+pre = "icon-[ri--book-open-line]"
+weight = 40
+[menu.footer.params]
+  color = "text-emerald-500"
+
+[[menu.footer]]
+name = "Film"
+url = "/movie-watches/"
+pre = "icon-[ri--movie-2-line]"
+weight = 41
+[menu.footer.params]
+  color = "text-rose-500"
+
+[[menu.footer]]
+name = "Musik"
+url = "/music-playlist/"
+pre = "icon-[ri--music-2-line]"
+weight = 41
+[menu.footer.params]
+  color = "text-violet-500"
+
+[[menu.footer]]
+name = "Alat"
+url = "/tools/"
+pre = "icon-[ri--tools-line]"
+weight = 60
+[menu.footer.params]
+  color = "text-orange-500"
+
+[[menu.footer]]
+name = "Bank Prompt"
+url = "/bank-prompt/"
+pre = "icon-[ri--magic-line]"
+weight = 61
+[menu.footer.params]
+  color = "text-fuchsia-500"
+
+[[menu.footer]]
+name = "Kutipan"
+url = "/quote/"
+pre = "icon-[ri--double-quotes-l]"
+weight = 70
+[menu.footer.params]
+  color = "text-yellow-500"
+
+[[menu.footer]]
+name = "Riset"
+url = "/research/"
+pre = "icon-[ri--flask-line]"
+weight = 80
+[menu.footer.params]
+  color = "text-cyan-500"
+
+[[menu.footer]]
+name = "Dokumentasi"
+url = "/docs/"
+pre = "icon-[ri--file-text-line]"
+weight = 91
+[menu.footer.params]
+  color = "text-indigo-500"
+
+# menu bottom mobile
+# ======================
+
+[[menu.bottom]]
+name = "Tulisan"
+url = "/posts/"
+pre = "icon-[ri--article-line]"
+weight = 30
+
+[[menu.bottom]]
+name = "Proyek"
+url = "/projects/"
+pre = "icon-[ri--briefcase-2-line]"
+weight = 20
+
+# menu shop
+[[menu.bottom]]
+name = "Toko"
+url = "/shop/"
+pre = "icon-[ri--shopping-bag-line]"
+weight = 35
+
+[[menu.bottom]]
+name = "Kontak"
+url = "/contact/"
+pre = "icon-[ri--mail-line]"
+weight = 40
+
+[markup]
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    hl_Lines = ""
+    lineNoStart = 1
+    lineNos = false
+    lineNumbersInTable = true
+    noClasses = false
+    style = "dracula"  # or any other chroma style
+    tabWidth = 4
+
+[taxonomies]
+  tag = 'tags'
+
+# allow html to content .md
+[markup.goldmark.renderer] 
+	unsafe= true
+
+# allow shortcodes
+[security]
+	enableInlineShortcodes = true	
+
+# output format
+[outputs]
+  home = ["HTML", "RSS", "JSON"]  
+
+[outputFormats]
+[outputFormats.JSON]
+  mediaType = "application/json"
+  baseName = "index"
+  isPlainText = true
+  notAlternative = true  
+
+[languages.id]
+languageName = "Indonesian"
+languageCode = "id"
+
+[services]
+  [services.googleAnalytics]
+    id = 'G-VVGW3VPZZG'

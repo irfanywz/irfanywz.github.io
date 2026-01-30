@@ -1,0 +1,29 @@
+{{ if .Params.toc | default true }}
+    {{ $headers := findRE "<h[2-6].*?>(.|\n])+?</h[2-6]>" .Content }}
+    {{ if ge (len $headers) 1 }}
+        <ul class="space-y-2.5 text-sm">
+            {{ range $i, $header := $headers }}
+                {{ $headerLevel := index (findRE "[2-6]" $header 1) 0 }}
+                {{ $headerLevel := int $headerLevel }}
+                {{ $headerID := $header | replaceRE ".* id=\"([^\"]+)\".*" "$1" }}
+                {{ if not $headerID }}
+                    {{ $headerID = $header | plainify | anchorize }}
+                {{ end }}
+                {{ $headerText := $header | plainify | htmlUnescape }}
+                
+                {{ $padding := mul (sub $headerLevel 2) 12 }}
+
+                <li>
+                    <a href="#{{ $headerID }}" 
+                       @click="activeSection = '{{ $headerID }}'; tocOpen = false"
+                       :class="activeSection === '{{ $headerID }}' ? 'text-indigo-600 dark:text-indigo-400 font-medium translate-x-1' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:translate-x-1'"
+                       class="block transition-all duration-200"
+                       :class="activeSection === '{{ $headerID }}' ? 'border-indigo-600 dark:border-indigo-400 pl-3' : 'border-transparent pl-3'"
+                       style="margin-left: {{ $padding }}px">
+                        {{ $headerText }}
+                    </a>
+                </li>
+            {{ end }}
+        </ul>
+    {{ end }}
+{{ end }}

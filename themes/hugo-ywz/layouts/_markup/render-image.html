@@ -1,0 +1,14 @@
+{{/* layouts/_default/_markup/render-image.html */}}
+
+{{ $destination := .Destination | safeURL }}
+{{ $altText := .PlainText }}
+{{ $title := .Title }}
+    
+<img src="{{ $destination }}" class="cursor-pointer"
+   x-data 
+   @click="$store.lightbox.open('{{ $destination }}', '{{ $title }}', '{{ $altText }}')"
+   alt="{{ $altText }}" 
+   {{ with $title }}title="{{ . }}"{{ end }}
+   loading="lazy" />
+
+{{- /* Pastikan tidak ada newline berlebih */ -}}

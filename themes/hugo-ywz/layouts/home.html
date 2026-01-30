@@ -1,0 +1,37 @@
+{{ define "head" }}{{ end }}
+
+{{ define "main" }}
+
+    <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
+        
+        {{ partial "home/hero.html" . }}
+        
+        {{ partial "home/about.html" . }}
+        
+        {{ if .Params.servicestatus }}
+            {{ partial "home/service.html" . }}
+        {{ end }}
+
+        {{ if .Params.experiencestatus }}
+            {{ partial "home/exp.html" . }}
+        {{ end }}
+
+        {{ if .Params.educationstatus }}
+            {{ partial "home/edu.html" . }}
+        {{ end }}
+
+        {{ if .Params.skill }}
+            {{ partial "home/skills.html" . }}
+        {{ end }}
+
+        {{ if .Params.project }}
+            {{ partial "home/project.html" . }}
+        {{ end }}
+
+        {{ if .Params.cta }}
+            {{ partial "cta.html" . }}
+        {{ end }}
+
+    </main>
+
+{{ end }}

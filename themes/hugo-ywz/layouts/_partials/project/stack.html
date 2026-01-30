@@ -1,0 +1,20 @@
+{{ if .Params.stack }}
+<div class="mb-16">
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8 flex items-center gap-3">
+        <span class="icon-[heroicons--square-3-stack-3d] w-8 h-8 text-indigo-600 dark:text-indigo-400"></span>
+        Teknologi yang Digunakan 
+    </h2>
+    <div class="grid grid-cols-1 gap-8">
+        <div class="bg-gray-50 dark:bg-gray-800/50 p-6 rounded-2xl border border-gray-200 dark:border-gray-700">
+            <div class="flex flex-wrap gap-3">
+                {{ range $index, $item := $.Page.Params.stack }}
+                <div class="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 transition-colors">
+                    <span class="icon-[heroicons--code-bracket] w-5 h-5 text-indigo-600 dark:text-indigo-400"></span>
+                    <span class="text-gray-700 dark:text-gray-300 font-medium">{{ $item }}</span>
+                </div>
+                {{ end }}
+            </div>
+        </div>
+    </div>
+</div>
+{{ end }}

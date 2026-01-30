@@ -1,0 +1,109 @@
+
+{{/* 1. Dynamic logic to find the top-level section path (your code) */}}
+{{ $split := "/"}}
+{{ if and .File (strings.Contains .File.Dir "\\") }}
+    {{ $split = "\\"}}
+{{ end }}
+{{ $dirParts := split .File.Dir $split }}
+
+{{/*
+    Find the parent section. Assuming $rootPath correctly identifies the 'example learn' section.
+    If $rootPath needs adjustment for different environments, you may need to check the array index.
+*/}}
+{{ $rootPath := index $dirParts 1 }}
+{{ $rootSection := .Site.GetPage "section" $rootPath }}
+
+{{/* 2. Initialize and build the custom page slice (array) */}}
+{{ $collectedAllPage := slice }}
+
+{{/* Loop through immediate children of $rootSection */}}
+{{ range $rootSection.Pages.ByWeight }}
+    {{/* If the page is a regular page (like 01, 02), append it. */}}
+    {{ if not .IsSection }}
+        {{ $collectedAllPage = $collectedAllPage | append . }}
+    
+    {{/* If the page is a sub-section (like 03 - section 3), loop through its pages. */}}
+    {{ else }}
+        {{/* Use .Pages on the section to get its immediate children */}}
+        {{/* Sort the children by Weight before appending */}}
+        {{ $sortedChildren := .Pages.ByWeight }}
+        
+        {{ range $sortedChildren }}
+            {{/* Append each child page (03.1, 03.2) to the main collection */}}
+            {{ $collectedAllPage = $collectedAllPage | append . }}
+        {{ end }}
+    {{ end }}
+{{ end }}
+
+{{/* 3. Find the current page's index in the collected array */}}
+{{ $currentIndex := -1 }}
+{{ range $index, $page := $collectedAllPage }}
+    {{ if eq $page.RelPermalink $.RelPermalink }}
+        {{ $currentIndex = $index }}
+    {{ end }}
+{{ end }}
+
+{{/* 4. Determine Previous and Next Pages based on the index */}}
+{{ $prevPage := "" }}
+{{ $nextPage := "" }}
+
+{{ if gt $currentIndex 0 }}
+    {{ $prevPage = index $collectedAllPage (sub $currentIndex 1) }}
+{{ end }}
+
+{{ if and (ne $currentIndex -1) (lt (add $currentIndex 1) (len $collectedAllPage)) }}
+    {{ $nextPage = index $collectedAllPage (add $currentIndex 1) }}
+{{ end }}
+
+<div class="flex flex-col sm:flex-row justify-between gap-4 mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+    {{/* --- PREVIOUS BUTTON --- */}}
+    <div class="w-full sm:w-1/2">
+        {{ with $prevPage }}
+            <a href="{{ .RelPermalink }}" class="flex flex-col p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all group h-full">
+                <span class="text-xs text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                    <i class="icon-[ri--arrow-left-line]"></i> Sebelumnya
+                </span>
+                <!-- Prev: -->
+                <span class="font-medium text-gray-900 dark:text-white">
+                    {{ if .Params.section }}{{ .Params.section }}{{ else }}{{ .LinkTitle }}{{ end }}
+                </span>
+            </a>
+        {{ else }}
+            {{ with $rootSection }}
+                <a href="{{ .RelPermalink }}" class="flex flex-col p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all group h-full">
+                    <span class="text-xs text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                        <i class="icon-[ri--arrow-left-line]"></i> Kembali ke Modul
+                    </span>
+                    <span class="font-medium text-gray-900 dark:text-white">
+                        {{ if .Params.section }}{{ .Params.section }}{{ else }}{{ .Title }}{{ end }}
+                    </span>
+                </a>
+            {{ end }}
+        {{ end }}
+    </div>
+
+    {{/* --- NEXT BUTTON --- */}}
+    <div class="w-full sm:w-1/2">
+        {{ with $nextPage }}
+            <a href="{{ .RelPermalink }}" class="flex flex-col items-end text-right p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all group h-full">
+                <span class="text-xs text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                    Selanjutnya <i class="icon-[ri--arrow-right-line]"></i>
+                </span>
+                <!-- Next: -->
+                <span class="font-medium text-gray-900 dark:text-white">
+                    {{ if .Params.section }}{{ .Params.section }}{{ else }}{{ .LinkTitle }}{{ end }}
+                </span>
+            </a>
+        {{ else }}
+             <div class="flex flex-col items-end text-right p-4 rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 opacity-50 h-full cursor-not-allowed">
+                <span class="text-xs text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-1">
+                    Selesai <i class="icon-[ri--check-line]"></i>
+                </span>
+                <!-- Next: End of Module -->
+                <span class="font-medium text-gray-900 dark:text-white">
+                    Akhir Modul
+                </span>
+            </div>
+        {{ end }}
+    </div>
+</div>

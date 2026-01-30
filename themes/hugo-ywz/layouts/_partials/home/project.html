@@ -1,0 +1,23 @@
+<section class="py-16 bg-gray-50 dark:bg-gray-800/50">
+    <div class="container max-w-6xl mx-auto px-4">
+        <!-- buat jadi responsive -->
+         
+        <div class="flex flex-col md:flex-row md:justify-between items-start gap-2 mb-10">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">                        
+                <span class="icon-[ri--rocket-line] w-8 h-8 text-indigo-600 dark:text-indigo-400"></span>
+                {{ .Params.projecttitle }}
+            </h2>
+
+            <a href="{{ "projects/" | relURL }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium text-sm flex items-center gap-1 transition-colors">
+                Selengkapnya <span class="icon-[ri--arrow-right-line] w-4 h-4"></span>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {{ $pages := where site.RegularPages "Section" "eq" "projects" -}}
+            {{ range first .Params.projectcount $pages }}
+                {{ partial "project/list-card.html" . }}
+            {{ end }}
+        </div>
+    </div>
+</section>

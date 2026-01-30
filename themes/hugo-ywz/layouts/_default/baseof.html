@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
+
+<head>
+    {{ block "config" . }}{{ end }} 
+
+    {{ partial "baseof/head.html" . }}
+
+    {{ partialCached "baseof/css.html" . }}
+
+    {{ block "head" . }}{{ end }}
+
+    {{ partialCached "baseof/js.html" . }}
+
+</head>
+
+<body class="bg-white dark:bg-gray-900">
+
+    {{ $hideHeader := .Scratch.Get "hideHeader" }}
+    {{ if not $hideHeader }}
+        {{ partial "baseof/header.html" . }}
+    {{ end }}
+
+    {{ block "main" . }}{{ end }}
+
+    {{ $hideFooter := .Scratch.Get "hideFooter" }}
+    {{ if not $hideFooter }}
+        {{ partial "baseof/footer.html" . }}
+        {{ partial "baseof/nav-bottom.html" . }}
+        {{ partial "baseof/nav-offcanvas.html" . }}
+        {{ partial "baseof/theme-switch.html" . }}
+    {{ end }}
+    
+
+    <!-- Lightbox Component -->
+    {{ partial "baseof/lightbox.html" . }}
+
+    {{ if not $hideFooter }}
+        {{ partial "baseof/js-bottom.html" . }}
+    {{ end }}
+
+    {{ block "footer" . }}{{ end }}
+
+</body>
+
+</html>

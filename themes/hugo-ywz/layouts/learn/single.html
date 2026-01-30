@@ -1,0 +1,244 @@
+{{ define "head" }}
+{{ end }}
+
+{{ define "main" }}
+
+    {{/* 1. Get the current directory parts, handling both Linux/Windows paths */}}
+    {{ $split := "/" }}
+    {{ if strings.Contains .File.Dir "\\" }}
+      {{ $split = "\\" }}
+    {{ end }}
+    {{ $dirParts := split .File.Dir $split }}
+
+    {{/* 2. Get the specific subdirectory name (e.g., "example learn") */}}
+    {{/* Assuming the structure is 'learn/example learn', the subdirectory name is at index 1 */}}
+    {{ $subDirName := index $dirParts 1 }}
+
+    {{/* *** FIX: Convert the extracted directory name to a URL-safe slug *** */}}
+    {{ $subDirSlug := $subDirName | urlize }}
+
+    {{/* 3. Construct the full directory path to match (e.g., "learn/example learn/") */}}
+    {{/* Note the trailing slash is important for exact directory matching */}}
+    {{ $targetPath := printf "/%s/%s/" .Section $subDirSlug | lower }}
+
+    {{/* 4. Filter all regular pages in the site */}}
+    {{/* We use .Site.RegularPages for content pages, excluding lists, taxonomy, etc. */}}
+    {{ $allRegularPages := .Site.Pages }}
+
+    {{/* 5. Filter the pages to match the specific directory */}}
+    {{/* We use the 'Dir' property of the page object for filtering */}}
+    {{ $specificPages := where $allRegularPages "Section" "eq" "learn" }}
+
+    {{ $specificPages := where $allRegularPages ".Path" "like" $targetPath }}
+
+    {{/* 6. Sort and display the pages */}}
+    {{ $sortedPages := sort $specificPages "Weight" "asc" }}
+
+    <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300" 
+          x-data="{ 
+              sidebarOpen: false,
+              activeSection: '',
+              init() {
+                  const observer = new IntersectionObserver((entries) => {
+                      entries.forEach(entry => {
+                          if (entry.isIntersecting) {
+                              this.activeSection = entry.target.id;
+                          }
+                      });
+                  }, { rootMargin: '-100px 0px -60% 0px' });
+                  
+                  document.querySelectorAll('.prose h2[id], .prose h3[id], .prose h4[id]').forEach(section => {
+                      observer.observe(section);
+                  });
+
+                  this.$watch('activeSection', (id) => {
+                      if(id) {
+                          // Scroll sidebar link into view
+                          const activeLink = document.querySelector(`aside a[href='#${id}']`);
+                            if (activeLink) {
+                                // Calculate the position to scroll to
+                                const sidebar = document.querySelector('aside');
+                                const linkPosition = activeLink.offsetTop - sidebar.offsetTop;
+                                const sidebarHeight = sidebar.clientHeight;
+                                const linkHeight = activeLink.offsetHeight;
+                                
+                                // Adjust scroll position to keep the active link in view
+                                const scrollPosition = linkPosition - (sidebarHeight / 2) + (linkHeight / 2);
+                                sidebar.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+                            }
+                      }
+                  });
+
+                  // Scroll to active sidebar item on load
+                  this.$nextTick(() => {
+                      const sidebar = document.querySelector('aside > div');
+                      const activeItem = sidebar.querySelector('a.bg-indigo-50, a.dark\\:bg-indigo-900\\/30');
+                      if (sidebar && activeItem) {
+                          const top = activeItem.offsetTop - sidebar.offsetTop - (sidebar.clientHeight / 2) + (activeItem.clientHeight / 2);
+                          sidebar.scrollTo({ top: top, behavior: 'smooth' });
+                      }
+                  });
+                                    
+              }
+          }"
+    >
+        
+
+        <section class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-30 lg:static">
+            <div class="container-fluid px-4 py-3">
+                <nav class="flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 overflow-hidden">
+                    {{ if eq (len $dirParts) 5 }}
+                        {{ with .Parent }}
+                            {{ with .Parent }}
+                                    <a href="{{ .RelPermalink }}" class="flex items-center gap-1 flex-shrink-0 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                                        <i class="icon-[ri--lightbulb-line] text-sky-500 align-bottom"></i>
+                                        {{ .Title }}
+                                </a>
+                            {{ end }}
+                        {{ end }}
+                    {{ else }}
+                        {{ with .Parent }}
+                                <a href="{{ .RelPermalink }}" class="flex-shrink-0 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                                    <i class="icon-[ri--lightbulb-line] text-sky-500 align-bottom"></i>
+                                    {{ .Title }}
+                            </a>
+                        {{ end }}
+                    {{ end }}
+                        <i class="icon-[ri--arrow-right-s-line] flex-shrink-0"></i>
+                        <span class="font-medium text-gray-900 dark:text-white truncate">{{ .Title }}</span>
+                    </div>
+                    
+                    <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                        <i class="icon-[ri--menu-line]"></i>
+                    </button>
+                </nav>
+            </div>
+        </section>
+
+        <!-- Main Container -->
+        <div class="flex flex-col lg:flex-row min-h-[calc(100vh-7rem)]">
+            <!-- Sidebar -->
+            <aside class="lg:w-72 flex-shrink-0 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 lg:block lg:sticky lg:top-0 lg:h-[calc(100vh)]"
+                   :class="sidebarOpen ? 'fixed inset-y-0 left-0 z-100 w-72 shadow-2xl' : 'hidden'">
+                
+                <div class="h-full overflow-y-auto p-4">
+                    <div class="flex items-center justify-between lg:hidden mb-4">
+                        <h2 class="font-bold text-gray-900 dark:text-white">Menu</h2>
+                        <button @click="sidebarOpen = false" class="p-2 text-gray-500"><i class="icon-[ri--close-line]"></i></button>
+                    </div>
+
+                    <h2 class="font-bold text-gray-900 dark:text-white mb-4 px-2">
+                    {{ if eq (len $dirParts) 5 }}
+                        {{ with .Parent }}
+                            {{ with .Parent }}
+                                {{ .Title }}
+                            {{ end }}
+                        {{ end }}
+                    {{ else }}
+                        {{ with .Parent }}
+                            {{ .Title }}
+                        {{ end }}
+                    {{ end }}
+                </h2>
+
+                    <ul class="space-y-1">
+
+                    {{ if eq (len $dirParts) 5 }}
+                        {{ with .Parent }}
+                            {{ with .Parent }}
+                                {{ partial "learn/single-sidebar.html" . }}
+                            {{ end }}
+                        {{ end }}
+                    {{ else }}
+                        {{ with .Parent }}
+                            {{ partial "learn/single-sidebar.html" . }}
+                        {{ end }}
+                    {{ end }}
+
+                    {{ range $sortedPages }}
+
+                        {{ $split := "/"}}
+                        {{ if strings.Contains .File.Dir "\\" }}
+                            {{ $split = "\\"}}
+                        {{ end }}
+                        {{ $dirParts := split .File.Dir $split }}
+
+                        {{ if and (eq (len $dirParts) 4) (.IsPage) }}
+                                <li>
+                                    <a href="{{ .RelPermalink }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors {{ if eq .RelPermalink $.RelPermalink }}bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}">
+                                        <i class="icon-[ri--file-text-line] {{ if eq .RelPermalink $.RelPermalink }}text-indigo-600 dark:text-indigo-400{{ else }}text-gray-400{{ end }}"></i>
+                                    {{ if .Params.section }}
+                                        {{ .Params.section }}
+                                    {{ else }}
+                                        {{ .Title }}
+                                    {{ end }}
+                                </a>
+                            </li>
+                        {{ else if and (.IsSection) (eq (len $dirParts) 4) }}
+                                <li class="mt-4 mb-2 px-2">
+                                    <strong class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ .Title }}</strong>
+                                </li>
+                                {{ $sortedPosts := sort .Data.Pages "Weight" }}
+                                <ul class="space-y-1 border-l border-gray-100 dark:border-gray-800 ml-2 pl-2">
+                                    {{ range $sortedPosts }}
+                                        <li>
+                                            <a href="{{ .RelPermalink }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors {{ if eq .RelPermalink $.RelPermalink }}bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}">
+                                                <i class="icon-[ri--file-text-line] {{ if eq .RelPermalink $.RelPermalink }}text-indigo-600 dark:text-indigo-400{{ else }}text-gray-400{{ end }}"></i>
+                                                {{ if .Params.section }}
+                                                    {{ .Params.section }}
+                                                {{ else }}
+                                                    {{ .Title }}
+                                                {{ end }}
+                                            </a>
+                                        </li>
+                                    {{ end }}
+                                </ul>
+                            </li>
+
+                        {{ end }}
+
+                    {{ end }}
+
+                </ul>
+                </div>
+            </aside>
+            
+            <!-- Backdrop -->
+            <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 bg-black/50 z-90 lg:hidden" @click="sidebarOpen = false" style="display: none;"></div>
+
+            <!-- Content Wrapper -->
+            <div class="flex-grow min-w-0 flex flex-col lg:flex-row">
+                <!-- Main Content -->
+                <main class="flex-grow p-6 lg:p-10 min-w-0">
+                    <div class="mb-8 border-b border-gray-200 dark:border-gray-700 pb-6">
+                        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+                            {{ .Title }}
+                        </h1>
+                    </div>
+
+                    <div class="prose prose-lg dark:prose-invert max-w-none mb-12">
+                        {{ with .Content }}
+                            {{ . | safeHTML }}
+                        {{ end }}
+                    </div>
+
+                    <!-- Navigation Between Submodules -->
+                    {{ partial "learn/single-next-prev.html" . }}
+
+                </main>
+                
+                <!-- TOC (Right Sidebar) -->
+                <aside class="hidden xl:block w-64 flex-shrink-0 p-6 border-l border-gray-200 dark:border-gray-700">
+                    <div class="sticky top-32">
+                        {{ partial "learn/toc.html" . }}
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+{{ end }}
+
+{{ define "footer" }}
+{{ end }}

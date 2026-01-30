@@ -1,0 +1,21 @@
+{{ define "head" }}
+{{ end }}
+
+{{ define "main" }}
+
+    {{ $split := "/"}}
+    {{ if strings.Contains .File.Dir "\\" }}
+        {{ $split = "\\"}}
+    {{ end }}
+    {{ $dirParts := split .File.Dir $split }}
+
+    {{ if gt (len $dirParts) 2 }}
+        {{ partial "learn/single-list.html" . }}
+    {{ else if eq (len $dirParts) 2 }}
+        {{ partial "learn/list.html" . }}
+    {{ end }}
+
+{{ end }}
+
+{{ define "footer" }}
+{{ end }}

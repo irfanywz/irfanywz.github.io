@@ -1,0 +1,68 @@
+{{ define "head" }}
+{{ end }}
+
+{{ define "main" }}
+
+    <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
+        <section class="py-16 bg-gray-50 dark:bg-gray-800/50">
+            <div class="container max-w-6xl mx-auto px-4">
+                <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-3">
+                    <span class="icon-[heroicons--document-text] w-10 h-10 text-indigo-600 dark:text-indigo-400"></span>
+                    {{.Title}}
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 text-center max-w-2xl mx-auto">{{ .Description }}</p>
+            </div>
+        </section>
+
+        <section class="py-16 bg-white dark:bg-gray-900">
+            <div class="container max-w-6xl mx-auto px-4">
+                <div id="content-container" class="max-w-3xl mx-auto flex flex-col gap-6 mb-12">
+
+                    {{ $paginator := .Paginate (where .Data.Pages "Params.hidden" "ne" true) }}
+                    {{ range $paginator.Pages }}
+                        <article class="group relative bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-300">
+                            <a href="{{ .Permalink }}" class="absolute inset-0 z-0" aria-label="Baca {{ .Title }}"></a>
+                            <div class="relative z-10 pointer-events-none">
+                                <div class="flex items-center gap-3 text-xs font-medium text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-wider">
+                                    <span>{{ .Date | time.Format "Jan 02, 2006" }}</span>
+                                    <span class="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-600"></span>
+                                    <span>{{ printf "%d MIN READ" .ReadingTime }}</span>
+                                </div>
+
+                                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3 leading-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                    {{ .Title }}
+                                </h2>
+
+                                <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-4 line-clamp-2">
+                                    {{ .Description | default (.Summary | plainify | truncate 160) }}
+                                </p>
+
+                                <div class="flex items-center justify-between mt-4">
+                                    {{ if .Params.tags }}
+                                    <div class="flex flex-wrap gap-2">
+                                        {{ range first 3 .Params.tags }}
+                                            <span class="px-2.5 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs font-medium rounded-md">{{ . }}</span>
+                                        {{ end }}
+                                    </div>
+                                    {{ end }}
+                                    
+                                    <span class="text-indigo-600 dark:text-indigo-400 text-sm font-medium flex items-center gap-1 group-hover:translate-x-1 transition-transform ml-auto">
+                                        Baca
+                                        <span class="icon-[ri--arrow-right-line]"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </article>
+                    {{ end }}
+
+                </div>
+
+                <div class="max-w-3xl mx-auto">
+                    {{ partial "components/pagination-loadmore.html" .Paginator }}
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+{{ end }}

@@ -1,0 +1,14 @@
+{{ if eq .Params.weather "Hujan"}}
+    <span class="icon-[ri--cloudy-line] w-4 h-4 text-blue-500"></span>
+{{ else if eq .Params.weather "Badai" }}
+    <span class="icon-[ri--thunderstorms-line] w-4 h-4 text-purple-500"></span>
+{{ else if eq .Params.weather "Cerah" }}
+    <span class="icon-[ri--sun-line] w-4 h-4 text-yellow-500"></span>
+{{ else if eq .Params.weather "Berawan" }}
+    <span class="icon-[ri--cloudy-line] w-4 h-4 text-gray-500"></span>
+{{ else if eq .Params.weather "Mendung" }}
+    <span class="icon-[ri--cloudy-line] w-4 h-4 text-gray-600"></span>
+{{ else }}
+    <span class="icon-[ri--sun-line] w-4 h-4 text-gray-400"></span>
+{{ end }}
+{{ .Params.weather }}

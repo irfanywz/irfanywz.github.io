@@ -1,0 +1,77 @@
+<footer class="py-12 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 mt-auto">
+    <div class="container max-w-6xl mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center gap-8 text-center md:text-left">
+            <!-- Left Column: Title -->
+            <div class="text-sm text-gray-500 dark:text-gray-400 text-center md:text-start space-y-1">
+                <p>
+                    &copy; {{ now.Year }} {{ .Site.Copyright }}
+                    • 
+                    <a href="{{ "change-log/" | relURL }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                        {{ .Site.Params.version }}
+                    </a>
+                </p>
+                <p>              
+                    <span>Menggunakan</span>
+                    <span class="inline-flex items-center gap-2">
+                        <a target="_blank" rel="nofollow" href="https://gohugo.io" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"> Hugo {{ hugo.Version }}</a>
+                        <a target="_blank" href="{{ "index.xml" | relURL }}" class="inline-flex hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" aria-label="RSS Feed">
+                            <span class="icon-[ri--rss-line] w-4 h-4 text-orange-600"></span>
+                        </a>
+                    </span>
+                </p>                 
+            </div>
+
+            <!-- make center icon -->             
+            <div class="flex-grow hidden md:flex md:ms-5"></div>
+
+            <!-- Middle Column: Social Icons -->
+            <div class="flex gap-4 grow justify-center">
+                {{ with .Site.GetPage "/contact.md" }}
+                    
+                    {{ with .Params.github }}
+                    <a href="{{ . }}" target="_blank" rel="noopener noreferrer" class="text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" aria-label="GitHub">
+                        <span class="icon-[lucide--github] w-5 h-5"></span>
+                    </a>
+                    {{ end }}
+
+                    <!-- add youtube and facebook params  -->
+                    {{ with .Params.youtube }}
+                    <a href="{{ . }}" target="_blank" rel="noopener noreferrer" class="text-red-500 dark:text-red-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" aria-label="LinkedIn">
+                        <span class="icon-[lucide--youtube] w-5 h-5"></span>
+                    </a>                                        
+                    {{ end }}
+
+                    {{ with .Params.facebook }}
+                    <a href="{{ . }}" target="_blank" rel="noopener noreferrer" class="text-blue-500 dark:text-blue-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" aria-label="LinkedIn">
+                        <span class="icon-[lucide--facebook] w-5 h-5"></span>
+                    </a>                                                      
+                    {{ end }}
+
+                    {{ with .Params.threads }}
+                    <a href="{{ . }}" target="_blank" rel="noopener noreferrer" class="text-grey-500 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" aria-label="LinkedIn">
+                        <span class="icon-[ri--threads-line] w-5 h-5"></span>
+                    </a>                                                      
+                    {{ end }}
+
+
+                {{ end }}
+            </div>
+
+            <div class="flex-grow hidden md:flex"></div>            
+
+            <!-- Right Column: Copyright & Links -->
+            <div class="text-sm text-gray-500 dark:text-gray-400 text-center md:text-right space-y-1">
+                <p>
+                    <a href="{{ "privacy-policy/" | relURL }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                        Kebijakan Privasi
+                    </a>
+                </p>
+                <p>
+                    <a href="{{ "terms/" | relURL }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                        Syarat dan Ketentuan
+                    </a>
+                </p>               
+            </div>
+        </div>
+    </div>
+</footer>

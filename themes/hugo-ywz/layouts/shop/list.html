@@ -1,0 +1,131 @@
+{{ define "main" }}
+{{ $productCount := len (where .Pages "Params.shop_type" "product") }}
+{{ $serviceCount := len (where .Pages "Params.shop_type" "service") }}
+<main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300" 
+      x-data="{ 
+          activeCategory: 'all',
+          counts: {
+              all: {{ len .Pages }},
+              product: {{ $productCount }},
+              service: {{ $serviceCount }}
+          }
+      }">
+    
+    <!-- Header like Journal -->
+    <section class="py-16 bg-gray-50 dark:bg-gray-800/50 relative border-b border-gray-200 dark:border-gray-700">
+        <div class="container max-w-6xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="text-center md:text-left">
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center justify-center md:justify-start gap-2">
+                        <i class="{{ .Params.icon }} text-indigo-600 dark:text-indigo-400"></i>
+                        {{ .Title }}
+                    </h1>
+                    <p class="text-gray-600 dark:text-gray-400">{{ .Description }}</p>
+                </div>
+                
+                <!-- Filter -->
+                <div class="flex bg-white dark:bg-gray-900 p-1 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+                    <button @click="activeCategory = 'all'" 
+                            :class="activeCategory === 'all' ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 font-bold shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'"
+                            class="px-4 py-1.5 rounded-lg text-sm transition-all">
+                        Semua
+                    </button>
+                    <button @click="activeCategory = 'product'" 
+                            :class="activeCategory === 'product' ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 font-bold shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'"
+                            class="px-4 py-1.5 rounded-lg text-sm transition-all">
+                        Produk
+                    </button>
+                    <button @click="activeCategory = 'service'" 
+                            :class="activeCategory === 'service' ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 font-bold shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'"
+                            class="px-4 py-1.5 rounded-lg text-sm transition-all">
+                        Jasa
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="max-w-6xl mx-auto px-4 py-12">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            {{ range .Pages }}
+            {{ $type := .Params.shop_type }}
+            <a href="{{ .RelPermalink }}"
+                 x-show="(activeCategory === 'all' || activeCategory === '{{ $type }}')"
+                 x-transition.opacity.duration.300ms
+                 class="group bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
+                
+                <!-- Image Area -->
+                <div class="relative aspect-square overflow-hidden bg-gray-100 dark:bg-gray-800">
+                    {{ if .Params.image }}
+                        <img src="{{ .Params.image }}" alt="{{ .Title }}" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" loading="lazy">
+                    {{ else }}
+                        <div class="w-full h-full flex items-center justify-center text-4xl text-gray-300 dark:text-gray-600">
+                            <i class="{{ if eq $type "product" }}icon-[ri--box-3-line]{{ else }}icon-[ri--service-line]{{ end }}"></i>
+                        </div>
+                    {{ end }}
+                    
+                    {{ if not .Params.available }}
+                    <div class="absolute inset-0 bg-white/60 dark:bg-black/60 flex items-center justify-center backdrop-blur-[2px] z-10">
+                        <span class="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded-full uppercase tracking-wider shadow-sm">Habis</span>
+                    </div>
+                    {{ end }}
+                    
+                    <!-- Type Badge -->
+                    <div class="absolute top-2 right-2 z-10">
+                        <span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md shadow-sm backdrop-blur-md
+                            {{ if eq $type "product" }} bg-blue-500/80 text-white
+                            {{ else }} bg-emerald-500/80 text-white {{ end }}">
+                            {{ $type }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Content Area -->
+                <div class="p-4 flex flex-col flex-grow">
+                    <h3 class="text-sm md:text-base font-bold text-gray-900 dark:text-white mb-1 line-clamp-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                        {{ .Title }}
+                    </h3>
+                    
+                    <div class="mt-auto pt-3 flex items-end justify-between">
+                        <div class="flex flex-col">
+                            {{ if .Params.variants }}
+                                <span class="text-[10px] text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider">Mulai dari</span>
+                                <span class="text-sm md:text-lg font-black text-indigo-600 dark:text-indigo-400">
+                                    {{/* Find min price */}}
+                                    {{ $min := 999999999 }}
+                                    {{ range .Params.variants }}
+                                        {{ if lt .price $min }} {{ $min = .price }} {{ end }}
+                                    {{ end }}
+                                    {{/* Simple formatting since we don't have a formatter here easily accessible without partials */}}
+                                    {{ range .Params.variants }}
+                                        {{ if eq .price $min }} {{ .display_price }} {{ end }}
+                                    {{ end }}
+                                </span>
+                            {{ else }}
+                                <span class="text-[10px] text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider">Harga</span>
+                                <span class="text-sm md:text-lg font-black text-indigo-600 dark:text-indigo-400">{{ .Params.display_price }}</span>
+                            {{ end }}
+                        </div>
+                        
+                        {{ if .Params.variants }}
+                        <span class="text-[10px] px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-gray-500 dark:text-gray-400 font-medium">
+                            {{ len .Params.variants }} Varian
+                        </span>
+                        {{ end }}
+                    </div>
+                </div>
+            </a>
+            {{ end }}
+
+            <!-- Empty State -->
+            <div x-show="counts[activeCategory] === 0" class="col-span-full flex flex-col items-center justify-center py-20 text-center" style="display: none;">
+                <div class="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
+                    <i class="icon-[ri--inbox-line] text-4xl text-gray-400 dark:text-gray-500"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Tidak ada item ditemukan</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">Belum ada produk atau layanan untuk kategori ini.</p>
+            </div>
+        </div>
+    </div>
+</main>
+{{ end }}

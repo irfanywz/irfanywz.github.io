@@ -1,0 +1,55 @@
+{{ define "head" }}
+{{ end }}
+
+{{ define "main" }}
+    <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
+        <section class="py-16 bg-gray-50 dark:bg-gray-800/50">
+            <div class="container max-w-6xl mx-auto px-4 text-center">
+                <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-3">
+                    <span class="icon-[ri--book-open-line] w-10 h-10 text-emerald-500"></span>
+                    {{ .Title }}
+                </h1>
+                {{ with .Params.description }}
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">{{ . }}</p>
+                {{ end }}
+            </div>
+        </section>
+
+        <section class="py-16">
+            <div class="container max-w-6xl mx-auto px-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {{ $pages := .Data.Pages }}
+                  {{ range $pages.ByDate.Reverse }}
+                    <article class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-md transition-all duration-300 flex flex-col h-full group">
+                      <a href="{{ .RelPermalink }}" class="block bg-gray-50 dark:bg-gray-700/50 p-6 flex items-center justify-center h-48 group-hover:bg-gray-100 dark:group-hover:bg-gray-700 transition-colors" aria-label="Open {{ .Title }}">
+                        {{ if hasPrefix .Params.image "http" }}
+                            <img class="h-32 w-auto object-contain shadow-lg rounded transform group-hover:scale-105 transition-transform duration-300" src='{{ .Params.image }}' alt='{{ .Title }}' />
+                        {{ else }}
+                            <img class="h-32 w-auto object-contain shadow-lg rounded transform group-hover:scale-105 transition-transform duration-300" src='{{ .RelPermalink }}{{ .Params.image }}' alt='{{ .Title }}' />
+                        {{ end }}
+                      </a>
+                      <div class="p-6 flex flex-col flex-grow">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">
+                            <a href="{{ .RelPermalink }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{{ .Title }}</a>
+                        </h2>
+                        <div class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3 flex-grow">
+                            {{ with .Params.description }}{{ . }}{{ else }}{{ with .Summary }}{{ . }}{{ end }}{{ end }}
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 pt-4 border-t border-gray-100 dark:border-gray-700 mt-auto">
+                          <span class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+                            {{ with .Params.author }}{{ . }}{{ end }}
+                          </span>
+                          <span>{{ .Date | time.Format "2 Jan 2006" }}</span>
+                        </div>
+                      </div>
+                    </article>
+                    {{ else }}
+                    <div class="col-span-full text-center py-12 text-gray-500 dark:text-gray-400">
+                        Tidak ada Konten Ringkasan Buku.
+                    </div>
+                  {{ end }}
+                </div>
+        </section>
+    </main>
+{{ end }}

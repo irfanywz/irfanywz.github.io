@@ -1,0 +1,65 @@
+<script>
+    function productPurchase(data) {
+        return {
+            ...data,
+            selectedPayment: (data.payments && data.payments.length > 0) ? data.payments[0] : null,
+            selectedVariant: (data.product.variants && data.product.variants.length > 0) ? data.product.variants[0] : null,
+
+            get finalPrice() {
+                return this.selectedVariant ? Math.max(0, this.selectedVariant.price) : 0;
+            },
+
+            formatRupiah(number) {
+                return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+            },
+            
+            copyToClipboard(text, el) {
+                if (!text) return;
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalContent = el.innerHTML;
+                    el.innerHTML = '<i class="icon-[ri--check-line] text-lg"></i>';
+                    setTimeout(() => {
+                        el.innerHTML = originalContent;
+                    }, 2000);
+                });
+            },
+
+            sendTo(platform) {
+                if (this.product.type === 'service') {
+                    const message = `Halo, saya tertarik dengan jasa *${this.product.name}*\n\n` +
+                                  `Mohon informasi lebih lanjut. Terima kasih.`;
+                    
+                    const encodedMsg = encodeURIComponent(message);
+                    const number = platform === 'whatsapp' ? this.contact.wa : this.contact.telegram;
+                    const url = platform === 'whatsapp' 
+                        ? `https://wa.me/${number}?text=${encodedMsg}`
+                        : `https://t.me/${number}?text=${encodedMsg}`;
+                    
+                    window.open(url, '_blank');
+                    return;
+                }
+
+                if (!this.selectedPayment) return;
+
+                const paymentInfo = this.selectedPayment.type === 'qris' 
+                    ? `QRIS (${this.selectedPayment.name})` 
+                    : `${this.selectedPayment.name} (${this.selectedPayment.account_number})`;
+
+                const productFormatter = platform === 'whatsapp' ? `*${this.product.name}*` : `**${this.product.name}**`
+
+                const message = `Halo, saya ingin membeli ${productFormatter}\n\n` +
+                              `Harga: ${this.formatRupiah(this.finalPrice)}\n` +
+                              `Pembayaran: ${paymentInfo}\n` +                              
+                              `Mohon diproses. Terima kasih.`;
+
+                const encodedMsg = encodeURIComponent(message);
+                const number = platform === 'whatsapp' ? this.contact.wa : this.contact.telegram;
+                const url = platform === 'whatsapp' 
+                    ? `https://wa.me/${number}?text=${encodedMsg}`
+                    : `https://t.me/${number}?text=${encodedMsg}`;
+                
+                window.open(url, '_blank');
+            }
+        }
+    }
+</script>
