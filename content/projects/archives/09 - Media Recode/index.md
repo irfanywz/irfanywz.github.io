@@ -6,8 +6,8 @@ image: "media-recode.avif"
 stack: ['python', 'ffmpeg', 'pyside6', 'exiftool', 'ai', 'spleeter', 'faceswap']
 category: Desktop
 status: Pribadi
-# demo: https://youtube.com/@YkywzCode
-buy: https://t.me/ykywz
+# demo: https://youtube.com/watch?v=xxx
+buy: https://t.me/irfanywz
 # github: https://google.com
 date: 2025-02-14T16:00:35+07:00
 draft: false

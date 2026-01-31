@@ -24,6 +24,4 @@ hari ini saya mencobanya menggunakan text-editor cursor dan hasilnya, wah sangat
 
 ai yang terdapat pada cursor sangat memudahkan sekali karena bisa auto create file didalamnya
 
-ini adalah contoh hasil vibe code saya dihari ini : [Image Prompt Generator](https://github.com/ykywz-website/image-prompt-generator)
-
 aplikasi generate prompt dari gambar ini saya buat kira-kira habis 5jaman hanya untuk mengetik prompt, perbaikan, dan tampilannya

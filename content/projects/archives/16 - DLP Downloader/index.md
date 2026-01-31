@@ -9,7 +9,7 @@ status: Personal
 # demo: https://youtu.be/Vg8MTB6wFoE
 download: https://lynk.id/irfanywz/v8xz90wg8kj5
 # buy: https:google.com/ncr
-# github: https://github.com/ykywz-python/
+# github: https://github.com/ywz-python/
 date: 2025-10-18T05:00:35+07:00
 draft: false
 # =============================

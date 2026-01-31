@@ -16,4 +16,4 @@ sayangnya untuk gemini-tts ini tidak sepenuhnya gratis, ada limitasi tertentu ya
 
 berikut repo hasil belajarnya
 
-[https://github.com/ykywz-python/gemini-tts-training](https://github.com/ykywz-python/gemini-tts-training)
+[https://github.com/ywz-python/gemini-tts-training](https://github.com/ywz-python/gemini-tts-training)

@@ -19,4 +19,4 @@ pelajaran yang saya dapat yaitu, github action benar benar bagus untuk yang tida
 
 berikut repo hasil belajar yang ada kode github actionnya
 
-[https://github.com/ykywz-python/pyside6-ci-cd](https://github.com/ykywz-python/pyside6-ci-cd)
+[https://github.com/ywz-python/pyside6-ci-cd](https://github.com/ywz-python/pyside6-ci-cd)

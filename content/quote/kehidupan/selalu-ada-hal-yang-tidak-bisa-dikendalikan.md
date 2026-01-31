@@ -2,6 +2,9 @@
 date: 2025-10-05
 author: "catatan kehidupan"
 categories: ["kehidupan"]
+_build:
+  render: never
+  list: always
 ---
 
 menyadari bahwa selalu ada hal yang bisa dikendalikan dan ada hal yang tidak bisa dikendalikan

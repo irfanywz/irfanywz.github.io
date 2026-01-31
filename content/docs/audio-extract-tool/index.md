@@ -7,10 +7,6 @@ app_icon: app.avif
 project_url: projects/audio-extract-tool/
 ---
 
-## Pembelian
-
-Anda dapat membeli lisensi Audio Extract Tool melalui [halaman pembelian](/shop/?product=audio-extract-tool). Setelah pembelian, Anda harus melakukan konfirmasi lewat whatsapp atau telegram untuk menerima tautan unduhan.
-
 ## Persyaratan Sistem
 
 Pastikan komputer Anda memenuhi persyaratan sistem minimum untuk menjalankan Audio Extract Tool:
@@ -93,7 +89,7 @@ Ya, Audio Extract Tool mendukung pemrosesan multi-file, memungkinkan Anda menamb
 
 **Bagaimana jika saya mengalami masalah teknis?**  
 
-Jika Anda mengalami masalah teknis, silakan masuk grup support telegram: [ykywz](https://t.me/ykywz)
+Jika Anda mengalami masalah teknis, silakan masuk grup support telegram
 
 ## Penutup
 

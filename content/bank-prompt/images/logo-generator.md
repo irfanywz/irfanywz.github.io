@@ -2,7 +2,10 @@
 title: "Logo Generator Gemini"
 date: 2024-07-29T09:05:00+07:00
 categories: ["Logo"]
-image: 
+image:
+_build:
+  render: never
+  list: always 
 ---
 
 buatkan saya logo untuk aplikasi saya "DLP Downloader", logo ini akan digunakan untuk aplikasi berbasis desktop diwindows, pastikan logonya terlihat jelas

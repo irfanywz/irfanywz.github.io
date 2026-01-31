@@ -2,6 +2,9 @@
 date: 2025-11-03T15:00:00+07:00
 author: "huy_"
 categories: ["inspirasi"]
+_build:
+  render: never
+  list: always
 ---
 
 

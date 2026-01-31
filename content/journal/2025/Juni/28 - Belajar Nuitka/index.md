@@ -35,4 +35,4 @@ berikut previewnya
 
 untuk reponya bisa dicek disini
 
-[https://github.com/ykywz-python](https://github.com/ykywz-python)
+[https://github.com/ywz-python](https://github.com/ywz-python)

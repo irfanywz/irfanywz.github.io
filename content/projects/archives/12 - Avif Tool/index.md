@@ -6,7 +6,7 @@ image: "aviftool-1.avif"
 stack: ['python', 'pyside6', 'pillow', 'AOMediaCodec/libavif']
 category: Desktop
 status: Produk
-# demo: https://youtube.com/@YkywzCode
+# demo: https://youtube.com/watch?v=xxx
 download: https://lynk.id/irfanywz/zmj9ogw7mz4d
 # buy: https:google.com/ncr
 # github: https://google.com

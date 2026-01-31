@@ -2,6 +2,9 @@
 date: 2022-09-01T16:00:35+07:00
 author: "Rasanya belum lama"
 categories: ["afirmasi"]
+_build:
+  render: never
+  list: always
 ---
 
 Pencipta hebat  

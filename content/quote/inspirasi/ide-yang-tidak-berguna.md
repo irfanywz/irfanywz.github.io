@@ -2,6 +2,9 @@
 date: 2025-11-04T17:00:00+07:00
 author: "inspirasi hidup"
 categories: ["inspirasi"]
+_build:
+  render: never
+  list: always
 ---
 tiba-tiba dapat ide, jangan langsung eksekusi
 

@@ -10,7 +10,7 @@ draft: false
 
 pagi-pagi bangun dengan keadaan bingung mau ngapain, tiba-tiba aja terlintas ide untuk belajar tornado
 
-dimulai dari saya buat starter tornadonya, bisa dilihat [dihalaman github ini](https://github.com/ykywz-python/tornado-starter)
+dimulai dari saya buat starter tornadonya, bisa dilihat [dihalaman github ini](https://github.com/ywz-python/tornado-starter)
 
 saya lanjut pagi menjelang siang untuk membuat aplikasi yt tool
 

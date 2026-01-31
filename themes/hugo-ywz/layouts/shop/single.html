@@ -7,7 +7,8 @@
                 name: '{{ .Title }}',
                 type: '{{ .Params.shop_type }}',
 				slug: '{{ .File.BaseFileName }}',
-				variants: {{ .Params.variants | jsonify }}
+				variants: {{ .Params.variants | jsonify }},
+                price: {{ .Params.price | default 0 }}
 
             },
             payments: {{ .CurrentSection.Params.payments | jsonify }},
@@ -71,7 +72,7 @@
                     <h1 class="text-3xl md:text-4xl font-black text-gray-900 dark:text-white mb-4 leading-tight">{{ .Title }}</h1>
                     
                     <div class="prose dark:prose-invert text-gray-600 dark:text-gray-400 mb-8 max-w-none text-sm leading-relaxed">
-                        {{ .Description }}
+                        {{ .Content }}
                     </div>
 
                     {{ if .Params.link_project }}
@@ -142,5 +143,59 @@
     </div>
 </div>
 
-{{ partial "shop/script.html" . }}
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('productPurchase', (config) => ({
+            product: config.product,
+            payments: config.payments,
+            contact: config.contact,
+            selectedVariant: null,
+    
+            init() {
+                if (this.product.variants && this.product.variants.length > 0) {
+                    this.selectedVariant = this.product.variants[0];
+                }
+            },
+    
+            get finalPrice() {
+                if (this.selectedVariant) {
+                    return this.selectedVariant.price;
+                }
+                return this.product.price || 0;
+            },
+    
+            formatRupiah(number) {
+                return new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(number);
+            },
+    
+            sendTo(platform) {
+                const isTelegram = platform === 'telegram';
+                const bold = (text) => isTelegram ? `**${text}**` : `*${text}*`;
+
+                let message = `Halo, saya ingin membeli ${this.product.type} ${bold(this.product.name)}\n`;
+                
+                if (this.selectedVariant) {
+                    message += `Varian: ${bold(this.selectedVariant.name)}\n`;
+                }
+                
+                message += `Harga: ${bold(this.formatRupiah(this.finalPrice))}\n`;
+                message += `Link: ${window.location.href}`;
+    
+                let url = '';
+                if (platform === 'whatsapp') {
+                    url = `https://wa.me/${this.contact.wa}?text=${encodeURIComponent(message)}`;
+                } else if (platform === 'telegram') {
+                    url = `https://t.me/${this.contact.telegram}?text=${encodeURIComponent(message)}`;
+                }
+                
+                window.open(url, '_blank');
+            }
+        }));
+    });
+</script>
 {{ end }}

@@ -28,4 +28,4 @@ berikut tampilannya
 
 untuk reponya bisa dilihat disini:
 
-[https://github.com/ykywz-python/pollinations-cli](https://github.com/ykywz-python/pollinations-cli)
+[https://github.com/ywz-python/pollinations-cli](https://github.com/ywz-python/pollinations-cli)

@@ -18,4 +18,4 @@ pembelajaranpun jadi lebih mudah
 
 berikut reponya
 
-[https://github.com/ykywz-python/pyside6-starter-training](https://github.com/ykywz-python/pyside6-starter-training)
+[https://github.com/ywz-python/pyside6-starter-training](https://github.com/ywz-python/pyside6-starter-training)

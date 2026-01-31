@@ -6,7 +6,7 @@ image: "preview.avif"
 stack: ['python', 'pyside6', 'requests']
 category: Desktop
 status: Produk
-# demo: https://youtube.com/@YkywzCode
+# demo: https://youtube.com/watch?v=xxx
 download: https://lynk.id/irfanywz/rlo97nzy92og
 # buy: https:google.com/ncr
 # github: https://google.com

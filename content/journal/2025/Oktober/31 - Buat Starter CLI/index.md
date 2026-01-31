@@ -14,4 +14,4 @@ ini bertujuan untuk mempermudah kedepannya kalau membuat aplikasi berbentuk cli 
 
 berikut reponya
 
-[https://github.com/ykywz-python/cli-starter](https://github.com/ykywz-python/cli-starter)
+[https://github.com/ywz-python/cli-starter](https://github.com/ywz-python/cli-starter)

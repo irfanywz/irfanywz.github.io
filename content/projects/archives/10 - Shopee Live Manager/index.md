@@ -6,7 +6,7 @@ image: "preview.avif"
 stack: ['python', 'pyside6', 'pyppeteer', 'chrome extensions']
 category: Desktop
 status: Freelance
-# demo: https://youtube.com/@YkywzCode
+# demo: https://youtube.com/watch?v=xxx
 # buy: https:google.com/ncr
 # github: https://google.com
 date: 2025-06-20T04:51:35+07:00

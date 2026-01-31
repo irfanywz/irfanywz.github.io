@@ -9,7 +9,7 @@ contact_telegram: "irfanywz"
 payments:
   - name: "QRIS"
     account_number: "Scan QR"
-    account_name: "a.n. Irfan YKYWZ"
+    account_name: "a.n. Muhamad Irfan"
     image: "/images/qris-irfanywz.avif" 
     type: "qris"
   - name: "Bank BNI"

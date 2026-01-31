@@ -6,7 +6,7 @@ image: "tts-tool-1.avif"
 stack: ['python', 'pyside6', 'edge_tts', 'tiktok-tts']
 category: Desktop
 status: Produk
-# demo: https://youtube.com/@YkywzCode
+# demo: https://youtube.com/watch?v=xxx
 download: https://lynk.id/irfanywz/3mv5ndz9d93d
 # buy: https:google.com/ncr
 # github: https://google.com

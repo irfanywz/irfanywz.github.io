@@ -2,6 +2,9 @@
 date: 2025-12-25T00:00:00+07:00
 author: "catatan kehidupan"
 categories: ["kehidupan"]
+_build:
+  render: never
+  list: always
 ---
 
 

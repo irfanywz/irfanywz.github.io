@@ -2,7 +2,10 @@
 title: "Logo Text Dark Blue"
 date: 2025-10-20T00:00:00+07:00
 categories: ["Logo"]
-image: 
+image:
+_build:
+  render: never
+  list: always 
 ---
 
 "A modern and futuristic app icon. 

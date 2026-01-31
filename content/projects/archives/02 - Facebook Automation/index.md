@@ -6,7 +6,7 @@ image: "facebook-automation.avif"
 stack: ['python', 'pyside6', 'ichrome']
 category: Desktop
 status: Pribadi
-# demo: https://youtube.com/@YkywzCode
+# demo: https://youtube.com/watch?v=xxx
 # buy: https:google.com/ncr
 # github: https://github.com/kurteyki/
 date: 2023-08-01T16:00:35+07:00

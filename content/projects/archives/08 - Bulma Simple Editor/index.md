@@ -6,8 +6,8 @@ image: "bulma-simple-editor.avif"
 stack: ['python', 'ffmpeg', 'pyside6', 'exiftool']
 category: Desktop
 status: Freelance
-# demo: https://youtube.com/@YkywzCode
-# buy: https://t.me/ykywz
+# demo: https://youtube.com/watch?v=xxx
+# buy: https://t.me/irfanywz
 # github: https://github.com/kurteyki/
 date: 2024-12-16T16:00:35+07:00
 draft: false

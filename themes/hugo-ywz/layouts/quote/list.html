@@ -1,106 +1,308 @@
 {{ define "head" }}
-<style>
-    .quote-content p {
-        margin-bottom: 1rem;
-    }
-</style>
+<!-- No custom styles needed, using Tailwind classes -->
 {{ end }}
 
 {{ define "main" }}
-<main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300"
+<main class="flex-grow bg-gray-50 dark:bg-gray-950 transition-colors duration-300 min-h-screen"
     x-data="{ 
-        activeFilter: new URLSearchParams(window.location.search).get('filter') || 'all',
-        updateFilter(filter) {
-            this.activeFilter = filter;
-            const url = new URL(window.location);
-            if (filter === 'all') {
-                url.searchParams.delete('filter');
-            } else {
-                url.searchParams.set('filter', filter);
-            }
-            window.history.pushState({}, '', url);
+        quotes: [
+            {{ range .Pages }}
+            {
+                content: {{ .Content | jsonify }},
+                author: {{ .Params.author | default "Anonymous" | jsonify }},
+                date: {{ .Date | time.Format "02 Jan 2006" | jsonify }},
+                plain: {{ .Plain | jsonify }},
+                id: {{ .File.UniqueID | jsonify }},
+                categories: {{ .Params.categories | default slice | jsonify }}
+            },
+            {{ end }}
+        ],
+        activeQuotes: [],
+        currentIndex: 0,
+        showModal: false,
+        modalTitle: '',
+        touchStartX: 0,
+        touchEndX: 0,
+        isPlaying: false,
+        timer: null,
+        progress: 0,
+        
+        get currentQuote() {
+            return this.activeQuotes[this.currentIndex] || {};
         },
+
+        openCategory(category) {
+            if (category === 'all') {
+                this.activeQuotes = this.quotes;
+                this.modalTitle = 'Semua Kutipan';
+            } else {
+                this.activeQuotes = this.quotes.filter(q => q.categories && q.categories.includes(category));
+                this.modalTitle = category;
+            }
+            
+            this.currentIndex = 0;
+            this.showModal = true;
+            this.isPlaying = false;
+            this.stopTimer();
+        },
+
+        next() {
+            this.currentIndex = (this.currentIndex + 1) % this.activeQuotes.length;
+            if (this.isPlaying) this.startTimer();
+        },
+
+        prev() {
+            this.currentIndex = (this.currentIndex - 1 + this.activeQuotes.length) % this.activeQuotes.length;
+            if (this.isPlaying) this.startTimer();
+        },
+
+        random() {
+            let newIndex = Math.floor(Math.random() * this.activeQuotes.length);
+            // Usahakan tidak mengulang kutipan yang sama jika jumlahnya lebih dari 1
+            while (this.activeQuotes.length > 1 && newIndex === this.currentIndex) {
+                newIndex = Math.floor(Math.random() * this.activeQuotes.length);
+            }
+            this.currentIndex = newIndex;
+            if (this.isPlaying) this.startTimer();
+        },
+        
+        togglePlay() {
+            this.isPlaying = !this.isPlaying;
+            if (this.isPlaying) {
+                this.startTimer();
+            } else {
+                this.stopTimer();
+            }
+        },
+
+        startTimer() {
+            clearInterval(this.timer);
+            this.progress = 0;
+            this.timer = setInterval(() => {
+                this.progress += 0.5;
+                if (this.progress >= 100) {
+                    this.next();
+                }
+            }, 25);
+        },
+
+        stopTimer() {
+            clearInterval(this.timer);
+            this.progress = 0;
+        },
+
+        closeModal() {
+            this.showModal = false;
+            this.isPlaying = false;
+            this.stopTimer();
+        },
+
+        getQuoteColor(id) {
+            if (!id) return '#f3f4f6';
+            let hash = 0;
+            for (let i = 0; i < id.length; i++) {
+                hash = id.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            const h = Math.abs(hash) % 360;
+            return `hsl(${h}, 70%, 75%)`;
+        },
+
         copyToClipboard(text, $el) {
             navigator.clipboard.writeText(text).then(() => {
-                const originalIcon = $el.innerHTML;
-                $el.innerHTML = '<i class=\'icon-[ri--check-line] text-green-500\'></i>';
+                const originalContent = $el.innerHTML;
+                $el.innerHTML = '<span class=\'icon-[ri--check-line] w-5 h-5 text-green-500\'></span>';
                 setTimeout(() => {
-                    $el.innerHTML = originalIcon;
+                    $el.innerHTML = originalContent;
                 }, 2000);
             });
+        },
+
+        handleTouchStart(e) {
+            this.touchStartX = e.changedTouches[0].screenX;
+        },
+        handleTouchEnd(e) {
+            this.touchEndX = e.changedTouches[0].screenX;
+            if (this.touchEndX < this.touchStartX - 50) this.next();
+            if (this.touchEndX > this.touchStartX + 50) this.prev();
         }
-    }"
-    @popstate.window="activeFilter = new URLSearchParams(window.location.search).get('filter') || 'all'">
+    }">
 
-    <div class="max-w-5xl mx-auto px-4 py-16">
-
-        <header class="text-center mb-12">
-            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-3">
-                <span class="icon-[ri--double-quotes-l] w-10 h-10 text-yellow-500"></span>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-20">
+        
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+             <div class="inline-flex items-center justify-center p-4 bg-white dark:bg-gray-800 rounded-2xl mb-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                <span class="icon-[ri--double-quotes-l] w-8 h-8 text-indigo-600 dark:text-indigo-400"></span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-6 tracking-tight">
                 {{ .Title }}
             </h1>
-            <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                {{ .Description }}
+            <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+                Pilih kategori untuk mulai menjelajahi kutipan.
             </p>
-        </header>
+        </div>
 
-        <div class="flex flex-wrap justify-center gap-2 mb-12">
-            <button 
-                @click="updateFilter('all')"
-                :class="activeFilter === 'all' ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700'"
-                class="px-5 py-2 rounded-full border text-sm font-medium transition-all duration-200 shadow-sm">
-                Semua
-            </button>
-            
+        <!-- Category Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- All Quotes Card -->
+            <div @click="openCategory('all')" 
+                 class="group cursor-pointer relative overflow-hidden rounded-3xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-64 flex flex-col justify-between p-8">
+                <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 dark:from-indigo-500/20 dark:to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                <div class="relative z-10">
+                    <span class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 mb-4">
+                        <span class="icon-[ri--apps-2-line] w-6 h-6"></span>
+                    </span>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Semua Kutipan</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Jelajahi seluruh koleksi kata-kata bijak.</p>
+                </div>
+                
+                <div class="relative z-10 flex items-center justify-between mt-auto">
+                    <span class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500" x-text="quotes.length + ' Kutipan'"></span>
+                    <span class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-400 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
+                        <span class="icon-[ri--arrow-right-line]"></span>
+                    </span>
+                </div>
+            </div>
+
             {{ $allCategories := slice }}
             {{ range .Pages }}
                 {{ with .Params.categories }}
                     {{ $allCategories = $allCategories | append . }}
                 {{ end }}
             {{ end }}
-            
             {{ $uniqueCategories := uniq (sort $allCategories) }}
+
             {{ range $uniqueCategories }}
-                <button 
-                    @click="updateFilter('{{ . }}')"
-                    :class="activeFilter === '{{ . }}' ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700'"
-                    class="px-5 py-2 rounded-full border text-sm font-medium transition-all duration-200 shadow-sm">
-                    {{ . }}
-                </button>
+            <div @click="openCategory('{{ . }}')" 
+                 class="group cursor-pointer relative overflow-hidden rounded-3xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-64 flex flex-col justify-between p-8">
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-teal-500/5 dark:from-blue-500/10 dark:to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                <div class="relative z-10">
+                    <span class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gray-100 dark:bg-gray-700/50 text-gray-600 dark:text-gray-300 mb-4 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+                        <span class="icon-[ri--hashtag] w-6 h-6"></span>
+                    </span>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 capitalize">{{ . }}</h3>
+                </div>
+                
+                <div class="relative z-10 flex items-center justify-between mt-auto">
+                    <span class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500" 
+                          x-text="quotes.filter(q => q.categories && q.categories.includes('{{ . }}')).length + ' Kutipan'"></span>
+                    <span class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-400 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                        <span class="icon-[ri--arrow-right-line]"></span>
+                    </span>
+                </div>
+            </div>
             {{ end }}
         </div>
 
-        <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-            {{ range .Pages }}
-            <article 
-                x-show="activeFilter === 'all' || '{{ delimit .Params.categories "|" }}'.split('|').includes(activeFilter)"
-                x-transition.opacity.duration.300ms
-                class="break-inside-avoid bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all duration-300">
+        <!-- Slideshow Modal -->
+        <div x-show="showModal" 
+             style="display: none;"
+             class="fixed inset-0 z-[100] flex items-center justify-center"
+             @keydown.escape.window="closeModal()"
+             @keydown.arrow-right.window="next()"
+             @keydown.arrow-left.window="prev()"
+             @touchstart="handleTouchStart($event)"
+             @touchend="handleTouchEnd($event)">
+            
+            <!-- Backdrop -->
+            <div x-show="showModal"
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 @click="closeModal()"
+                 class="absolute inset-0 bg-gray-900/90 backdrop-blur-md"></div>
+
+            <!-- Content -->
+            <div x-show="showModal"
+                 class="relative w-full h-full flex flex-col pointer-events-none">
                 
-                <div class="text-gray-600 dark:text-gray-300 leading-relaxed mb-6 quote-content text-lg font-sans">
-                    {{ .Content | safeHTML }}
+                <!-- Progress Bar -->
+                <div class="absolute top-0 left-0 w-full h-1 bg-white/10 z-30" x-show="isPlaying">
+                    <div class="h-full bg-indigo-500 transition-all duration-75 ease-linear" :style="'width: ' + progress + '%'"></div>
                 </div>
-                
-                <div class="flex items-end justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
-                    <div>
-                        <div class="font-bold text-gray-900 dark:text-white">
-                        {{ with .Params.author }}
-                            {{ . }}
-                        {{ else }}
-                            Anonymous
-                        {{ end }}
-                        </div>
-                        <div class="text-xs text-gray-400 mt-1">{{ .Date | time.Format "2 January 2006" }}</div>
+
+                <!-- Top Bar -->
+                <div class="relative z-20 flex items-center justify-between p-6 pointer-events-auto">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 rounded-full bg-white/10 text-white text-sm font-medium backdrop-blur-sm border border-white/10 capitalize" x-text="modalTitle"></span>
+                        <span class="text-white/50 text-sm font-mono" x-text="(currentIndex + 1) + ' / ' + activeQuotes.length"></span>
                     </div>
-                    <button 
-                        @click='copyToClipboard({{ .Plain | jsonify }}, $el)'
-                        class="p-2 text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700" 
-                        title="Salin kutipan">
-                        <i class="icon-[ri--file-copy-line] text-xl"></i>
+                    <button @click="closeModal()" class="p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors backdrop-blur-sm flex items-center justify-center">
+                        <span class="icon-[ri--close-line] w-6 h-6"></span>
                     </button>
                 </div>
-            </article>
-            {{ end }}
+
+                <!-- Main Slide Area -->
+                <div class="flex-grow flex items-center justify-center p-4 md:p-8 relative">
+                    
+                    <!-- Navigation Buttons -->
+                    <button @click="prev()" class="absolute left-2 md:left-8 z-20 p-3 md:p-4 rounded-full bg-white/5 text-white hover:bg-white/10 hover:scale-110 transition-all backdrop-blur-sm pointer-events-auto group flex items-center justify-center">
+                        <span class="icon-[ri--arrow-left-s-line] w-8 h-8 group-active:-translate-x-1 transition-transform"></span>
+                    </button>
+                    <button @click="next()" class="absolute right-2 md:right-8 z-20 p-3 md:p-4 rounded-full bg-white/5 text-white hover:bg-white/10 hover:scale-110 transition-all backdrop-blur-sm pointer-events-auto group flex items-center justify-center">
+                        <span class="icon-[ri--arrow-right-s-line] w-8 h-8 group-active:translate-x-1 transition-transform"></span>
+                    </button>
+
+                    <!-- Quote Card -->
+                    <div class="w-full max-w-4xl pointer-events-auto"
+                         x-transition:enter="transition ease-out duration-500"
+                         x-transition:enter-start="opacity-0 scale-95 translate-y-8"
+                         x-transition:enter-end="opacity-100 scale-100 translate-y-0">
+                        
+                        <!-- Dynamic Content -->
+                        <div class="relative bg-white dark:bg-gray-900 rounded-[2.5rem] overflow-hidden shadow-2xl min-h-[40vh] md:min-h-[50vh] max-h-[80vh] flex flex-col border border-white/10">
+                            
+                            <!-- Background Color -->
+                            <div class="absolute inset-0 z-0 transition-colors duration-1000"
+                                 :style="'background-color: ' + getQuoteColor(currentQuote.id)">
+                                <div class="absolute inset-0 bg-gradient-to-b from-white/80 via-white/90 to-white dark:from-gray-900/80 dark:via-gray-900/90 dark:to-gray-900"></div>
+                            </div>
+
+                            <div class="relative z-10 w-full h-full overflow-y-auto">
+                                <div class="min-h-full flex flex-col items-center justify-center p-8 md:p-12">
+                                <span class="icon-[ri--double-quotes-l] w-12 h-12 md:w-16 md:h-16 text-indigo-500/20 dark:text-indigo-400/20 mb-6 block mx-auto flex-shrink-0"></span>
+                                
+                                <div class="text-xl md:text-3xl lg:text-4xl leading-relaxed font-serif text-gray-900 dark:text-white italic mb-8 transition-all duration-300 text-center max-w-3xl mx-auto flex flex-col gap-6"
+                                     x-html="currentQuote.content">
+                                </div>
+                                
+                                <div class="flex flex-col items-center gap-3 mb-8 flex-shrink-0">
+                                    <div class="w-12 h-1 bg-indigo-500 rounded-full mb-2"></div>
+                                    <p class="text-xl font-bold text-gray-900 dark:text-white" x-text="currentQuote.author"></p>
+                                    <p class="text-sm text-gray-500 uppercase tracking-widest font-medium" x-text="currentQuote.date"></p>
+                                </div>
+
+                                <!-- Bottom Actions -->
+                                <div class="flex justify-center gap-4 z-20 flex-shrink-0">
+                                <button @click="copyToClipboard(currentQuote.plain, $el)" 
+                                        class="flex p-3 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-center"
+                                        title="Salin">
+                                    <span class="icon-[ri--file-copy-line] w-5 h-5"></span>
+                                </button>
+                                <button @click="togglePlay()" 
+                                        class="flex p-3 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-center"
+                                        :class="isPlaying ? 'text-indigo-600 bg-indigo-50 dark:bg-gray-700 ring-2 ring-indigo-500/20' : ''"
+                                        title="Auto Play">
+                                    <span :class="isPlaying ? 'icon-[ri--pause-line]' : 'icon-[ri--play-line]'" class="w-5 h-5"></span>
+                                </button>
+                                <button @click="random()" 
+                                        class="flex gap-2 px-6 py-2 rounded-full bg-indigo-600 text-white font-bold hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-500/30 transition-all flex items-center gap-2">
+                                    <span class="icon-[ri--shuffle-line]"></span>
+                                    <span>Acak</span>
+                                </button>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 </main>

@@ -9,7 +9,7 @@ status: Product
 demo: https://youtu.be/Q5MAXYU0iRg
 # download: https://lynk.id/irfanywz/r46n7r43okn6
 # buy: /shop/?product=audio-extract-tool
-# github: https://github.com/ykywz-python/
+# github: https://github.com/ywz-python/
 doc: /docs/audio-extract-tool
 date: 2025-11-05T05:00:35+07:00
 draft: false

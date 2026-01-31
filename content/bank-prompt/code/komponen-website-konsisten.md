@@ -2,7 +2,10 @@
 title: "Komponen Website Konsisten"
 date: 2024-07-29T09:05:00+07:00
 categories: ["Website"]
-image: 
+image:
+_build:
+  render: never
+  list: always 
 ---
 
 buatkan saya [nama komponen]

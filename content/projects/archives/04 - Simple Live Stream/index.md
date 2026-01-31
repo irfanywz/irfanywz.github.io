@@ -6,7 +6,7 @@ image: "simple-live-stream.avif"
 stack: ['python', 'ffmpeg', 'pyside6']
 category: Desktop
 status: Freelance
-# demo: https://youtube.com/@YkywzCode
+# demo: https://youtube.com/watch?v=xxx
 # buy: https:google.com/ncr
 # github: https://github.com/kurteyki/
 date: 2023-12-22T16:00:35+07:00

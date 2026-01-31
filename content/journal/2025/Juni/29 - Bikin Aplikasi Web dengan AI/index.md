@@ -15,19 +15,17 @@ kebetulan sekali saya sebelumnya mencoba versi pro secara trial, alias gratis se
 tiba-tiba dapat gratis 20M token untuk digunakan selama weekend, langsung saja memanfaatkannya untuk membuat sesuatu dan melanjutkan yang sudah dibuat sebelumnya
 
 beberapa aplikasi yang dibuat diantaranya
-- ykywz-imagen
-- ykywz-image-feed
-- ykywz-prompt-feed
-- ykywz-image-converter
-- ykywz-image-compressor
-- ykywz-image-watermark
-- ykywz-image-to-prompt
-- ykywz-metadata-generator
-- ykywz-prompt-to-voice
+- imagen
+- image-feed
+- prompt-feed
+- image-converter
+- image-compressor
+- image-watermark
+- image-to-prompt
+- metadata-generator
+- prompt-to-voice
 - admin-template
 
 dari banyaknya aplikasi yang dibuat menggunakan bolt dengan 20M Token, banyak yang berhasil dan belum berhasil.
 
 semua aplikasi yang dibuat saya host diblogger secara gratis agar bisa diakses kapan saja oleh ketika dibutuhkan
-
-untuk melihat daftar reponya bisa langsung mengunjungi halaman [github ini](https://github.com/ykywz-website/)

@@ -2,6 +2,9 @@
 date: 2025-10-07
 author: "catatan keuangan"
 categories: ["keuangan"]
+_build:
+  render: never
+  list: always
 ---
 
 Gak semua hal harus kamu kuasai. 

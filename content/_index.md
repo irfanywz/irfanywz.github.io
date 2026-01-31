@@ -33,7 +33,7 @@ experiencestatus: false
 experiencetitle: "Pengalaman Kerja"
 experience:
     - title: "IT Solution & Development (Freelance)"
-      company: "Ykywz Project"
+      company: "Home Project"
       time: "2023 - Sekarang"
       jobs: 
         - "Pengembangan aplikasi desktop kustom untuk efisiensi alur kerja."

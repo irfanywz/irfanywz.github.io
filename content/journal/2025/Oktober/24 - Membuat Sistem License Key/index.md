@@ -12,4 +12,4 @@ hari ini mencoba membuat sistem license key offline dan online
 
 berikut reponya
 
-[pyside6-license-key-system](https://github.com/ykywz-python/pyside6-license-key/)
+[pyside6-license-key-system](https://github.com/ywz-python/pyside6-license-key/)

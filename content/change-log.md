@@ -5,6 +5,15 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.0.10"
+    date: "31 Januari 2026"
+    changes:
+      - tag: "Pembaruan"
+        description: "perubahan tampilan halaman quote, sekarang jadi tampil sebagai slideshow bukan lagi kumpulan quote"
+      - tag: "Perbaikan"
+        description: "Perbaikan halaman toko, text konfirmasi sekarang menyertakan variant yang dipilih"              
+      - tag: "Pembaruan"
+        description: "Perubahan halaman alat, sekarang bisa menambah alat dari url, jadi ketika alat ditekan dia akan diarahkan ke url tool tersebut"
   - version: "2.0.9"
     date: "30 Januari 2026"
     changes: 
