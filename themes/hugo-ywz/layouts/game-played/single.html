@@ -1,0 +1,114 @@
+{{ define "head" }}
+{{ end }}
+
+{{ define "main" }}
+<div class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
+    
+    <!-- Immersive Hero Header -->
+    <div class="relative h-[400px] md:h-[500px] w-full overflow-hidden bg-gray-900">
+        <div class="absolute inset-0">
+            <img src="{{ .Params.cover }}" alt="Cover {{ .Title }}" class="w-full h-full object-cover opacity-60">
+            <div class="absolute inset-0 bg-gradient-to-t from-white dark:from-gray-900 via-transparent to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-transparent"></div>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 pb-12 pt-32">
+            <div class="container max-w-6xl mx-auto px-4">
+                <div class="max-w-3xl">
+                    <nav class="flex items-center gap-2 text-sm text-gray-300 mb-4">
+                        <a href="{{ .CurrentSection.RelPermalink }}" class="hover:text-emerald-400 transition-colors flex items-center gap-1">
+                            <i class="icon-[ri--arrow-left-line]"></i> Kembali
+                        </a>
+                        <span class="opacity-50">/</span>
+                        <span class="text-emerald-400 font-medium">{{ .Params.genre }}</span>
+                    </nav>
+                    
+                    <h1 class="text-4xl md:text-6xl font-black text-gray-900 dark:text-white mb-6 leading-tight tracking-tight drop-shadow-lg">{{ .Title }}</h1>
+                    
+                    <div class="flex flex-wrap items-center gap-4 text-sm md:text-base">
+                        <div class="flex items-center gap-1 px-4 py-1.5 bg-emerald-600 text-white rounded-full font-bold shadow-lg shadow-emerald-500/20">
+                            <i class="icon-[ri--star-fill]"></i> {{ .Params.rating }}/10
+                        </div>
+                        
+                        <span class="px-4 py-1.5 rounded-full font-medium border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm capitalize">
+                            {{ .Params.status }}
+                        </span>
+
+                        {{ if .Params.playtime }}
+                        <span class="flex items-center gap-1 text-gray-700 dark:text-gray-300 font-medium px-3 py-1 bg-white/50 dark:bg-black/30 rounded-full backdrop-blur-sm">
+                            <i class="icon-[ri--time-line]"></i> {{ .Params.playtime }}
+                        </span>
+                        {{ end }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container max-w-6xl mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">
+            
+            <!-- Main Content -->
+            <div class="prose prose-lg dark:prose-invert max-w-none">
+                {{ if .Params.synopsis }}
+                <div class="bg-gray-50 dark:bg-gray-800/50 p-6 rounded-2xl border-l-4 border-emerald-500 mb-8 not-prose">
+                    <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Sinopsis</h3>
+                    <p class="text-gray-700 dark:text-gray-300 italic leading-relaxed m-0">"{{ .Params.synopsis }}"</p>
+                </div>
+                {{ end }}
+
+                {{ .Content }}
+            </div>
+
+            <!-- Sidebar Info -->
+            <div class="space-y-8">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm sticky top-24">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2 border-b border-gray-100 dark:border-gray-700 pb-4">
+                        <i class="icon-[ri--gamepad-line] text-emerald-500"></i>
+                        Informasi Game
+                    </h3>
+                    
+                    <div class="space-y-5">
+                        {{ with .Params.platform }}
+                        <div>
+                            <span class="block text-xs text-gray-500 dark:text-gray-400 uppercase font-bold tracking-wider mb-1.5">Platform</span>
+                            <div class="flex flex-wrap gap-2">
+                                {{ if reflect.IsSlice . }}
+                                    {{ range . }}
+                                    <span class="px-2.5 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300">{{ . }}</span>
+                                    {{ end }}
+                                {{ else }}
+                                    <span class="px-2.5 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300">{{ . }}</span>
+                                {{ end }}
+                            </div>
+                        </div>
+                        {{ end }}
+
+                        {{ with .Params.developer }}
+                        <div>
+                            <span class="block text-xs text-gray-500 dark:text-gray-400 uppercase font-bold tracking-wider mb-1">Developer</span>
+                            <span class="text-gray-900 dark:text-white font-medium">{{ . }}</span>
+                        </div>
+                        {{ end }}
+
+                        {{ with .Params.publisher }}
+                        <div>
+                            <span class="block text-xs text-gray-500 dark:text-gray-400 uppercase font-bold tracking-wider mb-1">Publisher</span>
+                            <span class="text-gray-900 dark:text-white font-medium">{{ . }}</span>
+                        </div>
+                        {{ end }}
+
+                        {{ with .Params.release_date }}
+                        <div>
+                            <span class="block text-xs text-gray-500 dark:text-gray-400 uppercase font-bold tracking-wider mb-1">Tanggal Rilis</span>
+                            <span class="text-gray-900 dark:text-white font-medium">{{ (time.AsTime .).Format "2 Jan 2006" }}</span>
+                        </div>
+                        {{ end }}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{{ end }}

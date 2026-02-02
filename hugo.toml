@@ -114,28 +114,12 @@ weight = 60
   color = "text-orange-500"
 
 [[menu.footer]]
-name = "Bank Prompt"
-url = "/bank-prompt/"
-pre = "icon-[ri--magic-line]"
-weight = 61
-[menu.footer.params]
-  color = "text-fuchsia-500"
-
-[[menu.footer]]
 name = "Kutipan"
 url = "/quote/"
 pre = "icon-[ri--double-quotes-l]"
 weight = 70
 [menu.footer.params]
   color = "text-yellow-500"
-
-[[menu.footer]]
-name = "Riset"
-url = "/research/"
-pre = "icon-[ri--flask-line]"
-weight = 80
-[menu.footer.params]
-  color = "text-cyan-500"
 
 [[menu.footer]]
 name = "Dokumentasi"
