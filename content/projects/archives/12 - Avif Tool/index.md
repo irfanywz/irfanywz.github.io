@@ -7,7 +7,7 @@ stack: ['python', 'pyside6', 'pillow', 'AOMediaCodec/libavif']
 category: Desktop
 status: Produk
 # demo: https://youtube.com/watch?v=xxx
-download: https://lynk.id/irfanywz/zmj9ogw7mz4d
+download: https://google.com
 # buy: https:google.com/ncr
 # github: https://google.com
 date: 2025-10-13T10:00:35+07:00

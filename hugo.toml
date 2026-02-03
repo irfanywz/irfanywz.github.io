@@ -101,9 +101,17 @@ weight = 41
 name = "Musik"
 url = "/music-playlist/"
 pre = "icon-[ri--music-2-line]"
-weight = 41
+weight = 42
 [menu.footer.params]
   color = "text-violet-500"
+
+[[menu.footer]]
+name = "Game"
+url = "/game-played/"
+pre = "icon-[ri--gamepad-line]"
+weight = 50
+[menu.footer.params]
+  color = "text-fuchsia-500"
 
 [[menu.footer]]
 name = "Alat"
@@ -120,6 +128,14 @@ pre = "icon-[ri--double-quotes-l]"
 weight = 70
 [menu.footer.params]
   color = "text-yellow-500"
+
+[[menu.footer]]
+name = "Koleksi"
+url = "/collection/"
+pre = "icon-[ri--stack-line]"
+weight = 80
+[menu.footer.params]
+  color = "text-blue-500"
 
 [[menu.footer]]
 name = "Dokumentasi"

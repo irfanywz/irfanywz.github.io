@@ -1,4 +1,4 @@
 ---
 title: Perjalanan Belajar
-description: Dipelajari lalu ditulis kembali
+description: Menulis kembali apa yang telah dipelajari.
 ---

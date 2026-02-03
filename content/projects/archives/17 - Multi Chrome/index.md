@@ -7,7 +7,7 @@ stack: ['python', 'pyside6', 'qtawesome']
 category: Desktop
 status: Personal
 # demo: https://youtu.be/Vg8MTB6wFoE
-download: https://lynk.id/irfanywz/r46n7r43okn6
+download: https://google.com
 # buy: https:google.com/ncr
 # github: https://github.com/ywz-python/
 doc: /docs/markdown

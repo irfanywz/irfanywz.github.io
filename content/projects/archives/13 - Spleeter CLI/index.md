@@ -7,7 +7,7 @@ stack: ['python', 'deezer/spleeter', 'ffmpeg']
 category: CLI
 status: Personal
 demo: https://www.youtube.com/watch?v=U4VXwWKjKu4
-# download: https://lynk.id/irfanywz/zmj9ogw7mz4d
+# download: https://google.com
 # buy: https:google.com/ncr
 github: https://github.com/ywz-python/spleeter-cli
 date: 2025-10-14T11:00:35+07:00

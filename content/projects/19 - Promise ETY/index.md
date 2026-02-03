@@ -7,7 +7,7 @@ image: promise-ety.avif
 category: Desktop
 status: Product
 # demo: https://youtu.be/Q5MAXYU0iRg
-# download: https://lynk.id/irfanywz/r46n7r43okn6
+# download: https://google.com
 buy: /shop/promise-ety/
 # github: https://github.com/ywz-python/
 doc: /docs/promise-ety

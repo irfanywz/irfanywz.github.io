@@ -1,4 +1,26 @@
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center mb-20 bg-gray-50 dark:bg-gray-800/50 rounded-3xl p-8 border border-gray-200 dark:border-gray-700" x-data>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center mb-20 bg-gray-50 dark:bg-gray-800/50 rounded-3xl p-8 border border-gray-200 dark:border-gray-700" 
+    x-data="{
+        donateModalOpen: false,
+        downloadLink: '',
+        timeLeft: 3,
+        timer: null,
+        initDownload(url) {
+            this.downloadLink = url;
+            this.donateModalOpen = true;
+            this.timeLeft = 3;
+            if (this.timer) clearInterval(this.timer);
+            this.timer = setInterval(() => {
+                this.timeLeft--;
+                if (this.timeLeft <= 0) {
+                    clearInterval(this.timer);
+                }
+            }, 1000);
+        },
+        closeModal() {
+            this.donateModalOpen = false;
+            if (this.timer) clearInterval(this.timer);
+        }
+    }">
     <div class="space-y-6">
         <div class="flex flex-wrap gap-3">
 
@@ -58,10 +80,10 @@
             {{ end }}
 
             {{ if .Params.download }}
-            <a target="_blank" href=' {{ .Params.download }}' class="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium shadow-sm">
+            <button @click="initDownload('{{ .Params.download }}')" class="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium shadow-sm cursor-pointer">
                 <span class="icon-[heroicons--arrow-down-tray] w-5 h-5"></span>
                 Unduh
-            </a>
+            </button>
             {{ end }}            
         </div>
     </div>
@@ -95,4 +117,46 @@
         </span>
     </div>
 
-</div>     
+    <!-- Donate Modal -->
+    <div x-show="donateModalOpen" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" x-transition.opacity>
+        <div @click.outside="closeModal()" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 relative border border-gray-200 dark:border-gray-700" x-transition.scale>
+            <button @click="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                <span class="icon-[ri--close-line] w-6 h-6"></span>
+            </button>
+            
+            <div class="text-center">
+                <div class="w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="icon-[ri--cup-line] w-8 h-8"></span>
+                </div>
+                
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Beri dukungan</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-6">
+                     Dukung saya untuk terus berkarya dan mengembangkan konten yang bermanfaat.
+                </p>
+                
+                <div class="flex flex-col gap-3">
+                    <a href="{{ "donate/" | relURL }}" target="_blank" class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2">
+                        <span class="icon-[ri--cup-line]"></span>
+                        Traktir Kopi
+                    </a>
+                    
+                    <div class="relative py-2">
+                        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                            <div class="w-full border-t border-gray-200 dark:border-gray-700"></div>
+                        </div>
+                        <div class="relative flex justify-center">
+                            <span class="bg-white dark:bg-gray-800 px-2 text-sm text-gray-500">Tombol unduh akan muncul dalam <span x-text="timeLeft" class="font-bold text-indigo-600 dark:text-indigo-400"></span>s</span>
+                        </div>
+                    </div>
+
+                    <div x-show="timeLeft <= 0" style="display: none;">
+                        <a :href="downloadLink" target="_blank" class="w-full py-3 px-4 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2">
+                            <span class="icon-[heroicons--arrow-down-tray]"></span>
+                            Unduh Sekarang
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+{{ define "main" }}
+    <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300" x-data="{ activeFilter: 'all' }">
+        <div class="container max-w-6xl mx-auto px-4 py-12">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-gray-100 dark:border-gray-800 pb-8">
+                <div class="max-w-2xl">
+                    <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tight flex items-center gap-3">
+                        <span class="icon-[ri--stack-line] text-purple-500"></span>
+                        {{ .Title }}
+                    </h1>
+                    <p class="text-lg text-gray-500 dark:text-gray-400">{{ .Description }}</p>
+                </div>
+
+                <!-- Filter Buttons -->
+                <div class="flex bg-white dark:bg-gray-900 p-1 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-x-auto">
+                    <button @click="activeFilter = 'all'"
+                            :class="activeFilter === 'all' ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 font-bold shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'"
+                            class="px-4 py-1.5 rounded-lg text-sm transition-all whitespace-nowrap">
+                        Semua
+                    </button>
+                    {{ $layouts := slice }}
+                    {{ range .Pages }}
+                        {{ $layout := .Params.layout | default "default" }}
+                        {{ $layouts = $layouts | append $layout }}
+                    {{ end }}
+                    {{ $layouts = $layouts | uniq }}
+                    {{ range $layouts }}
+                    <button @click="activeFilter = '{{ . }}'"
+                            :class="activeFilter === '{{ . }}' ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 font-bold shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'"
+                            class="px-4 py-1.5 rounded-lg text-sm transition-all whitespace-nowrap capitalize">
+                        {{ . }}
+                    </button>
+                    {{ end }}
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {{ range .Pages }}
+                    <div x-show="activeFilter === 'all' || activeFilter === '{{ .Params.layout | default "default" }}'" x-transition.opacity.duration.300ms>
+                        {{ partial "collection/card.html" . }}
+                    </div>
+                {{ end }}
+            </div>
+        </div>
+    </main>
+{{ end }}

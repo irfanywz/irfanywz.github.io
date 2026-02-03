@@ -4,18 +4,17 @@
 {{ define "main" }}
 
     <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
-        <section class="py-16 bg-gray-50 dark:bg-gray-800/50">
-            <div class="container max-w-6xl mx-auto px-4">
-                <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-3">
-                    <span class="icon-[heroicons--document-text] w-10 h-10 text-indigo-600 dark:text-indigo-400"></span>
+        <div class="container max-w-6xl mx-auto px-4 py-12">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-gray-100 dark:border-gray-800 pb-8">
+                <div class="max-w-2xl">
+                    <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tight flex items-center gap-3">
+                        <span class="icon-[heroicons--document-text] text-indigo-600 dark:text-indigo-400"></span>
                     {{.Title}}
                 </h1>
-                <p class="text-xl text-gray-600 dark:text-gray-300 text-center max-w-2xl mx-auto">{{ .Description }}</p>
+                    <p class="text-lg text-gray-500 dark:text-gray-400">{{ .Description }}</p>
+                </div>
             </div>
-        </section>
 
-        <section class="py-16 bg-white dark:bg-gray-900">
-            <div class="container max-w-6xl mx-auto px-4">
                 <div id="content-container" class="max-w-3xl mx-auto flex flex-col gap-6 mb-12">
 
                     {{ $paginator := .Paginate (where .Data.Pages "Params.hidden" "ne" true) }}
@@ -61,8 +60,7 @@
                     {{ partial "components/pagination-loadmore.html" .Paginator }}
                 </div>
 
-            </div>
-        </section>
+        </div>
     </main>
 
 {{ end }}

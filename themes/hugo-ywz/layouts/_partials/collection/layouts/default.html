@@ -1,0 +1,16 @@
+<div class="container max-w-6xl mx-auto px-4 py-12">
+    <header class="mb-12 border-b border-gray-100 dark:border-gray-800 pb-8">
+        <div class="max-w-2xl">
+            <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tight flex items-center gap-3">
+                {{ if .Params.icon }}
+                    <span class="{{ .Params.icon }} {{ .Params.icon_color | default "text-purple-500" }}"></span>
+                {{ end }}
+                {{ .Title }}
+            </h1>
+            <p class="text-lg text-gray-500 dark:text-gray-400">{{ .Description }}</p>
+        </div>
+    </header>
+    <div class="prose prose-lg dark:prose-invert max-w-none">
+        {{ .Content }}
+    </div>
+</div>

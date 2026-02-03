@@ -7,7 +7,7 @@ image: audio-extract-tool.avif
 category: Desktop
 status: Product
 demo: https://youtu.be/Q5MAXYU0iRg
-# download: https://lynk.id/irfanywz/r46n7r43okn6
+# download: https://google.com
 # buy: /shop/?product=audio-extract-tool
 # github: https://github.com/ywz-python/
 doc: /docs/audio-extract-tool

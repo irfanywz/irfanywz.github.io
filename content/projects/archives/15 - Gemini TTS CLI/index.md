@@ -7,7 +7,7 @@ stack: ['python', 'gemini-ai', 'wave']
 category: CLI
 status: Personal
 demo: https://youtu.be/Vg8MTB6wFoE
-# download: https://lynk.id/irfanywz/zmj9ogw7mz4d
+# download: https://google.com
 # buy: https:google.com/ncr
 github: https://github.com/ywz-python/gemini-tts-cli
 date: 2025-10-18T05:00:35+07:00

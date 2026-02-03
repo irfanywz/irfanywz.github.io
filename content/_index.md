@@ -9,8 +9,7 @@ whatsapp: https://api.whatsapp.com/send?phone=6281389215100&text=Halo, Saya dapa
 # =====================================
 abouttitle: "Profil Singkat"
 about:
-  - "Saya Muhamad Irfan, IT Specialist dengan fokus pada pemeliharaan infrastruktur dan jaringan. Saya mengintegrasikan keahlian teknis dengan pemrograman dasar untuk menciptakan solusi otomatisasi yang efisien."
-  - "Siap berkontribusi sebagai staf IT yang solutif untuk menjaga performa operasional perusahaan Anda."
+  - Seorang profesional di bidang IT Support dengan spesialisasi pada pemeliharaan perangkat keras dan optimalisasi jaringan. Saya mengombinasikan keahlian teknis operasional dengan pemahaman dasar pemrograman untuk memberikan solusi sistemik yang efektif. Berdedikasi untuk memastikan seluruh infrastruktur teknologi berjalan optimal guna mendukung skalabilitas bisnis.
   
 # =====================================
 servicestatus: true

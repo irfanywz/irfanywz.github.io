@@ -7,7 +7,7 @@ stack: ['python', 'pyside6', 'requests']
 category: Desktop
 status: Produk
 # demo: https://youtube.com/watch?v=xxx
-download: https://lynk.id/irfanywz/rlo97nzy92og
+download: https://google.com
 # buy: https:google.com/ncr
 # github: https://google.com
 date: 2025-10-09T13:51:35+07:00

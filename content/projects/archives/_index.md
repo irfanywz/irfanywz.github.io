@@ -1,5 +1,5 @@
 ---
 title: Proyek Diarsipkan
-description: Pernah dibuat dan diarsipkan karena tidak dikembangkan lagi
+description: proyek yang pernah dibuat dan diarsipkan
 image: archived.avif
 ---

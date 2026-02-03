@@ -12,16 +12,15 @@
       }">
     
     <!-- Header like Journal -->
-    <section class="py-16 bg-gray-50 dark:bg-gray-800/50 relative border-b border-gray-200 dark:border-gray-700">
-        <div class="container max-w-6xl mx-auto px-4">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="text-center md:text-left">
-                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center justify-center md:justify-start gap-2">
-                        <i class="{{ .Params.icon }} text-indigo-600 dark:text-indigo-400"></i>
+    <div class="container max-w-6xl mx-auto px-4 py-12">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-gray-100 dark:border-gray-800 pb-8">
+            <div class="max-w-2xl">
+                <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tight flex items-center gap-3">
+                    <span class="{{ .Params.icon }} text-indigo-600 dark:text-indigo-400"></span>
                         {{ .Title }}
                     </h1>
-                    <p class="text-gray-600 dark:text-gray-400">{{ .Description }}</p>
-                </div>
+                <p class="text-lg text-gray-500 dark:text-gray-400">{{ .Description }}</p>
+            </div>
                 
                 <!-- Filter -->
                 <div class="flex bg-white dark:bg-gray-900 p-1 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
@@ -41,11 +40,8 @@
                         Jasa
                     </button>
                 </div>
-            </div>
         </div>
-    </section>
 
-    <div class="max-w-6xl mx-auto px-4 py-12">
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {{ range .Pages }}
             {{ $type := .Params.shop_type }}

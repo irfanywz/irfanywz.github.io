@@ -1,0 +1,7 @@
+{{ define "main" }}
+<main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
+    {{ $layout := .Params.layout | default "default" }}
+
+    {{ partial (printf "collection/layouts/%s.html" $layout) . }}
+</main>
+{{ end }}

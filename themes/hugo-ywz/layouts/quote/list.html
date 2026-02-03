@@ -3,7 +3,7 @@
 {{ end }}
 
 {{ define "main" }}
-<main class="flex-grow bg-gray-50 dark:bg-gray-950 transition-colors duration-300 min-h-screen"
+<main class="flex-grow bg-white dark:bg-gray-950 transition-colors duration-300 min-h-screen"
     x-data="{ 
         quotes: [
             {{ range .Pages }}
@@ -127,19 +127,16 @@
         }
     }">
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-20">
-        
+    <div class="container max-w-6xl mx-auto px-4 py-12">
         <!-- Header -->
-        <div class="text-center max-w-3xl mx-auto mb-16">
-             <div class="inline-flex items-center justify-center p-4 bg-white dark:bg-gray-800 rounded-2xl mb-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                <span class="icon-[ri--double-quotes-l] w-8 h-8 text-indigo-600 dark:text-indigo-400"></span>
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-gray-100 dark:border-gray-800 pb-8">
+            <div class="max-w-2xl">
+                <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tight flex items-center gap-3">
+                    <span class="icon-[ri--double-quotes-l] text-yellow-500"></span>
+                    {{ .Title }}
+                </h1>
+                <p class="text-lg text-gray-500 dark:text-gray-400">Pilih kategori untuk mulai menjelajahi kutipan.</p>
             </div>
-            <h1 class="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-6 tracking-tight">
-                {{ .Title }}
-            </h1>
-            <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                Pilih kategori untuk mulai menjelajahi kutipan.
-            </p>
         </div>
 
         <!-- Category Grid -->

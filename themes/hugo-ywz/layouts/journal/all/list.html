@@ -4,49 +4,30 @@
 {{ define "main" }}
 
     <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300" x-data="{ search: '' }">
-        <section class="py-16 bg-gray-50 dark:bg-gray-800/50 relative border-b border-gray-200 dark:border-gray-700">
-            <div class="container max-w-4xl mx-auto px-4">
-                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="text-center md:text-left">
-                        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center justify-center md:justify-start gap-2">
-                            <!-- icon -->                            
-                            <span class="icon-[lucide--receipt-text] w-6 h-6 text-green-600"></span>
-                            {{.Title}}
-                        </h1>
-                        <p class="text-gray-600 dark:text-gray-400">{{ .Description }}</p>
-                    </div>
-                    
-                    <div class="w-full md:w-72 relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                            <span class="icon-[ri--search-line] w-4 h-4"></span>
-                        </span>
-                        <input 
-                            type="text" 
-                            x-model="search" 
-                            placeholder="Cari judul, tanggal, atau tag..." 
-                            class="w-full py-2.5 pl-10 pr-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all shadow-sm text-gray-900 dark:text-white placeholder-gray-400"
-                        >
-                        <button 
-                            x-show="search.length > 0" 
-                            @click="search = ''"
-                            class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
-                            style="display: none;">
-                            <span class="icon-[ri--close-circle-fill] w-4 h-4"></span>
-                        </button>
-                    </div>
+        <div class="container max-w-6xl mx-auto px-4 py-12">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-gray-100 dark:border-gray-800 pb-8">
+                <div class="max-w-2xl">
+                    <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tight flex items-center gap-3">
+                        <span class="icon-[lucide--receipt-text] text-green-600"></span>
+                        {{.Title}}
+                    </h1>
+                    <p class="text-lg text-gray-500 dark:text-gray-400">{{ .Description }}</p>
                 </div>
                 
-                <div class="absolute top-4 right-4 md:top-auto md:bottom-4">
-                    <a href="{{ "journal" | relURL }}" class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                        <span class="icon-[ri--arrow-left-line] w-4 h-4"></span>
-                        <span class="hidden sm:inline">Kembali</span>
-                    </a>
+                <div class="relative w-full md:w-72">
+                    <i class="icon-[ri--search-line] absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" x-model="search" placeholder="Cari jurnal..." 
+                        class="w-full pl-11 pr-4 py-2.5 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all shadow-sm">
+                    <button 
+                        x-show="search.length > 0" 
+                        @click="search = ''"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+                        style="display: none;">
+                        <span class="icon-[ri--close-circle-fill] w-4 h-4"></span>
+                    </button>
                 </div>
             </div>
-        </section>
 
-        <section class="py-12 bg-white dark:bg-gray-900 min-h-[50vh]">
-            <div class="container max-w-4xl mx-auto px-4">
                 <div class="flex flex-col">
                     {{ $journalSection := .Site.GetPage "section" "journal" }}
                     {{ $pages := where $journalSection.RegularPages "Params.hidden" "ne" true }}
@@ -91,8 +72,7 @@
                     </div>
                     {{ end }}
                 </div>
-            </div>
-        </section>
+        </div>
     </main>
 
 {{ end }}

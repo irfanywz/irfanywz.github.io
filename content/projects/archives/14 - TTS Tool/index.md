@@ -7,7 +7,7 @@ stack: ['python', 'pyside6', 'edge_tts', 'tiktok-tts']
 category: Desktop
 status: Produk
 # demo: https://youtube.com/watch?v=xxx
-download: https://lynk.id/irfanywz/3mv5ndz9d93d
+download: https://google.com
 # buy: https:google.com/ncr
 # github: https://google.com
 date: 2025-10-16T08:00:35+07:00
