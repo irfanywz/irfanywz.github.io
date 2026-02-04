@@ -1,10 +1,18 @@
 ---
-# Front Matter (YAML)
 title: "Catatan Perubahan"
 description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan peningkatan di setiap versi.
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.0.11"
+    date: "03 Februari 2026"
+    changes:
+      - tag: "Pembaruan"
+        description: "perubahan tampilan header disetiap halaman"      
+      - tag: "Pembaruan"
+        description: "menambahkan modal donate saat klik download project"
+      - tag: "Fitur Baru"
+        description: "menghapus halaman bank promot, research. digantikan dengan halaman collection"              
   - version: "2.0.10"
     date: "31 Januari 2026"
     changes:

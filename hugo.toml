@@ -17,7 +17,7 @@ pygmentscodefencesguesssyntax = true
 
 
 [params]
-  version = "2.0.10"
+  version = "2.0.11"
 	# browser icon
 	# favicon = "https://avatars.githubusercontent.com/u/117440754?v=4"
   favicon = "favicon.ico"
