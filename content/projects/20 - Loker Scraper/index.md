@@ -2,7 +2,7 @@
 title: Loker Scraper
 slug: Loker Scraper
 description: Alat Mencari Loker dari berbagai situs, data dikumpukan jadi 1 untuk mempermudah pencarian
-image: tampilan-data.png
+image: tampilan-data.avif
 stack: ['python', 'tornado', 'react', 'tailwindcss', 'iconify']
 category: Website
 status: Portofolio

@@ -1,5 +1,19 @@
 {{ define "main" }}
-    <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300" x-data="{ activeFilter: 'all' }">
+    <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300" 
+        x-data="{ 
+            activeFilter: new URLSearchParams(window.location.search).get('filter') || 'all',
+            updateFilter(filter) {
+                this.activeFilter = filter;
+                const url = new URL(window.location);
+                url.searchParams.set('filter', filter);
+                window.history.pushState({}, '', url);
+            },
+            get activeFilterName() {
+                if (this.activeFilter === 'all') return 'Semua';
+                return this.activeFilter.charAt(0).toUpperCase() + this.activeFilter.slice(1);
+            }
+        }"
+        @popstate.window="activeFilter = new URLSearchParams(window.location.search).get('filter') || 'all'">
         <div class="container max-w-6xl mx-auto px-4 py-12">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-gray-100 dark:border-gray-800 pb-8">
                 <div class="max-w-2xl">
@@ -10,26 +24,35 @@
                     <p class="text-lg text-gray-500 dark:text-gray-400">{{ .Description }}</p>
                 </div>
 
-                <!-- Filter Buttons -->
-                <div class="flex bg-white dark:bg-gray-900 p-1 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-x-auto">
-                    <button @click="activeFilter = 'all'"
-                            :class="activeFilter === 'all' ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 font-bold shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'"
-                            class="px-4 py-1.5 rounded-lg text-sm transition-all whitespace-nowrap">
-                        Semua
+                <!-- Filter Dropdown -->
+                <div class="relative" x-data="{ open: false }">
+                    <button @click="open = !open" @click.outside="open = false" class="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl font-bold transition-all shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200">
+                        <span class="icon-[ri--filter-3-line]"></span>
+                        <span x-text="activeFilterName"></span>
+                        <span class="icon-[ri--arrow-down-s-line] opacity-50"></span>
                     </button>
-                    {{ $layouts := slice }}
-                    {{ range .Pages }}
-                        {{ $layout := .Params.layout | default "default" }}
-                        {{ $layouts = $layouts | append $layout }}
-                    {{ end }}
-                    {{ $layouts = $layouts | uniq }}
-                    {{ range $layouts }}
-                    <button @click="activeFilter = '{{ . }}'"
-                            :class="activeFilter === '{{ . }}' ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 font-bold shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'"
-                            class="px-4 py-1.5 rounded-lg text-sm transition-all whitespace-nowrap capitalize">
-                        {{ . }}
-                    </button>
-                    {{ end }}
+                    <div x-show="open" x-transition class="absolute top-full right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 z-10 overflow-hidden" style="display: none;">
+                        <a href="javascript:;" @click="updateFilter('all'); open = false" 
+                           :class="activeFilter === 'all' ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300'"
+                           class="block px-4 py-3 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-between">
+                            <span>Semua</span>
+                            <span x-show="activeFilter === 'all'" class="icon-[ri--check-line] w-5 h-5 text-indigo-600"></span>
+                        </a>
+                        {{ $layouts := slice }}
+                        {{ range .Pages }}
+                            {{ $layout := .Params.layout | default "default" }}
+                            {{ $layouts = $layouts | append $layout }}
+                        {{ end }}
+                        {{ $layouts = $layouts | uniq }}
+                        {{ range $layouts }}
+                            <a href="javascript:;" @click="updateFilter('{{ . }}'); open = false" 
+                               :class="activeFilter === '{{ . }}' ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300'"
+                               class="block px-4 py-3 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-between capitalize">
+                                <span>{{ . }}</span>
+                                <span x-show="activeFilter === '{{ . }}'" class="icon-[ri--check-line] w-5 h-5 text-indigo-600"></span>
+                            </a>
+                        {{ end }}
+                    </div>
                 </div>
             </div>
 

@@ -1,0 +1,26 @@
+<div class="container max-w-6xl mx-auto px-4 py-12">
+    <header class="mb-12 border-b border-gray-100 dark:border-gray-800 pb-8">
+        <div class="max-w-2xl">
+            <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tight flex items-center gap-3">
+                <span class="icon-[ri--gallery-line] text-green-500"></span>
+                {{ .Title }}
+            </h1>
+            <p class="text-lg text-gray-500 dark:text-gray-400">{{ .Description }}</p>
+        </div>
+    </header>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" x-data>
+        {{ range .Params.image_list }}
+        <a href="javascript:void(0)"
+           @click.prevent="$store.lightbox.open('{{ .src }}', '{{ .alt }}', '{{ .caption | default .alt }}', '{{ $.Title | urlize }}')"
+           class="image-grid-item group relative block overflow-hidden rounded-lg shadow-md aspect-square"
+           data-group="{{ $.Title | urlize }}"
+           data-src="{{ .src }}"
+           data-alt="{{ .alt }}"
+           data-desc="{{ .caption | default .alt }}">
+            <img src="{{ .src }}" alt="{{ .alt }}" class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110">
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3 transition-opacity duration-300 opacity-100"><p class="text-white text-sm font-semibold truncate">{{ .caption | default .alt }}</p></div>
+        </a>
+        {{ end }}
+    </div>
+</div>
