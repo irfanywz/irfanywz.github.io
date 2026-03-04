@@ -19,7 +19,6 @@ pygmentscodefencesguesssyntax = true
 [params]
   version = "2.0.11"
 	# browser icon
-	# favicon = "https://avatars.githubusercontent.com/u/117440754?v=4"
   favicon = "favicon.ico"
 
 	# Optional 64x64 avatar image.
@@ -27,8 +26,8 @@ pygmentscodefencesguesssyntax = true
   avatar = "avatar.avif"
 
   author = "Muhamad Irfan"
-  description = "Website pribadi dan portofolio Muhamad Irfan, seorang IT Specialist yang berlokasi di Bogor, Indonesia."
-  keywords = "Muhamad Irfan, IT Specialist Bogor, Web Developer, Portfolio, Programmer, Indonesia, irfanywz"
+  description = "Personal web Muhamad Irfan, berlokasi di Cibinong, Bogor."
+  keywords = "Muhamad Irfan, IT Specialist Bogor, Web Developer, Portfolio, Programmer, Indonesia, irfanywz, promise ety, Cibinong, Bogor"
 
 # Menu Header
 [[menu.main]]
@@ -43,11 +42,11 @@ url = "/projects/"
 pre = "icon-[ri--briefcase-2-line]"
 weight = 20
 
-[[menu.main]]
-name = "Tulisan"
-url = "/posts/"
-pre = "icon-[ri--article-line]"
-weight = 30
+# [[menu.main]]
+# name = "Tulisan"
+# url = "/posts/"
+# pre = "icon-[ri--article-line]"
+# weight = 30
 
 
 [[menu.main]]
@@ -149,10 +148,16 @@ weight = 91
 # ======================
 
 [[menu.bottom]]
-name = "Tulisan"
-url = "/posts/"
-pre = "icon-[ri--article-line]"
-weight = 30
+name = "Beranda"
+url = "/"
+pre = "icon-[ri--home-line]"
+weight = 10
+
+# [[menu.bottom]]
+# name = "Tulisan"
+# url = "/posts/"
+# pre = "icon-[ri--article-line]"
+# weight = 30
 
 [[menu.bottom]]
 name = "Proyek"

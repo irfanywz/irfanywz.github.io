@@ -5,7 +5,7 @@ display_price: "Mulai Rp 100.000"
 description: "Pengambilan data dari website target (E-commerce, Directory, Maps) ke format Excel/CSV."
 available: true
 shop_type: "service"
-draft: false
+draft: true
 ---
 
 Melayani jasa pengambilan data (scraping) dari berbagai website publik untuk kebutuhan riset, analisis pasar, atau database bisnis.

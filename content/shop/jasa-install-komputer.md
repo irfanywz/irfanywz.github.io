@@ -5,7 +5,7 @@ display_price: "Mulai Rp 50.000"
 description: "Jasa install ulang Windows dan aplikasi standar. Melayani panggilan ke lokasi area Cibinong, Bogor."
 available: true
 shop_type: "service"
-draft: false
+draft: true
 ---
 
 Melayani jasa install ulang komputer atau laptop panggilan untuk area Cibinong, Bogor dan sekitarnya.

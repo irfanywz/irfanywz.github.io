@@ -7,10 +7,10 @@ image: promise-ety.avif
 category: Desktop
 status: Product
 # demo: https://youtu.be/Q5MAXYU0iRg
-# download: https://google.com
+download: https://www.mediafire.com/file/lud6wfwgkcaktbl/Promise_ETY_v1.0.2.exe/file
 buy: /shop/promise-ety/
 # github: https://github.com/ywz-python/
-doc: /docs/promise-ety
+# doc: /docs/promise-ety
 date: 2025-12-13T05:00:35+07:00
 draft: false
 # =============================
