@@ -36,11 +36,11 @@ url = "/"
 pre = "icon-[ri--home-line]"
 weight = 10
 
-[[menu.main]]
-name = "Proyek"
-url = "/projects/"
-pre = "icon-[ri--briefcase-2-line]"
-weight = 20
+# [[menu.main]]
+# name = "Proyek"
+# url = "/projects/"
+# pre = "icon-[ri--briefcase-2-line]"
+# weight = 20
 
 # [[menu.main]]
 # name = "Tulisan"
@@ -48,12 +48,18 @@ weight = 20
 # pre = "icon-[ri--article-line]"
 # weight = 30
 
+[[menu.main]]
+name = "Belajar"
+url = "/learn/"
+pre = "icon-[ri--lightbulb-line]"
+weight = 20
 
 [[menu.main]]
 name = "Toko"
 url = "/shop/"
 pre = "icon-[ri--shopping-bag-line]"
 weight = 35
+
 
 [[menu.main]]
 name = "Kontak"
@@ -64,6 +70,7 @@ weight = 40
 # menu offcanvas
 # ======================
 
+
 [[menu.footer]]
 name = "Jurnal"
 url = "/journal/"
@@ -73,12 +80,20 @@ weight = 20
   color = "text-amber-500"
 
 [[menu.footer]]
-name = "Belajar"
-url = "/learn/"
-pre = "icon-[ri--lightbulb-line]"
+name = "Proyek"
+url = "/projects/"
+pre = "icon-[ri--briefcase-2-line]"
 weight = 30
 [menu.footer.params]
-  color = "text-sky-500"
+  color = "text-indigo-500"  
+
+# [[menu.footer]]
+# name = "Belajar"
+# url = "/learn/"
+# pre = "icon-[ri--lightbulb-line]"
+# weight = 30
+# [menu.footer.params]
+#   color = "text-sky-500"
 
 [[menu.footer]]
 name = "Buku"
@@ -153,17 +168,24 @@ url = "/"
 pre = "icon-[ri--home-line]"
 weight = 10
 
+
+[[menu.bottom]]
+name = "Belajar"
+url = "/learn/"
+pre = "icon-[ri--lightbulb-line]"
+weight = 20
+
 # [[menu.bottom]]
 # name = "Tulisan"
 # url = "/posts/"
 # pre = "icon-[ri--article-line]"
 # weight = 30
 
-[[menu.bottom]]
-name = "Proyek"
-url = "/projects/"
-pre = "icon-[ri--briefcase-2-line]"
-weight = 20
+# [[menu.bottom]]
+# name = "Proyek"
+# url = "/projects/"
+# pre = "icon-[ri--briefcase-2-line]"
+# weight = 20
 
 # menu shop
 [[menu.bottom]]

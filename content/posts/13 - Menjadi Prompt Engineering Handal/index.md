@@ -6,10 +6,11 @@ date: 2025-07-01T15:28:03+07:00
 draft: false
 categories: 
 tags: ['Belajar AI']
+image: prompt-engineering-handal.jpg
 ---
 
 
-![prompt engineering](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhot_DgiDlK_z9gCuPwoEmv3WE0zGRuHugzyZaYuydLpk7WQaWT36zaygglOGQLqlY40fArp-SHGxKlyWQ3OUjv1e_HtJofCTmuSirm_fOnJcbfJ_sfsH6dxBww66-obTKwK5eMujI_XEM_AJ2zltk41eSYbCOzX5PQR9VHLhutBYgfNZuDRDQsSiYS-2s/s900/ai-generated-img_1751359051333_kgoqg5woa.png)
+![prompt engineering](prompt-engineering-handal.jpg)
 
 memahami Kosa Kata dan Istilah sebanyak banyaknya adalah hal yang harus dilakukan oleh seorang prompt engineering
 
