@@ -463,9 +463,6 @@
   .z-\[101\] {
     z-index: 101;
   }
-  .z-\[9999\] {
-    z-index: 9999;
-  }
   .col-span-1 {
     grid-column: span 1 / span 1;
   }
