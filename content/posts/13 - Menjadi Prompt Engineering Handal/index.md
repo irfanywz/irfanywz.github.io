@@ -3,14 +3,11 @@ title: Menjadi Prompt Engineering Handal
 slug: Menjadi Prompt Engineering Handal
 description: tidak bisa dipungkiri AI sudah sangat canggih, belajar atau tertinggal
 date: 2025-07-01T15:28:03+07:00
-draft: false
-categories: 
-tags: ['Belajar AI']
 image: prompt-engineering-handal.jpg
+tags: ['AI']
+draft: false
 ---
 
-
-![prompt engineering](prompt-engineering-handal.jpg)
 
 memahami Kosa Kata dan Istilah sebanyak banyaknya adalah hal yang harus dilakukan oleh seorang prompt engineering
 
