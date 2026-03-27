@@ -52,5 +52,3 @@ kalau memang dibutuhkan untuk kembali bermain dengan kode saya pastikan hasilnya
 ...
 
 saya juga ada niatan untuk memberikan aplikasi yang saya buat secara gratis, agar aplikasi tidak sia-sia begitu saja dan bermanfaat 
-
-jadi saya bakal kasih sama orang yang ingin saja bukan dibagi secara cuma-cuma, dengan syarat tidak diperjual belikan

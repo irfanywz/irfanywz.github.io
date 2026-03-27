@@ -1,6 +1,7 @@
 ---
 title: "Realita Menghasilkan dari YouTube"
 slug: "realita-menghasilkan-youtube"
+url: "learn/menghasilkan-uang-dari-youtube/01-1"
 description: "Penjelasan dasar bagaimana sebuah video bisa berubah jadi saldo rekening."
 section: Realita Menghasilkan dari youtube
 image: 

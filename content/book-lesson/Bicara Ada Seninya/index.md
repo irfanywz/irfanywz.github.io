@@ -92,4 +92,16 @@ ada 4 hal yang menjadikan kita memiliki keberanian untuk berbicara dengan mantap
 5 unsur non-verbal untuk memikat hati para pendengar
 - penampilan yang baik seperti
 rambut dan pakaian dapat meningkatkan rasa percaya diri
+- selalu tersenyum
+- pupil mata yang membesar, dan tatapan stabil
+- sikap percaya diri
+- gestur yang tepat
+
+### Mengubah cara bicara, mengubah hidup
+
+> kemampuan terpenting bagi manusia adalah mengungkapkan dirinya
+
+satu hal yang bisa dipastikan, hidup akan berubah dengan mengubah cara bicara!
+
+### Mengubah yang tidak mungkin menjadi mungkin
 

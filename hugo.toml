@@ -29,6 +29,7 @@ pygmentscodefencesguesssyntax = true
   description = "Personal web Muhamad Irfan, menulis dan berbagi hal menarik seputar teknologi."
   keywords = "Muhamad Irfan, IT Specialist Bogor, Web Developer, Portfolio, Programmer, Indonesia, irfanywz, promise ety, Cibinong, Bogor"
 
+
 # Menu Header
 [[menu.main]]
 name = "Beranda"

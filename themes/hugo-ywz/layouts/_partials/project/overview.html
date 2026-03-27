@@ -8,7 +8,7 @@
             </h3>
             {{ range $index, $element := .Params.overview }}
                 <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-4 last:mb-0">
-                    {{ . }}
+                    {{ . | markdownify }}
                 </p>
             {{ end }}
         </div>

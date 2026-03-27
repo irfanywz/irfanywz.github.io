@@ -17,7 +17,10 @@ entah itu momen lucu, menjengkelakan, kata-kata unik, kena marah, hal tersebutla
 
 tapi ketika moment itu datar saja, tidak ada kenangan unik didalamnya. cenderung kita dengan mudahnya melupakan
 
-
 ...
 
 > jika ingin mengingatnya maka hadirkan rasa, ketika ingin menghilangkannya butuh hal baru untuk menumpuknya agar teralihkan
+
+...
+
+tambahan, ini salah satu contoh untuk momen yang bakal teringat: https://web.facebook.com/reel/1612900413363887

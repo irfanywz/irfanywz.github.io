@@ -1,6 +1,7 @@
 ---
 title: "01.2 - Mengenal Partner Program dan AdSense"
 slug: "mengenal-ypp-dan-adsense"
+url: "learn/menghasilkan-uang-dari-youtube/01-2"
 description: "Penjelasan tentang YouTube Partner Program (YPP) dan bagaimana Google AdSense bekerja."
 section: YouTube Partner Program (YPP)
 image: 
