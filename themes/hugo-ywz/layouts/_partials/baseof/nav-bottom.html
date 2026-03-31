@@ -1,10 +1,9 @@
-<!-- Bottom Nav (Mobile) -->
 <nav 
     x-data="{ 
         visible: true, 
         lastScrollTop: 0,
         scroll() {
-            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             if (scrollTop > this.lastScrollTop && scrollTop > 100) {
                 this.visible = false;
             } else {
@@ -15,21 +14,29 @@
     }"
     @scroll.window="scroll()"
     :class="visible ? 'translate-y-0' : 'translate-y-full'"
-    class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-t border-gray-200 dark:border-gray-800 flex justify-around items-center h-16 z-20 md:hidden pb-[env(safe-area-inset-bottom)] transition-transform duration-300">
+    class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 flex justify-around items-stretch h-[68px] z-[100] md:hidden transition-transform duration-300 transform-gpu shadow-[0_-2px_10px_rgba(0,0,0,0.05)]"
+    style="padding: 10px 0; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+    
     {{ range .Site.Menus.bottom }}
         {{ $menu_item_url := .URL | relLangURL }}
         {{ $page_url := $.Page.RelPermalink | relLangURL }}
         {{ $page_split := index (split $page_url "/") 1 }}
         {{ $active := and (strings.Contains $menu_item_url $page_split) (not $.IsHome) }}
         
-        <a href="{{ .URL | relLangURL }}" class='flex flex-col items-center justify-center w-full h-full gap-1 text-[10px] font-medium transition-colors {{ if or ($active) (and ($.IsHome) (eq .URL "/")) }}text-indigo-600 dark:text-indigo-400{{ else }}text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400{{ end }}'>
-            <i class="{{ .Pre }} inline-block text-xl mb-0.5"></i>
-            <span>{{ .Name }}</span>
+        <a href="{{ .URL | relLangURL }}" 
+           class="flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px] font-medium transition-colors {{ if or ($active) (and ($.IsHome) (eq .URL '/')) }}text-indigo-600 dark:text-indigo-400{{ else }}text-gray-500 dark:text-gray-400{{ end }}">
+            <div class="flex items-center justify-center h-6 w-6 overflow-hidden">
+                <i class="{{ .Pre }} text-xl inline-block leading-none"></i>
+            </div>
+            <span class="leading-none">{{ .Name }}</span>
         </a>
-    {{ end}}
+    {{ end }}
 
-     <a href="javascript:;" @click="$store.nav.toggle()" class="flex flex-col items-center justify-center w-full h-full gap-1 text-[10px] font-medium text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-        <span class="icon-[ri--more-fill] inline-block w-6 h-6 mb-0.5"></span>
-        <span>Lainnya</span>
+    <a href="javascript:;" @click="$store.nav.toggle()" 
+       class="flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px] font-medium text-gray-500 dark:text-gray-400 transition-colors">
+        <div class="flex items-center justify-center h-6 w-6 overflow-hidden">
+            <span class="icon-[ri--more-fill] inline-block text-xl"></span>
+        </div>
+        <span class="leading-none">Lainnya</span>
     </a>
 </nav>
