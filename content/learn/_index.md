@@ -1,4 +1,4 @@
 ---
-title: Perjalanan Belajar
-description: Menulis kembali apa yang telah dipelajari.
+title: Pelajari Sesuatu
+description: Jelajahi topik pembelajaran menarik secara lengkap
 ---

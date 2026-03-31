@@ -18,7 +18,7 @@ variants:
   #   price: 99000
   #   display_price: "Rp 250.000"
 
-available: true
+available: false
 shop_type: "product"
 # demo_video_id: 3131313
 support_info: https://t.me/irfanywz

@@ -25,7 +25,7 @@ ini adalah hal yang sederhana hampir semua orang bisa melakukannya
 
 dari sini saya belajar bahwa fokus menentukan kemana kita akan berlabuh
 
-selama ini fokus saya akan ingin mempermudah, padahal kalau dijalani sebenarnya lebih mudah
+selama ini fokus saya] ingin mempermudah, padahal kalau dijalani sebenarnya lebih mudah
 
 ...
 

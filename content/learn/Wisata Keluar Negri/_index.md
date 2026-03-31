@@ -5,7 +5,7 @@ description: Perjalanan ke luar negeri, memerlukan persiapan matang
 section: Index
 image: cover.avif
 date: 2026-01-16T08:00:35+07:00
-draft: false
+draft: true
 ---
 
 Perjalanan ke luar negeri, khususnya Korea Selatan, memerlukan persiapan matang yang diringkas dalam prinsip **2D: Dokumen & Duit**.

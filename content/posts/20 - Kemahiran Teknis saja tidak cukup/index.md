@@ -2,7 +2,7 @@
 title: Kemahiran Teknis saja tidak cukup, Komunikasi adalah Kunci
 slug: Kemahiran Teknis saja tidak cukup
 date: 2026-03-24T00:14:31+07:00
-image: ilustrasi.avif
+image: komunikasi-adalah-kunci.avif
 tags: []
 draft: false
 ---
