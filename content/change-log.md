@@ -4,6 +4,13 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.0.12"
+    date: "31 Maret 2026"
+    changes:
+      - tag: "Perbaikan"
+        description: "tampilan navigasi bawah rusak saat dibuka pada webview android"      
+      - tag: "Pembaruan"
+        description: "mengganti logo"              
   - version: "2.0.11"
     date: "03 Februari 2026"
     changes:

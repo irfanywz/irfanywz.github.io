@@ -17,7 +17,7 @@ pygmentscodefencesguesssyntax = true
 
 
 [params]
-  version = "2.0.11"
+  version = "2.0.12"
 	# browser icon
   favicon = "favicon.ico"
 
@@ -27,8 +27,7 @@ pygmentscodefencesguesssyntax = true
 
   author = "Muhamad Irfan"
   description = "Personal web Muhamad Irfan, menulis dan berbagi hal menarik seputar teknologi."
-  keywords = "Muhamad Irfan, IT Specialist Bogor, Web Developer, Portfolio, Programmer, Indonesia, irfanywz, promise ety, Cibinong, Bogor"
-
+  keywords = "Muhamad Irfan, Content Creator Indonesia, YouTube Automation, Creator Tools, Digital Storytelling, irfanywz, Promise ETY, Bogor, Video Strategist, Personal Blog"
 
 # Menu Header
 [[menu.main]]
