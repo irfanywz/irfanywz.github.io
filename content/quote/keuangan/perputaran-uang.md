@@ -2,7 +2,7 @@
 date: 2025-11-01
 author: "arus_"
 categories: ["keuangan"]
-_build:
+build:
   render: never
   list: always
 ---

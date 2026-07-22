@@ -1,8 +1,8 @@
 baseURL = "https://irfanywz.web.id/"
 theme = "hugo-ywz"
-languageCode = "en-us"
-title = "irfanywz"
-copyright = "irfanywz"
+locale = "en-us"
+title = "Muhamad Irfan"
+copyright = "Muhamad Irfan"
 
 enableEmoji = true
 enableGitInfo = true
@@ -27,7 +27,7 @@ pygmentscodefencesguesssyntax = true
 
   author = "Muhamad Irfan"
   description = "Personal web Muhamad Irfan, menulis dan berbagi hal menarik seputar teknologi."
-  keywords = "Muhamad Irfan, Content Creator Indonesia, YouTube Automation, Creator Tools, Digital Storytelling, irfanywz, Promise ETY, Bogor, Video Strategist, Personal Blog, sedang mempelajari bangun channel youtube yang menghasilkan, dengan harapan tahun ini bisa terkumpul 3 digit"
+  keywords = "Muhamad Irfan, Content Creator Indonesia, YouTube Automation, Creator Tools, Digital Storytelling, muhamadirfan300899, Promise ETY, Bogor, Video Strategist, Personal Blog, sedang mempelajari bangun channel youtube yang menghasilkan, dengan harapan tahun ini bisa terkumpul 3 digit"
 
 # Menu Header
 [[menu.main]]
@@ -235,8 +235,8 @@ weight = 40
   notAlternative = true  
 
 [languages.id]
-languageName = "Indonesian"
-languageCode = "id"
+label = "Indonesian"
+locale = "id"
 
 [services]
   [services.googleAnalytics]

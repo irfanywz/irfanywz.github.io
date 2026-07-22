@@ -5,7 +5,7 @@ description: "Panduan praktis strategi kejar jam tayang dan monetisasi YouTube b
 section: "Index"
 image: "cover.avif"
 date: 2026-01-16T08:00:35+07:00
-draft: false
+draft: true
 ---
 
 Banyak orang gagal di YouTube bukan karena mereka tidak bisa membuat video, tapi karena mereka **tidak tahu aturan mainnya**. YouTube tahun 2026 bukan lagi tempat di mana lu bisa asal *reupload* dan berharap dapet gaji. Algoritmanya sudah jauh lebih pintar dan "galak" dalam menyapu bersih channel-channel sampah.

@@ -2,7 +2,7 @@
 date: 2025-10-07
 author: "catatan keuangan"
 categories: ["keuangan"]
-_build:
+build:
   render: never
   list: always
 ---

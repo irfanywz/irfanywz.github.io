@@ -2,7 +2,7 @@
 date: 2026-02-05T00:00:00+07:00
 author: bernuasabda
 categories: ["kehidupan"]
-_build:
+build:
   render: never
   list: always
 ---

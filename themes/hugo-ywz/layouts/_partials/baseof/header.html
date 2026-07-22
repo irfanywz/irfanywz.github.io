@@ -23,7 +23,7 @@
 
         <!-- Brand -->
         <div class="flex-shrink-0">
-            <a href="{{ .Site.BaseURL }}" class="block">
+            <a href="{{ .Site.BaseURL }}" class="flex items-center">
 <!--                 {{/* natal  */}}
                 {{ if eq (now.Format "01") "12" }}
                     <img src='{{ "logo-natal.avif" | relURL }}' alt="{{ .Site.Title }} logo" class="h-8 w-auto">                
@@ -32,7 +32,10 @@
                     <img src='{{ "logo-ramadhan.avif" | relURL }}' alt="{{ .Site.Title }} logo" class="h-8 w-auto">
                 {{ else }}
                 {{ end }} -->
-                <img src='{{ "logo.avif" | relURL }}' alt="{{ .Site.Title }} logo" class="h-8 w-auto">
+                <img src='{{ "logo.avif" | relURL }}' alt="{{ .Site.Title }} logo" class="h-8 w-auto mr-2">
+                <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">            
+                {{ .Site.Title }}
+                </span>
             </a>
         </div>
 

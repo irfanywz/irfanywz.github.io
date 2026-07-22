@@ -2,7 +2,7 @@
 date: 2024-01-08
 author: "pencari ilmu"
 categories: ["pendidikan"]
-_build:
+build:
   render: never
   list: always
 ---

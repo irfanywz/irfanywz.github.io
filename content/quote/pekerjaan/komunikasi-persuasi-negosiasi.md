@@ -2,7 +2,7 @@
 date: 2026-03-23
 author: "catatan"
 categories: ["pekerjaan"]
-_build:
+build:
   render: never
   list: always
 ---

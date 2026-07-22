@@ -1,4 +1,4 @@
 ---
-title: Pelajari Sesuatu
-description: Jelajahi topik pembelajaran menarik secara lengkap
+title: Belajar
+description: Temukan Topik pembelajaran lengkap
 ---

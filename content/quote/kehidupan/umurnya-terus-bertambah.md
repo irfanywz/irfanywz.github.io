@@ -2,7 +2,7 @@
 date: 2022-08-30T16:00:35+07:00
 author: "Rasanya belum lama"
 categories: ["afirmasi"]
-_build:
+build:
   render: never
   list: always
 ---

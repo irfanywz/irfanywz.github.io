@@ -2,7 +2,7 @@
 date: 2024-01-11
 author: "catatan kerja"
 categories: ["pekerjaan"]
-_build:
+build:
   render: never
   list: always
 ---

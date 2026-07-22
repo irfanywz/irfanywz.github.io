@@ -33,7 +33,7 @@ gallery: ["music-max.avif", "music-max-downloader.avif", "music-max-image-animat
 #     text: "Proses Instan & Cepat"
 #   - text: "Bonus Template Gratis" 
 date: 2026-03-06T00:00:00+07:00
-draft: false
+draft: true
 ---
 
 Musik Max adalah aplikasi desktop untuk membantu membuat konten musik playlist. dengan kumpulan alat yang ada, akan memudahkan dan mempercepat anda dalam pembuatan konten musik siap upload

@@ -2,7 +2,7 @@
 date: 2024-10-18T12:00:00+07:00
 author: "Khatib"
 categories: ["kehidupan"]
-_build:
+build:
   render: never
   list: always
 ---

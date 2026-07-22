@@ -2,7 +2,7 @@
 date: 2025-10-14T00:00:00+07:00
 author: "inspirasi hidup"
 categories: ["inspirasi"]
-_build:
+build:
   render: never
   list: always
 ---

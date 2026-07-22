@@ -2,7 +2,7 @@
 date: 2025-11-03T00:00:00+07:00
 author: "jualan"
 categories: ["jualan"]
-_build:
+build:
   render: never
   list: always
 ---

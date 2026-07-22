@@ -5,6 +5,7 @@ date: 2025-12-13T11:00:00+07:00
 description: "panduan instalasi dan penggunaan aplikasi promise ety"
 app_icon: app.avif
 project_url: projects/promise-ety/
+draft: true
 ---
 
 ## Pembelian
