@@ -1,5 +1,5 @@
 ---
-title: "China Mix"
+title: "CN Playlist"
 date: 2017-01-20
 description: "Musik Mandarin untuk menemani aktivitas sehari-hari."
 draft: false

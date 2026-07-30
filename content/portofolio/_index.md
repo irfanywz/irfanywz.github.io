@@ -1,6 +1,6 @@
 ---
-title: Proyek
-description: proyek aktif yang pernah dikerjakan sebelumnya
+title: Portofolio
+description: portofolio yang pernah dikerjakan sebelumnya
 filtertab:
     - name: "Semua"
       icon: "icon-[ri--apps-2-line]"

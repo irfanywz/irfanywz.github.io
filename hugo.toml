@@ -9,7 +9,7 @@ enableGitInfo = true
 enableRobotsTXT = true
 canonifyURLs = true
 
-pagination.pagerSize = 6
+pagination.pagerSize = 2
 
 pygmentsstyle = "vs"
 pygmentscodefences = true
@@ -17,7 +17,7 @@ pygmentscodefencesguesssyntax = true
 
 
 [params]
-  version = "2.0.12"
+  version = "2.1.0"
 	# browser icon
   favicon = "favicon.ico"
 
@@ -27,7 +27,7 @@ pygmentscodefencesguesssyntax = true
 
   author = "Muhamad Irfan"
   description = "Personal web Muhamad Irfan, menulis dan berbagi hal menarik seputar teknologi."
-  keywords = "Muhamad Irfan, Content Creator Indonesia, YouTube Automation, Creator Tools, Digital Storytelling, muhamadirfan300899, Promise ETY, Bogor, Video Strategist, Personal Blog, sedang mempelajari bangun channel youtube yang menghasilkan, dengan harapan tahun ini bisa terkumpul 3 digit"
+  keywords = "Muhamad Irfan, Content Creator Indonesia, YouTube Automation, Creator Tools, Digital Storytelling, muhamadirfan300899, Promise ETY, Bogor, Video Strategist, Personal Blog, sedang mempelajari bangun channel youtube yang menghasilkan, dengan harapan tahun ini bisa terkumpul 3 digit 000 xixixix"
 
 # Menu Header
 [[menu.main]]
@@ -36,35 +36,34 @@ url = "/"
 pre = "icon-[ri--home-line]"
 weight = 10
 
-# [[menu.main]]
-# name = "Proyek"
-# url = "/projects/"
-# pre = "icon-[ri--briefcase-2-line]"
-# weight = 20
+[[menu.main]]
+name = "Portofolio"
+url = "/portofolio/"
+pre = "icon-[ri--briefcase-2-line]"
+weight = 36
 
 # [[menu.main]]
-# name = "Tulisan"
-# url = "/posts/"
-# pre = "icon-[ri--article-line]"
+# name = "Belajar"
+# url = "/learn/"
+# pre = "icon-[ri--lightbulb-line]"
 # weight = 30
 
 [[menu.main]]
-name = "Belajar"
-url = "/learn/"
-pre = "icon-[ri--lightbulb-line]"
-weight = 20
-
-[[menu.main]]
-name = "Toko"
+name = "Layanan"
 url = "/shop/"
-pre = "icon-[ri--shopping-bag-line]"
+pre = "icon-[ri--store-2-line]"
 weight = 35
 
+# [[menu.main]]
+# name = "Kontak"
+# url = "/contact/"
+# pre = "icon-[ri--mail-line]"
+# weight = 40
 
 [[menu.main]]
-name = "Kontak"
-url = "/contact/"
-pre = "icon-[ri--mail-line]"
+name = "Tentang"
+url = "/about/"
+pre = "icon-[ri--user-line]"
 weight = 40
 
 # menu offcanvas
@@ -79,37 +78,22 @@ weight = 20
 [menu.footer.params]
   color = "text-amber-500"
 
-[[menu.footer]]
-name = "Proyek"
-url = "/projects/"
-pre = "icon-[ri--briefcase-2-line]"
-weight = 30
-[menu.footer.params]
-  color = "text-indigo-500"  
-
 # [[menu.footer]]
-# name = "Belajar"
-# url = "/learn/"
-# pre = "icon-[ri--lightbulb-line]"
+# name = "Portofolio"
+# url = "/portofolio/"
+# pre = "icon-[ri--briefcase-2-line]"
 # weight = 30
 # [menu.footer.params]
-#   color = "text-sky-500"
+#   color = "text-indigo-500"  
 
 [[menu.footer]]
-name = "Buku"
-url = "/book-lesson/"
-pre = "icon-[ri--book-open-line]"
-weight = 40
+name = "Belajar"
+url = "/learn/"
+pre = "icon-[ri--lightbulb-line]"
+weight = 30
 [menu.footer.params]
-  color = "text-emerald-500"
+  color = "text-sky-500"
 
-[[menu.footer]]
-name = "Film"
-url = "/movie-watches/"
-pre = "icon-[ri--movie-2-line]"
-weight = 41
-[menu.footer.params]
-  color = "text-rose-500"
 
 [[menu.footer]]
 name = "Musik"
@@ -120,28 +104,12 @@ weight = 42
   color = "text-violet-500"
 
 [[menu.footer]]
-name = "Game"
-url = "/game-played/"
-pre = "icon-[ri--gamepad-line]"
-weight = 50
-[menu.footer.params]
-  color = "text-fuchsia-500"
-
-[[menu.footer]]
 name = "Alat"
 url = "/tools/"
 pre = "icon-[ri--tools-line]"
 weight = 60
 [menu.footer.params]
   color = "text-orange-500"
-
-[[menu.footer]]
-name = "Kutipan"
-url = "/quote/"
-pre = "icon-[ri--double-quotes-l]"
-weight = 70
-[menu.footer.params]
-  color = "text-yellow-500"
 
 [[menu.footer]]
 name = "Koleksi"
@@ -152,12 +120,20 @@ weight = 80
   color = "text-blue-500"
 
 [[menu.footer]]
-name = "Dokumentasi"
-url = "/docs/"
-pre = "icon-[ri--file-text-line]"
-weight = 91
+name = "Kontak"
+url = "/contact/"
+pre = "icon-[ri--mail-line]"
+weight = 100
 [menu.footer.params]
-  color = "text-indigo-500"
+  color = "text-sky-500"
+
+# [[menu.footer]]
+# name = "Layanan"
+# url = "/shop/"
+# pre = "icon-[ri--store-2-line]"
+# weight = 35
+# [menu.footer.params]
+#   color = "text-sky-500"
 
 # menu bottom mobile
 # ======================
@@ -170,41 +146,42 @@ weight = 10
 
 
 [[menu.bottom]]
-name = "Belajar"
-url = "/learn/"
-pre = "icon-[ri--lightbulb-line]"
-weight = 20
+name = "Portofolio"
+url = "/portofolio/"
+pre = "icon-[ri--briefcase-2-line]"
+weight = 36
 
 # [[menu.bottom]]
-# name = "Tulisan"
-# url = "/posts/"
-# pre = "icon-[ri--article-line]"
+# name = "Belajar"
+# url = "/learn/"
+# pre = "icon-[ri--lightbulb-line]"
 # weight = 30
-
-# [[menu.bottom]]
-# name = "Proyek"
-# url = "/projects/"
-# pre = "icon-[ri--briefcase-2-line]"
-# weight = 20
 
 # menu shop
 [[menu.bottom]]
-name = "Toko"
+name = "Layanan"
 url = "/shop/"
-pre = "icon-[ri--shopping-bag-line]"
+pre = "icon-[ri--store-2-line]"
 weight = 35
 
+
 [[menu.bottom]]
-name = "Kontak"
-url = "/contact/"
-pre = "icon-[ri--mail-line]"
+name = "Tentang"
+url = "/about/"
+pre = "icon-[ri--user-line]"
 weight = 40
+
+# [[menu.bottom]]
+# name = "Kontak"
+# url = "/contact/"
+# pre = "icon-[ri--mail-line]"
+# weight = 40
 
 [markup]
   [markup.highlight]
     codeFences = true
     guessSyntax = true
-    hl_Lines = ""
+    # hl_Lines = ""
     lineNoStart = 1
     lineNos = false
     lineNumbersInTable = true

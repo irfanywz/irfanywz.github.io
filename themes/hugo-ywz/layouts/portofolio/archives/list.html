@@ -15,7 +15,7 @@
                     <p class="text-lg text-gray-500 dark:text-gray-400">{{ len .Data.Pages }} {{ .Description }}</p>
                 </div>
                 
-                <a href="{{ "projects" | absURL }}" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm font-medium">
+                <a href="{{ "portofolio" | absURL }}" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm font-medium">
                     <span class="icon-[ri--arrow-left-s-line] w-5 h-5"></span>
                     Kembali
                 </a>
@@ -23,7 +23,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {{ range .Data.Pages }}
-                        {{ partial "project/list-card.html" . }}
+                        {{ partial "portofolio/list-card.html" . }}
                     {{ end }}
                 </div>
         </div>

@@ -1,0 +1,28 @@
+{{ define "head" }}
+{{ end }}
+
+{{ define "main" }}
+<main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
+    <section class="py-16">
+        <div class="container max-w-4xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12 bg-gray-50 dark:bg-gray-800/50 p-8 rounded-3xl border border-gray-200 dark:border-gray-700">
+                {{ if .Params.profile_picture }}
+                <div class="flex-shrink-0">
+                    <img src="{{ .Params.profile_picture | relURL }}" alt="Foto Profil {{ .Site.Title }}" class="w-48 h-48 rounded-full object-cover shadow-lg border-4 border-white dark:border-gray-800">
+                </div>
+                {{ end }}
+                <div class="text-center md:text-left">
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                        {{ .Title }}
+                    </h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-400">{{ .Description }}</p>
+                </div>
+            </div>
+
+            <div class="prose prose-lg dark:prose-invert max-w-none mx-auto mt-12">
+                 {{ .Content }}
+            </div>
+        </div>
+    </section>    
+</main>
+{{ end }}

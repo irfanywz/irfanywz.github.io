@@ -3,7 +3,7 @@ title: "Python pyppeteer [Fix] ValueError: signal only works in main thread of t
 slug: python pyppeteer error signal
 date: 2025-06-28T19:10:27+07:00
 draft: false
-tags: ['fix bug', 'python']
+tags: ['code']
 ---
 
 masalah ini terjadi karena fungsi signal dan slot yang ada pada pyppteer tidak bisa dijalankan pada sub-thread

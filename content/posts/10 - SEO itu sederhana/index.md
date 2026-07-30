@@ -4,8 +4,7 @@ slug: seo itu sederhana
 description: Bisa ditarik kesimpulan kira-kira seperti ini
 date: 2025-01-02T18:00:35+07:00
 draft: false
-categories: Website
-tags: ['SEO']
+tags: ['Digital Marketing']
 ---
 
 seo itu sederhana, masukan kata-kata yang sering dicari orang kedalam websitemu. sisanya serahkan pada mesin pencari...

@@ -16,7 +16,7 @@
                 if (name) return name;
                 return this.activeFilter.charAt(0).toUpperCase() + this.activeFilter.slice(1);
             },
-            projects: [
+            porto: [
                 {{ range .Data.Pages }}
                 {{ .Params.category | default "" | jsonify }},
                 {{ end }}
@@ -27,9 +27,9 @@
                 url.searchParams.set('filter', filter);
                 window.history.pushState({}, '', url);
             },
-            get hasProjects() {
-                if (this.activeFilter === 'all') return this.projects.length > 0;
-                return this.projects.includes(this.activeFilter);
+            get hasPorto() {
+                if (this.activeFilter === 'all') return this.porto.length > 0;
+                return this.porto.includes(this.activeFilter);
             }
         }"
         @popstate.window="activeFilter = new URLSearchParams(window.location.search).get('filter') || 'all'">
@@ -64,7 +64,7 @@
                                     <span x-show="activeFilter === '{{ .filter }}'" class="icon-[ri--check-line] w-5 h-5 text-indigo-600"></span>
                                 </a>
                             {{ end }}
-                            <a href="{{ "projects/archives/" | relURL }}" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-3 border-t border-gray-100 dark:border-gray-700">
+                            <a href="{{ "portofolio/archives/" | relURL }}" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-3 border-t border-gray-100 dark:border-gray-700">
                                 <span class="icon-[ri--archive-line] w-4 h-4"></span>
                                 Arsipkan
                             </a>
@@ -78,17 +78,17 @@
                     {{ $nonfilteredPages := .Data.Pages }}                    
                     {{ range $nonfilteredPages }}
                         <div x-show="activeFilter === 'all' || activeFilter === '{{ .Params.category }}'" x-transition.opacity.duration.300ms>
-                            {{ partial "project/list-card.html" . }}
+                            {{ partial "portofolio/list-card.html" . }}
                         </div>
                     {{ end }}
 
                 </div>
 
                 <!-- No Results Message -->
-                <div x-show="!hasProjects" class="text-center py-20" style="display: none;">
+                <div x-show="!hasPorto" class="text-center py-20" style="display: none;">
                     <div class="text-6xl mb-4">📂</div>
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Tidak ada proyek ditemukan</h3>
-                    <p class="text-gray-500 dark:text-gray-400">Belum ada proyek untuk kategori ini.</p>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Tidak ada portofolio ditemukan</h3>
+                    <p class="text-gray-500 dark:text-gray-400">Belum ada portofolio untuk kategori ini.</p>
                 </div>
         </div>
         

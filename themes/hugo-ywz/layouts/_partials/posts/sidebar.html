@@ -35,12 +35,14 @@
 
     <!-- Categories Widget -->
     {{ $tags := .Site.Taxonomies.tags.ByCount }}
-    {{ if and $tags .Params.show_tags }}
+    {{ $showTags := .Params.show_tags | default true }}
+    {{ if and $tags $showTags }}
     <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
         <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-100 dark:border-gray-700 pb-3">Topik Populer</h3>
         <div class="flex flex-wrap gap-2">
             {{ range first 10 $tags }}
-            <a href="{{ .Page.Permalink }}" class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs font-medium rounded-full hover:bg-indigo-100 hover:text-indigo-700 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-300 transition-colors">
+            {{ $isActive := eq .Page.Permalink $.Permalink }}
+            <a href="{{ .Page.Permalink }}" class="px-3 py-1 text-xs font-medium rounded-full transition-colors {{ if $isActive }}bg-indigo-600 text-white dark:bg-indigo-600 dark:text-white{{ else }}bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-indigo-100 hover:text-indigo-700 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-300{{ end }}">
                 {{ .Page.Title }} ({{ .Count }})
             </a>
             {{ end }}

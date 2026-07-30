@@ -1,6 +1,6 @@
 ---
-title: Tulisan
-description: catatan teknis yang berkaitan dengan pekerjaan
+title: Artikel
+description: Temukan Tulisan Menarik untuk dibaca
 # build:
 #   render: never
 #   list: never

@@ -4,9 +4,9 @@ description: Dukung saya untuk terus berkarya dan mengembangkan konten yang berm
 image: "donate.avif"
 funding_title: "Transfer Bank & E-Wallet"
 funding:
-  - type: "Bank BNI"
-    value: "1605859742"
-    owner: "(a.n. Muhamad Irfan)"
+  # - type: "Bank BNI"
+  #   value: "1605859742"
+  #   owner: "(a.n. Muhamad Irfan)"
   - type: "DANA"
     value: "081389215100"
     owner: "a.n Muhamad Irfan"

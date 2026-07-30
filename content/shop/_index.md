@@ -1,6 +1,6 @@
 ---
-title: "Toko"
-description: "Temukan produk dan jasa yang tersedia"
+title: "Layanan"
+description: "Daftar produk dan layanan yang tersedia"
 icon: "icon-[ri--store-2-line]"
 layout: "shop"
 contact_wa: "6281389215100"

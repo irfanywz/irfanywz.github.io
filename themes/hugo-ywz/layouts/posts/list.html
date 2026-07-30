@@ -54,7 +54,7 @@
                                         {{ if .Params.tags }}
                                         <div class="flex flex-wrap gap-2">
                                             {{ range first 2 .Params.tags }}
-                                                <span class="px-2.5 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs font-medium rounded-md">{{ . }}</span>
+                                                <span class="px-2.5 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs font-medium rounded-md">{{ . | humanize }}</span>
                                             {{ end }}
                                         </div>
                                         {{ end }}

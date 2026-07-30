@@ -21,19 +21,19 @@
         <article class="py-16 bg-white dark:bg-gray-900">
             <div class="container max-w-6xl mx-auto px-4 max-w-5xl">
 
-                {{ partial "project/hero.html" . }}
-                {{ partial "project/overview.html" . }}           
-                {{ partial "project/feature.html" . }}
-                {{ partial "project/spec.html" . }}
-                {{ partial "project/stack.html" . }}           
-                {{ partial "project/galery.html" . }}           
-                {{ partial "project/changelog.html" . }}
-                <!-- {{ partial "project/lesson.html" . }} -->
-                {{ partial "project/review.html" . }}           
+                {{ partial "portofolio/hero.html" . }}
+                {{ partial "portofolio/overview.html" . }}           
+                {{ partial "portofolio/feature.html" . }}
+                {{ partial "portofolio/spec.html" . }}
+                {{ partial "portofolio/stack.html" . }}           
+                {{ partial "portofolio/galery.html" . }}           
+                {{ partial "portofolio/changelog.html" . }}
+                <!-- {{ partial "portofolio/lesson.html" . }} -->
+                {{ partial "portofolio/review.html" . }}           
 
                 <div class="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between gap-4">
                     <div class="flex-shrink-0">
-                        <a href="{{ "projects/" | relURL }}" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm">
+                        <a href="{{ "portofolio/" | relURL }}" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm">
                             <span class="icon-[ri--arrow-left-s-line] w-5 h-5"></span>
                             Kembali
                         </a>
@@ -44,13 +44,13 @@
                             {{ with $pages.Prev . }}
                                 <a href="{{ .RelPermalink }}" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm">
                                     <span class="icon-[ri--arrow-left-s-line] w-5 h-5"></span>
-                                    Proyek Sebelumnya
+                                    Sebelumnya
                                 </a>
                             {{ end }}
 
                             {{ with $pages.Next . }}
                                 <a href="{{ .RelPermalink }}" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm">
-                                    Proyek Selanjutnya
+                                    Selanjutnya
                                     <span class="icon-[ri--arrow-right-s-line] w-5 h-5"></span>
                                 </a>
                             {{ end }}
@@ -65,6 +65,6 @@
 {{ end }}
 
 {{ define "footer" }}
-    {{ partial "project/share-offcanvas.html" . }}
+    {{ partial "portofolio/share-offcanvas.html" . }}
     {{ partial "view-count-js.html" . }}
 {{ end }}

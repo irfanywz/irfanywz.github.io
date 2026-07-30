@@ -1,5 +1,3 @@
 User-agent: *
-Disallow: /files/
-Disallow: /target/
-Disallow: /evaluasi/
+Disallow:
 Sitemap: {{ "sitemap.xml" | absURL }}

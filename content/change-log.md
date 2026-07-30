@@ -4,6 +4,17 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.1.0"
+    date: "30 Juli 2026"
+    changes:
+      - tag: "Pembaruan"
+        description: "menghapus halaman yang tidak penting [game, movie, buku, quote, docs]"      
+      - tag: "Pembaruan"
+        description: "mengubah halaman projects jadi portofolio"              
+      - tag: "Fitur Baru"
+        description: "menambahkan halaman tentang"
+      - tag: "Perbaikan"
+        description: "memperbaiki sidebar topik dan halaman tags"                              
   - version: "2.0.12"
     date: "31 Maret 2026"
     changes:
