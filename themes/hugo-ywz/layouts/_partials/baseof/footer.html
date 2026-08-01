@@ -7,7 +7,11 @@
                     &copy; {{ now.Year }} {{ .Site.Copyright }}
                     • 
                     <a href="{{ "change-log/" | relURL }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                        {{ .Site.Params.version }}
+                        {{ $changelogPage := site.GetPage "change-log.md" }}
+                        {{ if and $changelogPage $changelogPage.Params.changelog }}
+                          {{ $latest := index $changelogPage.Params.changelog 0 }}
+                          {{ $latest.version }}
+                        {{ end }}
                     </a>
                 </p>
                 <p>              

@@ -1,7 +1,7 @@
 baseURL = "https://irfanywz.web.id/"
 theme = "hugo-ywz"
 locale = "en-us"
-title = "Tulisan Kehidupan"
+title = "Tulisan Perjalanan Hidup"
 copyright = "Muhamad Irfan"
 
 enableEmoji = true
@@ -16,7 +16,6 @@ pygmentscodefences = true
 pygmentscodefencesguesssyntax = true
 
 [params]
-  version = "2.1.0"
 	# browser icon
   favicon = "favicon.ico"
 
