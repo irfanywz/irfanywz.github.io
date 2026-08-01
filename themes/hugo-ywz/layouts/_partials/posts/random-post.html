@@ -1,0 +1,62 @@
+<!-- Random Posts Widget with Thumbnail (Universal) -->
+<div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-100 dark:border-gray-700 pb-3 uppercase tracking-wider">
+        Artikel Pilihan
+    </h3>
+    
+    <!-- Ambil semua postingan dari section "posts", di-shuffle, lalu ambil 3 teratas -->
+    {{ $randomPosts := where site.RegularPages "Section" "posts" | shuffle | first 3 }}
+    
+    {{ if $randomPosts }}
+    <ul class="space-y-4 text-sm">
+        {{ range $randomPosts }}
+        <!-- Simpan konteks halaman saat ini ke dalam variabel -->
+        {{ $currentPage := . }}
+        
+        <li>
+            <a href="{{ $currentPage.RelPermalink }}" class="flex items-center gap-3 group" title="{{ $currentPage.Title }}">
+                
+                <!-- Logika Pemanggilan Gambar yang Aman -->
+                {{ if $currentPage.Params.image }}
+                    
+                    <!-- 1. Cek apakah gambar berupa Page Resource (satu folder dengan markdown) -->
+                    {{ $resourceImg := $currentPage.Resources.GetMatch $currentPage.Params.image }}
+                    
+                    <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
+                        {{ if $resourceImg }}
+                            <!-- Jika ditemukan di folder yang sama -->
+                            <img src="{{ $resourceImg.RelPermalink }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        
+                        {{ else if (fileExists (printf "static/%s" $currentPage.Params.image)) }}
+                            <!-- 2. Jika ada di dalam folder static/ -->
+                            <img src="{{ $currentPage.Params.image | relURL }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        
+                        {{ else if (strings.HasPrefix $currentPage.Params.image "http") }}
+                            <!-- 3. Jika berupa link eksternal -->
+                            <img src="{{ $currentPage.Params.image }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        
+                        {{ else }}
+                            <!-- Fallback jika gambar tidak ditemukan -->
+                            <div class="w-full h-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-[8px] text-gray-500">No Image</div>
+                        {{ end }}
+                    </div>
+                {{ end }}
+
+                <!-- Judul & Tanggal -->
+                <div class="flex-grow">
+                    <h4 class="text-gray-700 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 font-medium line-clamp-2 transition-colors text-xs sm:text-sm">
+                        {{ $currentPage.Title }}
+                    </h4>
+                    <span class="text-[11px] text-gray-400 dark:text-gray-500 mt-1 block">
+                        {{ $currentPage.Date.Format "Jan 2, 2006" }}
+                    </span>
+                </div>
+
+            </a>
+        </li>
+        {{ end }}
+    </ul>
+    {{ else }}
+        <p class="text-xs text-gray-400">Belum ada artikel.</p>
+    {{ end }}
+</div>

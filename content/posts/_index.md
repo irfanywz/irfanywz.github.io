@@ -1,7 +1,7 @@
 ---
 title: Artikel
 description: Temukan Tulisan Menarik untuk dibaca
-# build:
-#   render: never
-#   list: never
+build:
+  render: never
+  list: never
 ---

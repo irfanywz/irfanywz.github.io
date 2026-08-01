@@ -42,32 +42,8 @@
                 </a>
             {{ end}}
         </nav>
-    </div>
-    
-    <!-- Pemisah -->
-    <hr class="mt-auto border-gray-100 dark:border-gray-800 my-4">
-    
-    <!-- Navigasi Tags (Collapsible) -->
-    <div x-data="{ open: true }">
-        <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-            <span class="flex items-center gap-3">
-                <span class="icon-[ri--price-tag-3-line] w-5 h-5 text-green-500"></span>
-                <span class="font-medium">Topik</span>
-            </span>
-            <span class="icon-[ri--arrow-down-s-line] w-5 h-5 transition-transform" :class="{ 'rotate-180': open }"></span>
-        </button>
-        <div x-show="open" x-collapse class="pt-2 pb-1 px-4">
-            <div class="flex flex-wrap gap-2">
-                {{ $tags := .Site.Taxonomies.tags.ByCount }}
-                {{ range first 10 $tags }}
-                    {{ $isActive := eq .Page.Permalink $.Permalink }}
-                    <a href="{{ .Page.Permalink }}" class="px-3 py-1 text-xs font-medium rounded-full transition-colors {{ if $isActive }}bg-indigo-600 text-white dark:bg-indigo-600 dark:text-white{{ else }}bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-indigo-100 hover:text-indigo-700 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-300{{ end }}">
-                        {{ .Page.Title }} ({{ .Count }})
-                    </a>
-                {{ end }}
-            </div>
-        </div>
-    </div>
+    </div> 
+
     
     <div class="mt-auto p-6 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/30">
         <div class="flex items-center gap-4">

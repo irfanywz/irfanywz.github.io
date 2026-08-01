@@ -3,7 +3,7 @@ title: Reverse engineering web-ikepri, mengunduh melalui bytes
 slug: Reverse engineering web-ikepri, mengunduh melalui bytes
 date: 2025-07-02T19:26:35+07:00
 draft: false
-tags: ['reverse']
+categories: ["Reverse"]
 pass: ykywz
 ---
 

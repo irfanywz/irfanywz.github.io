@@ -1,7 +1,7 @@
 baseURL = "https://irfanywz.web.id/"
 theme = "hugo-ywz"
 locale = "en-us"
-title = "Muhamad Irfan"
+title = "Tulisan Kehidupan"
 copyright = "Muhamad Irfan"
 
 enableEmoji = true
@@ -9,12 +9,11 @@ enableGitInfo = true
 enableRobotsTXT = true
 canonifyURLs = true
 
-pagination.pagerSize = 2
+pagination.pagerSize = 6
 
 pygmentsstyle = "vs"
 pygmentscodefences = true
 pygmentscodefencesguesssyntax = true
-
 
 [params]
   version = "2.1.0"
@@ -29,12 +28,47 @@ pygmentscodefencesguesssyntax = true
   description = "Personal web Muhamad Irfan, menulis dan berbagi hal menarik seputar teknologi."
   keywords = "Muhamad Irfan, Content Creator Indonesia, YouTube Automation, Creator Tools, Digital Storytelling, muhamadirfan300899, Promise ETY, Bogor, Video Strategist, Personal Blog, sedang mempelajari bangun channel youtube yang menghasilkan, dengan harapan tahun ini bisa terkumpul 3 digit 000 xixixix"
 
+  # ads on post
+  showAds = false 
+  adInterval = 4
+  adCode = '''
+    <div class="w-full">
+        <span class="block text-xs font-semibold tracking-wider text-gray-400 uppercase mb-2">Advertisement</span>
+        <div class="text-sm text-gray-500 dark:text-gray-400">
+            <!-- Contoh jika pakai script AdSense atau banner kustom -->
+            <span>-- Slot Iklan Global dari Config --</span>
+        </div>
+    </div>
+  '''
+
+  # categories sidebar
+  showCategories = true
+
+  # ads sidebar
+  showAdsSidebar = false
+  adCodeSidebar = '''
+    <div class="w-full">
+        <span class="block text-xs font-semibold tracking-wider text-gray-400 uppercase mb-2">Advertisement</span>
+        <div class="text-sm text-gray-500 dark:text-gray-400">
+            <!-- Contoh jika pakai script AdSense atau banner kustom -->
+            <span>-- Slot Iklan Global dari Config --</span>
+        </div>
+    </div>
+  '''
+
+
 # Menu Header
 [[menu.main]]
 name = "Beranda"
 url = "/"
 pre = "icon-[ri--home-line]"
 weight = 10
+
+[[menu.main]]
+name = "Topik"
+url = "/categories/"
+pre = "icon-[ri--hashtag]"
+weight = 20
 
 [[menu.main]]
 name = "Portofolio"
@@ -60,11 +94,11 @@ weight = 35
 # pre = "icon-[ri--mail-line]"
 # weight = 40
 
-[[menu.main]]
-name = "Tentang"
-url = "/about/"
-pre = "icon-[ri--user-line]"
-weight = 40
+# [[menu.main]]
+# name = "Tentang"
+# url = "/about/"
+# pre = "icon-[ri--user-line]"
+# weight = 40
 
 # menu offcanvas
 # ======================
@@ -127,6 +161,14 @@ weight = 100
 [menu.footer.params]
   color = "text-sky-500"
 
+[[menu.footer]]
+name = "Tentang Penulis"
+url = "/about/"
+pre = "icon-[ri--user-line]"
+weight = 110
+[menu.footer.params]
+  color = "text-sky-500"  
+
 # [[menu.footer]]
 # name = "Layanan"
 # url = "/shop/"
@@ -144,6 +186,11 @@ url = "/"
 pre = "icon-[ri--home-line]"
 weight = 10
 
+[[menu.bottom]]
+name = "Topik"
+url = "/categories/"
+pre = "icon-[ri--hashtag]"
+weight = 20
 
 [[menu.bottom]]
 name = "Portofolio"
@@ -164,12 +211,11 @@ url = "/shop/"
 pre = "icon-[ri--store-2-line]"
 weight = 35
 
-
-[[menu.bottom]]
-name = "Tentang"
-url = "/about/"
-pre = "icon-[ri--user-line]"
-weight = 40
+# [[menu.bottom]]
+# name = "Tentang"
+# url = "/about/"
+# pre = "icon-[ri--user-line]"
+# weight = 40
 
 # [[menu.bottom]]
 # name = "Kontak"
@@ -190,7 +236,11 @@ weight = 40
     tabWidth = 4
 
 [taxonomies]
-  tag = 'tags'
+  # tag = 'tags'
+  category = "categories"
+
+[permalinks]
+  posts = "/:slug/"
 
 # allow html to content .md
 [markup.goldmark.renderer] 

@@ -4,6 +4,7 @@ slug: Sudah lama tidak ngejurnal
 date: 2026-07-22T18:30:35+07:00
 weather: Dingin
 location: Bogor, Indonesia
+journal_category: ["Refleksi"]
 draft: false
 ---
 

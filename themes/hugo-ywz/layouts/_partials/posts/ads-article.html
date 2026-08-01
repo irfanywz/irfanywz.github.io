@@ -1,0 +1,37 @@
+{{/* Cek apakah parameter showAds bernilai true di Front Matter artikel ini */}}
+{{ $isPostAdEnabled := .Params.showAds | default false }}
+
+{{/* Pastikan juga tombol master global di hugo.toml menyala (opsional, untuk pengaman utama) */}}
+{{ $isGlobalAllowed := .Site.Params.showAds | default true }}
+
+{{ if and $isGlobalAllowed $isPostAdEnabled }}
+    
+    {{/* Ambil posisi kustom dari front matter, default ke paragraf ke-3 jika kosong */}}
+    {{ $targetPositions := .Params.adPositions | default (slice 3) }}
+
+    {{/* Pecah konten berdasarkan tag penutup paragraf </p> */}}
+    {{ $content := .Content }}
+    {{ $paragraphs := split $content "</p>" }}
+
+    {{ range $i, $p := $paragraphs }}
+        {{ if ne $p "" }}
+            {{ $p | safeHTML }}</p>
+        {{ end }}
+
+        {{/* Cek nomor urut paragraf (index + 1) */}}
+        {{ $currentParagraphNum := add $i 1 }}
+        
+        {{ if in $targetPositions $currentParagraphNum }}
+            <div class="my-6 p-4 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm text-center">
+                <span class="block text-xs font-semibold tracking-wider text-gray-400 uppercase mb-2">Advertisement</span>
+                <div>
+                    {{ $.Site.Params.adCode | safeHTML }}
+                </div>
+            </div>
+        {{ end }}
+    {{ end }}
+
+{{ else }}
+    {{/* Jika showAds tidak di-set true di artikel ini, render konten secara normal tanpa iklan */}}
+    {{ .Content }}
+{{ end }}

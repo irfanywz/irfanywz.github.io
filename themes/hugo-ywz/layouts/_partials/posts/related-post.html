@@ -1,0 +1,62 @@
+<!-- Related Posts Widget (Randomized & Category-based with Thumbnail) -->
+{{ $current := . }}
+{{ if and $current.IsPage $current.Params.categories }}
+    
+    <!-- 1. Cari artikel lain yang punya categories sama, lalu kecualikan artikel yang sedang dibuka -->
+    {{ $related := where (where site.RegularPages "Section" "posts") ".Params.categories" "intersect" $current.Params.categories | intersect (where site.RegularPages "Permalink" "!=" $current.Permalink) }}
+    
+    <!-- 2. Acak (shuffle) hasilnya, lalu ambil 3 teratas -->
+    {{ $randomRelated := $related | shuffle | first 3 }}
+    
+    {{ if $randomRelated }}
+    <div class="mb-8 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-100 dark:border-gray-700 pb-3 uppercase tracking-wider">
+            Artikel Terkait
+        </h3>
+        <ul class="space-y-4 text-sm">
+            {{ range $randomRelated }}
+            <!-- Simpan konteks halaman terkait ke variabel terpisah -->
+            {{ $item := . }}
+            
+            <li>
+                <a href="{{ $item.RelPermalink }}" class="flex items-center gap-3 group">
+                    
+                    <!-- Logika Pemanggilan Gambar yang Aman -->
+                    {{ if $item.Params.image }}
+                        
+                        <!-- Cek apakah gambar berupa Page Resource (satu folder dengan markdown) -->
+                        {{ $resourceImg := $item.Resources.GetMatch $item.Params.image }}
+                        
+                        <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
+                            {{ if $resourceImg }}
+                                <img src="{{ $resourceImg.RelPermalink }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            
+                            {{ else if (fileExists (printf "static/%s" $item.Params.image)) }}
+                                <img src="{{ $item.Params.image | relURL }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            
+                            {{ else if (strings.HasPrefix $item.Params.image "http") }}
+                                <img src="{{ $item.Params.image }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            
+                            {{ else }}
+                                <div class="w-full h-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-[8px] text-gray-500">No Image</div>
+                            {{ end }}
+                        </div>
+                    {{ end }}
+
+                    <!-- Judul & Tanggal -->
+                    <div class="flex-grow">
+                        <h4 class="text-gray-700 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 font-medium line-clamp-2 transition-colors text-xs sm:text-sm">
+                            {{ $item.Title }}
+                        </h4>
+                        <span class="text-[11px] text-gray-400 dark:text-gray-500 mt-1 block">
+                            {{ $item.Date.Format "Jan 2, 2006" }}
+                        </span>
+                    </div>
+
+                </a>
+            </li>
+            {{ end }}
+        </ul>
+    </div>
+    {{ end }}
+{{ end }}

@@ -1,0 +1,60 @@
+{{ if .Params.series }}
+    {{ $currentSeries := .Params.series }}
+    {{ $pagesInSeries := where site.RegularPages "Params.series" $currentSeries }}
+    
+    <div class="mb-8 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-100 dark:border-gray-700 pb-3 uppercase tracking-wider">
+            Seri: <span class="text-indigo-600 dark:text-indigo-400 normal-case">{{ $currentSeries }}</span>
+        </h3>
+        
+        <ul class="space-y-4 text-sm">
+            {{ range sort $pagesInSeries ".Params.weight" "asc" }}
+            {{ $item := . }}
+            
+            <li>
+                <a href="{{ $item.RelPermalink }}" class="flex items-center gap-3 group 
+                    {{ if eq $item $ }} pointer-events-none opacity-80 {{ end }}">
+                    
+                    <!-- Logika Pemanggilan Gambar yang Aman -->
+                    {{ if $item.Params.image }}
+                        {{ $resourceImg := $item.Resources.GetMatch $item.Params.image }}
+                        
+                        <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
+                            {{ if $resourceImg }}
+                                <img src="{{ $resourceImg.RelPermalink }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            
+                            {{ else if (fileExists (printf "static/%s" $item.Params.image)) }}
+                                <img src="{{ $item.Params.image | relURL }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            
+                            {{ else if (strings.HasPrefix $item.Params.image "http") }}
+                                <img src="{{ $item.Params.image }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            
+                            {{ else }}
+                                <div class="w-full h-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-[8px] text-gray-500">No Image</div>
+                            {{ end }}
+                        </div>
+                    {{ end }}
+
+                    <!-- Judul, Indikator Aktif, & Tanggal -->
+                    <div class="flex-grow">
+                        <h4 class="font-medium line-clamp-2 transition-colors text-xs sm:text-sm
+                            {{ if eq $item $ }}
+                                text-indigo-600 dark:text-indigo-400 font-semibold
+                            {{ else }}
+                                text-gray-700 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400
+                            {{ end }}">
+                            {{ $item.Title }}
+                            {{ if eq $item $ }}<span class="text-[10px] block font-normal italic text-indigo-500">(Sedang Dibaca)</span>{{ end }}
+                        </h4>
+                        
+                        <span class="text-[11px] text-gray-400 dark:text-gray-500 mt-1 block">
+                            {{ $item.Date.Format "Jan 2, 2006" }}
+                        </span>
+                    </div>
+
+                </a>
+            </li>
+            {{ end }}
+        </ul>
+    </div>
+{{ end }}

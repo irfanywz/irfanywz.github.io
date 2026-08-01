@@ -1,0 +1,56 @@
+    <!-- Archive Widget -->
+{{ $showarchive := .Params.show_archive | default true }}
+{{ if $showarchive }}
+<div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-100 dark:border-gray-700 pb-3 uppercase tracking-wider">
+        Archive
+    </h3>
+    
+    <div class="space-y-3 text-sm">
+        <!-- 1. Ambil section posts terlebih dahulu, baru di-GroupByDate -->
+        {{ $posts := where site.RegularPages "Section" "posts" }}
+        {{ range $posts.GroupByDate "2006" }}
+            {{ $year := .Key }}
+            {{ $yearPages := .Pages }}
+            
+            <details class="group">
+                <summary class="flex items-center justify-between cursor-pointer font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 py-1">
+                    <span class="flex items-center gap-2">
+                        <!-- Icon panah kecil yang berputar saat dibuka -->
+                        <span class="transition-transform duration-200 group-open:rotate-90 text-xs text-gray-400">&#9658;</span>
+                        {{ $year }} (<span class="text-xs">{{ len $yearPages }}</span>)
+                    </span>
+                </summary>
+
+                <!-- 2. Kelompokkan lagi ke dalam Bulan di bawah Tahun tersebut -->
+                <div class="pl-4 mt-2 space-y-2 border-l border-gray-200 dark:border-gray-700 ml-2">
+                    {{ range $yearPages.GroupByDate "January" }}
+                        {{ $month := .Key }}
+                        {{ $monthPages := .Pages }}
+
+                        <details class="group/month">
+                            <summary class="flex items-center justify-between cursor-pointer text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 py-0.5 text-xs font-medium">
+                                <span class="flex items-center gap-2">
+                                    <span class="transition-transform duration-200 group-open/month:rotate-90 text-[10px] text-gray-400">&#9658;</span>
+                                    {{ $month }} (<span class="text-[10px]">{{ len $monthPages }}</span>)
+                                </span>
+                            </summary>
+
+                            <!-- 3. Daftar Judul Postingan di dalam Bulan tersebut -->
+                            <ul class="pl-4 mt-1.5 space-y-1.5 border-l border-gray-100 dark:border-gray-800 ml-1.5">
+                                {{ range $monthPages }}
+                                <li>
+                                    <a href="{{ .RelPermalink }}" class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-300 text-xs block truncate transition-colors">
+                                        {{ .Title }}
+                                    </a>
+                                </li>
+                                {{ end }}
+                            </ul>
+                        </details>
+                    {{ end }}
+                </div>
+            </details>
+        {{ end }}
+    </div>
+</div>
+{{ end }}

@@ -1,0 +1,91 @@
+{{ define "head" }}
+{{ end }}
+
+{{ define "main" }}
+<main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
+    
+    <!-- Header Halaman Terms -->
+    <section class="py-16 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+        <div class="container max-w-6xl mx-auto px-4 text-center">
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-3 flex items-center justify-center gap-3">
+                <span class="icon-[ri--hashtag] text-gray-900 dark:text-white"></span>
+                {{ .Title }}
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400 text-lg">
+                {{ .Description }}
+            </p>
+        </div>
+    </section>
+
+    <!-- List di Mobile, Grid di Desktop -->
+    <section class="py-16">
+        <div class="container max-w-6xl mx-auto px-4">
+            <!-- Perubahan utama: menggunakan flex/space-y di mobile, dan grid-cols-3 di lg -->
+            <div class="flex flex-col space-y-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 md:space-y-0 max-w-6xl mx-auto">
+                
+                {{ $data := .Data }}
+                {{ range $key, $value := .Data.Terms.ByCount }}
+
+                    <!-- 1. Filter halaman per term hanya untuk section "posts" -->
+                    {{ $filteredPages := where $value.Pages "Section" "posts" }}
+                    {{ $filteredCount := len $filteredPages }}
+
+                    <!-- 2. Tampilkan card HANYA JIKA jumlah post di section 'posts' lebih dari 0 -->
+                    {{ if gt $filteredCount 0 }}
+                        
+                        <!-- Ambil halaman _index.md dari folder categories untuk mengambil gambar & deskripsi -->
+                        {{ $termSlug := $value.Name | urlize }}
+                        {{ $termPage := site.GetPage (printf "/categories/%s" $termSlug) }}
+                        {{ $categoryURL := printf "%s%s/%s/" $.Site.LanguagePrefix $data.Plural ($value.Name | urlize) }}
+
+                        <!-- Seluruh card dibungkus tag <a>. Di mobile menjadi flex-row (menyamping), di desktop kembali flex-col -->
+                        <a href="{{ $categoryURL | absURL }}" class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:border-indigo-500 dark:hover:border-indigo-500 transition-all flex flex-row md:flex-col group">
+                            
+                            <!-- Gambar: Di mobile ukurannya dibuat lebih kecil/kotak di samping (w-28/w-32), di desktop kembali penuh di atas -->
+                            {{ if and $termPage $termPage.Params.image }}
+                                <div class="w-32 md:w-full h-auto md:h-40 flex-shrink-0 overflow-hidden bg-gray-100 dark:bg-gray-700">
+                                    <img src="{{ $termPage.Params.image | relURL }}" alt="{{ $value.Name }}" class="w-full h-full object-cover md:object-contain group-hover:scale-105 transition-transform duration-500">
+                                </div>
+                            {{ end }}
+
+                            <!-- Konten Card -->
+                            <div class="p-4 md:p-6 flex flex-col flex-grow justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between mb-2 md:mb-3">
+                                        <h2 class="text-base md:text-xl font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                            {{ $termPage.Title }}
+                                        </h2>
+                                        
+                                        <!-- Badge Jumlah Post Terfilter -->
+                                        <span class="bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 text-xs font-semibold px-2.5 py-1 rounded-full">
+                                            {{ $filteredCount }} Post
+                                        </span>
+                                    </div>
+
+                                    <!-- Deskripsi (Disembunyikan di mobile agar ringkas berbentuk list sederhana, muncul kembali di desktop) -->
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 hidden md:block flex-grow">
+                                        {{ if and $termPage $termPage.Params.description }}
+                                            {{ $termPage.Params.description }}
+                                        {{ else }}
+                                            Kumpulan artikel dan pembahasan seputar topik {{ $value.Name }}.
+                                        {{ end }}
+                                    </p>
+                                </div>
+
+                                <!-- Teks Indikator Aksi -->
+                                <span class="inline-flex items-center text-xs md:text-sm font-semibold text-indigo-600 dark:text-indigo-400 group-hover:translate-x-1 transition-transform">
+                                    Jelajahi kategori &rarr;
+                                </span>
+                            </div>
+                        </a>
+
+                    {{ end }}
+
+                {{ end }}
+
+            </div>
+        </div>
+    </section>
+
+</main>
+{{ end }}

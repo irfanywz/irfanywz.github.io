@@ -4,6 +4,23 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.2.0"
+    date: "1 Agustus 2026"
+    changes:
+      - tag: "Fitur Baru"
+        description: "menambahkan widget artikel terkait, pilihan, dan terbaru di sidebar"
+      - tag: "Fitur Baru"
+        description: "menambahkan dukungan komentar Disqus pada halaman single post"
+      - tag: "Fitur Baru"
+        description: "mengaktifkan fitur manajemen iklan (ads) via front matter menggunakan parameter showAds [bool] dan adPositions [array number]"
+      - tag: "Fitur Baru"
+        description: "mengaktifkan fitur konten berseri menggunakan parameter series dan weight pada front matter"
+      - tag: "Pembaruan"
+        description: "halaman single post sekarang menggunakan layout sidebar"
+      - tag: "Pembaruan"
+        description: "menambahkan slot penempatan iklan pada list post, single post, dan sidebar"
+      - tag: "Perbaikan"
+        description: "memperbaiki tampilan post agar menggunakan format list pada perangkat mobile"
   - version: "2.1.0"
     date: "30 Juli 2026"
     changes:

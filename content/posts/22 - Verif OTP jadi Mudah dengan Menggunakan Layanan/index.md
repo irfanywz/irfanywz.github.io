@@ -3,8 +3,12 @@ title: Verif OTP jadi mudah dengan menggunakan layanan nomor sementara
 slug: Verif OTP jadi mudah dengan menggunakan layanan nomor sementara
 date: 2026-03-31T04:30:31+07:00
 image: verif-otp-jadi-mudah.avif
-tags: ['hack']
+categories: ["Hack"]
 draft: false
+showAds: false              
+adPositions: [2, 5]
+series: "Artikel Series"
+weight: 1
 ---
 
 pagi ini terbangun dengan niatan melakukan vertifikasi channel youtube,

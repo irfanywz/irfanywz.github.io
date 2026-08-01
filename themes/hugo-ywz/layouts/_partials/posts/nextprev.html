@@ -1,0 +1,78 @@
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
+    
+    <!-- Tombol Sebelumnya (Prev Post) -->
+    <div class="flex">
+        {{ $pages := .CurrentSection.Pages.ByDate }}
+        {{ with $pages.Prev . }}
+            {{ $prev := . }}
+            <a href="{{ $prev.RelPermalink }}" class="flex items-center gap-4 p-4 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl hover:border-indigo-500 dark:hover:border-indigo-500 transition-all shadow-sm group">
+                
+                <!-- Thumbnail Gambar (Jika ada) -->
+                {{ if $prev.Params.image }}
+                    {{ $resourceImg := $prev.Resources.GetMatch $prev.Params.image }}
+                    <div class="w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
+                        {{ if $resourceImg }}
+                            <img src="{{ $resourceImg.RelPermalink }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        {{ else if (fileExists (printf "static/%s" $prev.Params.image)) }}
+                            <img src="{{ $prev.Params.image | relURL }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        {{ else if (strings.HasPrefix $prev.Params.image "http") }}
+                            <img src="{{ $prev.Params.image }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        {{ else }}
+                            <div class="w-full h-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-[8px] text-gray-500">No Image</div>
+                        {{ end }}
+                    </div>
+                {{ end }}
+
+                <!-- Panah & Judul -->
+                <div class="flex-grow">
+                    <span class="inline-flex items-center gap-1 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1">
+                        <span class="icon-[ri--arrow-left-s-line] w-4 h-4"></span> Sebelumnya
+                    </span>
+                    <h4 class="text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-1">
+                        {{ $prev.Title }}
+                    </h4>
+                </div>
+            </a>
+        {{ else }}
+            <!-- Placeholder kosong jika tidak ada post sebelumnya -->
+            <div class="hidden md:block"></div>
+        {{ end }}
+    </div>
+
+    <!-- Tombol Selanjutnya (Next Post) -->
+    <div class="flex justify-end">
+        {{ with $pages.Next . }}
+            {{ $next := . }}
+            <a href="{{ $next.RelPermalink }}" class="flex items-center justify-end gap-4 p-4 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl hover:border-indigo-500 dark:hover:border-indigo-500 transition-all shadow-sm group text-right">
+                
+                <!-- Judul & Panah -->
+                <div class="flex-grow">
+                    <span class="inline-flex items-center justify-end gap-1 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1">
+                        Selanjutnya <span class="icon-[ri--arrow-right-s-line] w-4 h-4"></span>
+                    </span>
+                    <h4 class="text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-1">
+                        {{ $next.Title }}
+                    </h4>
+                </div>
+
+                <!-- Thumbnail Gambar (Jika ada) -->
+                {{ if $next.Params.image }}
+                    {{ $resourceImg := $next.Resources.GetMatch $next.Params.image }}
+                    <div class="w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 order-last">
+                        {{ if $resourceImg }}
+                            <img src="{{ $resourceImg.RelPermalink }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        {{ else if (fileExists (printf "static/%s" $next.Params.image)) }}
+                            <img src="{{ $next.Params.image | relURL }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        {{ else if (strings.HasPrefix $next.Params.image "http") }}
+                            <img src="{{ $next.Params.image }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        {{ else }}
+                            <div class="w-full h-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-[8px] text-gray-500">No Image</div>
+                        {{ end }}
+                    </div>
+                {{ end }}
+
+            </a>
+        {{ end }}
+    </div>
+
+</div>

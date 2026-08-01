@@ -4,6 +4,7 @@ slug: Bangun Tidur Pipi sebelah kiri bengkak
 date: 2026-07-22T04:30:35+07:00
 weather: Dingin
 location: Bogor, Indonesia
+journal_category: ["Kesehatan"]
 draft: false
 ---
 

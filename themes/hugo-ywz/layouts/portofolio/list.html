@@ -72,24 +72,25 @@
                     </div>
             </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- filter only show type index not _index -->
-                    {{ $filteredPages := .RegularPages }}                    
-                    {{ $nonfilteredPages := .Data.Pages }}                    
-                    {{ range $nonfilteredPages }}
-                        <div x-show="activeFilter === 'all' || activeFilter === '{{ .Params.category }}'" x-transition.opacity.duration.300ms>
-                            {{ partial "portofolio/list-card.html" . }}
-                        </div>
-                    {{ end }}
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                <!-- filter only show type index not _index -->
+                {{ $filteredPages := .RegularPages }}                    
+                {{ $nonfilteredPages := .Data.Pages }}                    
+                {{ range $nonfilteredPages }}
+                    <div x-show="activeFilter === 'all' || activeFilter === '{{ .Params.category }}'" x-transition.opacity.duration.300ms>
+                        {{ partial "portofolio/list-card.html" . }}
+                    </div>
+                {{ end }}
 
-                </div>
+            </div>
 
-                <!-- No Results Message -->
-                <div x-show="!hasPorto" class="text-center py-20" style="display: none;">
-                    <div class="text-6xl mb-4">📂</div>
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Tidak ada portofolio ditemukan</h3>
-                    <p class="text-gray-500 dark:text-gray-400">Belum ada portofolio untuk kategori ini.</p>
-                </div>
+            <!-- No Results Message -->
+            <div x-show="!hasPorto" class="text-center py-20" style="display: none;">
+                <div class="text-6xl mb-4">📂</div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Tidak ada portofolio ditemukan</h3>
+                <p class="text-gray-500 dark:text-gray-400">Belum ada portofolio untuk kategori ini.</p>
+            </div>
+            
         </div>
         
     </main>
