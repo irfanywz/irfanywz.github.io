@@ -6,7 +6,6 @@ image: tautan-telegram-rusak.avif
 categories: ["Aplikasi"]
 draft: false
 series: "Artikel Series"
-weight: 2
 ---
 
 Saat ingin membuka link telegram yang ada dibrowser, saya mengalami kendala

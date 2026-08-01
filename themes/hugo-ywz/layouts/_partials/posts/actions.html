@@ -94,7 +94,8 @@
 
       <!-- Body / Tempat Disqus -->
       <div 
-        class="flex-1 overflow-y-auto p-6 bg-gray-50 dark:bg-gray-950 text-left"
+        class="flex-1 overflow-y-auto p-6 bg-white dark:bg-gray-950 text-left relative"
+        x-data="{ disqusReady: false }"
         x-init="$watch('open', value => {
           if (value && !loaded) {
             loaded = true;
@@ -107,20 +108,31 @@
             s.src = 'https://muhamad-irfan.disqus.com/embed.js';
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
+
+            // Cek berkala apakah iframe disqus sudah ke-generate oleh scriptnya
+            let checkInterval = setInterval(() => {
+              if (document.querySelector('#disqus_thread iframe')) {
+                disqusReady = true;
+                clearInterval(checkInterval);
+              }
+            }, 200);
           }
         })"
       >
+        <!-- Loading Spinner (Akan hilang setelah iframe disqus beneran nampil) -->
+        <div x-show="!disqusReady" class="flex justify-center items-center h-40">
+          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        </div>
+
         <div id="disqus_wrapper">
           <div id="disqus_thread">
-            <!-- Loading Spinner -->
-            <div x-show="!loaded" class="flex justify-center items-center h-40">
-              <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            </div>
           </div>
         </div>
+        
         <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
       </div>
       
     </div>
   </div>
 </div>
+

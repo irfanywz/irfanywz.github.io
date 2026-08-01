@@ -8,7 +8,6 @@ draft: false
 showAds: false              
 adPositions: [2, 5]
 series: "Artikel Series"
-weight: 1
 ---
 
 pagi ini terbangun dengan niatan melakukan vertifikasi channel youtube,

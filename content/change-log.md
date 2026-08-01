@@ -15,6 +15,8 @@ changelog:
         description: "mengaktifkan fitur manajemen iklan (ads) via front matter menggunakan parameter showAds [bool] dan adPositions [array number]"
       - tag: "Fitur Baru"
         description: "mengaktifkan fitur konten berseri menggunakan parameter series dan weight pada front matter"
+      - tag: "Fitur Baru"
+        description: "menambahkan fitur google translate"      
       - tag: "Pembaruan"
         description: "halaman single post sekarang menggunakan layout sidebar"
       - tag: "Pembaruan"
