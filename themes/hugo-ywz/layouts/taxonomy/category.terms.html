@@ -4,21 +4,28 @@
 {{ define "main" }}
 <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
     
-    <!-- Header Halaman Terms -->
-    <section class="py-16 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
-        <div class="container max-w-6xl mx-auto px-4 text-center">
-            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-3 flex items-center justify-center gap-3">
-                <span class="icon-[ri--hashtag] text-gray-900 dark:text-white"></span>
-                {{ .Title }}
-            </h1>
-            <p class="text-gray-600 dark:text-gray-400 text-lg">
-                {{ .Description }}
-            </p>
+    <!-- Header Halaman Terms (Dibuat lebih ringkas/kecil) -->
+    <section class="py-6 border-b border-gray-100 dark:border-gray-800 mb-8">
+        <div class="container max-w-6xl mx-auto px-4 flex items-center justify-between">
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                    <span class="icon-[ri--hashtag] text-indigo-500"></span>
+                    {{ .Title }}
+                </h1>
+                <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    {{ .Description | default "Jelajahi berbagai topik pembahasan menarik di sini." }}
+                </p>
+            </div>
+            <!-- Total Topik Aktif -->
+            <div class="hidden sm:block text-right">
+                <span class="text-xs font-medium text-gray-400 uppercase tracking-wider">Total Topik</span>
+                <p class="text-lg font-bold text-gray-800 dark:text-gray-200">{{ len (where .Data.Terms.ByCount "Pages" "!=" nil) }}</p>
+            </div>
         </div>
     </section>
 
     <!-- List di Mobile, Grid di Desktop -->
-    <section class="py-16">
+    <section class="py-10">
         <div class="container max-w-6xl mx-auto px-4">
             <!-- Perubahan utama: menggunakan flex/space-y di mobile, dan grid-cols-3 di lg -->
             <div class="flex flex-col space-y-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 md:space-y-0 max-w-6xl mx-auto">

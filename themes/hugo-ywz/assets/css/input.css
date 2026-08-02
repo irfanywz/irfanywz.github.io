@@ -29,9 +29,27 @@ html {
   font-family: 'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
 }
 
-/* fix link not wraping */
-a {
-  word-wrap: break-word;
+/* fix pre code not wraping */
+@layer base {
+  a {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Target HANYA inline code (backtick tunggal), berikan scroll horizontal */
+  code:not(pre code) {
+    display: inline-block;
+    max-width: 100%;
+    overflow-x: auto;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  /* Pastikan blok kode multi-line (pre code) tetap aman dengan scroll di elemen pre-nya */
+  pre {
+    overflow-x: auto;
+    max-width: 100%;
+  }
 }
 
 /* Mode Terang (Default) */

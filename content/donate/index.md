@@ -1,6 +1,7 @@
 ---
 title: Beri Dukungan
 description: Dukung saya untuk terus berkarya dan mengembangkan konten yang bermanfaat.
+icon: "heart-handshake"
 image: "donate.avif"
 funding_title: "Transfer Bank & E-Wallet"
 funding:

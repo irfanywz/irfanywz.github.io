@@ -1,5 +1,5 @@
-<!-- Author Widget -->
-<div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 text-center">
+<!-- Author Widget dengan Modal Donasi -->
+<div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 text-center" x-data="{ openDonate: false }">
     <div class="relative inline-block mb-4">
         <div class="w-24 h-24 rounded-full border-4 border-white dark:border-gray-700 shadow-lg overflow-hidden group">
             <img 
@@ -10,8 +10,9 @@
         </div>
         <span class="absolute bottom-1 right-1 w-4 h-4 bg-green-500 border-2 border-white dark:border-gray-700 rounded-full animate-pulse"></span>
     </div>
-    <!-- <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ .Site.Title }}</h3> -->
+    
     <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ .Site.Params.description }}</p>
+    
     <div class="flex flex-wrap justify-center gap-2">
         {{ with .Site.GetPage "/contact.md" }}
             {{ $wa := .Params.whatsapp }}
@@ -19,8 +20,69 @@
                 <span class="icon-[ri--whatsapp-line] w-5 h-5"></span>
             </a>
         {{ end }}
-        <a href="{{ "/donate/" | relURL }}" class="inline-flex items-center justify-center w-8 h-8 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-800 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors shadow-sm" title="Beri dukungan">                    
+
+        <!-- Tombol Donasi yang memicu modal -->
+        <button @click="openDonate = true" type="button" class="inline-flex items-center justify-center w-9 h-9 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-800 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors shadow-sm cursor-pointer" title="Beri dukungan">                    
             <span class="icon-[ri--hand-coin-fill] text-red-500 w-5 h-5 animate-pulse"></span>
-        </a>                               
+        </button>                        
     </div>
+
+    <!-- MODAL DONASI (QRIS Diperbesar) -->
+    {{ with site.GetPage "/donate.md" }}
+    <div 
+        x-show="openDonate" 
+        x-cloak
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+    >
+        <div 
+            @click.away="openDonate = false" 
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-95"
+            x-transition:enter-end="opacity-100 scale-100"
+            class="bg-white dark:bg-gray-800 rounded-2xl max-w-sm w-full p-6 relative shadow-2xl border border-gray-100 dark:border-gray-700 text-center"
+        >
+            <!-- Tombol Close -->
+            <button @click="openDonate = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer">
+                <span class="icon-[ri--close-line] text-xl"></span>
+            </button>
+            
+            <!-- Judul & Deskripsi dari donate.md -->
+            <div class="mb-4">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center justify-center gap-2 mb-1">
+                    <span class="icon-[ri--hand-coin-fill] text-red-500"></span>
+                    {{ .Title }}
+                </h3>
+                {{ if .Description }}
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ .Description }}</p>
+                {{ end }}
+            </div>
+
+            <!-- QRIS Section (Ukuran diperbesar jadi 56x56 / w-56 h-56) -->
+            {{ if .Params.qr }}
+            <div class="flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-700/80 p-4 rounded-xl mb-4">
+                <span class="text-[10px] font-semibold text-gray-400 tracking-wider mb-2">SCAN QRIS (ALL PAYMENT)</span>
+                <div class="bg-white p-3 rounded-lg shadow-sm">
+                    <img src="{{ .Params.qr }}" alt="QRIS Donasi" class="w-56 h-56 object-contain">
+                </div>
+            </div>
+            {{ end }}
+
+            <!-- Footer Modal & Aksi -->
+            <div class="flex items-center justify-between gap-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+                <a href="{{ .RelPermalink }}" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+                    Metode Lain &rarr;
+                </a>
+                <button @click="openDonate = false" class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-medium rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition cursor-pointer">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+    {{ end }}
 </div>

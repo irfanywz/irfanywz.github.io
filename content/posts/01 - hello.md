@@ -664,3 +664,9 @@ Underscores
 ```
 
 [Source](https://gist.githubusercontent.com/allysonsilva/85fff14a22bbdf55485be947566cc09e/raw/fa8048a906ebed3c445d08b20c9173afd1b4a1e5/Full-Markdown.md)
+
+
+***
+
+Tekan tombol <kbd>Ctrl</kbd> + <kbd>C</kbd> untuk menyalin teks.
+Atau ketik perintah <kbd>git status</kbd> di terminal.

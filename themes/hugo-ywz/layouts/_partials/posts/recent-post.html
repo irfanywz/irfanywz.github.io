@@ -48,7 +48,7 @@
                         {{ $currentPage.Title }}
                     </h4>
                     <span class="text-[11px] text-gray-400 dark:text-gray-500 mt-1 block">
-                        {{ $currentPage.Date.Format "Jan 2, 2006" }}
+                        {{ $currentPage.Date | time.Format "02 Jan 2006" }}
                     </span>
                 </div>
 

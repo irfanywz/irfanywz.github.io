@@ -15,9 +15,9 @@
         <div>
             <!-- Meta Info (Tanggal & Waktu Baca) -->
             <div class="flex items-center gap-2 md:gap-3 text-[10px] md:text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5 md:mb-3 uppercase tracking-wider">
-                <span>{{ .Date.Format "Jan 02, 2006" }}</span>
+                <span>{{ .Date | time.Format "02 Jan 2006" }}</span>
                 <span class="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-600"></span>
-                <span>{{ printf "%d MIN READ" .ReadingTime }}</span>
+                <span>{{ printf "%d min waktu baca" .ReadingTime }}</span>
             </div>
 
             <!-- Judul Artikel -->

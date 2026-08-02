@@ -12,9 +12,7 @@ saat ingin menerapkan fitur komentar keweb ini saya mengalami kendala error yang
 
 errornya terlihat seperti ini
 
-`
-disqus embed.js error Uncaught Error: parseColor received unparseable color: oklch(0.3730.034259.733)
-`
+> disqus embed.js error Uncaught Error: parseColor received unparseable color: oklch(0.3730.034259.733)
 
 sayapun mencari cara memperbaikinya, dan ketemu penjelasannya kira-kira seperti ini
 
@@ -48,6 +46,6 @@ untuk mengatasi masalah ini cukup menambahkan kode css dan bungkus div disqus th
 
 ```
 
-lalu dilanjut untuk menghilangkan text comment diakhir jumlah komentar, bisa masuk kebagian pengaturan community seperti link dibawah ini
+lalu dilanjut untuk menghilangkan text comment diakhir jumlah komentar, bisa masuk kebagian pengaturan community seperti link dibawah ini, sesuaikan username disqusnya
 
-```https://muhamad-irfan.disqus.com/admin/settings/community/```
+[https://muhamad-irfan.disqus.com/admin/settings/community/](https://muhamad-irfan.disqus.com/admin/settings/community/)
