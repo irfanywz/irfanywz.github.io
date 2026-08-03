@@ -4730,6 +4730,9 @@
   .pb-12 {
     padding-bottom: calc(var(--spacing) * 12);
   }
+  .pb-16 {
+    padding-bottom: calc(var(--spacing) * 16);
+  }
   .pl-2 {
     padding-left: calc(var(--spacing) * 2);
   }
