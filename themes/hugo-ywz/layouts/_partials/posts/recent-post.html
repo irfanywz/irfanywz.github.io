@@ -21,12 +21,19 @@
                     
                     <!-- 1. Coba deteksi apakah gambar adalah Page Resource (satu folder) -->
                     {{ $resourceImg := $currentPage.Resources.GetMatch $currentPage.Params.image }}
+                    {{ $globalImg := resources.Get $currentPage.Params.image }}
                     
                     <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
                         {{ if $resourceImg }}
                             <!-- Jika Page Resource ditemukan -->
-                            <img src="{{ $resourceImg.RelPermalink }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ $thumb := $resourceImg.Resize "600x avif" }}
+                            <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                         
+                        {{ else if $globalImg }}
+                            <!-- Jika ditemukan sebagai global resource (di assets/) -->
+                            {{ $thumbGlobal := $globalImg.Resize "600x avif" }}
+                            <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+
                         {{ else if (fileExists (printf "static/%s" $currentPage.Params.image)) }}
                             <!-- 2. Jika bukan Page Resource, cek apakah ada di folder static/ -->
                             <img src="{{ $currentPage.Params.image | relURL }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">

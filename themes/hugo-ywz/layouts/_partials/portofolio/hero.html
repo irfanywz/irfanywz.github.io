@@ -1,12 +1,12 @@
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center mb-20 bg-gray-50 dark:bg-gray-800/50 rounded-3xl p-8 border border-gray-200 dark:border-gray-700" 
     x-data="{
-        donateModalOpen: false,
+        supportModalOpen: false,
         downloadLink: '',
         timeLeft: 3,
         timer: null,
         initDownload(url) {
             this.downloadLink = url;
-            this.donateModalOpen = true;
+            this.supportModalOpen = true;
             this.timeLeft = 3;
             if (this.timer) clearInterval(this.timer);
             this.timer = setInterval(() => {
@@ -17,7 +17,7 @@
             }, 1000);
         },
         closeModal() {
-            this.donateModalOpen = false;
+            this.supportModalOpen = false;
             if (this.timer) clearInterval(this.timer);
         }
     }">
@@ -117,8 +117,8 @@
         </span>
     </div>
 
-    <!-- Donate Modal -->
-    <div x-show="donateModalOpen" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" x-transition.opacity>
+    <!-- support Modal -->
+    <div x-show="supportModalOpen" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" x-transition.opacity>
         <div @click.outside="closeModal()" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 relative border border-gray-200 dark:border-gray-700" x-transition.scale>
             <button @click="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
                 <span class="icon-[ri--close-line] w-6 h-6"></span>
@@ -135,9 +135,9 @@
                 </p>
                 
                 <div class="flex flex-col gap-3">
-                    <a href="{{ "donate/" | relURL }}" target="_blank" class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2">
+                    <a href="{{ "support/" | relURL }}" target="_blank" class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2">
                         <span class="icon-[ri--cup-line]"></span>
-                        Traktir Kopi
+                        Beri Dukungan
                     </a>
                     
                     <div class="relative py-2">

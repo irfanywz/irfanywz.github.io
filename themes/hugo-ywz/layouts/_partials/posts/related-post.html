@@ -26,11 +26,17 @@
                         
                         <!-- Cek apakah gambar berupa Page Resource (satu folder dengan markdown) -->
                         {{ $resourceImg := $item.Resources.GetMatch $item.Params.image }}
+                        {{ $globalImg := resources.Get $item.Params.image }}
                         
                         <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
                             {{ if $resourceImg }}
-                                <img src="{{ $resourceImg.RelPermalink }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                {{ $thumb := $resourceImg.Resize "600x avif" }}
+                                <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             
+                            {{ else if $globalImg }}
+                                {{ $thumbGlobal := $globalImg.Resize "600x avif" }}
+                                <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+
                             {{ else if (fileExists (printf "static/%s" $item.Params.image)) }}
                                 <img src="{{ $item.Params.image | relURL }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             

@@ -27,26 +27,51 @@
                     <article class="bg-white dark:bg-gray-900">
                         <div class="container max-w-6xl mx-auto px-4">
                             <div class="max-w-3xl mx-auto">
-                                <header class="text-center mb-12 border-b border-gray-200 dark:border-gray-700 pb-12">
-                                    <div class="flex flex-wrap justify-center gap-6 mb-6 text-gray-500 dark:text-gray-400">
-                                        <div class="flex items-center gap-2">
-                                            <span class="icon-[ri--calendar-line] w-5 h-5"></span>
-                                            <span>{{ .Date | time.Format "2 January 2006" }}</span>
+                                 <header class="mb-12">
+                                    <div class="flex flex-row items-start gap-4 sm:gap-6">
+                                        {{ if .Params.image }}
+                                            {{ $resourceImg := .Resources.GetMatch .Params.image }}
+                                            {{ $globalImg := resources.Get .Params.image }}
+                                            <div class="w-20 h-20 sm:w-28 sm:h-28 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 shadow-md">
+                                                {{ if $resourceImg }}
+                                                    {{ $thumb := $resourceImg.Resize "600x avif" }}
+                                                    <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ .Title }}" class="w-full h-full object-cover" loading="lazy">
+                                                {{ else if $globalImg }}
+                                                    {{ $thumbGlobal := $globalImg.Resize "600x avif" }}
+                                                    <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ .Title }}" class="w-full h-full object-cover" loading="lazy">
+                                                {{ else if (fileExists (printf "static/%s" .Params.image)) }}
+                                                    <img src="{{ .Params.image | relURL }}" alt="{{ .Title }}" class="w-full h-full object-cover" loading="lazy">
+                                                {{ else if (strings.HasPrefix .Params.image "http")}}
+                                                    <img src="{{ .Params.image }}" alt="{{ .Title }}" class="w-full h-full object-cover" loading="lazy">
+                                                {{ else }}
+                                                    <div class="w-full h-full bg-gray-200 dark:bg-gray-600"></div>
+                                                {{ end }}
+                                            </div>
+                                        {{ end }}
+                                        <div class="flex-grow">
+                                            <!-- Judul Post -->
+                                            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 leading-tight">{{ .Title }}</h1>
+                                            
+                                            <!-- Metadata (Tanggal & Waktu Baca) -->
+                                            <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-500 dark:text-gray-400">
+                                                <div class="flex items-center gap-2">
+                                                    <span class="icon-[ri--calendar-line] w-4 h-4"></span>
+                                                    <span>{{ .Date | time.Format "2 January 2006" }}</span>
+                                                </div>
+                                                <div class="flex items-center gap-2">
+                                                    <span class="icon-[ri--time-line] w-4 h-4"></span>
+                                                    <span>{{ printf "%d min waktu baca" .ReadingTime }}</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="flex items-center gap-2">
-                                            <span class="icon-[ri--time-line] w-5 h-5"></span>
-                                            <span>
-                                                {{ printf "%d min waktu baca" .ReadingTime }}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">{{ .Title }}</h1>
-                                    <p class="text-xl text-gray-600 dark:text-gray-300">{{ .Description }}</p>
+                                    </div>                                    
                                 </header>
+                                
+                                <div class="my-12 border-b border-gray-200 dark:border-gray-700"></div>
 
                                 <div class="prose prose-lg dark:prose-invert max-w-none">
                                     <div class="post-content-full">
-
+                                        {{ .Content }}
                                         {{ partial "posts/ads-article.html" . }}
 
                                     </div>

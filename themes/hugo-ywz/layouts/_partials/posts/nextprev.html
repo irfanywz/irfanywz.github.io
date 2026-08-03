@@ -10,9 +10,14 @@
                 <!-- Thumbnail Gambar (Jika ada) -->
                 {{ if $prev.Params.image }}
                     {{ $resourceImg := $prev.Resources.GetMatch $prev.Params.image }}
+                    {{ $globalImg := resources.Get $prev.Params.image }}
                     <div class="w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
                         {{ if $resourceImg }}
-                            <img src="{{ $resourceImg.RelPermalink }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ $thumb := $resourceImg.Resize "600x avif" }}
+                            <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        {{ else if $globalImg }}
+                            {{ $thumbGlobal := $globalImg.Resize "600x avif" }}
+                            <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                         {{ else if (fileExists (printf "static/%s" $prev.Params.image)) }}
                             <img src="{{ $prev.Params.image | relURL }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                         {{ else if (strings.HasPrefix $prev.Params.image "http") }}
@@ -58,9 +63,14 @@
                 <!-- Thumbnail Gambar (Jika ada) -->
                 {{ if $next.Params.image }}
                     {{ $resourceImg := $next.Resources.GetMatch $next.Params.image }}
+                    {{ $globalImg := resources.Get $next.Params.image }}
                     <div class="w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 order-last">
                         {{ if $resourceImg }}
-                            <img src="{{ $resourceImg.RelPermalink }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ $thumb := $resourceImg.Resize "600x avif" }}
+                            <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        {{ else if $globalImg }}
+                            {{ $thumbGlobal := $globalImg.Resize "600x avif" }}
+                            <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                         {{ else if (fileExists (printf "static/%s" $next.Params.image)) }}
                             <img src="{{ $next.Params.image | relURL }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                         {{ else if (strings.HasPrefix $next.Params.image "http") }}

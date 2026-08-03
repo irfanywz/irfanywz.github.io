@@ -75,12 +75,6 @@ url = "/portofolio/"
 pre = "icon-[ri--briefcase-2-line]"
 weight = 36
 
-# [[menu.main]]
-# name = "Belajar"
-# url = "/learn/"
-# pre = "icon-[ri--lightbulb-line]"
-# weight = 30
-
 [[menu.main]]
 name = "Layanan"
 url = "/shop/"
@@ -118,14 +112,6 @@ weight = 20
 # weight = 30
 # [menu.footer.params]
 #   color = "text-indigo-500"  
-
-[[menu.footer]]
-name = "Belajar"
-url = "/learn/"
-pre = "icon-[ri--lightbulb-line]"
-weight = 30
-[menu.footer.params]
-  color = "text-sky-500"
 
 
 [[menu.footer]]
@@ -196,12 +182,6 @@ name = "Portofolio"
 url = "/portofolio/"
 pre = "icon-[ri--briefcase-2-line]"
 weight = 36
-
-# [[menu.bottom]]
-# name = "Belajar"
-# url = "/learn/"
-# pre = "icon-[ri--lightbulb-line]"
-# weight = 30
 
 # menu shop
 [[menu.bottom]]

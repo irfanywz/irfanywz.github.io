@@ -2,19 +2,31 @@
 
     {{ $image := .Resources.GetMatch .Params.image }}
     {{ if $image }}
-    <a href="{{ .RelPermalink }}" class="block relative w-32 sm:w-40 md:w-full h-auto md:h-64 flex-shrink-0 overflow-hidden">
-        <img src="{{ $image.RelPermalink }}" alt="{{ .Title }}" class="w-full h-full object-cover transition-transform duration-500 md:group-hover:scale-105" loading="lazy">
-    </a>
+        <!-- Proses resize dan convert ke avif untuk Page Resources -->
+        {{ $thumb := $image.Resize "600x avif" }}
+        <a href="{{ .RelPermalink }}" class="block relative w-32 sm:w-40 md:w-full h-auto md:h-64 flex-shrink-0 overflow-hidden">
+            <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ .Title }}" class="w-full h-full object-cover transition-transform duration-500 md:group-hover:scale-105" loading="lazy">
+        </a>
     {{ else if .Params.image }}
-    <a href="{{ .RelPermalink }}" class="block relative w-32 sm:w-40 md:w-full h-auto md:h-64 flex-shrink-0 overflow-hidden">
-        <img src="{{ .Params.image | relURL }}" alt="{{ .Title }}" class="w-full h-full object-cover transition-transform duration-500 md:group-hover:scale-105" loading="lazy">
-    </a>
+        <!-- Fallback jika gambar diambil dari folder static/assets global -->
+        {{ $globalImage := resources.Get .Params.image }}
+        {{ if $globalImage }}
+            {{ $thumbGlobal := $globalImage.Resize "600x avif" }}
+            <a href="{{ .RelPermalink }}" class="block relative w-32 sm:w-40 md:w-full h-auto md:h-64 flex-shrink-0 overflow-hidden">
+                <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ .Title }}" class="w-full h-full object-cover transition-transform duration-500 md:group-hover:scale-105" loading="lazy">
+            </a>
+        {{ else }}
+            <!-- Fallback terakhir jika resource global tidak ditemukan (pure string URL) -->
+            <a href="{{ .RelPermalink }}" class="block relative w-32 sm:w-40 md:w-full h-auto md:h-64 flex-shrink-0 overflow-hidden">
+                <img src="{{ .Params.image | relURL }}" alt="{{ .Title }}" class="w-full h-full object-cover transition-transform duration-500 md:group-hover:scale-105" loading="lazy">
+            </a>
+        {{ end }}
     {{ end }}
 
     <div class="p-4 md:p-6 flex flex-col flex-grow justify-between">
         <div>
             <!-- Meta Info (Tanggal & Waktu Baca) -->
-            <div class="flex items-center gap-2 md:gap-3 text-[10px] md:text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5 md:mb-3 uppercase tracking-wider">
+            <div class="flex flex-wrap items-center gap-x-2 gap-y-1 md:gap-3 text-[10px] md:text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5 md:mb-3 uppercase tracking-wider">
                 <span>{{ .Date | time.Format "02 Jan 2006" }}</span>
                 <span class="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-600"></span>
                 <span>{{ printf "%d min waktu baca" .ReadingTime }}</span>
