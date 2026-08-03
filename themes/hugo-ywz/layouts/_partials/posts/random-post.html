@@ -26,12 +26,12 @@
                     <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
                         {{ if $resourceImg }}
                             <!-- Jika ditemukan di folder yang sama -->
-                            {{ $thumb := $resourceImg.Resize "600x avif" }}
+                            {{ $thumb := $resourceImg.Resize "1000x avif" }}
                             <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                         
                         {{ else if $globalImg }}
                             <!-- Jika ditemukan sebagai global resource (di assets/) -->
-                            {{ $thumbGlobal := $globalImg.Resize "600x avif" }}
+                            {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
                             <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
 
                         {{ else if (fileExists (printf "static/%s" $currentPage.Params.image)) }}

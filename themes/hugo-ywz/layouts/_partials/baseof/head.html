@@ -47,6 +47,32 @@
   <link href="{{ .Permalink }}" rel="feed" type="application/rss+xml" title="{{ $.Site.Title }}" />
 {{ end }}
 
+{{ $imgURL := "" }}
+{{ if .Params.images }}
+    {{ $imgURL = index .Params.images 0 | absURL }}
+{{ else if .Params.image }}
+    {{ $resImg := .Resources.GetMatch .Params.image }}
+    {{ $globImg := resources.Get .Params.image }}
+    
+    {{ if $resImg }}
+        {{ $imgURL = ($resImg.Resize "1000x avif").Permalink }}
+    {{ else if $globImg }}
+        {{ $imgURL = ($globImg.Resize "1000x avif").Permalink }}
+    {{ else }}
+        {{ $imgURL = .Params.image | absURL }}
+    {{ end }}
+{{ else }}
+    <!-- Fallback ke gambar default situs jika artikel tidak punya gambar -->
+    {{ $imgURL = "images/default-cover.avif" | absURL }}
+{{ end }}
+
+{{ if $imgURL }}
+    <meta property="og:image" content="{{ $imgURL }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:image" content="{{ $imgURL }}">
+    <meta name="twitter:card" content="summary_large_image">
+{{ end }}
 
 {{- template "_internal/schema.html" . -}}
 {{- template "_internal/opengraph.html" . -}}

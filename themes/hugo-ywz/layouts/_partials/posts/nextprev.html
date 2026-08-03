@@ -13,10 +13,10 @@
                     {{ $globalImg := resources.Get $prev.Params.image }}
                     <div class="w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
                         {{ if $resourceImg }}
-                            {{ $thumb := $resourceImg.Resize "600x avif" }}
+                            {{ $thumb := $resourceImg.Resize "1000x avif" }}
                             <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                         {{ else if $globalImg }}
-                            {{ $thumbGlobal := $globalImg.Resize "600x avif" }}
+                            {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
                             <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                         {{ else if (fileExists (printf "static/%s" $prev.Params.image)) }}
                             <img src="{{ $prev.Params.image | relURL }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
@@ -66,10 +66,10 @@
                     {{ $globalImg := resources.Get $next.Params.image }}
                     <div class="w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 order-last">
                         {{ if $resourceImg }}
-                            {{ $thumb := $resourceImg.Resize "600x avif" }}
+                            {{ $thumb := $resourceImg.Resize "1000x avif" }}
                             <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                         {{ else if $globalImg }}
-                            {{ $thumbGlobal := $globalImg.Resize "600x avif" }}
+                            {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
                             <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                         {{ else if (fileExists (printf "static/%s" $next.Params.image)) }}
                             <img src="{{ $next.Params.image | relURL }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">

@@ -3,7 +3,7 @@
     {{ $image := .Resources.GetMatch .Params.image }}
     {{ if $image }}
         <!-- Proses resize dan convert ke avif untuk Page Resources -->
-        {{ $thumb := $image.Resize "600x avif" }}
+        {{ $thumb := $image.Resize "1000x avif" }}
         <a href="{{ .RelPermalink }}" class="block relative w-32 sm:w-40 md:w-full h-auto md:h-64 flex-shrink-0 overflow-hidden">
             <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ .Title }}" class="w-full h-full object-cover transition-transform duration-500 md:group-hover:scale-105" loading="lazy">
         </a>
@@ -11,7 +11,7 @@
         <!-- Fallback jika gambar diambil dari folder static/assets global -->
         {{ $globalImage := resources.Get .Params.image }}
         {{ if $globalImage }}
-            {{ $thumbGlobal := $globalImage.Resize "600x avif" }}
+            {{ $thumbGlobal := $globalImage.Resize "1000x avif" }}
             <a href="{{ .RelPermalink }}" class="block relative w-32 sm:w-40 md:w-full h-auto md:h-64 flex-shrink-0 overflow-hidden">
                 <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ .Title }}" class="w-full h-full object-cover transition-transform duration-500 md:group-hover:scale-105" loading="lazy">
             </a>

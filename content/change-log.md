@@ -16,7 +16,9 @@ changelog:
       - tag: "Perbaikan"
         description: "perbaikan halaman topik"
       - tag: "Fitur Baru"
-        description: "menerapkan resize gambar otomatis jadi 600px dengan format avif untuk posts"        
+        description: "menerapkan resize gambar otomatis jadi 600px dengan format avif untuk posts"   
+      - tag: "Fitur Baru"
+        description: "menambahkan metadata gambar untuk fb dan twitter"                
   - version: "2.2.0"
     date: "1 Agustus 2026"
     changes:
