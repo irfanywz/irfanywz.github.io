@@ -12,15 +12,8 @@
     </div>
     <!-- <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ .Site.Title }}</h3> -->
     <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ .Site.Params.description }}</p>
-    <div class="flex flex-wrap justify-center gap-2">
-        {{ with .Site.GetPage "/contact.md" }}
-            {{ $wa := .Params.whatsapp }}
-            <a href="{{ $wa }}" target="_blank" class="inline-flex items-center justify-center w-9 h-9 bg-green-100 text-green-600 rounded-lg hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 dark:hover:bg-green-900/50 transition-colors" title="Whatsapp">
-                <span class="icon-[ri--whatsapp-line] w-5 h-5"></span>
-            </a>
-        {{ end }}
-        <a href="{{ "/support/" | relURL }}" class="inline-flex items-center justify-center w-8 h-8 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-800 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors shadow-sm" title="Beri dukungan">                    
-            <span class="icon-[ri--cup-line]  text-red-500 w-5 h-5 animate-pulse"></span>
-        </a>                               
-    </div>
+    <a href="{{ "/about/" | relURL }}" class="inline-flex items-center justify-center px-4 py-2 mb-4 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg text-sm font-medium transition-colors">
+        Selengkapnya
+        <span class="icon-[ri--arrow-right-line] ml-1"></span>
+    </a>
 </div>
