@@ -53,7 +53,7 @@
                     {{ $menu_item_url := .URL | relLangURL }}
                     {{ $active := and (strings.Contains $menu_item_url $page_split) (not $.IsHome) }}
 
-                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors {{ if or ($active) (and ($.IsHome) (eq .URL "/")) }}bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}" href="{{ .URL | relLangURL }}">
+                    <a class='flex items-center gap-3 px-4 py-3 rounded-xl transition-colors {{ if or ($active) (and ($.IsHome) (eq .URL "/")) }}bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}' href="{{ .URL | relLangURL }}">
                         <span class="{{ .Pre }} w-5 h-5 {{ .Params.color }}"></span>
                         <span>{{ .Name }}</span>
                     </a>
@@ -64,7 +64,7 @@
             <button @click="openDropdown = !openDropdown" type="button" class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors {{ if $isDropdownActive }}bg-indigo-50/60 dark:bg-indigo-900/10 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}">
                 <div class="flex items-center gap-3">
                     <span class="icon-[ri--apps-2-line] w-5 h-5 {{ if $isDropdownActive }}text-indigo-600 dark:text-indigo-400{{ else }}text-indigo-500{{ end }}"></span>
-                    <span>Lainnya</span>
+                    <span>Personal</span>
                 </div>
                 <span class="icon-[ri--arrow-down-s-line] w-4 h-4 transition-transform duration-200" :class="openDropdown ? 'rotate-180' : ''"></span>
             </button>

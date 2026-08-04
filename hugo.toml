@@ -88,7 +88,7 @@ weight = 20
 [[menu.main]]
 name = "Tentang"
 url = "/about/"
-pre = "icon-[ri--user-line]"
+pre = "icon-[lucide--user-round-pen]"
 weight = 40
 
 [[menu.main]]
@@ -103,7 +103,7 @@ weight = 40
 # [[menu.footer]]
 # name = "Tentang"
 # url = "/about/"
-# pre = "icon-[ri--user-line]"
+# pre = "icon-[lucide--user-round-pen]"
 # weight = 5
 # [menu.footer.params]
 #   color = "text-sky-500"  
@@ -207,7 +207,7 @@ weight = 30
 [[menu.bottom]]
 name = "Tentang"
 url = "/about/"
-pre = "icon-[ri--user-line]"
+pre = "icon-[lucide--user-round-pen]"
 weight = 40
 
 
