@@ -51,9 +51,9 @@
         <div class="mt-auto pt-2 md:pt-4 border-t border-gray-100 dark:border-gray-700 text-[10px] md:text-xs">
             <div class="flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
-                    {{ if .Params.categories }}
+                    {{ if .Params.topics }}
                     <div class="flex flex-wrap gap-1.5 md:gap-2">
-                        {{ range first 1 .Params.categories }} <!-- Dibatasi 1 kategori di mobile agar tidak memakan tempat -->
+                        {{ range first 1 .Params.topics }} <!-- Dibatasi 1 kategori di mobile agar tidak memakan tempat -->
                             <span class="px-2 py-0.5 md:px-2.5 md:py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 font-medium rounded-md">{{ . | humanize }}</span>
                         {{ end }}
                     </div>
@@ -61,14 +61,14 @@
 
                     <!-- buatin dot atau semacamnya sebagai pembatas -->
                      
-                    {{ if .Params.categories }}
+                    {{ if .Params.topics }}
                         <div class="block md:hidden w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-600"></div>
                     {{ end }}
 
                     <span class="font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider md:hidden">{{ .Date | time.Format "02 Jan 2006" }}</span>
 
                 </div>
-                {{ if .Params.categories }}
+                {{ if .Params.topics }}
                 {{ end }}
                 
                 <a href="{{ .RelPermalink }}" class="hidden md:inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-medium hover:gap-3 transition-all ml-auto" title="Baca Selengkapnya">

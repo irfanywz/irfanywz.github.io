@@ -62,6 +62,7 @@
                                     </div>
                                 </div>
 
+                                {{ if .Params.Whatsapp }}
                                 <div class="flex items-start gap-4">
                                     <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg text-green-600 dark:text-green-400 shadow-sm">
                                         <span class="icon-[ri--whatsapp-line] w-5 h-5"></span>
@@ -72,7 +73,8 @@
                                             {{ .Params.Phone }}
                                         </a>
                                     </div>
-                                </div>                            
+                                </div>    
+                                {{ end }}                        
 
                                 {{ if .Params.Telegram }}
                                     <div class="flex items-start gap-4">
@@ -81,7 +83,7 @@
                                         </div>
                                         <div class="flex-grow">
                                             <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Telegram</h4>
-                                            <a target="_blank" href="{{ .Params.Telegram }}" class="text-gray-900 dark:text-white font-medium hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                                            <a target="_blank" href="{{ .Params.telegram_link }}" class="text-gray-900 dark:text-white font-medium hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                                                 {{ .Params.Telegram }}
                                             </a>
                                         </div>

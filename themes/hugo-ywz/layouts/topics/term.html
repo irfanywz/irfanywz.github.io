@@ -16,7 +16,7 @@
                         Home
                     </a>
                     <span class="icon-[ri--arrow-right-s-line] w-4 h-4 text-gray-400"></span>
-                    <a href="{{ "/categories/" | relURL }}" class="flex items-center gap-1 leading-relaxed hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                    <a href="{{ "/topic/" | relURL }}" class="flex items-center gap-1 leading-relaxed hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                         <span class="icon-[ri--hashtag] w-4 h-4"></span>
                         Topik
                     </a>
@@ -61,7 +61,7 @@
                         {{ partial "posts/sidebar-author.html" . }}                                   
                         {{ partial "posts/ads-sidebar.html" . }}                                   
                         {{ partial "posts/random-post.html" . }}                                   
-                        {{ partial "posts/sidebar-categories.html" . }}                                   
+                        {{ partial "posts/sidebar-topics.html" . }}                                   
 
                     </div>
                 </aside>

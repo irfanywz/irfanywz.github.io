@@ -2,9 +2,10 @@
 title: Kontak
 description: Terhubung dengan mudah melalui kontak dibawah ini
 email: contact@irfanywz.web.id
-phone: +6281389215100
-whatsapp: https://api.whatsapp.com/send?phone=6281389215100&text=Halo, Saya dapat kontak dari website.
-# telegram: https://t.me/irfanywz
+# phone: +6281389215100
+# whatsapp: https://api.whatsapp.com/send?phone=6281389215100&text=Halo, Saya dapat kontak dari blog.
+telegram: https://t.me/irfanywz
+telegram_link: https://t.me/irfanywz?text=Halo, Saya dapat kontak dari blog
 # discordusername: "@irfanywz"
 # discord: https://discord.com/users/993858663162839062
 # facebook: https://fb.com/irfanywz

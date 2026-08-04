@@ -1,9 +1,9 @@
 <!-- Related Posts Widget (Randomized & Category-based with Thumbnail) -->
 {{ $current := . }}
-{{ if and $current.IsPage $current.Params.categories }}
+{{ if and $current.IsPage $current.Params.topics }}
     
-    <!-- 1. Cari artikel lain yang punya categories sama, lalu kecualikan artikel yang sedang dibuka -->
-    {{ $related := where (where site.RegularPages "Section" "posts") ".Params.categories" "intersect" $current.Params.categories | intersect (where site.RegularPages "Permalink" "!=" $current.Permalink) }}
+    <!-- 1. Cari artikel lain yang punya topics sama, lalu kecualikan artikel yang sedang dibuka -->
+    {{ $related := where (where site.RegularPages "Section" "posts") ".Params.topics" "intersect" $current.Params.topics | intersect (where site.RegularPages "Permalink" "!=" $current.Permalink) }}
     
     <!-- 2. Acak (shuffle) hasilnya, lalu ambil 3 teratas -->
     {{ $randomRelated := $related | shuffle | first 3 }}

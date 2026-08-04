@@ -1,5 +1,5 @@
 ---
 title: "Hack"
 description: "Temukan Tulisan Tentang Hack"
-image: "/categories/Hack.avif"
+image: "/topics/Hack.avif"
 ---

@@ -24,8 +24,8 @@ pygmentscodefencesguesssyntax = true
   avatar = "avatar.avif"
 
   author = "Muhamad Irfan"
-  description = "Personal web Muhamad Irfan, menulis dan berbagi hal menarik seputar teknologi."
-  keywords = "Muhamad Irfan, Content Creator Indonesia, YouTube Automation, Creator Tools, Digital Storytelling, muhamadirfan300899, Promise ETY, Bogor, Video Strategist, Personal Blog, sedang mempelajari bangun channel youtube yang menghasilkan, dengan harapan tahun ini bisa terkumpul 3 digit 000 xixixix"
+  description = "Personal blog Muhamad Irfan, menulis dan berbagi hal menarik seputar teknologi."
+  keywords = "Muhamad Irfan, Konten kreator pemula, lagi belajar Storytelling, muhamadirfan300899, Bogor, Personal Blog"
 
   # ads on post
   showAds = false 
@@ -55,6 +55,10 @@ pygmentscodefencesguesssyntax = true
     </div>
   '''
 
+  # Exit Popup
+  exitIntentTitle = "Tunggu, Jangan Pergi"
+  exitIntentContent = "Terima kasih telah mampir keblog ini"
+
 
 # Menu Header
 [[menu.main]]
@@ -65,37 +69,70 @@ weight = 10
 
 [[menu.main]]
 name = "Topik"
-url = "/categories/"
+url = "/topics/"
 pre = "icon-[ri--hashtag]"
 weight = 20
 
-[[menu.main]]
-name = "Portofolio"
-url = "/portofolio/"
-pre = "icon-[ri--briefcase-2-line]"
-weight = 36
-
-[[menu.main]]
-name = "Layanan"
-url = "/shop/"
-pre = "icon-[ri--store-2-line]"
-weight = 35
+# [[menu.main]]
+# name = "Portofolio"
+# url = "/portofolio/"
+# pre = "icon-[ri--briefcase-2-line]"
+# weight = 36
 
 # [[menu.main]]
-# name = "Kontak"
-# url = "/contact/"
-# pre = "icon-[ri--mail-line]"
-# weight = 40
+# name = "Layanan"
+# url = "/shop/"
+# pre = "icon-[ri--store-2-line]"
+# weight = 35
 
-# [[menu.main]]
-# name = "Tentang"
-# url = "/about/"
-# pre = "icon-[ri--user-line]"
-# weight = 40
+[[menu.main]]
+name = "Tentang"
+url = "/about/"
+pre = "icon-[ri--user-line]"
+weight = 40
+
+[[menu.main]]
+name = "Kontak"
+url = "/contact/"
+pre = "icon-[ri--mail-line]"
+weight = 40
 
 # menu offcanvas
 # ======================
 
+# [[menu.footer]]
+# name = "Tentang"
+# url = "/about/"
+# pre = "icon-[ri--user-line]"
+# weight = 5
+# [menu.footer.params]
+#   color = "text-sky-500"  
+
+# [[menu.footer]]
+# name = "Kontak"
+# url = "/contact/"
+# pre = "icon-[ri--mail-line]"
+# weight = 15
+# [menu.footer.params]
+#   color = "text-sky-500"
+
+[[menu.footer]]
+name = "Layanan"
+url = "/shop/"
+pre = "icon-[ri--store-2-line]"
+weight = 5
+[menu.footer.params]
+  color = "text-sky-500"
+
+[[menu.footer]]
+name = "Portofolio"
+url = "/portofolio/"
+pre = "icon-[ri--briefcase-2-line]"
+weight = 10
+[menu.footer.params]
+  color = "text-indigo-500"  
+
+# --- Menu yang Ingin Disembunyikan ke dalam Dropdown "Lainnya" ---
 
 [[menu.footer]]
 name = "Jurnal"
@@ -104,15 +141,7 @@ pre = "icon-[ri--newspaper-line]"
 weight = 20
 [menu.footer.params]
   color = "text-amber-500"
-
-# [[menu.footer]]
-# name = "Portofolio"
-# url = "/portofolio/"
-# pre = "icon-[ri--briefcase-2-line]"
-# weight = 30
-# [menu.footer.params]
-#   color = "text-indigo-500"  
-
+  group = "dropdown"
 
 [[menu.footer]]
 name = "Musik"
@@ -121,6 +150,7 @@ pre = "icon-[ri--music-2-line]"
 weight = 42
 [menu.footer.params]
   color = "text-violet-500"
+  group = "dropdown"
 
 [[menu.footer]]
 name = "Alat"
@@ -129,6 +159,7 @@ pre = "icon-[ri--tools-line]"
 weight = 60
 [menu.footer.params]
   color = "text-orange-500"
+  group = "dropdown"
 
 [[menu.footer]]
 name = "Koleksi"
@@ -137,30 +168,7 @@ pre = "icon-[ri--stack-line]"
 weight = 80
 [menu.footer.params]
   color = "text-blue-500"
-
-[[menu.footer]]
-name = "Kontak"
-url = "/contact/"
-pre = "icon-[ri--mail-line]"
-weight = 100
-[menu.footer.params]
-  color = "text-sky-500"
-
-[[menu.footer]]
-name = "Tentang Penulis"
-url = "/about/"
-pre = "icon-[ri--user-line]"
-weight = 110
-[menu.footer.params]
-  color = "text-sky-500"  
-
-# [[menu.footer]]
-# name = "Layanan"
-# url = "/shop/"
-# pre = "icon-[ri--store-2-line]"
-# weight = 35
-# [menu.footer.params]
-#   color = "text-sky-500"
+  group = "dropdown"
 
 # menu bottom mobile
 # ======================
@@ -173,34 +181,35 @@ weight = 10
 
 [[menu.bottom]]
 name = "Topik"
-url = "/categories/"
+url = "/topics/"
 pre = "icon-[ri--hashtag]"
 weight = 20
 
-[[menu.bottom]]
-name = "Portofolio"
-url = "/portofolio/"
-pre = "icon-[ri--briefcase-2-line]"
-weight = 36
-
-# menu shop
-[[menu.bottom]]
-name = "Layanan"
-url = "/shop/"
-pre = "icon-[ri--store-2-line]"
-weight = 35
-
 # [[menu.bottom]]
-# name = "Tentang"
-# url = "/about/"
-# pre = "icon-[ri--user-line]"
-# weight = 40
+# name = "Portofolio"
+# url = "/portofolio/"
+# pre = "icon-[ri--briefcase-2-line]"
+# weight = 36
 
+# # menu shop
 # [[menu.bottom]]
-# name = "Kontak"
-# url = "/contact/"
-# pre = "icon-[ri--mail-line]"
-# weight = 40
+# name = "Layanan"
+# url = "/shop/"
+# pre = "icon-[ri--store-2-line]"
+# weight = 35
+
+[[menu.bottom]]
+name = "Kontak"
+url = "/contact/"
+pre = "icon-[ri--mail-line]"
+weight = 30
+
+[[menu.bottom]]
+name = "Tentang"
+url = "/about/"
+pre = "icon-[ri--user-line]"
+weight = 40
+
 
 [markup]
   [markup.highlight]
@@ -216,7 +225,7 @@ weight = 35
 
 [taxonomies]
   # tag = 'tags'
-  category = "categories"
+  topic = "topics"
 
 [permalinks]
   posts = "/:slug/"

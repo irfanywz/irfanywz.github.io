@@ -3,7 +3,7 @@ title: "Penyesalan Menyimpan Data di HDD External"
 slug: penyesalan menyimpan data hdd external
 date: 2021-06-07T16:00:35+07:00
 draft: False
-categories: ["Komputer"]
+topics: ["Komputer"]
 ---
 
 

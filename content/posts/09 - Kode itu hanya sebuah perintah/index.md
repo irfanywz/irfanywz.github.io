@@ -3,7 +3,7 @@ title: "Kode itu hanya sebuah perintah"
 slug: kode hanya sebuah perintah
 date: 2024-04-24T09:00:35+07:00
 draft: False
-categories: ["Kode"]
+topics: ["Kode"]
 ---
 
 saat melihat video tutorial diyoutube tentang kode, saya menemukan kalimat yang sangat bagus yaitu

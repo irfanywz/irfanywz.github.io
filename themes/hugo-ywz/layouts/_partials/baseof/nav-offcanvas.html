@@ -22,40 +22,80 @@
     style="display: none;">
     
     <div class="flex items-center justify-between p-4 border-b border-gray-100 dark:border-gray-800 flex-shrink-0">
-        <h5 class="text-lg font-bold text-gray-900 dark:text-white" id="offcanvasTitle">Menu Lainnya</h5>
+        <h5 class="text-lg font-bold text-gray-900 dark:text-white" id="offcanvasTitle">Menu Navigasi</h5>
         <button @click="$store.nav.close()" type="button" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors" aria-label="Tutup Navigasi">
             <span class="icon-[ri--close-line] w-6 h-6"></span>
         </button>
     </div>
 
     <div class="p-4 overflow-y-auto flex-grow">
-        <nav class="space-y-1">
-            {{ range .Site.Menus.footer }}
+        
+        <!-- Cek apakah salah satu sub-menu dropdown sedang aktif -->
+        {{ $isDropdownActive := false }}
+        {{ $page_url := $.Page.RelPermalink | relLangURL }}
+        {{ $page_split := index (split $page_url "/") 1 }}
+        
+        {{ range .Site.Menus.footer }}
+            {{ if eq .Params.group "dropdown" }}
                 {{ $menu_item_url := .URL | relLangURL }}
-                {{ $page_url := $.Page.RelPermalink | relLangURL }}
-                {{ $page_split := index (split $page_url "/") 1 }}
-                {{ $active := and (strings.Contains $menu_item_url $page_split) (not $.IsHome) }}
+                {{ if and (strings.Contains $menu_item_url $page_split) (not $.IsHome) }}
+                    {{ $isDropdownActive = true }}
+                {{ end }}
+            {{ end }}
+        {{ end }}
 
-                <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors {{ if or ($active) (and ($.IsHome) (eq .URL "/")) }}bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}" href="{{ .URL | relLangURL }}">
-                    <span class="{{ .Pre }} w-5 h-5 {{ .Params.color }}"></span>
-                    <span>{{ .Name }}</span>
-                </a>
-            {{ end}}
+        <!-- Inisialisasi state openDropdown berdasarkan kondisi aktif di atas -->
+        <nav class="space-y-1" x-data="{ openDropdown: {{ if $isDropdownActive }}true{{ else }}false{{ end }} }">
+            
+            <!-- 1. Render Menu Utama yang Tampil Terbuka (Bukan Dropdown) -->
+            {{ range .Site.Menus.footer }}
+                {{ if not .Params.group }}
+                    {{ $menu_item_url := .URL | relLangURL }}
+                    {{ $active := and (strings.Contains $menu_item_url $page_split) (not $.IsHome) }}
+
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors {{ if or ($active) (and ($.IsHome) (eq .URL "/")) }}bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}" href="{{ .URL | relLangURL }}">
+                        <span class="{{ .Pre }} w-5 h-5 {{ .Params.color }}"></span>
+                        <span>{{ .Name }}</span>
+                    </a>
+                {{ end }}
+            {{ end }}
+
+            <!-- 2. Tombol "Lainnya" (Ikut menyala jika salah satu anak menunya aktif) -->
+            <button @click="openDropdown = !openDropdown" type="button" class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors {{ if $isDropdownActive }}bg-indigo-50/60 dark:bg-indigo-900/10 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}">
+                <div class="flex items-center gap-3">
+                    <span class="icon-[ri--apps-2-line] w-5 h-5 {{ if $isDropdownActive }}text-indigo-600 dark:text-indigo-400{{ else }}text-indigo-500{{ end }}"></span>
+                    <span>Lainnya</span>
+                </div>
+                <span class="icon-[ri--arrow-down-s-line] w-4 h-4 transition-transform duration-200" :class="openDropdown ? 'rotate-180' : ''"></span>
+            </button>
+
+            <!-- 3. Sub-menu yang Di-hide -->
+            <div x-show="openDropdown" x-transition.origin.top.duration.200ms class="space-y-1 pt-1" style="display: none;">
+                {{ range .Site.Menus.footer }}
+                    {{ if eq .Params.group "dropdown" }}
+                        {{ $menu_item_url := .URL | relLangURL }}
+                        {{ $active := and (strings.Contains $menu_item_url $page_split) (not $.IsHome) }}
+
+                        <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors {{ if $active }}bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}" href="{{ .URL | relLangURL }}">
+                            <span class="{{ .Pre }} w-5 h-5 {{ .Params.color }}"></span>
+                            <span>{{ .Name }}</span>
+                        </a>
+                    {{ end }}
+                {{ end }}
+            </div>
+
         </nav>
     </div> 
 
-    
+    <!-- Footer Jam & Cuaca -->
     <div class="mt-auto p-6 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/30">
         <div class="flex items-center gap-4">
-            
             <div class="flex flex-col w-full">
                 <div class="flex items-baseline justify-between">
-                    
                     <div class="flex flex-col">
                         <div class="flex items-start gap-2">
                             <div class="flex items-center gap-1">
-                                <!-- clock icon -->                                
-                                <span class="icon-[ri--time-line] text-indigo-500 text-xl"></span>                                
+                                <span class="icon-[ri--time-line] text-indigo-500 text-xl"></span>                       
                                 <span id="nav-time" class="text-xl font-bold text-gray-900 dark:text-white tabular-nums tracking-tight">
                                     00:00
                                 </span>
@@ -72,10 +112,8 @@
                         </div>
                         <span class="text-[9px] uppercase tracking-tighter text-gray-400 dark:text-gray-500 font-medium">Cibinong, Bogor</span>
                     </div>
-
                 </div>
             </div>
-
         </div>
     </div>
 </div>

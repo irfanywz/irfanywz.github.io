@@ -4,7 +4,7 @@ slug: Mau Pasang Komentar Disqus Malah Error, Begini Cara Mengatasinya
 description: "disqus embed.js error Uncaught Error: parseColor received unparseable color: oklch(0.3730.034259.733)"
 date: 2026-08-01T21:00:31+07:00
 image: disqus-error.avif
-categories: ["Kode"]
+topics: ["Kode"]
 draft: false
 ---
 

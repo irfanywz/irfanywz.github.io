@@ -3,7 +3,7 @@ title: "Hanya Kumpulan Text, Image, Audio dan Video"
 slug: hanya kumpulan data
 date: 2023-12-18T07:03:40+07:00
 draft: false
-categories: ["Komputer"]
+topics: ["Komputer"]
 ---
 
 selama ini saya selalu menggambarkan isi komputer hanyalah kumpulan data yang dibagi kedalam beberapa bagian

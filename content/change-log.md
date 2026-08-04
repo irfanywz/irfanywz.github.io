@@ -55,7 +55,7 @@ changelog:
     date: "30 Juli 2026"
     changes:
       - tag: "Pembaruan"
-        description: "menghapus halaman yang tidak penting [game, movie, buku, quote, docs]"      
+        description: "menghapus halaman yang tidak penting [game, movie, buku, quote, docs, learn, donate]"      
       - tag: "Pembaruan"
         description: "mengubah halaman projects jadi portofolio"               
       - tag: "Fitur Baru"

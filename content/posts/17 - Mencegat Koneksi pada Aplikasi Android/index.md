@@ -3,7 +3,7 @@ title: Mencegat Koneksi Pada Aplikasi Android
 slug: mencegat koneksi pada aplikasi android
 date: 2025-07-14T16:46:45+07:00
 draft: false
-categories: ["Reverse"]
+topics: ["Reverse"]
 ---
 
 saya penasaran bagaimana cara membypass ssl pinning pada sebuah aplikasi android

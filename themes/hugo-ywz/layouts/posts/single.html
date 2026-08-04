@@ -72,11 +72,11 @@
                                         {{ partial "posts/ads-article.html" . }}
                                     </div>
 
-                                    {{ if gt .Params.categories 0 }}
+                                    {{ if gt .Params.topics 0 }}
                                     <div class="mt-8 not-prose">
                                         <h4 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-2">Kata Kunci:</h4>
                                         <div class="flex flex-wrap gap-2">
-                                            {{ range .Params.categories }}
+                                            {{ range .Params.topics }}
                                             <span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm">{{ . }}</span>
                                             {{ end }}
                                         </div>
@@ -109,7 +109,7 @@
                         {{ partial "posts/sidebar-author.html" . }}                            
                         {{ partial "posts/ads-sidebar.html" . }}                            
                         {{ partial "posts/recent-post.html" . }}                            
-                        {{ partial "posts/sidebar-categories.html" . }}                            
+                        {{ partial "posts/sidebar-topics.html" . }}                            
                     </div>
                 </aside>
 

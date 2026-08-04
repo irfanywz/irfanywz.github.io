@@ -1,0 +1,95 @@
+{{ define "head" }}
+{{ end }}
+
+{{ define "main" }}
+<main class="flex-grow bg-white dark:bg-gray-950 transition-colors duration-300">
+    
+    <!-- Breadcrumb Simple -->
+    <div class="container max-w-6xl mx-auto px-3 sm:px-6 pt-6 pb-2">
+        <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+            <a href="/" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Home</a>
+            <span class="text-gray-300 dark:text-gray-700">/</span>
+            <span class="text-gray-900 dark:text-white font-medium">{{ .Title }}</span>
+        </nav>
+    </div>
+
+    <!-- Header Judul Halaman -->
+    <section class="pt-4 pb-6 sm:pb-8">
+        <div class="container max-w-6xl mx-auto px-3 sm:px-6">
+            <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+                {{ .Title }}
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-1.5 sm:mt-2 text-sm sm:text-base">
+                Pilih topik di bawah untuk mulai menjelajahi artikel.
+            </p>
+        </div>
+    </section>
+
+    <!-- Grid Card: 2 Kolom di Mobile, 3 Kolom di Desktop -->
+    <section class="pb-20">
+        <div class="container max-w-6xl mx-auto px-3 sm:px-6">
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+                
+                <!-- Loop custom taxonomy 'topics' -->
+                {{ range $name, $taxonomy := .Site.Taxonomies.topics }}
+                    
+                    {{ $termPage := $taxonomy.Page }}
+                    {{ $filteredPages := where $taxonomy.Pages "Section" "posts" }}
+                    {{ $filteredCount := len $filteredPages }}
+
+                    {{ if gt $filteredCount 0 }}
+                        
+                        <!-- Card Style: Background Image with Overlay -->
+                        <a href="{{ if $termPage }}{{ $termPage.Permalink }}{{ else }}{{ printf "/topics/%s/" ($name | urlize) | absURL }}{{ end }}" class="group relative h-48 sm:h-80 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col justify-end p-3.5 sm:p-6 border border-gray-100 dark:border-gray-800">
+                            
+                            <!-- Background Image -->
+                            {{ if and $termPage $termPage.Params.image }}
+                                <div class="absolute inset-0 z-0">
+                                    <img src="{{ $termPage.Params.image | relURL }}" alt="{{ $name }}" class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out">
+                                </div>
+                            {{ else }}
+                                <div class="absolute inset-0 z-0 bg-gradient-to-br from-indigo-900 via-slate-900 to-gray-900"></div>
+                            {{ end }}
+
+                            <!-- Dark Gradient Overlay -->
+                            <div class="absolute inset-0 z-10 bg-gradient-to-t from-black/90 via-black/50 to-black/20 group-hover:from-black/95 group-hover:via-black/60 transition-colors duration-300"></div>
+
+                            <!-- Badge Jumlah Post -->
+                            <div class="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 z-20">
+                                <span class="bg-white/20 backdrop-blur-md text-white text-[10px] sm:text-xs font-medium px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border border-white/20 shadow-xs">
+                                    {{ $filteredCount }} Post
+                                </span>
+                            </div>
+
+                            <!-- Content Overlay -->
+                            <div class="relative z-20 flex flex-col justify-end transform group-hover:-translate-y-1 transition-transform duration-300">
+                                <h2 class="text-sm sm:text-2xl font-bold text-white mb-1 sm:mb-2 group-hover:text-indigo-300 transition-colors line-clamp-1 sm:line-clamp-none">
+                                    {{ if $termPage }}{{ $termPage.Title }}{{ else }}{{ $name | humanize }}{{ end }}
+                                </h2>
+                                
+                                <p class="text-gray-300 text-xs sm:text-sm line-clamp-2 mb-2 sm:mb-4 leading-relaxed font-normal opacity-90 hidden sm:block">
+                                    {{ if and $termPage $termPage.Params.description }}
+                                        {{ $termPage.Params.description }}
+                                    {{ else }}
+                                        Kumpulan artikel dan pembahasan mendalam seputar topik {{ $name | humanize }}.
+                                    {{ end }}
+                                </p>
+
+                                <div class="flex items-center text-[11px] sm:text-xs font-semibold text-indigo-300 group-hover:text-white transition-colors gap-1 sm:gap-1.5">
+                                    <span>Jelajahi</span>
+                                    <span class="icon-[ri--arrow-right-line] w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform"></span>
+                                </div>
+                            </div>
+
+                        </a>
+
+                    {{ end }}
+
+                {{ end }}
+
+            </div>
+        </div>
+    </section>
+
+</main>
+{{ end }}

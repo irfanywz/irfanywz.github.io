@@ -4,7 +4,7 @@ slug: Menjadi Prompt Engineering Handal
 description: tidak bisa dipungkiri AI sudah sangat canggih, belajar atau tertinggal
 date: 2025-07-01T15:28:03+07:00
 image: prompt-engineering-handal.avif
-categories: ["AI"]
+topics: ["AI"]
 draft: false
 ---
 

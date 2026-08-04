@@ -1,26 +1,26 @@
-<!-- Categories Widget -->
-{{ $showcategories := .Site.Params.showCategories | default true }}
-{{ if $showcategories }}
+<!-- topics Widget -->
+{{ $showtopics := .Site.Params.showtopics | default true }}
+{{ if $showtopics }}
     <!-- 1. Kumpulkan dan filter kategori yang hanya punya konten di section "posts" -->
-    {{ $validCategories := slice }}
-    {{ range .Site.Taxonomies.categories }}
+    {{ $validtopics := slice }}
+    {{ range .Site.Taxonomies.topics }}
         {{ $filteredPages := where .Pages "Section" "posts" }}
         {{ $filteredCount := len $filteredPages }}
         
         {{ if gt $filteredCount 0 }}
             <!-- Simpan data dengan key yang aman (.Page.Title dan .Page) -->
-            {{ $validCategories = $validCategories | append (dict "Title" .Page.Title "Page" .Page "Count" $filteredCount) }}
+            {{ $validtopics = $validtopics | append (dict "Title" .Page.Title "Page" .Page "Count" $filteredCount) }}
         {{ end }}
     {{ end }}
 
     <!-- 2. Urutkan berdasarkan jumlah terbanyak -->
-    {{ $sortedCategories := sort $validCategories "Count" "desc" }}
+    {{ $sortedtopics := sort $validtopics "Count" "desc" }}
 
-    {{ if $sortedCategories }}
+    {{ if $sortedtopics }}
     <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
         <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-100 dark:border-gray-700 pb-3">Jelajahi Topik</h3>
         <div class="flex flex-wrap gap-2">
-            {{ range first 10 $sortedCategories }}
+            {{ range first 10 $sortedtopics }}
             {{ $isActive := eq .Page.Permalink $.Permalink }}
             <a href="{{ .Page.Permalink }}" class="px-3 py-1 text-xs font-medium rounded-full transition-colors {{ if $isActive }}bg-indigo-600 text-white dark:bg-indigo-600 dark:text-white{{ else }}bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-indigo-100 hover:text-indigo-700 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-300{{ end }}">
                 {{ .Title }} ({{ .Count }})

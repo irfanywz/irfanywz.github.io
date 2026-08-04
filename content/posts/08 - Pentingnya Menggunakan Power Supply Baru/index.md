@@ -3,7 +3,7 @@ title: "Pentingnya Menggunakan Power Supply Baru"
 slug: pentingnya menggunakan power supply baru
 date: 2024-01-02T19:49:16+07:00
 draft: False
-categories: ["Komputer"]
+topics: ["Komputer"]
 ---
 
 saya ingin sharing kejadian akibat power supply komputer yang tidak layak lagi dipakai

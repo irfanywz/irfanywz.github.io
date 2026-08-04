@@ -1,5 +1,5 @@
 ---
 title: "Komputer"
 description: "Temukan Tulisan Tentang Komputer"
-image: "/categories/Komputer.avif"
+image: "/topics/Komputer.avif"
 ---
