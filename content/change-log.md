@@ -4,6 +4,19 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.3.1"
+    date: "4 Agustus 2026"
+    changes:
+      - tag: "Perbaikan"
+        description: "Perbaikan card post artikel"
+      - tag: "Perbaikan"
+        description: "icon breadcrumb halaman alat"        
+      - tag: "Pembaruan"
+        description: "menambahkan breadcrumb halaman koleksi"        
+      - tag: "Pembaruan"
+        description: "Menu navigasi lainnya dipindahkan"
+      - tag: "Fitur Baru"
+        description: "Perbaikan halaman lama yang 404 sekarang sudah redirect ke post baru"
   - version: "2.3.0"
     date: "3 Agustus 2026"
     changes:

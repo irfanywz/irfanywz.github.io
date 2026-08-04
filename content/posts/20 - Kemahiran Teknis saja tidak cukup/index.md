@@ -25,4 +25,4 @@ belajar bahwa kita hidup butuh bantuan mahluk lainnya, komunikasi adalah kunci u
 
 mahir berkomunikasi, menjalin pertemanan, berkenalan, merangkai kata untuk diucapkan lebih penting dari hal teknis
 
-> sepandai apapun kamu dalam hal teknis, tanpa bisa komunikasi dengan mahir. kesempatan tidak akan pernah berpihak kepadamu kecuali orang lain membantu
+> sepandai apapun kamu dalam hal teknis, tanpa bisa komunikasi dengan baik. kesempatan tidak akan pernah berpihak kepadamu...

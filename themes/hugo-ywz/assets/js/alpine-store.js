@@ -93,4 +93,98 @@ document.addEventListener('alpine:init', () => {
             document.body.style.overflow = '';
         }
     });
+
+    // Store untuk Cookie Consent
+    Alpine.store('cookieConsent', {
+        isVisible: false,
+        init() {
+            // Tampilkan notifikasi jika persetujuan belum disimpan di localStorage
+            if (!localStorage.getItem('cookie_consent_accepted')) {
+                // Beri jeda sedikit agar tidak terlalu mengganggu saat halaman dimuat
+                setTimeout(() => {
+                    this.isVisible = true;
+                }, 2000); // Tampil setelah 2 detik
+            }
+        },
+        accept() {
+            localStorage.setItem('cookie_consent_accepted', 'true');
+            this.isVisible = false;
+        }
+    });
+
+    // Store untuk Google Translate
+    Alpine.store('translate', {
+        isOpen: false,
+        isLoaded: false,
+        isReady: false,
+
+        toggle() {
+            this.isOpen = !this.isOpen;
+            if (this.isOpen) {
+                this.init();
+            }
+        },
+
+        close() {
+            this.isOpen = false;
+        },
+
+        init() {
+            if (this.isLoaded) return;
+
+            window.googleTranslateElementInit = () => {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'id',
+                    includedLanguages: 'en',
+                    autoDisplay: false,
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                }, 'google_translate_element');
+                this.isReady = true;
+            };
+
+            const script = document.createElement('script');
+            script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+            script.async = true;
+            document.body.appendChild(script);
+            this.isLoaded = true;
+        }
+    });
+
+    // Store untuk Exit Intent Popup
+    Alpine.store('exitIntent', {
+        isVisible: false,
+        hasBeenTriggered: false,
+        
+        init() {
+            // Menambahkan event listener ke body dengan opsi { once: true }
+            // agar hanya terpicu sekali saat mouse meninggalkan halaman.
+            document.body.addEventListener('mouseleave', () => {
+                this.trigger();
+            }, { once: true });
+        },
+
+        trigger() {
+            if (this.hasBeenTriggered) return;
+
+            const lastShown = localStorage.getItem('exit_intent_last_shown');
+            const hasBeenShownThisSession = sessionStorage.getItem('exit_intent_shown_this_session');
+            const oneDay = 24 * 60 * 60 * 1000; // 24 jam dalam milidetik
+
+            // Kondisi untuk menampilkan popup:
+            // 1. Belum pernah ditampilkan di sesi ini.
+            // 2. Belum pernah ditampilkan sama sekali ATAU sudah lebih dari 24 jam sejak terakhir ditampilkan.
+            if (!hasBeenShownThisSession && (!lastShown || (Date.now() - lastShown > oneDay))) {
+                this.isVisible = true;
+                this.hasBeenTriggered = true;
+                
+                // Set localStorage untuk menandai waktu terakhir popup muncul
+                localStorage.setItem('exit_intent_last_shown', Date.now());
+                // Set sessionStorage agar tidak muncul lagi di tab/sesi yang sama
+                sessionStorage.setItem('exit_intent_shown_this_session', 'true');
+            }
+        },
+        close() {
+            this.isVisible = false;
+        }
+    });
 });

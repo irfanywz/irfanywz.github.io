@@ -7,7 +7,8 @@
             <div class="container max-w-6xl mx-auto px-4 py-6">
                 <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                     <a href="{{ .CurrentSection.RelPermalink }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1">
-                        🔨 {{ with .Parent }}{{ .Title }}{{ end }}
+                        <i class="icon-[ri--tools-line]"></i>
+                        {{ with .Parent }}{{ .Title }}{{ end }}
                     </a>
                     <i class="icon-[ri--arrow-right-s-line]"></i>
                     <span class="text-gray-900 dark:text-white font-medium truncate">{{ .Title }}</span>

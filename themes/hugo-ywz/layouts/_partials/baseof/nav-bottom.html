@@ -24,7 +24,7 @@
         {{ $active := and (strings.Contains $menu_item_url $page_split) (not $.IsHome) }}
         
         <a href="{{ .URL | relLangURL }}" 
-           class="flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px] font-medium transition-colors {{ if or ($active) (and ($.IsHome) (eq .URL '/')) }}text-indigo-600 dark:text-indigo-400{{ else }}text-gray-500 dark:text-gray-400{{ end }}">
+           class="flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px] font-medium transition-colors {{ if or ($active) (and ($.IsHome) (eq .URL "/")) }}text-indigo-600 dark:text-indigo-400{{ else }}text-gray-500 dark:text-gray-400{{ end }}">
             <div class="flex items-center justify-center h-6 w-6 overflow-hidden">
                 <i class="{{ .Pre }} text-xl inline-block leading-none"></i>
             </div>

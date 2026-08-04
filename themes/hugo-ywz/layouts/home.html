@@ -31,7 +31,7 @@
                         {{ range $index, $element := $paginator.Pages }}
                             
                             {{/* Tampilkan artikel */}}
-                            {{ partial "posts/article.html" . }}
+                            {{ partial "posts/list-card.html" . }}
                             {{ partial "posts/ads-list.html" (dict "context" . "index" $index) }}
                             
                         {{ end }}
@@ -44,10 +44,10 @@
                 <aside class="w-full md:w-1/3 lg:w-1/4">
                     <div class="space-y-8 sticky top-8">
 
-                        {{ partial "posts/author.html" . }}                                   
+                        {{ partial "posts/sidebar-author.html" . }}                                   
                         {{ partial "posts/ads-sidebar.html" . }}                                   
                         {{ partial "posts/random-post.html" . }}                                   
-                        {{ partial "posts/topic.html" . }}                                   
+                        {{ partial "posts/sidebar-categories.html" . }}                                   
 
                     </div>
                 </aside>

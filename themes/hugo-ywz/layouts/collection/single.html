@@ -1,7 +1,19 @@
 {{ define "main" }}
 <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
-    {{ $layout := .Params.layout | default "default" }}
+    <section class="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+        <div class="container max-w-6xl mx-auto px-4 py-6">
+            <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                <a href="{{ .CurrentSection.RelPermalink }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1">
+                    <i class="icon-[ri--stack-line]"></i>
+                    {{ with .Parent }}{{ .Title }}{{ end }}
+                </a>
+                <i class="icon-[ri--arrow-right-s-line]"></i>
+                <span class="text-gray-900 dark:text-white font-medium truncate">{{ .Title }}</span>
+            </nav>
+        </div>
+    </section>
 
+    {{ $layout := .Params.layout | default "default" }}
     {{ partial (printf "collection/layouts/%s.html" $layout) . }}
 </main>
 {{ end }}

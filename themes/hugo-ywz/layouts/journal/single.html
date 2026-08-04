@@ -58,7 +58,7 @@
                                                      
 
                             <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-center gap-6 not-prose">
-                                {{ partial "reaction.html" . }}
+                                {{ partial "components/reaction.html" . }}
                                 <div>
                                     <p>
                                         <em>
@@ -69,7 +69,7 @@
                                                 </span>
                                                 <span class="flex items-center text-gray-200 dark:text-red-200">
                                                     <span class="icon-[ri--fire-line] w-5 h-5 bg-gray-200 dark:bg-red-200"></span>
-                                                    {{ partial "view-count.html" . }}
+                                                    {{ partial "components/view-count.html" . }}
                                                 </span>
                                             </span>
                                         </em>
@@ -124,5 +124,5 @@
 {{ end }}
 
 {{ define "footer" }}
-    {{ partial "view-count-js.html" . }}
+    {{ partial "components/view-count-js.html" . }}
 {{ end }}

@@ -35,6 +35,12 @@
     <!-- Lightbox Component -->
     {{ partial "baseof/lightbox.html" . }}
 
+    <!-- Cookie Consent Component -->
+    {{ partial "baseof/cookie-consent.html" . }}
+
+    <!-- Exit Intent Popup Component -->
+    {{ partial "baseof/exit-intent-popup.html" . }}
+
     {{ if not $hideFooter }}
         {{ partial "baseof/js-bottom.html" . }}
     {{ end }}

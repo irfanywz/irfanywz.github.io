@@ -1,0 +1,22 @@
+<!-- Cookie Consent Notification -->
+<div
+    x-data
+    x-init="$store.cookieConsent.init()"
+    x-show="$store.cookieConsent.isVisible"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="translate-y-full"
+    x-transition:enter-end="translate-y-0"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="translate-y-0"
+    x-transition:leave-end="translate-y-full"
+    class="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 p-4 z-[80] shadow-2xl"
+    style="display: none;">
+    <div class="container max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-sm text-gray-700 dark:text-gray-300 text-center md:text-left">
+            Situs ini menggunakan cookie untuk meningkatkan pengalaman Anda. Dengan melanjutkan, Anda menyetujui <a href="{{ "privacy-policy/" | relURL }}" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">Kebijakan Privasi</a> kami.
+        </p>
+        <button @click="$store.cookieConsent.accept()" class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors flex-shrink-0">
+            Mengerti
+        </button>
+    </div>
+</div>
