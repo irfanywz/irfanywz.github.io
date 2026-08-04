@@ -62,7 +62,7 @@
                     <!-- buatin dot atau semacamnya sebagai pembatas -->
                      
                     {{ if .Params.categories }}
-                        <div class="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+                        <div class="block md:hidden w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-600"></div>
                     {{ end }}
 
                     <span class="font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider md:hidden">{{ .Date | time.Format "02 Jan 2006" }}</span>

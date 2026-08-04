@@ -121,7 +121,7 @@ document.addEventListener('alpine:init', () => {
         toggle() {
             this.isOpen = !this.isOpen;
             if (this.isOpen) {
-                this.init();
+                this.loadScript();
             }
         },
 
@@ -129,8 +129,10 @@ document.addEventListener('alpine:init', () => {
             this.isOpen = false;
         },
 
-        init() {
+        loadScript() {
             if (this.isLoaded) return;
+
+            const store = this; // Simpan konteks 'this' dari store
 
             window.googleTranslateElementInit = () => {
                 new google.translate.TranslateElement({
@@ -139,7 +141,7 @@ document.addEventListener('alpine:init', () => {
                     autoDisplay: false,
                     layout: google.translate.TranslateElement.InlineLayout.SIMPLE
                 }, 'google_translate_element');
-                this.isReady = true;
+                store.isReady = true; // Gunakan variabel 'store' untuk mengakses state
             };
 
             const script = document.createElement('script');
