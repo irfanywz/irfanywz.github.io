@@ -30,13 +30,15 @@
 
     <div class="p-4 overflow-y-auto flex-grow">
         
-        <!-- Cek apakah salah satu sub-menu dropdown sedang aktif -->
+        <!-- Hitung jumlah menu dropdown dan cek apakah aktif -->
+        {{ $dropdownCount := 0 }}
         {{ $isDropdownActive := false }}
         {{ $page_url := $.Page.RelPermalink | relLangURL }}
         {{ $page_split := index (split $page_url "/") 1 }}
         
         {{ range .Site.Menus.footer }}
             {{ if eq .Params.group "dropdown" }}
+                {{ $dropdownCount = add $dropdownCount 1 }}
                 {{ $menu_item_url := .URL | relLangURL }}
                 {{ if and (strings.Contains $menu_item_url $page_split) (not $.IsHome) }}
                     {{ $isDropdownActive = true }}
@@ -44,8 +46,8 @@
             {{ end }}
         {{ end }}
 
-        <!-- Inisialisasi state openDropdown berdasarkan kondisi aktif di atas -->
-        <nav class="space-y-1" x-data="{ openDropdown: {{ if $isDropdownActive }}true{{ else }}false{{ end }} }">
+        <!-- Inisialisasi state openDropdown -->
+        <nav class="space-y-1" x-data="{ openDropdown: {{ if and (gt $dropdownCount 0) $isDropdownActive }}true{{ else }}false{{ end }} }">
             
             <!-- 1. Render Menu Utama yang Tampil Terbuka (Bukan Dropdown) -->
             {{ range .Site.Menus.footer }}
@@ -60,29 +62,30 @@
                 {{ end }}
             {{ end }}
 
-            <!-- 2. Tombol "Lainnya" (Ikut menyala jika salah satu anak menunya aktif) -->
-            <button @click="openDropdown = !openDropdown" type="button" class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors {{ if $isDropdownActive }}bg-indigo-50/60 dark:bg-indigo-900/10 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}">
-                <div class="flex items-center gap-3">
-                    <span class="icon-[ri--apps-2-line] w-5 h-5 {{ if $isDropdownActive }}text-indigo-600 dark:text-indigo-400{{ else }}text-indigo-500{{ end }}"></span>
-                    <span>Personal</span>
-                </div>
-                <span class="icon-[ri--arrow-down-s-line] w-4 h-4 transition-transform duration-200" :class="openDropdown ? 'rotate-180' : ''"></span>
-            </button>
+            <!-- 2. Tombol & Sub-menu "Personal" (Hanya dirender jika ada minimal 1 menu group dropdown) -->
+            {{ if gt $dropdownCount 0 }}
+                <button @click="openDropdown = !openDropdown" type="button" class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors {{ if $isDropdownActive }}bg-indigo-50/60 dark:bg-indigo-900/10 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}">
+                    <div class="flex items-center gap-3">
+                        <span class="icon-[ri--apps-2-line] w-5 h-5 {{ if $isDropdownActive }}text-indigo-600 dark:text-indigo-400{{ else }}text-indigo-500{{ end }}"></span>
+                        <span>Personal</span>
+                    </div>
+                    <span class="icon-[ri--arrow-down-s-line] w-4 h-4 transition-transform duration-200" :class="openDropdown ? 'rotate-180' : ''"></span>
+                </button>
 
-            <!-- 3. Sub-menu yang Di-hide -->
-            <div x-show="openDropdown" x-transition.origin.top.duration.200ms class="space-y-1 pt-1" style="display: none;">
-                {{ range .Site.Menus.footer }}
-                    {{ if eq .Params.group "dropdown" }}
-                        {{ $menu_item_url := .URL | relLangURL }}
-                        {{ $active := and (strings.Contains $menu_item_url $page_split) (not $.IsHome) }}
+                <div x-show="openDropdown" x-transition.origin.top.duration.200ms class="space-y-1 pt-1" style="display: none;">
+                    {{ range .Site.Menus.footer }}
+                        {{ if eq .Params.group "dropdown" }}
+                            {{ $menu_item_url := .URL | relLangURL }}
+                            {{ $active := and (strings.Contains $menu_item_url $page_split) (not $.IsHome) }}
 
-                        <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors {{ if $active }}bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}" href="{{ .URL | relLangURL }}">
-                            <span class="{{ .Pre }} w-5 h-5 {{ .Params.color }}"></span>
-                            <span>{{ .Name }}</span>
-                        </a>
+                            <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors {{ if $active }}bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}" href="{{ .URL | relLangURL }}">
+                                <span class="{{ .Pre }} w-5 h-5 {{ .Params.color }}"></span>
+                                <span>{{ .Name }}</span>
+                            </a>
+                        {{ end }}
                     {{ end }}
-                {{ end }}
-            </div>
+                </div>
+            {{ end }}
 
         </nav>
     </div> 
@@ -95,7 +98,7 @@
                     <div class="flex flex-col">
                         <div class="flex items-start gap-2">
                             <div class="flex items-center gap-1">
-                                <span class="icon-[ri--time-line] text-indigo-500 text-xl"></span>                       
+                                <span class="icon-[ri--time-line] text-indigo-500 text-xl"></span>                 
                                 <span id="nav-time" class="text-xl font-bold text-gray-900 dark:text-white tabular-nums tracking-tight">
                                     00:00
                                 </span>

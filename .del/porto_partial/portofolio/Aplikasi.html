@@ -1,0 +1,42 @@
+<article class="py-16 bg-white dark:bg-gray-900">
+    <div class="container max-w-6xl mx-auto px-4 max-w-5xl">
+
+        {{ partial "portofolio/layout-aplikasi/hero.html" . }}
+        {{ partial "portofolio/layout-aplikasi/overview.html" . }}                
+        {{ partial "portofolio/layout-aplikasi/galery.html" . }}           
+        {{ partial "portofolio/layout-aplikasi/changelog.html" . }}         
+
+        <div class="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between gap-4">
+            <div class="flex-shrink-0">
+                <a href="{{ "portofolio/" | relURL }}" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm">
+                    <span class="icon-[ri--arrow-left-s-line] w-5 h-5"></span>
+                    Kembali
+                </a>
+            </div>
+            <div class="flex gap-4">
+                    {{ $pages := .CurrentSection.Pages.ByWeight }}
+
+                    {{ with $pages.Prev . }}
+                        <a href="{{ .RelPermalink }}" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm">
+                            <span class="icon-[ri--arrow-left-s-line] w-5 h-5"></span>
+                            Sebelumnya
+                        </a>
+                    {{ end }}
+
+                    {{ with $pages.Next . }}
+                        <a href="{{ .RelPermalink }}" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm">
+                            Selanjutnya
+                            <span class="icon-[ri--arrow-right-s-line] w-5 h-5"></span>
+                        </a>
+                    {{ end }}
+            </div>
+        </div>
+
+
+    </div>
+</article>
+
+{{ define "footer" }}
+    {{ partial "portofolio/layout-aplikasi/share-offcanvas.html" . }}
+    {{ partial "components/view-count-js.html" . }}
+{{ end }}

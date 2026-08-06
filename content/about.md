@@ -59,7 +59,7 @@ hardware_specs:
     icon: "icon-[ri--cpu-line]"
   - bagian: "Memori (RAM)"
     detail: "16.0GB Dual-Channel DDR3 @ 798MHz"
-    icon: "icon-[ri--RAM-line]"
+    icon: "icon-[ri--ram-line]"
   - bagian: "Grafis (GPU)"
     detail: "AMD Radeon R7 Graphics (512MB)"
     icon: "icon-[ri--vidicon-line]"

@@ -38,13 +38,6 @@
                 </span>
             {{ end }}
 
-
-            {{ if .Params.status }}
-                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-600 dark:text-gray-300">
-                    {{ partial "portofolio/status.html" . }}
-                </span>
-            {{ end }}
-
         </div>
         <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white leading-tight">{{ .Title }}</h1>
         <p class="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">{{ .Description }}</p>
@@ -111,6 +104,7 @@
             <span class="icon-[ri--share-line] w-5 h-5"></span>
             Bagikan
         </a>
+        {{ partial "portofolio/layout-aplikasi/share-buttons.html" . }}
         <span class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-300 font-medium">
             <span class="icon-[ri--fire-line] w-5 h-5 text-orange-500"></span>
             {{ partial "components/view-count.html" . }}

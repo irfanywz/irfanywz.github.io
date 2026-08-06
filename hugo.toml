@@ -73,18 +73,6 @@ url = "/topics/"
 pre = "icon-[ri--hashtag]"
 weight = 20
 
-# [[menu.main]]
-# name = "Portofolio"
-# url = "/portofolio/"
-# pre = "icon-[ri--briefcase-2-line]"
-# weight = 36
-
-# [[menu.main]]
-# name = "Layanan"
-# url = "/shop/"
-# pre = "icon-[ri--store-2-line]"
-# weight = 35
-
 [[menu.main]]
 name = "Tentang"
 url = "/about/"
@@ -100,22 +88,6 @@ weight = 40
 # menu offcanvas
 # ======================
 
-# [[menu.footer]]
-# name = "Tentang"
-# url = "/about/"
-# pre = "icon-[lucide--user-round-pen]"
-# weight = 5
-# [menu.footer.params]
-#   color = "text-sky-500"  
-
-# [[menu.footer]]
-# name = "Kontak"
-# url = "/contact/"
-# pre = "icon-[ri--mail-line]"
-# weight = 15
-# [menu.footer.params]
-#   color = "text-sky-500"
-
 [[menu.footer]]
 name = "Layanan"
 url = "/shop/"
@@ -124,13 +96,13 @@ weight = 5
 [menu.footer.params]
   color = "text-sky-500"
 
-[[menu.footer]]
-name = "Portofolio"
-url = "/portofolio/"
-pre = "icon-[ri--briefcase-2-line]"
-weight = 10
-[menu.footer.params]
-  color = "text-indigo-500"  
+# [[menu.footer]]
+# name = "Portofolio"
+# url = "/portofolio/"
+# pre = "icon-[ri--briefcase-2-line]"
+# weight = 10
+# [menu.footer.params]
+#   color = "text-indigo-500"  
 
 # --- Menu yang Ingin Disembunyikan ke dalam Dropdown "Lainnya" ---
 
@@ -141,7 +113,7 @@ pre = "icon-[ri--newspaper-line]"
 weight = 20
 [menu.footer.params]
   color = "text-amber-500"
-  group = "dropdown"
+  # group = "dropdown"
 
 [[menu.footer]]
 name = "Musik"
@@ -150,7 +122,7 @@ pre = "icon-[ri--music-2-line]"
 weight = 42
 [menu.footer.params]
   color = "text-violet-500"
-  group = "dropdown"
+  # group = "dropdown"
 
 [[menu.footer]]
 name = "Alat"
@@ -159,7 +131,7 @@ pre = "icon-[ri--tools-line]"
 weight = 60
 [menu.footer.params]
   color = "text-orange-500"
-  group = "dropdown"
+  # group = "dropdown"
 
 [[menu.footer]]
 name = "Koleksi"
@@ -168,7 +140,7 @@ pre = "icon-[ri--stack-line]"
 weight = 80
 [menu.footer.params]
   color = "text-blue-500"
-  group = "dropdown"
+  # group = "dropdown"
 
 # menu bottom mobile
 # ======================
@@ -184,19 +156,6 @@ name = "Topik"
 url = "/topics/"
 pre = "icon-[ri--hashtag]"
 weight = 20
-
-# [[menu.bottom]]
-# name = "Portofolio"
-# url = "/portofolio/"
-# pre = "icon-[ri--briefcase-2-line]"
-# weight = 36
-
-# # menu shop
-# [[menu.bottom]]
-# name = "Layanan"
-# url = "/shop/"
-# pre = "icon-[ri--store-2-line]"
-# weight = 35
 
 [[menu.bottom]]
 name = "Kontak"
