@@ -2,8 +2,9 @@
 title: "Python pyppeteer [Fix] ValueError: signal only works in main thread of the main interpreter"
 slug: python pyppeteer error signal
 date: 2025-06-28T19:10:27+07:00
-draft: false
+image: python-pyppeteer.avif
 topics: ["Kode"]
+draft: false
 ---
 
 masalah ini terjadi karena fungsi signal dan slot yang ada pada pyppteer tidak bisa dijalankan pada sub-thread

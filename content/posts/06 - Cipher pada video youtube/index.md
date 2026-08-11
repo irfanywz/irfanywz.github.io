@@ -2,8 +2,9 @@
 title: "Cipher Pada Video Youtube"
 slug: cipher video youtube
 date: 2023-12-18T05:40:08+07:00
-draft: false
+image: cipher-youtube.avif
 topics: ["Reverse"]
+draft: false
 ---
 
 saat saya mencoba untuk menyelesaikan modul downloader youtube untuk aplikasi yang sedang dibuat, saya menemukan sedikit kendala yaitu youtube menyembunyikan url asli videonya

@@ -1,0 +1,38 @@
+{{ $type := .Get "type" | default "info" }}
+{{ $title := .Get "title" }}
+
+{{/* Konfigurasi Warna & Ikon Berdasarkan Tipe */}}
+{{ $bgColor := "bg-sky-50 dark:bg-sky-950/30 border-sky-200 dark:border-sky-800/60 text-sky-900 dark:text-sky-200" }}
+{{ $iconColor := "text-sky-600 dark:text-sky-400" }}
+{{ $iconName := "icon-[ri--information-line]" }}
+
+{{ if eq $type "success" }}
+    {{ $bgColor = "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800/60 text-emerald-900 dark:text-emerald-200" }}
+    {{ $iconColor = "text-emerald-600 dark:text-emerald-400" }}
+    {{ $iconName = "icon-[ri--checkbox-circle-line]" }}
+{{ else if eq $type "warning" }}
+    {{ $bgColor = "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800/60 text-amber-900 dark:text-amber-200" }}
+    {{ $iconColor = "text-amber-600 dark:text-amber-400" }}
+    {{ $iconName = "icon-[ri--alert-line]" }}
+{{ else if eq $type "danger" }}
+    {{ $bgColor = "bg-rose-50 dark:bg-rose-950/30 border-rose-200 dark:border-rose-800/60 text-rose-900 dark:text-rose-200" }}
+    {{ $iconColor = "text-rose-600 dark:text-rose-400" }}
+    {{ $iconName = "icon-[ri--close-circle-line]" }}
+{{ end }}
+
+<div class="my-6 p-4 rounded-xl border {{ $bgColor }} flex items-start gap-3 not-prose shadow-sm">
+    <!-- Ikon di Kiri -->
+    <div class="flex-shrink-0 mt-0.5">
+        <span class="{{ $iconName }} w-5 h-5 {{ $iconColor }}"></span>
+    </div>
+
+    <!-- Konten Alert -->
+    <div class="flex-1 text-sm leading-relaxed">
+        {{ if $title }}
+        <h5 class="font-bold mb-1 tracking-wide">{{ $title }}</h5>
+        {{ end }}
+        <div class="opacity-9ulp [&>p]:my-1">
+            {{ .Inner | markdownify }}
+        </div>
+    </div>
+</div>

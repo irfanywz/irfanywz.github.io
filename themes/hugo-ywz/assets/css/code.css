@@ -32,3 +32,5 @@
 .highlight{background-color:var(--color-gray-700);border-radius:8px;margin:1.5em 0;overflow:auto;font-family:'Fira Code','Consolas','Monaco',monospace;line-height:1.5;box-shadow:0 4px 6px rgba(0,0,0,0.1)}
 .dark .highlight{background-color: var(--color-gray-800);}
 .highlight table{width: 100%}
+
+.code-block-wrapper .highlight {margin: 0;border-radius: 0}

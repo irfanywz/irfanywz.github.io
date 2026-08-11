@@ -2,8 +2,9 @@
 title: Bios Pada Komputer
 slug: Bios Pada Komputer
 date: 2025-07-14T16:29:06+07:00
-draft: false
+image: bios-komputer.avif
 topics: ["Komputer"]
+draft: false
 ---
 
 perkembangan bios pada komputer

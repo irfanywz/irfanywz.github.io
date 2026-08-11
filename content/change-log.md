@@ -4,6 +4,19 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.4.0"
+    date: "11 Agustus 2026"
+    changes:
+      - tag: "Fitur Baru"
+        description: "Menambahkan beberapa shortcode berguna seperti note/callout box, step-by-step guide, dan link helper."
+      - tag: "Fitur Baru"
+        description: "Menambahkan tombol 'Back to Top' untuk mempermudah navigasi kembali ke atas halaman."
+      - tag: "Fitur Baru"
+        description: "Menambahkan fitur 'Dengarkan' menggunakan Web Speech API browser agar artikel dapat diubah menjadi suara (Text-to-Speech) langsung dari metadata."
+      - tag: "Pembaruan"
+        description: "Memindahkan posisi tombol switch dark mode dari floating ke bagian dalam menu navigasi offcanvas agar lebih rapi."
+      - tag: "Perbaikan"
+        description: "Memperbaiki tampilan jurnal/list dengan beralih menggunakan index.json untuk meload data di list.html."
   - version: "2.3.2"
     date: "11 Agustus 2026"
     changes:

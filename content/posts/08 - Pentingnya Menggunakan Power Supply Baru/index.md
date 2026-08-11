@@ -2,8 +2,9 @@
 title: "Pentingnya Menggunakan Power Supply Baru"
 slug: pentingnya menggunakan power supply baru
 date: 2024-01-02T19:49:16+07:00
-draft: False
+image: power-supply-rusak.avif
 topics: ["Komputer"]
+draft: False
 ---
 
 saya ingin sharing kejadian akibat power supply komputer yang tidak layak lagi dipakai
@@ -30,4 +31,4 @@ dari kejadian ini saya mulai hati-hati kalau nanti ada komputer yang punya gejal
 
 soalnya udah tau akan kaya gimana kedepannya kalau dibiarin
 
-ngenes banget baru beli malah langsung rusak, mana ga ada garansinya lagi...
+baru beli malah langsung rusak, mana ga ada garansinya lagi...

@@ -2,8 +2,9 @@
 title: "Kode itu hanya sebuah perintah"
 slug: kode hanya sebuah perintah
 date: 2024-04-24T09:00:35+07:00
-draft: False
+image: kode-perintah.avif
 topics: ["Kode"]
+draft: False
 ---
 
 saat melihat video tutorial diyoutube tentang kode, saya menemukan kalimat yang sangat bagus yaitu

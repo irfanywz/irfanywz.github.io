@@ -1,6 +1,20 @@
-<div class="custom-code-block">
+{{ $isOpen := .Get "open" | default "true" }}
+<div class="code-block-wrapper my-6 overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900" x-data="{ open: {{ $isOpen }} }">
     {{ if .Get "title" }}
-    <div class="code-title">{{ .Get "title" }}</div>
+    <div class="flex items-center justify-between px-4 py-2.5 bg-zinc-800/80 border-b border-zinc-700/60 cursor-pointer select-none" @click="open = !open">
+        <span class="font-semibold text-sky-400 text-sm tracking-wide">{{ .Get "title" }}</span>
+        
+        <button type="button" class="flex items-center gap-1.5 text-sm text-zinc-400 hover:text-zinc-200 transition-colors focus:outline-none">
+            <span x-text="open ? 'Hide' : 'Show'"></span>
+            <!-- Iconify CSS class untuk panah bawah/atas -->
+            <span class="icon-[lucide--chevron-down] w-4 h-4 transition-transform duration-200" :class="open ? 'rotate-180' : ''"></span>
+        </button>
+    </div>
     {{ end }}
-    {{ highlight (trim .Inner "\n") (.Get "lang") "" }}
+    
+    <div class="code-content overflow-hidden transition-all duration-200" x-show="open" x-collapse>
+        <div class="p-0 [&>pre]:!my-0 [&>pre]:!bg-transparent [&>pre]:!border-none [&>pre]:!p-0">
+            {{ highlight (trim .Inner "\n") (.Get "lang") "" }}
+        </div>
+    </div>
 </div>

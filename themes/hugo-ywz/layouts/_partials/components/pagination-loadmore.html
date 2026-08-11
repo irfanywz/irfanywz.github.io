@@ -10,10 +10,18 @@
                     {{ end }}
                 {{ end }}
             ],
-            currentIndex: 0,
+            // Set index awal berdasarkan halaman aktif Hugo saat ini
+            currentIndex: {{ sub .PageNumber 1 }},
             hasNext: true,
             loading: false,
             
+            init() {
+                // Jika sudah di halaman terakhir atau lebih, sembunyikan tombol
+                if (this.currentIndex >= this.pageUrls.length) {
+                    this.hasNext = false;
+                }
+            },
+
             async loadMore() {
                 if (this.loading || this.currentIndex >= this.pageUrls.length) return;
                 this.loading = true;

@@ -1,0 +1,16 @@
+[
+  {{ $journalSection := .Site.GetPage "section" "journal" }}
+  {{ $pages := where $journalSection.RegularPages "Params.hidden" "ne" true }}
+  {{ range $index, $page := $pages }}
+  {
+    "title": {{ $page.Title | jsonify }},
+    "permalink": {{ $page.RelPermalink | jsonify }},
+    "date": {{ $page.Date.Format "2006-01-02" | jsonify }},
+    "year": {{ $page.Date.Format "2006" | jsonify }},
+    "month": {{ $page.Date.Format "January 2006" | jsonify }},
+    "day": {{ $page.Date.Format "02" | jsonify }},
+    "dayName": {{ (lower (slicestr (i18n $page.Date.Weekday) 0 3)) | jsonify }},
+    "draft": {{ $page.Draft }}
+  }{{ if ne (add $index 1) (len $pages) }},{{ end }}
+  {{ end }}
+]

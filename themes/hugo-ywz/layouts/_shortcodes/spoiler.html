@@ -1,0 +1,35 @@
+{{ $label := .Get "label" | default "Buka Spoiler (Klik untuk melihat)" }}
+
+<div class="my-4 not-prose" x-data="{ revealed: false }">
+    <div class="rounded-xl border border-zinc-800 bg-zinc-900 overflow-hidden transition-all duration-200">
+        <!-- Tombol / Header Spoiler -->
+        <button type="button" 
+                @click="revealed = !revealed" 
+                class="w-full flex items-center justify-between px-4 py-2.5 bg-zinc-800/80 hover:bg-zinc-800 text-xs font-semibold text-zinc-400 hover:text-zinc-200 transition-colors focus:outline-none select-none">
+            <span class="flex items-center gap-2">
+                <span class="icon-[ri--eye-off-line] w-4 h-4" x-show="!revealed"></span>
+                <span class="icon-[ri--eye-line] w-4 h-4 text-sky-400" x-show="revealed"></span>
+                <span x-text="revealed ? 'Sembunyikan Spoiler' : '{{ $label }}'"></span>
+            </span>
+            <span class="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-zinc-700/50 text-zinc-300" x-text="revealed ? 'Terbuka' : 'Spoiler'"></span>
+        </button>
+
+        <!-- Konten yang Diblur / Disembunyikan -->
+        <div class="p-4 text-sm text-zinc-300 transition-all duration-300 relative">
+            <div :class="revealed ? 'blur-none select-text' : 'blur-sm select-none cursor-pointer'" 
+                 @click="if(!revealed) revealed = true"
+                 title="Klik untuk membuka spoiler">
+                {{ .Inner | markdownify }}
+            </div>
+            
+            <!-- Overlay hint kalau belum dibuka -->
+            <div class="absolute inset-0 flex items-center justify-center bg-zinc-950/40 backdrop-blur-[2px] transition-opacity duration-200 cursor-pointer pointer-events-none" 
+                 x-show="!revealed" 
+                 @click="revealed = true">
+                <span class="text-xs font-medium text-sky-400 bg-zinc-900/90 border border-zinc-700 px-3 py-1.5 rounded-full shadow-lg pointer-events-auto hover:bg-zinc-800 transition-all">
+                    🔒 Klik untuk membuka
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

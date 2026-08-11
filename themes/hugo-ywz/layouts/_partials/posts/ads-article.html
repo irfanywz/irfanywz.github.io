@@ -23,10 +23,7 @@
         
         {{ if in $targetPositions $currentParagraphNum }}
             <div class="my-6 p-4 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm text-center">
-                <span class="block text-xs font-semibold tracking-wider text-gray-400 uppercase mb-2">Advertisement</span>
-                <div>
-                    {{ $.Site.Params.adCode | safeHTML }}
-                </div>
+                {{ $.Site.Params.adCode | safeHTML }}
             </div>
         {{ end }}
     {{ end }}

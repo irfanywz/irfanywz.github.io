@@ -3,7 +3,9 @@ title: "Hello World"
 slug: 'hello-world'
 description: "this is description if you want"
 date: 2011-12-07T09:08:30+07:00
-topics: [""]
+image: hello-world.avif
+topics: ["Kode"]
+draft: false
 ---
 
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -13,9 +15,147 @@ consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
+## ShortCode List
+
+### Table of content
+<pre><code>{{&lt; toc &gt;}}</code></pre>
+
 {{< toc >}}
 
-## Highlighting Specific Lines
+### Steps
+
+<pre><code class="language-html">
+{{&lt; steps &gt;}}
+
+{{&lt; step n=&quot;1&quot; title=&quot;Clone Repository GitHub&quot; &gt;}}
+Buka terminal kamu lalu jalankan perintah `git clone https://github.com/username/repo.git` untuk mendownload project.
+{{&lt; /step &gt;}}
+
+{{&lt; step n=&quot;2&quot; title=&quot;Install Dependencies&quot; &gt;}}
+Masuk ke dalam folder project lalu jalankan `npm install` atau `pnpm install` untuk memasang semua modul yang dibutuhkan.
+{{&lt; /step &gt;}}
+
+{{&lt; step n=&quot;3&quot; title=&quot;Jalankan Server Lokal&quot; &gt;}}
+Ketik perintah `hugo server` di terminal untuk melihat pratinjau situs secara langsung di browser `http://localhost:1313`.
+{{&lt; /step &gt;}}
+
+{{&lt; /steps &gt;}}
+</code></pre>
+
+{{< steps >}}
+
+{{< step n="1" title="Clone Repository GitHub" >}}
+Buka terminal kamu lalu jalankan perintah `git clone https://github.com/username/repo.git` untuk mendownload project.
+{{< /step >}}
+
+{{< step n="2" title="Install Dependencies" >}}
+Masuk ke dalam folder project lalu jalankan `npm install` atau `pnpm install` untuk memasang semua modul yang dibutuhkan.
+{{< /step >}}
+
+{{< step n="3" title="Jalankan Server Lokal" >}}
+Ketik perintah `hugo server` di terminal untuk melihat pratinjau situs secara langsung di browser `http://localhost:1313`.
+{{< /step >}}
+
+{{< /steps >}}
+
+### Note
+
+<pre><code class="language-html">
+{{&lt; note type=&quot;caution&quot; &gt;}}
+Jangan menghapus folder `.git` kecuali kamu benar-benar ingin mereset seluruh history repository.
+{{&lt; /note &gt;}}
+</code></pre>
+
+{{< note type="caution" >}}
+Jangan menghapus folder `.git` kecuali kamu benar-benar ingin mereset seluruh history repository.
+{{< /note >}}
+
+### Link Rel
+
+<pre><code class="language-html">
+{{&lt; link to=&quot;https://example.com&quot; text=&quot;Link Sponsor&quot; external=&quot;true&quot; rel=&quot;nofollow&quot; /&gt;}}
+</code></pre>
+
+{{< link to="https://example.com" text="Link Sponsor" external="true" rel="nofollow" />}}
+
+### Spoiler
+
+<pre><code class="language-html">
+{{&lt; spoiler label=&quot;Klik untuk lihat Kunci Jawaban&quot; &gt;}}
+Hasil akhir dari perhitungan rumus di atas adalah **42**.
+{{&lt; /spoiler &gt;}}
+</code></pre>
+
+{{< spoiler >}}
+Sebenarnya tokoh utama di akhir cerita malah bergabung dengan villain utama demi menyelamatkan dunia.
+{{< /spoiler >}}
+
+{{< spoiler label="Klik untuk lihat Kunci Jawaban" >}}
+Hasil akhir dari perhitungan rumus di atas adalah **42**.
+{{< /spoiler >}}
+
+### Alert
+
+<pre><code>{{&lt; alert title=&quot;Catatan Penting&quot; &gt;}}
+Pastikan kamu sudah membaca dokumentasi sebelum mengubah konfigurasi utama.
+{{&lt; /alert &gt;}}</code></pre>
+
+{{< alert title="Catatan Penting" >}}
+Pastikan kamu sudah membaca dokumentasi sebelum mengubah konfigurasi utama.
+{{< /alert >}}
+
+{{< alert type="success" title="Berhasil!" >}}
+Deploy situs statis ke GitHub Pages telah selesai dilakukan tanpa error.
+{{< /alert >}}
+
+{{< alert type="warning" title="Peringatan" >}}
+Fitur ini masih dalam tahap eksperimental dan bisa berubah sewaktu-waktu.
+{{< /alert >}}
+
+{{< alert type="danger" title="Perhatian Keras!" >}}
+Jangan pernah membagikan token API rahasia kamu ke dalam repository publik.
+{{< /alert >}}
+
+### Accordion
+
+<pre><code>{{&lt; accordion title=&quot;Klik untuk Buka&quot; open=&quot;true&quot; &gt;}}
+Isi konten bebas di sini, bisa teks biasa, bold, atau list.
+{{&lt; /accordion &gt;}}
+</code></pre>
+
+{{< accordion title="Klik untuk Buka" open="true" >}}
+Isi konten bebas di sini, bisa teks biasa, bold, atau list.
+{{< /accordion >}}
+
+{{< accordion title="Klik untuk Buka" open="true" >}}
+Isi konten bebas di sini, bisa teks biasa, bold, atau list.
+{{< /accordion >}}
+
+
+### Image Grid
+<pre><code>{{&lt; image-grid &gt;}}
+
+{{&lt; image-link &quot;pyside6-portable-1.avif&quot; &quot;Image 1&quot; &quot;py6&quot; &gt;}}
+{{&lt; image-link &quot;pyside6-portable-2.avif&quot; &quot;Image 2&quot; &quot;py6&quot; &gt;}}
+
+{{&lt; /image-grid &gt;}}</code>
+</pre>
+
+### ShortCode with title and toggle
+
+<pre><code>{{&lt; code lang=&quot;javascript&quot; title=&quot;Example Function&quot; open="false" &gt;}}
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+{{&lt; /code &gt;}}</code></pre>
+
+{{< code lang="javascript" title="Example Function" open="false" >}}
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+{{< /code >}}
+
+# Highlighting Specific Lines
 
 ```go {lineNos=true hl_lines=[3,6,8]}
 package main
@@ -32,14 +172,6 @@ func main() {
     }
 }
 ```
-
-# Custom ShortCodes
-{{< code lang="javascript" title="Example Function" >}}
-function greet(name) {
-  return `Hello, ${name}!`;
-}
-{{< /code >}}
-
 
 # Headers
 

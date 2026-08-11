@@ -2,97 +2,149 @@
 {{ end }}
 
 {{ define "main" }}
-
-    <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
+    <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300" 
+          x-data="journalApp()" 
+          x-init="initData()">
+        
         <div class="container max-w-6xl mx-auto px-4 py-12">
+            <!-- Header & Search -->
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-gray-100 dark:border-gray-800 pb-8">
                 <div class="max-w-2xl">
                     <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tight flex items-center gap-3">
-                    <span class="icon-[ri--newspaper-line] text-amber-500"></span>
-                    {{.Title}}
-                </h1>
+                        <span class="icon-[lucide--receipt-text] text-green-600"></span>
+                        {{.Title}}
+                    </h1>
                     <p class="text-lg text-gray-500 dark:text-gray-400">{{ .Description }}</p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <a href="{{ "journal/all" | relURL }}" class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors" aria-label="Semua">
-                        <span class="icon-[lucide--receipt-text] w-4 h-4 text-green-600"></span>
-                        <!-- <span>Semua</span> -->
-                    </a>
-                    <a href="{{ "journal/evaluasi" | relURL }}" class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors" aria-label="Evaluasi">
-                        <span class="icon-[lucide--waypoints] w-4 h-4 text-blue-600"></span>
-                        <!-- <span>Evaluasi</span> -->
-                    </a>
+                
+                <!-- Input Pencarian -->
+                <div class="relative w-full md:w-72">
+                    <i class="icon-[ri--search-line] absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" x-model="search" placeholder="Cari jurnal..." 
+                        class="w-full pl-11 pr-4 py-2.5 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all shadow-sm">
+                    <button x-show="search.length > 0" @click="search = ''"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors" style="display: none;">
+                        <span class="icon-[ri--close-circle-fill] w-4 h-4"></span>
+                    </button>
                 </div>
             </div>
-            <div id="content-container" class="flex flex-col gap-4 mb-12 max-w-4xl mx-auto">
 
-                    {{ $paginator := .Paginate (where .Data.Pages "Params.hidden" "ne" true) 10 }}
-                    {{ range $paginator.Pages }}
-                        <article class="group relative flex flex-col sm:flex-row bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-300">
-                            
-                            <!-- Date Sidebar -->
-                            <div class="sm:w-28 bg-gray-50 dark:bg-gray-800/50 sm:border-r border-b sm:border-b-0 border-gray-100 dark:border-gray-700 flex items-center justify-center p-4 flex-shrink-0">
-                                 {{ partial "journal/datecard.html" . }}
-                            </div>
-
-                            <!-- Content -->
-                            <div class="flex-grow p-5 flex flex-col justify-center min-w-0">
-                                <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2">
-                                    <h2 class="text-lg font-bold text-gray-900 dark:text-white leading-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                                        <a href="{{ .RelPermalink }}" class="focus:outline-none">
-                                            <span class="absolute inset-0" aria-hidden="true"></span>
-                                            {{ .Title }}
-                                        </a>
-                                        {{ if .Draft }}<sup class="text-[10px] text-red-500 font-medium ml-1 border border-red-200 px-1 rounded">DRAFT</sup>{{ end }}
-                                    </h2>
-                                    
-                                    <div class="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400 flex-shrink-0 relative z-10">
-                                        <span class="flex items-center gap-1 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-md">
-                                            <span class="icon-[ri--time-line] w-4 h-4"></span>
-                                            {{ .Date.Format "3:04 PM" }}
-                                        </span>
-                                        {{ if .Params.weather }}
-                                            <span class="flex items-center gap-1 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-md">
-                                                {{ partial "journal/weather.html" . }}
-                                            </span>
-                                        {{ end }}
-                                    </div>
-                                </div>
-
-                                <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed line-clamp-2 mb-3">
-                                        {{ if isset .Params "description" }}
-                                            {{ .Description }}
-                                        {{ else }}
-                                            {{ .Summary | plainify | truncate 150 }}
-                                        {{ end }}
-                                </p>
-
-                                <div class="flex items-center justify-between mt-auto pt-2">
-                                    {{ if gt .Params.tags 0 }}
-                                    <div class="flex flex-wrap gap-2 relative z-10">
-                                    {{ range .Params.tags }}
-                                            <span class="px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-300 text-[10px] font-medium rounded border border-indigo-100 dark:border-indigo-800/50">{{ . }}</span>
-                                    {{ end }}
-                                    </div>
-                                    {{ end }}
-
-                                    {{ if .Params.location }}
-                                    <div class="flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500 ml-auto">
-                                        <span class="icon-[ri--map-pin-line]"></span>
-                                        <span>{{ .Params.location }}</span>
-                                    </div>
-                                    {{ end }}
-                                </div>
-                            </div>
-                        </article>
-                    {{- end -}}
-
+            <!-- Loading State -->
+            <div x-show="loading" class="text-center py-12 text-gray-400">
+                <span class="icon-[svg-spinners--9-dots-ring-with-trailing-drop] w-8 h-8 mx-auto mb-2"></span>
+                <p class="text-sm">Memuat data jurnal...</p>
             </div>
 
-            {{ partial "components/pagination-infinite.html" .Paginator }}
+            <!-- Konten Utama (Muncul setelah JSON ter-load) -->
+            <div x-show="!loading" style="display: none;">
+                <!-- Filter Tahun: Horizontal Scroll -->
+                <div class="flex items-center gap-2 mb-8 overflow-x-auto scrollbar-none pb-2">
+                    <button @click="selectedYear = ''"
+                        :class="selectedYear === '' ? 'bg-indigo-600 text-white shadow-md' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                        class="px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex-shrink-0">
+                        Semua (<span x-text="journals.length"></span>)
+                    </button>
+
+                    <template x-for="year in availableYears" :key="year">
+                        <button @click="selectedYear = year"
+                            :class="selectedYear === year ? 'bg-indigo-600 text-white shadow-md' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                            class="px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex-shrink-0"
+                            x-text="year + ' (' + countByYear(year) + ')'">
+                        </button>
+                    </template>
+                </div>
+
+                <!-- Daftar Konten Dikelompokkan per Bulan (Render via Alpine.js) -->
+                <div class="flex flex-col gap-8">
+                    <template x-for="monthGroup in filteredGroupedJournals" :key="monthGroup.month">
+                        <div class="bg-gray-50/50 dark:bg-gray-800/30 p-6 rounded-2xl border border-gray-100 dark:border-gray-800">
+                            <h3 class="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-4 pb-2 border-b border-gray-200 dark:border-gray-700" 
+                                x-text="monthGroup.month">
+                            </h3>
+                            <div class="flex flex-col gap-2">
+                                <template x-for="item in monthGroup.items" :key="item.permalink">
+                                    <a :href="item.permalink" 
+                                       class="group flex items-center gap-4 py-2 px-3 rounded-lg hover:bg-white dark:hover:bg-gray-800 transition-colors shadow-2xs">
+                                        
+                                        <div class="flex-shrink-0 text-gray-400 dark:text-gray-500 font-mono w-10 text-center">
+                                            <span class="block text-xl font-bold text-gray-900 dark:text-white leading-none" x-text="item.day"></span>
+                                            <span class="block text-[10px] uppercase mt-0.5" x-text="item.dayName"></span>
+                                        </div>
+
+                                        <div class="flex-grow min-w-0">
+                                            <h2 class="text-base text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 truncate" 
+                                                x-text="item.title">
+                                            </h2>
+                                        </div>
+
+                                        <template x-if="item.draft">
+                                            <span class="flex-shrink-0 px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-800">DRAFT</span>
+                                        </template>
+                                    </a>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
         </div>
     </main>
 
+    <!-- Script Logika Alpine.js untuk AJAX & Filtering -->
+    <script>
+        function journalApp() {
+            return {
+                journals: [],
+                loading: true,
+                search: '',
+                selectedYear: '',
+                
+                async initData() {
+                    try {
+                        let response = await fetch('{{ "journal/index.json" | relURL }}');
+                        this.journals = await response.json();
+                    } catch (error) {
+                        console.error('Gagal meload data jurnal:', error);
+                    } finally {
+                        this.loading = false;
+                    }
+                },
 
+                get availableYears() {
+                    let years = this.journals.map(j => j.year);
+                    return [...new Set(years)].sort((a, b) => b - a); // Urutkan dari tahun terbaru
+                },
 
+                countByYear(year) {
+                    return this.journals.filter(j => j.year === year).length;
+                },
+
+                get filteredGroupedJournals() {
+                    // 1. Filter berdasarkan pencarian & tahun yang dipilih
+                    let filtered = this.journals.filter(j => {
+                        let matchesYear = this.selectedYear === '' || j.year === this.selectedYear;
+                        let matchesSearch = this.search === '' || j.title.toLowerCase().includes(this.search.toLowerCase());
+                        return matchesYear && matchesSearch;
+                    });
+
+                    // 2. Kelompokkan kembali berdasarkan bulan (month)
+                    let groups = {};
+                    filtered.forEach(j => {
+                        if (!groups[j.month]) {
+                            groups[j.month] = [];
+                        }
+                        groups[j.month].push(j);
+                    });
+
+                    // Ubah object ke array agar bisa di-loop pakai x-for
+                    return Object.keys(groups).map(month => {
+                        return {
+                            month: month,
+                            items: groups[month]
+                        };
+                    });
+                }
+            }
+        }
+    </script>
 {{ end }}

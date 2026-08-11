@@ -1,0 +1,76 @@
+<div x-data="{
+        speaking: false,
+        paused: false,
+        utterance: null,
+        init() {
+            if (!('speechSynthesis' in window)) {
+                this.$el.style.display = 'none';
+            }
+        },
+        toggleSpeech() {
+            const synth = window.speechSynthesis;
+
+            if (this.speaking) {
+                if (this.paused) {
+                    synth.resume();
+                    this.paused = false;
+                } else {
+                    synth.pause();
+                    this.paused = true;
+                }
+                return;
+            }
+
+            const articleElement = document.querySelector('.post-content-full') || document.body;
+            const textToRead = articleElement.innerText;
+
+            this.utterance = new SpeechSynthesisUtterance(textToRead);
+            this.utterance.lang = 'id-ID';
+            this.utterance.rate = 1.0;
+
+            this.utterance.onend = () => {
+                this.speaking = false;
+                this.paused = false;
+            };
+
+            synth.speak(this.utterance);
+            this.speaking = true;
+            this.paused = false;
+        },
+        stopSpeech() {
+            window.speechSynthesis.cancel();
+            this.speaking = false;
+            this.paused = false;
+        }
+    }" class="inline-flex items-center gap-2 not-prose">
+    
+    <!-- Tombol Utama (Sederhana & Menyatu dengan Metadata) -->
+    <button @click="toggleSpeech()" 
+            class="inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors focus:outline-none cursor-pointer"
+            :title="!speaking ? 'Dengarkan artikel' : (paused ? 'Lanjutkan' : 'Jeda')">
+        
+        <span class="w-3.5 h-3.5 flex items-center justify-center">
+            <template x-if="!speaking">
+                <span class="icon-[ri--volume-up-line] w-3.5 h-3.5"></span>
+            </template>
+            <template x-if="speaking && !paused">
+                <span class="icon-[ri--volume-mute-line] w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 animate-pulse"></span>
+            </template>
+            <template x-if="speaking && paused">
+                <span class="icon-[ri--play-line] w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400"></span>
+            </template>
+        </span>
+
+        <span x-text="!speaking ? 'Dengarkan' : (paused ? 'Lanjutkan' : 'Jeda Audio')"></span>
+    </button>
+
+    <!-- Tombol Stop (Kecil, Hanya Muncul Saat Aktif) -->
+    <button @click="stopSpeech()" 
+            x-show="speaking"
+            x-transition
+            class="flex align-center text-xs text-gray-400 hover:text-red-500 transition-colors focus:outline-none cursor-pointer"
+            title="Matikan audio"
+            style="display: none;">
+        <span class="icon-[ri--close-circle-line] w-3.5 h-3.5"></span>
+    </button>
+</div>

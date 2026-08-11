@@ -2,12 +2,11 @@
 title: "Penyesalan Menyimpan Data di HDD External"
 slug: penyesalan menyimpan data hdd external
 date: 2021-06-07T16:00:35+07:00
-draft: False
+image: menyimpan-hdd-external.avif
 topics: ["Komputer"]
+draft: False
 ---
 
-
-![hdd-external-rusak.avif](hdd-external-rusak.avif)
 
 <p>
 	Pagi ini dikejutkan dengan kejadian yang sangat tidak mengenakan.
@@ -60,3 +59,5 @@ topics: ["Komputer"]
 <p>
 	Kata-kata terakhir 'nyesel gua nyimpen data penting dihdd external yang udah mau rusak :3'
 </p>
+
+![hdd-external-rusak.avif](hdd-external-rusak.avif)

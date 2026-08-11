@@ -43,6 +43,8 @@
                                             <span class="icon-[ri--time-line] w-4 h-4"></span>
                                             <span>{{ printf "%d min waktu baca" .ReadingTime }}</span>
                                         </div>
+
+                                        {{ partial "posts/tts-reader.html" . }}
                                     </div>
                                 </header>
                                 

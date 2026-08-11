@@ -1,0 +1,15 @@
+{{ $url := .Get "to" | default "#" }}
+{{ $text := .Get "text" | default .Inner | default $url }}
+{{ $external := .Get "external" | default "true" }}
+{{ $rel := .Get "rel" | default "" }}
+{{ $class := .Get "class" | default "inline-flex items-center gap-1.5 font-medium text-sky-400 hover:text-sky-300 underline underline-offset-4 transition-colors" }}
+
+<a href="{{ $url }}" 
+   {{ if eq $external "true" }}target="_blank"{{ end }}
+   {{ if $rel }}rel="{{ $rel }}"{{ end }}
+   class="{{ $class }}">
+    <span>{{ $text | safeHTML }}</span>
+    {{ if eq $external "true" }}
+    <span class="icon-[ri--external-link-line] w-4 h-4 opacity-70"></span>
+    {{ end }}
+</a>

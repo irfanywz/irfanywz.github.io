@@ -5,6 +5,8 @@ description: "disqus embed.js error Uncaught Error: parseColor received unparsea
 date: 2026-08-01T21:00:31+07:00
 image: disqus-error.avif
 topics: ["Kode"]
+showAds: true
+adPositions: [2, 5, 7]
 draft: false
 ---
 

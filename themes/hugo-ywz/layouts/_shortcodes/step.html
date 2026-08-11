@@ -1,0 +1,23 @@
+{{ $title := .Get "title" }}
+{{ $stepNum := .Get "n" | default "" }}
+
+<div class="relative group">
+    <!-- Lingkaran Nomor / Ikon Urutan di Sisi Kiri -->
+    {{ if $stepNum }}
+    <div class="absolute -left-[31px] top-0.5 w-6 h-6 rounded-full bg-sky-600 dark:bg-sky-500 text-white text-xs font-bold flex items-center justify-center shadow-sm">
+        {{ $stepNum }}
+    </div>
+    {{ end }}
+
+    <!-- Konten Langkah -->
+    <div class="space-y-1.5">
+        {{ if $title }}
+        <h4 class="font-bold text-base text-gray-900 dark:text-gray-100 tracking-tight">
+            {{ $title }}
+        </h4>
+        {{ end }}
+        <div class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed [&>p]:my-1">
+            {{ .Inner | markdownify }}
+        </div>
+    </div>
+</div>

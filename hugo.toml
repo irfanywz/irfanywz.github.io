@@ -37,7 +37,7 @@ pygmentscodefencesguesssyntax = true
         <span class="block text-xs font-semibold tracking-wider text-gray-400 uppercase mb-2">Advertisement</span>
         <div class="text-sm text-gray-500 dark:text-gray-400">
             <!-- Contoh jika pakai script AdSense atau banner kustom -->
-            <span>-- Slot Iklan Global dari Config --</span>
+            <span>-- Slot Iklan Global dari Confige --</span>
         </div>
     </div>
   '''
@@ -219,11 +219,16 @@ weight = 40
   home = ["HTML", "RSS", "JSON"]  
 
 [outputFormats]
+[outputFormats.journaljson]
+  mediatype = "application/json"
+  baseName = "index"
+  isPlainText = true
+  notAlternative = true  
 [outputFormats.JSON]
   mediaType = "application/json"
   baseName = "index"
   isPlainText = true
-  notAlternative = true  
+  notAlternative = true    
 
 [languages.id]
 label = "Indonesian"
