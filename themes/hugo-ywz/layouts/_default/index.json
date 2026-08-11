@@ -1,10 +1,33 @@
 {{- $.Scratch.Add "index" slice -}}
-{{- range .Site.RegularPages }}
-{{- $.Scratch.Add "index" (dict 
-  "title" .Title
-  "content" .Plain
-  "date" .Date
-  "permalink" .Permalink
-) -}}
-{{- end }}
+{{- range .Site.RegularPages -}}
+  {{- if eq .Section "posts" -}}
+    {{- $img := "" -}}
+    {{- if .Params.image -}}
+      {{- /* Cek apakah gambar berasal dari Resources (Page Bundle) atau Global/Static */ -}}
+      {{- with .Resources.GetMatch .Params.image -}}
+        {{- $img = .RelPermalink -}}
+      {{- else -}}
+        {{- with resources.Get .Params.image -}}
+          {{- $img = .RelPermalink -}}
+        {{- else -}}
+          {{- /* Fallback jika ditaruh di static atau berupa URL eksternal */ -}}
+          {{- if or (strings.HasPrefix .Params.image "http") (strings.HasPrefix .Params.image "/") -}}
+            {{- $img = .Params.image -}}
+          {{- else -}}
+            {{- $img = printf "/%s" .Params.image | relURL -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+
+    {{- $.Scratch.Add "index" (dict 
+      "title" .Title
+      "date" .Date
+      "permalink" .Permalink
+      "section" .Section
+      "image" $img
+      "tags" (apply .Params.tags "jsonify" ".")
+    ) -}}
+  {{- end -}}
+{{- end -}}
 {{- ($.Scratch.Get "index") | jsonify -}}

@@ -18,14 +18,14 @@
     <div class="container max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         
         <!-- Mobile Menu Button -->
-        <button @click="$store.nav.toggle()" type="button" class="flex md:hidden p-2 text-2xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors me-1" aria-label="Toggle Menu">
+        <button @click="$store.nav.toggle()" type="button" class="flex p-2 text-2xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors me-1" aria-label="Toggle Menu">
             <i class="icon-[ri--menu-4-line]"></i>
         </button>
 
         <!-- Brand -->
         <div class="flex-shrink-0">
             <a href="{{ .Site.BaseURL }}" class="flex items-center">
-                <img src='{{ "logo.avif" | relURL }}' alt="{{ .Site.Title }} logo" class="h-8 w-auto mr-2">
+                <img src='{{ .Site.Params.logoText | relURL }}' alt="{{ .Site.Title }} logo" class="h-8 w-auto mr-2">
             </a>
         </div>
 
@@ -44,11 +44,6 @@
                     <span>{{ .Name }}</span>
                 </a>
             {{ end}}
-
-            <a href="javascript:;" @click="$store.nav.toggle()" class='flex items-center gap-2 text-sm font-medium transition-colors text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400' aria-label="More Menu">
-                <span class="icon-[ri--apps-2-line] inline-block text-xl"></span>
-                <span>Lainnya</span>
-            </a>
             
         </nav>
 

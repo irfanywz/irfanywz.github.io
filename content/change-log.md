@@ -4,6 +4,19 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.3.2"
+    date: "11 Agustus 2026"
+    changes:
+      - tag: "Fitur Baru"
+        description: "Menambahkan fitur TOC (Table of Contents) menggunakan shortcode pada halaman post."
+      - tag: "Fitur Baru"
+        description: "Menambahkan widget featured random post pada halaman home."
+      - tag: "Pembaruan"
+        description: "Memfilter data index.json pada fitur pencarian agar hanya mengambil data dari section posts."
+      - tag: "Pembaruan"
+        description: "Mengubah paginasi load more pada halaman utama menjadi infinite scroll menggunakan"
+      - tag: "Perbaikan"
+        description: "Perbaikan error kode komentar diconsole log"
   - version: "2.3.1"
     date: "4 Agustus 2026"
     changes:

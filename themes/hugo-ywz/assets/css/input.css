@@ -64,6 +64,18 @@ html {
   color: #f8fafc !important;
 }
 
+/* Bypass error parseColor OKLCH pada Disqus */
+#disqus_thread, 
+#disqus_wrapper, 
+#disqus_thread *, 
+#disqus_wrapper * {
+    color-scheme: light dark;
+}
+
+#disqus_thread iframe {
+    background-color: transparent !important;
+}
+
 /* translate */
 .goog-te-gadget-simple:after {
   content: "" !important; 

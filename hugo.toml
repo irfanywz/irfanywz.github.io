@@ -1,7 +1,7 @@
 baseURL = "https://irfanywz.web.id/"
 theme = "hugo-ywz"
 locale = "en-us"
-title = "Tulisan Perjalanan Hidup"
+title = "Personal blog Muhamad Irfan"
 copyright = "Muhamad Irfan"
 
 enableEmoji = true
@@ -22,6 +22,8 @@ pygmentscodefencesguesssyntax = true
 	# Optional 64x64 avatar image.
 	# avatar = "https://avatars.githubusercontent.com/u/117440754?v=4"
   avatar = "avatar.avif"
+  logo = "logo.avif"
+  logoText = "logo-text.avif"
 
   author = "Muhamad Irfan"
   description = "Personal blog Muhamad Irfan, menulis dan berbagi hal menarik seputar teknologi."
@@ -73,28 +75,37 @@ url = "/topics/"
 pre = "icon-[ri--hashtag]"
 weight = 20
 
+
+[[menu.main]]
+name = "Layanan"
+url = "/shop/"
+pre = "icon-[ri--store-2-line]"
+weight = 30
+
+[[menu.main]]
+name = "Kontak"
+url = "/contact/"
+pre = "icon-[ri--mail-line]"
+weight = 35
+
 [[menu.main]]
 name = "Tentang"
 url = "/about/"
 pre = "icon-[lucide--user-round-pen]"
 weight = 40
 
-[[menu.main]]
-name = "Kontak"
-url = "/contact/"
-pre = "icon-[ri--mail-line]"
-weight = 40
+
 
 # menu offcanvas
 # ======================
 
-[[menu.footer]]
-name = "Layanan"
-url = "/shop/"
-pre = "icon-[ri--store-2-line]"
-weight = 5
-[menu.footer.params]
-  color = "text-sky-500"
+# [[menu.footer]]
+# name = "Layanan"
+# url = "/shop/"
+# pre = "icon-[ri--store-2-line]"
+# weight = 5
+# [menu.footer.params]
+#   color = "text-sky-500"
 
 # [[menu.footer]]
 # name = "Portofolio"
@@ -158,10 +169,16 @@ pre = "icon-[ri--hashtag]"
 weight = 20
 
 [[menu.bottom]]
+name = "Layanan"
+url = "/shop/"
+pre = "icon-[ri--store-2-line]"
+weight = 30
+
+[[menu.bottom]]
 name = "Kontak"
 url = "/contact/"
 pre = "icon-[ri--mail-line]"
-weight = 30
+weight = 35
 
 [[menu.bottom]]
 name = "Tentang"

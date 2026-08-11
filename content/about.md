@@ -36,8 +36,8 @@ tools:
       # - nama: "Moho Pro"
       #   deskripsi: "Animasi 2D & rigging karakter"
       #   icon: "icon-[ri--movie-2-line]"
-      - nama: "VS Code"
-        deskripsi: "Editor utama untuk ngoding"
+      - nama: "Sublime Text"
+        deskripsi: "Text Editor utama untuk nulis"
         icon: "icon-[ri--code-s-slash-line]"
   # - kategori: "Bahasa & Framework"
   #   items:

@@ -1,62 +1,69 @@
 {{ with . }}
     {{ if .HasNext }}
-    <div id="load-more-container" class="text-center mt-12">
-        <a href="{{ .Next.URL }}" id="load-more-btn" class="inline-flex items-center gap-3 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium shadow-sm">
-            <span id="load-more-text">Muat Lebih Banyak</span>
-            <div id="load-more-spinner" class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" style="display: none;"></div>
-        </a>
-    </div>
-    {{ end }}
+    <div class="text-center mt-12"
+        x-data="{
+            // Kumpulkan semua URL halaman berikutnya menggunakan Pagers bawaan Hugo
+            pageUrls: [
+                {{ range .Pagers }}
+                    {{ if gt .PageNumber 1 }}
+                        '{{ .URL }}',
+                    {{ end }}
+                {{ end }}
+            ],
+            currentIndex: 0,
+            hasNext: true,
+            loading: false,
+            
+            async loadMore() {
+                if (this.loading || this.currentIndex >= this.pageUrls.length) return;
+                this.loading = true;
 
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const loadMoreBtn = document.getElementById('load-more-btn');
-        if (!loadMoreBtn) return;
+                const targetUrl = this.pageUrls[this.currentIndex];
 
-        // ID ini harus ada pada elemen yang membungkus daftar konten Anda
-        const container = document.getElementById('content-container'); 
-        if (!container) return;
-
-        const spinner = document.getElementById('load-more-spinner');
-        const btnText = document.getElementById('load-more-text');
-
-        loadMoreBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            let nextPageUrl = this.getAttribute('href');
-            if (!nextPageUrl) return;
-
-            spinner.style.display = 'block';
-            btnText.style.display = 'none';
-            loadMoreBtn.classList.add('pointer-events-none', 'opacity-75');
-
-            fetch(nextPageUrl)
-                .then(response => response.text())
-                .then(html => {
+                try {
+                    const response = await fetch(targetUrl);
+                    const html = await response.text();
+                    
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
                     
-                    const newContent = doc.querySelectorAll('#content-container > *');
-                    newContent.forEach(item => {
-                        container.appendChild(item);
-                    });
-
-                    const newLoadMoreBtn = doc.getElementById('load-more-btn');
-                    if (newLoadMoreBtn) {
-                        loadMoreBtn.setAttribute('href', newLoadMoreBtn.getAttribute('href'));
-                    } else {
-                        document.getElementById('load-more-container').style.display = 'none';
+                    // Masukkan post baru ke kontainer utama
+                    const container = document.getElementById('content-container');
+                    if (container) {
+                        const newContent = doc.querySelectorAll('#content-container > *');
+                        newContent.forEach(item => {
+                            container.appendChild(item);
+                        });
                     }
 
-                    // Update URL history
-                    history.pushState(null, '', nextPageUrl);
-                })
-                .catch(error => console.error('Error loading more content:', error))
-                .finally(() => {
-                    spinner.style.display = 'none';
-                    btnText.style.display = 'block';
-                    loadMoreBtn.classList.remove('pointer-events-none', 'opacity-75');
-                });
-        });
-    });
-    </script>
+                    // Geser index ke halaman berikutnya
+                    this.currentIndex++;
+
+                    // Jika sudah mencapai halaman terakhir, sembunyikan tombol
+                    if (this.currentIndex >= this.pageUrls.length) {
+                        this.hasNext = false;
+                    }
+
+                    // Update URL browser history tanpa reload
+                    history.pushState(null, '', targetUrl);
+
+                } catch (error) {
+                    console.error('Error loading more content:', error);
+                } finally {
+                    this.loading = false;
+                }
+            }
+        }"
+        x-show="hasNext"
+        x-cloak>
+        
+        <button @click="loadMore()" 
+            :class="{ 'pointer-events-none opacity-75': loading }"
+            class="inline-flex items-center gap-3 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium shadow-sm focus:outline-none">
+            
+            <span x-show="!loading">Muat Lebih Banyak</span>
+            <div x-show="loading" class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" x-cloak></div>
+        </button>
+    </div>
+    {{ end }}
 {{ end }}

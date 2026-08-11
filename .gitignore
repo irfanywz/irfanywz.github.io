@@ -1,6 +1,7 @@
 draft
 .idea
 .external
+.del
 public
 
 *.mp4

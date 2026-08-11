@@ -1,17 +1,42 @@
-{{ $paginator := .Paginator }}
+{{ $paginator := . }}
 {{ if gt $paginator.TotalPages 1 }}
-<nav class="flex items-center justify-between" aria-label="Pagination">
-    <div class="flex-1 flex justify-between sm:justify-center gap-4">
-        {{ if $paginator.HasPrev }}
-            <a href="{{ $paginator.Prev.URL }}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                &larr; Halaman Baru
+<nav class="flex items-center justify-center gap-1 mt-8" aria-label="Pagination">
+    
+    <!-- Tombol First -->
+    <a href="{{ $paginator.First.URL }}" class="flex items-center justify-center w-9 h-9 border border-gray-300 dark:border-gray-700 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors {{ if eq $paginator.PageNumber 1 }}opacity-50 pointer-events-none{{ end }}">
+        <span class="icon-[ri--skip-back-line]"></span>
+    </a>
+
+    <!-- Tombol Previous -->
+    {{ if $paginator.HasPrev }}
+        <a href="{{ $paginator.Prev.URL }}" class="flex items-center justify-center w-9 h-9 border border-gray-300 dark:border-gray-700 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+            <span class="icon-[ri--arrow-left-s-line]"></span>
+        </a>
+    {{ end }}
+
+    <!-- List Angka Pagination -->
+    {{ range $paginator.Pagers }}
+        {{ if eq . $paginator }}
+            <span class="flex items-center justify-center w-9 h-9 bg-indigo-600 text-white rounded-md text-sm font-semibold">
+                {{ .PageNumber }}
+            </span>
+        {{ else }}
+            <a href="{{ .URL }}" class="flex items-center justify-center w-9 h-9 border border-gray-300 dark:border-gray-700 rounded-md text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                {{ .PageNumber }}
             </a>
         {{ end }}
-        {{ if $paginator.HasNext }}
-            <a href="{{ $paginator.Next.URL }}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                Halaman Lama &rarr;
-            </a>
-        {{ end }}
-    </div>
+    {{ end }}
+
+    <!-- Tombol Next -->
+    {{ if $paginator.HasNext }}
+        <a href="{{ $paginator.Next.URL }}" class="flex items-center justify-center w-9 h-9 border border-gray-300 dark:border-gray-700 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+            <span class="icon-[ri--arrow-right-s-line]"></span>
+        </a>
+    {{ end }}
+
+    <!-- Tombol Last -->
+    <a href="{{ $paginator.Last.URL }}" class="flex items-center justify-center w-9 h-9 border border-gray-300 dark:border-gray-700 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors {{ if eq $paginator.PageNumber $paginator.TotalPages }}opacity-50 pointer-events-none{{ end }}">
+        <span class="icon-[ri--skip-forward-line]"></span>
+    </a>
 </nav>
 {{ end }}

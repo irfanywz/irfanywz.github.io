@@ -40,7 +40,7 @@
                     {{ if gt $filteredCount 0 }}
                         
                         <!-- Card Style: Background Image with Overlay -->
-                        <a href="{{ if $termPage }}{{ $termPage.Permalink }}{{ else }}{{ printf "/topics/%s/" ($name | urlize) | absURL }}{{ end }}" class="group relative h-48 sm:h-80 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col justify-end p-3.5 sm:p-6 border border-gray-100 dark:border-gray-800">
+                        <a href="{{ if $termPage }}{{ $termPage.Permalink }}{{ else }}{{ printf "/topics/%s/" ($name | urlize) | absURL }}{{ end }}" class="group relative h-48 sm:h-80 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col justify-end p-3.5 sm:p-6 border border-gray-100 dark:border-gray-800 bg-[#b9dcfc]">
                             
                             <!-- Background Image -->
                             {{ if and $termPage $termPage.Params.image }}

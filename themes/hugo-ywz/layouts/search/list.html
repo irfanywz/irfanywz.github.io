@@ -90,13 +90,11 @@
             
             let searchData = [];
             
-            // Load JSON data
             fetch('{{ "index.json" | absURL }}')
                 .then(response => response.json())
                 .then(data => {
-                    searchData = data;
+                    searchData = data.filter(item => item.section === 'posts');
 
-                    // Periksa parameter URL untuk 'q' saat halaman dimuat
                     const urlParams = new URLSearchParams(window.location.search);
                     const queryFromUrl = urlParams.get('q');
                     
@@ -110,7 +108,6 @@
                     console.error('Error loading search index:', error);
                 });
             
-            // Search function
             function performSearch(query) {
                 if (!query.trim()) {
                     searchResults.classList.add('hidden');
@@ -123,21 +120,20 @@
                 
                 initialState.classList.add('hidden');
                 const startTime = performance.now();
+                
                 let results = searchData.filter(item => {
-                    const content = `${item.title || ''} ${item.content || ''} ${item.tags || ''}`.toLowerCase();
-                    return content.includes(query.toLowerCase());
+                    const tagsStr = Array.isArray(item.tags) ? item.tags.join(' ') : (item.tags || '');
+                    const targetText = `${item.title || ''} ${tagsStr}`.toLowerCase();
+                    return targetText.includes(query.toLowerCase());
                 });
                 
-                // Hapus duplikat berdasarkan permalink
                 const uniqueResults = Array.from(new Map(results.map(item => [item.permalink, item])).values());
-
                 const endTime = performance.now();
                 const searchDuration = (endTime - startTime).toFixed(2);
                 
                 displayResults(uniqueResults, query, searchDuration);
             }
             
-            // Display results
             function displayResults(results, query, duration) {
                 if (results.length === 0) {
                     searchResults.classList.add('hidden');
@@ -153,47 +149,59 @@
                 let resultsHTML = '';
                 
                 results.forEach(item => {
-                    // Highlight matching text
                     const titleHighlighted = highlightText(item.title || '', query);
-                    let contentPreview = item.content ? item.content.substring(0, 150) : '';
-                    contentPreview = highlightText(contentPreview, query);
                     
-                    // Format tags
                     let tagsHTML = '';
                     if (item.tags) {
-                        const tags = item.tags.split(',').map(tag => tag.trim());
-                        tagsHTML = tags.map(tag => 
-                            `<span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 border border-indigo-200 dark:border-indigo-800">${highlightText(tag, query)}</span>`
+                        const tagsList = Array.isArray(item.tags) ? item.tags : item.tags.split(',').map(t => t.trim());
+                        tagsHTML = tagsList.map(tag => 
+                            `<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 border border-indigo-200 dark:border-indigo-800">${highlightText(tag, query)}</span>`
                         ).join('');
+                    }
+
+                    // Render gambar thumbnail jika ada parameternya
+                    let imageHTML = '';
+                    if (item.image) {
+                        let imgUrl = item.image;
+                        // Jika path gambar relatif terhadap page bundle, pastikan menyesuaikan atau langsung pakai URL-nya
+                        imageHTML = `
+                            <div class="w-full sm:w-36 h-28 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
+                                <img src="${imgUrl}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            </div>
+                        `;
                     }
                     
                     resultsHTML += `
-                        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all duration-300 group relative">
-                            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
-                                <h3 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                                    <a href="${item.permalink}" class="focus:outline-none">
-                                        <span class="absolute inset-0" aria-hidden="true"></span>
-                                        ${titleHighlighted}
-                                    </a>
-                                </h3>
-                                <span class="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap flex-shrink-0 flex items-center gap-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                    ${formatDate(item.date)}
-                                </span>
-                            </div>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm line-clamp-2 mb-4 leading-relaxed">${contentPreview}...</p>
-                            <div class="flex items-center justify-between mt-auto">
-                                <div class="flex flex-wrap gap-2 relative z-10">
-                                    ${tagsHTML}
+                        <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all duration-300 group relative flex flex-col sm:flex-row gap-5 items-start">
+                            ${imageHTML}
+                            <div class="flex-grow min-w-0 flex flex-col justify-between h-full w-full">
+                                <div>
+                                    <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-2">
+                                        <span class="flex items-center gap-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            ${formatDate(item.date)}
+                                        </span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors leading-snug mb-2">
+                                        <a href="${item.permalink}" class="focus:outline-none">
+                                            <span class="absolute inset-0" aria-hidden="true"></span>
+                                            ${titleHighlighted}
+                                        </a>
+                                    </h3>
                                 </div>
-                                <span class="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 dark:text-indigo-400 group-hover:translate-x-1 transition-transform pointer-events-none">
-                                    Baca Selengkapnya
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                    </svg>
-                                </span>
+                                <div class="flex flex-wrap items-center justify-between gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700/50">
+                                    <div class="flex flex-wrap gap-1.5 relative z-10">
+                                        ${tagsHTML}
+                                    </div>
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 group-hover:translate-x-1 transition-transform pointer-events-none">
+                                        Baca
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                        </svg>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -204,7 +212,6 @@
                 searchTime.textContent = `${duration}ms`;
             }
 
-            // Toggle clear button
             function toggleClearButton(query) {
                 if (query && query.length > 0) {
                     clearSearch.classList.remove('hidden');
@@ -213,49 +220,21 @@
                 }
             }
             
-            // Highlight matching text
             function highlightText(text, query) {
                 if (!query) return text;
-                
                 const regex = new RegExp(query, 'gi');
                 return text.replace(regex, match => `<span class="bg-yellow-200 dark:bg-yellow-900/50 text-gray-900 dark:text-white px-0.5 rounded">${match}</span>`);
             }
             
-            // Format date
             function formatDate(dateString) {
-                if (!dateString) {
-                    return '';
-                }
-
-                // Tambahkan pemeriksaan: jika dateString mengandung '0001', anggap tidak valid.
-                if (dateString.includes('0001')) {
-                    return '';
-                }
-
-                const options = { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                };
-
-                // Coba buat objek Date. Jika dateString tidak valid (misalnya, 'Invalid Date'), 
-                // toLocaleDateString akan menghasilkan output yang tidak diinginkan, jadi kita harus tangani.
+                if (!dateString || dateString.includes('0001')) return '';
                 const dateObject = new Date(dateString);
-
-                if (isNaN(dateObject.getTime())) {
-                    // Cek jika objek Date yang dihasilkan adalah 'Invalid Date'
-                    return '';
-                }
-
-                // Gunakan 'id-ID' (Indonesia) sebagai locale untuk format Tanggal Bulan Tahun
-                return dateObject.toLocaleDateString('id-ID', options);
+                if (isNaN(dateObject.getTime())) return '';
+                return dateObject.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
             }
             
-            // Event listeners
             searchInput.addEventListener('keyup', function(e) {
-                if (e.key === 'Enter') {
-                    performSearch(this.value);
-                }
+                if (e.key === 'Enter') performSearch(this.value);
             });
             
             clearSearch.addEventListener('click', function() {
@@ -265,19 +244,14 @@
                 performSearch('');
             });
             
-            // Debounce search for better performance
             let debounceTimer;
             searchInput.addEventListener('input', function() {
                 toggleClearButton(this.value);
                 clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(() => {
-                    performSearch(this.value);
-                }, 300);
+                debounceTimer = setTimeout(() => performSearch(this.value), 300);
             });
             
-            // Focus search input on page load
             searchInput.focus();
         });
-
     </script>
 {{ end }}
