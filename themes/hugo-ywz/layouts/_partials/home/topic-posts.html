@@ -10,7 +10,7 @@
             try {
                 const [res] = await Promise.all([
                     fetch('{{ absURL "index.json" }}'),
-                    new Promise(resolve => setTimeout(resolve, 1200))
+                    new Promise(resolve => setTimeout(resolve, 800))
                 ]);
                 const data = await res.json();
                 if (data && data.length > 0) {

@@ -6,91 +6,172 @@
           x-data="journalApp()" 
           x-init="initData()">
         
-        <div class="container max-w-6xl mx-auto px-4 py-12">
-            <!-- Header & Search -->
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-gray-100 dark:border-gray-800 pb-8">
-                <div class="max-w-2xl">
-                    <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tight flex items-center gap-3">
-                        <span class="icon-[lucide--receipt-text] text-green-600"></span>
-                        {{.Title}}
-                    </h1>
-                    <p class="text-lg text-gray-500 dark:text-gray-400">{{ .Description }}</p>
-                </div>
-                
-                <!-- Input Pencarian -->
-                <div class="relative w-full md:w-72">
-                    <i class="icon-[ri--search-line] absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                    <input type="text" x-model="search" placeholder="Cari jurnal..." 
-                        class="w-full pl-11 pr-4 py-2.5 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all shadow-sm">
-                    <button x-show="search.length > 0" @click="search = ''"
-                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors" style="display: none;">
-                        <span class="icon-[ri--close-circle-fill] w-4 h-4"></span>
-                    </button>
-                </div>
-            </div>
-
+        <!-- Container Utama (Margin & Padding Nol di Mobile, Normal di Desktop) -->
+        <div class="container max-w-6xl mx-auto px-0 sm:px-6 lg:px-8 py-4 sm:py-8 md:py-12">
+            
             <!-- Loading State -->
-            <div x-show="loading" class="text-center py-12 text-gray-400">
+            <div x-show="loading" class="text-center py-20 text-gray-400">
                 <span class="icon-[svg-spinners--gooey-balls-1] w-8 h-8 mx-auto mb-2"></span>
                 <p class="text-sm">Memuat data jurnal...</p>
             </div>
 
-            <!-- Konten Utama (Muncul setelah JSON ter-load) -->
-            <div x-show="!loading" style="display: none;">
-                <!-- Filter Tahun: Horizontal Scroll -->
-                <div class="flex items-center gap-2 mb-8 overflow-x-auto scrollbar-none pb-2">
-                    <button @click="selectedYear = ''"
-                        :class="selectedYear === '' ? 'bg-indigo-600 text-white shadow-md' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
-                        class="px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex-shrink-0">
-                        Semua (<span x-text="journals.length"></span>)
-                    </button>
+            <!-- Layout Split Screen (Muncul setelah data JSON ter-load) -->
+            <div x-show="!loading" style="display: none;" class="flex flex-col lg:flex-row gap-6 lg:gap-12 items-start">
+                
+                <!-- ========================================== -->
+                <!-- SIDEBAR KIRI (Sticky di Desktop)           -->
+                <!-- ========================================== -->
+                <aside class="w-full lg:w-80 flex-shrink-0 px-4 sm:px-0 lg:sticky lg:top-8 space-y-6">
+                    
+                    <!-- Title & Description -->
+                    <div class="border-b border-gray-100 dark:border-gray-800 pb-4 lg:pb-6">
+                        <h1 class="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white mb-1.5 tracking-tight flex items-center gap-2.5">
+                            <span class="icon-[lucide--receipt-text] text-green-600 w-7 h-7 sm:w-8 sm:h-8"></span>
+                            {{.Title}}
+                        </h1>
+                        {{ if .Description }}
+                            <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{{ .Description }}</p>
+                        {{ end }}
 
-                    <template x-for="year in availableYears" :key="year">
-                        <button @click="selectedYear = year"
-                            :class="selectedYear === year ? 'bg-indigo-600 text-white shadow-md' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
-                            class="px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex-shrink-0"
-                            x-text="year + ' (' + countByYear(year) + ')'">
+                        <!-- Stat Badge Ringkas -->
+                        <div class="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 text-xs font-semibold border border-indigo-100 dark:border-indigo-900/60">
+                            <span class="icon-[ri--book-read-line] w-4 h-4"></span>
+                            <span>Total <strong x-text="journals.length"></strong> Catatan Jurnal</span>
+                        </div>
+                    </div>
+
+                    <!-- Input Pencarian -->
+                    <div class="relative w-full">
+                        <i class="icon-[ri--search-line] absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input type="text" x-model="search" placeholder="Cari di jurnal..." 
+                            class="w-full pl-10 pr-9 py-2.5 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs sm:text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all shadow-2xs">
+                        <button x-show="search.length > 0" @click="search = ''"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors" style="display: none;">
+                            <span class="icon-[ri--close-circle-fill] w-4 h-4"></span>
                         </button>
-                    </template>
-                </div>
+                    </div>
 
-                <!-- Daftar Konten Dikelompokkan per Bulan (Render via Alpine.js) -->
-                <div class="flex flex-col gap-8">
-                    <template x-for="monthGroup in filteredGroupedJournals" :key="monthGroup.month">
-                        <div class="bg-gray-50/50 dark:bg-gray-800/30 p-6 rounded-2xl border border-gray-100 dark:border-gray-800">
-                            <h3 class="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-4 pb-2 border-b border-gray-200 dark:border-gray-700" 
-                                x-text="monthGroup.month">
-                            </h3>
-                            <div class="flex flex-col gap-2">
-                                <template x-for="item in monthGroup.items" :key="item.permalink">
-                                    <a :href="item.permalink" 
-                                       class="group flex items-center gap-4 py-2 px-3 rounded-lg hover:bg-white dark:hover:bg-gray-800 transition-colors shadow-2xs">
-                                        
-                                        <div class="flex-shrink-0 text-gray-400 dark:text-gray-500 font-mono w-10 text-center">
-                                            <span class="block text-xl font-bold text-gray-900 dark:text-white leading-none" x-text="item.day"></span>
-                                            <span class="block text-[10px] uppercase mt-0.5" x-text="item.dayName"></span>
-                                        </div>
+                    <!-- Filter Tahun: Horizontal Scroll di Mobile, Vertical List di Desktop -->
+                    <div class="space-y-2">
+                        <label class="hidden lg:block text-xs font-bold text-gray-400 uppercase tracking-wider">
+                            Filter Tahun
+                        </label>
 
-                                        <div class="flex-grow min-w-0">
-                                            <h2 class="text-base text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 truncate" 
-                                                x-text="item.title">
-                                            </h2>
-                                        </div>
+                        <!-- Wrapper untuk Mobile (Horizontal Scroll) & Desktop (Vertical Stack) -->
+                        <div class="flex lg:flex-col items-center lg:items-stretch gap-2 overflow-x-auto scrollbar-none pb-2 lg:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0">
+                            
+                            <!-- Tombol Semua -->
+                            <button @click="selectedYear = ''"
+                                :class="selectedYear === '' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700/80'"
+                                class="w-auto lg:w-full px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap flex-shrink-0 flex items-center justify-between gap-3">
+                                <span class="flex items-center gap-2">
+                                    <span class="icon-[ri--archive-drawer-line] w-4 h-4"></span>
+                                    <span>Semua Tahun</span>
+                                </span>
+                                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold"
+                                      :class="selectedYear === '' ? 'bg-indigo-500/40 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'"
+                                      x-text="journals.length"></span>
+                            </button>
 
-                                        <template x-if="item.draft">
-                                            <span class="flex-shrink-0 px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-800">DRAFT</span>
-                                        </template>
-                                    </a>
-                                </template>
-                            </div>
+                            <!-- Loop Tahun -->
+                            <template x-for="year in availableYears" :key="year">
+                                <button @click="selectedYear = year"
+                                    :class="selectedYear === year ? 'bg-indigo-600 text-white shadow-xs' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700/80'"
+                                    class="w-auto lg:w-full px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap flex-shrink-0 flex items-center justify-between gap-3">
+                                    <span class="flex items-center gap-2">
+                                        <span class="icon-[ri--calendar-line] w-4 h-4"></span>
+                                        <span x-text="year"></span>
+                                    </span>
+                                    <span class="px-2 py-0.5 rounded-md text-[10px] font-bold"
+                                          :class="selectedYear === year ? 'bg-indigo-500/40 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'"
+                                          x-text="countByYear(year)"></span>
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+
+                </aside>
+
+                <!-- ========================================== -->
+                <!-- STREAM KONTEN UTAMA (Kanan di Desktop)    -->
+                <!-- ========================================== -->
+                <div class="flex-grow w-full min-w-0">
+                    
+                    <!-- Indikator Pencarian/Filter Aktif (Jika ada) -->
+                    <template x-if="search.length > 0 || selectedYear !== ''">
+                        <div class="mb-4 px-4 sm:px-0 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                            <span>Hasil filter untuk: 
+                                <strong class="text-indigo-600 dark:text-indigo-400" x-text="selectedYear ? 'Tahun ' + selectedYear : ''"></strong>
+                                <strong class="text-indigo-600 dark:text-indigo-400" x-text="search ? ' &quot;' + search + '&quot;' : ''"></strong>
+                            </span>
+                            <button @click="selectedYear = ''; search = ''" class="text-xs text-red-500 hover:underline flex items-center gap-1">
+                                <span class="icon-[ri--refresh-line] w-3 h-3"></span>
+                                Reset Filter
+                            </button>
                         </div>
                     </template>
+
+                    <!-- Empty State Jika Hasil Cari / Filter Kosong -->
+                    <template x-if="filteredGroupedJournals.length === 0">
+                        <div class="text-center py-12 px-4 bg-gray-50 dark:bg-gray-800/40 rounded-2xl border border-dashed border-gray-200 dark:border-gray-700/80">
+                            <span class="icon-[ri--file-search-line] w-10 h-10 mx-auto text-gray-300 dark:text-gray-600 mb-2 block"></span>
+                            <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">Tidak ada jurnal yang cocok</p>
+                            <p class="text-xs text-gray-400 mt-1">Coba gunakan kata kunci lain atau ubah filter tahun.</p>
+                        </div>
+                    </template>
+
+                    <!-- Daftar Jurnal Dikelompokkan per Bulan -->
+                    <div class="flex flex-col gap-4 sm:gap-6 md:gap-8">
+                        <template x-for="monthGroup in filteredGroupedJournals" :key="monthGroup.month">
+                            <div class="bg-gray-50/50 dark:bg-gray-800/20 sm:bg-gray-50/60 sm:dark:bg-gray-800/30 p-0 sm:p-5 md:p-6 sm:rounded-2xl border-y sm:border border-gray-100 dark:border-gray-800">
+                                
+                                <!-- Header Bulan -->
+                                <h3 class="px-4 sm:px-0 pt-3 sm:pt-0 text-xs md:text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-2 sm:mb-4 pb-2 border-b border-gray-200/80 dark:border-gray-700/80 flex items-center justify-between" 
+                                    x-text="monthGroup.month">
+                                </h3>
+
+                                <!-- Item List (Full Width di Mobile, Card Modern di Desktop) -->
+                                <div class="divide-y divide-gray-100 dark:divide-gray-800/80">
+                                    <template x-for="item in monthGroup.items" :key="item.permalink">
+                                        <a :href="item.permalink" 
+                                           class="group flex items-center gap-3 sm:gap-5 py-3 px-4 sm:px-4 sm:rounded-xl hover:bg-white dark:hover:bg-gray-800 transition-all hover:shadow-xs active:bg-gray-100 dark:active:bg-gray-800">
+                                            
+                                            <!-- Tanggal & Hari -->
+                                            <div class="flex-shrink-0 text-center font-mono w-9 sm:w-12 py-1 rounded-md sm:rounded-lg bg-white dark:bg-gray-800 border border-gray-200/60 dark:border-gray-700/60 shadow-2xs">
+                                                <span class="block text-sm sm:text-lg font-black text-gray-900 dark:text-white leading-none" x-text="item.day"></span>
+                                                <span class="block text-[8px] sm:text-[10px] text-gray-400 uppercase font-bold mt-0.5" x-text="item.dayName"></span>
+                                            </div>
+
+                                            <!-- Judul -->
+                                            <div class="flex-grow min-w-0">
+                                                <h2 class="text-xs sm:text-sm md:text-base font-semibold md:font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2 md:line-clamp-1 leading-snug" 
+                                                    x-text="item.title">
+                                                </h2>
+                                            </div>
+
+                                            <!-- Badge Draft -->
+                                            <template x-if="item.draft">
+                                                <span class="flex-shrink-0 px-1.5 py-0.5 rounded text-[9px] font-bold bg-red-100 text-red-600 dark:bg-red-900/40 dark:text-red-400 border border-red-200 dark:border-red-800">DRAFT</span>
+                                            </template>
+
+                                            <!-- Panah Indikator -->
+                                            <div class="flex-shrink-0 text-gray-300 dark:text-gray-600 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:translate-x-1 transition-all">
+                                                <span class="icon-[ri--arrow-right-s-line] w-4 h-4 sm:w-5 sm:h-5"></span>
+                                            </div>
+                                        </a>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
                 </div>
+
             </div>
         </div>
     </main>
 
-    <!-- Script Logika Alpine.js untuk AJAX & Filtering -->
+    <!-- Script Logika Alpine.js -->
     <script>
         function journalApp() {
             return {
@@ -112,7 +193,7 @@
 
                 get availableYears() {
                     let years = this.journals.map(j => j.year);
-                    return [...new Set(years)].sort((a, b) => b - a); // Urutkan dari tahun terbaru
+                    return [...new Set(years)].sort((a, b) => b - a);
                 },
 
                 countByYear(year) {
@@ -120,14 +201,12 @@
                 },
 
                 get filteredGroupedJournals() {
-                    // 1. Filter berdasarkan pencarian & tahun yang dipilih
                     let filtered = this.journals.filter(j => {
                         let matchesYear = this.selectedYear === '' || j.year === this.selectedYear;
                         let matchesSearch = this.search === '' || j.title.toLowerCase().includes(this.search.toLowerCase());
                         return matchesYear && matchesSearch;
                     });
 
-                    // 2. Kelompokkan kembali berdasarkan bulan (month)
                     let groups = {};
                     filtered.forEach(j => {
                         if (!groups[j.month]) {
@@ -136,7 +215,6 @@
                         groups[j.month].push(j);
                     });
 
-                    // Ubah object ke array agar bisa di-loop pakai x-for
                     return Object.keys(groups).map(month => {
                         return {
                             month: month,
