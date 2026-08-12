@@ -1,0 +1,127 @@
+{{ $paginator := . }}
+{{ if gt $paginator.TotalPages 1 }}
+<nav id="pagination-container" 
+     class="flex items-center justify-center gap-1 mt-8" 
+     aria-label="Pagination"
+     x-data="{
+        loading: false,
+        async goToPage(url) {
+            if (this.loading || !url || url === window.location.href) return;
+            this.loading = true;
+
+            const container = document.getElementById('content-container');
+            if (container) container.classList.add('opacity-40', 'pointer-events-none', 'transition-opacity');
+
+            try {
+                const response = await fetch(url);
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+
+                // 1. Ganti label status/header halaman di atas postingan
+                const newHeader = doc.getElementById('page-header-wrapper');
+                const currentHeader = document.getElementById('page-header-wrapper');
+                if (currentHeader && newHeader) {
+                    currentHeader.innerHTML = newHeader.innerHTML;
+                }
+
+                // 2. Ganti konten daftar postingan
+                const newContent = doc.getElementById('content-container');
+                if (container && newContent) {
+                    container.innerHTML = newContent.innerHTML;
+                }
+
+                // 3. Ganti elemen pagination ini sendiri dengan versi halaman baru
+                const newPagination = doc.getElementById('pagination-container');
+                const currentPagination = document.getElementById('pagination-container');
+                if (currentPagination && newPagination) {
+                    currentPagination.outerHTML = newPagination.outerHTML;
+                }
+
+                // 4. Update URL browser & smooth scroll ke atas kontainer postingan
+                history.pushState({ url: url }, '', url);
+                if (container) {
+                    // Gantilah baris container.scrollIntoView(...) di pagination-ajax.html dengan snippet ini:
+                    const headerWrapper = document.getElementById('page-header-wrapper');
+                    const targetElement = headerWrapper || container;
+
+                    if (targetElement) {
+                        const headerOffset = 100; // Jarak/offset dari atas dalam pixel (sesuaikan dengan tinggi sticky header)
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+
+            } catch (error) {
+                console.error('Error AJAX pagination:', error);
+                window.location.href = url; // Fallback jika fetch gagal
+            } finally {
+                if (container) container.classList.remove('opacity-40', 'pointer-events-none');
+                this.loading = false;
+            }
+        },
+        init() {
+            // Tangani tombol Back/Forward browser
+            window.addEventListener('popstate', (e) => {
+                if (e.state && e.state.url) {
+                    this.goToPage(e.state.url);
+                } else {
+                    window.location.reload();
+                }
+            });
+        }
+     }">
+    
+    <!-- Tombol First -->
+    <a href="{{ $paginator.First.URL }}" 
+       @click.prevent="goToPage('{{ $paginator.First.URL }}')"
+       class="flex items-center justify-center w-9 h-9 border border-gray-300 dark:border-gray-700 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors {{ if eq $paginator.PageNumber 1 }}opacity-50 pointer-events-none{{ end }}">
+        <span class="icon-[ri--skip-back-line]"></span>
+    </a>
+
+    <!-- Tombol Previous -->
+    {{ if $paginator.HasPrev }}
+        <a href="{{ $paginator.Prev.URL }}" 
+           @click.prevent="goToPage('{{ $paginator.Prev.URL }}')"
+           class="flex items-center justify-center w-9 h-9 border border-gray-300 dark:border-gray-700 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+            <span class="icon-[ri--arrow-left-s-line]"></span>
+        </a>
+    {{ end }}
+
+    <!-- List Angka Pagination -->
+    {{ range $paginator.Pagers }}
+        {{ if eq . $paginator }}
+            <span class="flex items-center justify-center w-9 h-9 bg-indigo-600 text-white rounded-md text-sm font-semibold shadow-xs">
+                {{ .PageNumber }}
+            </span>
+        {{ else }}
+            <a href="{{ .URL }}" 
+               @click.prevent="goToPage('{{ .URL }}')"
+               class="flex items-center justify-center w-9 h-9 border border-gray-300 dark:border-gray-700 rounded-md text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                {{ .PageNumber }}
+            </a>
+        {{ end }}
+    {{ end }}
+
+    <!-- Tombol Next -->
+    {{ if $paginator.HasNext }}
+        <a href="{{ $paginator.Next.URL }}" 
+           @click.prevent="goToPage('{{ $paginator.Next.URL }}')"
+           class="flex items-center justify-center w-9 h-9 border border-gray-300 dark:border-gray-700 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+            <span class="icon-[ri--arrow-right-s-line]"></span>
+        </a>
+    {{ end }}
+
+    <!-- Tombol Last -->
+    <a href="{{ $paginator.Last.URL }}" 
+       @click.prevent="goToPage('{{ $paginator.Last.URL }}')"
+       class="flex items-center justify-center w-9 h-9 border border-gray-300 dark:border-gray-700 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors {{ if eq $paginator.PageNumber $paginator.TotalPages }}opacity-50 pointer-events-none{{ end }}">
+        <span class="icon-[ri--skip-forward-line]"></span>
+    </a>
+</nav>
+{{ end }}

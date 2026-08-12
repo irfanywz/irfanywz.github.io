@@ -5,8 +5,10 @@
     <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
         
         {{ $paginator := .Paginate (where .Site.RegularPages "Section" "in" (slice "posts")) }}
+        
+        <!-- Breadcrumb khusus jika diakses langsung via URL halaman > 1 -->
         {{ if gt $paginator.PageNumber 1 }}
-        <section class="py-6 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+        <section class="py-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
             <div class="container max-w-6xl mx-auto px-4">
                 <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                     <a href="/" class="flex items-center gap-1 leading-relaxed hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
@@ -14,7 +16,7 @@
                         Home
                     </a>
                     <span class="icon-[ri--arrow-right-s-line] w-4 h-4 text-gray-400"></span>
-                    <span class="leading-relaxed text-gray-900 dark:text-white truncate max-w-[200px] md:max-w-none">Page {{ $paginator.PageNumber }}</span>
+                    <span class="leading-relaxed text-gray-900 dark:text-white font-medium">Halaman {{ $paginator.PageNumber }}</span>
                 </nav>
             </div>
         </section>
@@ -28,11 +30,37 @@
                 <!-- Main Content: Posts -->
                 <div class="w-full md:w-2/3 lg:w-3/4">
 
-                    {{/* Tampilkan Featured Random Post di sini agar masuk dalam lebar main content */}}
+                    <!-- Widget khusus di Halaman 1 saja -->
                     {{ if eq $paginator.PageNumber 1 }}
                         {{ partial "home/featured-random.html" . }}
+                        {{ partial "home/topic-posts.html" (dict "topic" "Kode" "title" "Seputar Kode" "limit" 4) }}
                     {{ end }}
 
+                    <!-- Wrapper Header Halaman (Di-update lewat AJAX) -->
+                    <div id="page-header-wrapper" class="mb-4">
+                        {{ if gt $paginator.PageNumber 1 }}
+                            <div class="flex items-center justify-between p-3.5 bg-indigo-50/60 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/60 rounded-xl">
+                                <div class="flex items-center gap-2">
+                                    <span class="flex h-2 w-2 rounded-full bg-indigo-600 dark:bg-indigo-400 animate-pulse"></span>
+                                    <h1 class="text-sm font-bold text-indigo-950 dark:text-indigo-200">
+                                        Menampilkan Artikel — Halaman {{ $paginator.PageNumber }}
+                                    </h1>
+                                </div>
+                                <span class="text-xs text-indigo-600/80 dark:text-indigo-400/80 font-medium">
+                                    Dari total {{ $paginator.TotalPages }} halaman
+                                </span>
+                            </div>
+                        {{ else }}
+                            <div class="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
+                                <h2 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-indigo-600 dark:bg-indigo-400"></span>
+                                    Artikel Terbaru
+                                </h2>
+                            </div>
+                        {{ end }}
+                    </div>
+
+                    <!-- Container Postingan Utama -->
                     <div id="content-container" class="flex flex-col space-y-4 md:grid md:grid-cols-2 md:gap-6 md:space-y-0">
                         {{ range $index, $element := $paginator.Pages }}
                             {{ partial "posts/list-card.html" . }}
@@ -41,7 +69,7 @@
                     </div>
                     
                     <!-- Pagination -->
-                    {{ partial "components/pagination-loadmore.html" .Paginator }}
+                    {{ partial "components/pagination-ajax.html" .Paginator }}
                 </div>
 
                 <!-- Sidebar -->

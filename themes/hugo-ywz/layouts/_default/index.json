@@ -26,7 +26,7 @@
       "permalink" .Permalink
       "section" .Section
       "image" $img
-      "tags" (apply .Params.tags "jsonify" ".")
+      "topics" (apply .Params.topics "jsonify" ".")
     ) -}}
   {{- end -}}
 {{- end -}}

@@ -3,9 +3,13 @@
         posts: [],
         currentIndex: 0,
         timer: null,
+        loading: true,
         async init() {
             try {
-                const res = await fetch('{{ absURL "index.json" }}');
+                const [res] = await Promise.all([
+                    fetch('{{ absURL "index.json" }}'),
+                    new Promise(resolve => setTimeout(resolve, 1200))
+                ]);
                 const data = await res.json();
                 if (data && data.length > 0) {
                     this.posts = data.sort(() => 0.5 - Math.random());
@@ -13,6 +17,8 @@
                 }
             } catch (err) {
                 console.error('Gagal memuat featured post:', err);
+            } finally {
+                this.loading = false;
             }
         },
         nextPost() {
@@ -40,26 +46,39 @@
 
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-xs p-3.5 sm:p-4 transition-all relative overflow-hidden">
         
-        <!-- State: Loading / Belum ada data -->
-        <template x-if="posts.length === 0">
-            <div class="text-center w-full text-xs text-gray-400 py-6 animate-pulse">
-                Memuat rekomendasi...
+        <!-- State 1: Skeleton Placeholder -->
+        <template x-if="loading">
+            <div class="w-full flex flex-col sm:flex-row gap-3.5 items-start animate-pulse">
+                <div class="w-full sm:w-36 h-28 sm:h-24 rounded-lg bg-gray-200 dark:bg-gray-700 flex-shrink-0"></div>
+                <div class="flex-grow min-w-0 flex flex-col justify-between w-full h-full py-0.5 pr-8 space-y-3 sm:space-y-0">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <div class="flex gap-1.5">
+                                <div class="h-4 w-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                                <div class="h-4 w-12 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                            </div>
+                            <div class="h-3 w-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-11/12"></div>
+                            <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
+                        </div>
+                    </div>
+                    <div class="mt-3 sm:mt-2 h-3.5 w-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                </div>
             </div>
         </template>
 
-        <!-- State: Data sudah ada dengan animasi transisi halus -->
-        <template x-if="posts.length > 0">
-            <div class="relative w-full"
-                 x-transition:enter="transition ease-out duration-500"
-                 x-transition:enter-start="opacity-0 translate-y-2"
-                 x-transition:enter-end="opacity-100 translate-y-0">
+        <!-- State 2: Post Real -->
+        <template x-if="!loading && posts.length > 0">
+            <div class="relative w-full">
                 
                 <!-- Tombol Acak -->
                 <button @click="resetTimer()" title="Acak postingan lain" class="absolute top-0 right-0 z-30 p-1.5 text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/60 dark:border-gray-700/60 rounded-lg transition-all active:scale-95 shadow-2xs">
                     <span class="icon-[ri--shuffle-line] w-3.5 h-3.5 block"></span>
                 </button>
 
-                <!-- Link Card dengan key index agar animasi trigger setiap card berganti -->
+                <!-- Link Card -->
                 <a :href="posts[currentIndex].permalink" 
                    :key="currentIndex"
                    x-transition:enter="transition ease-out duration-300"
@@ -71,7 +90,7 @@
                     
                     <!-- Thumbnail -->
                     <template x-if="posts[currentIndex].image">
-                        <div class="w-full sm:w-36 h-28 sm:h-auto sm:self-stretch rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900 flex-shrink-0 relative">
+                        <div class="w-full sm:w-36 h-28 sm:h-24 sm:self-stretch rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900 flex-shrink-0 relative">
                             <img :src="posts[currentIndex].image" :alt="posts[currentIndex].title" class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500">
                         </div>
                     </template>
@@ -79,10 +98,17 @@
                     <!-- Konten Teks -->
                     <div class="flex-grow min-w-0 flex flex-col justify-between h-full w-full py-0.5 pr-8">
                         <div>
-                            <div class="flex items-center justify-between gap-2 mb-1">
-                                <div class="flex flex-wrap gap-1.5 relative z-20">
+                            <div class="flex items-center justify-between gap-2 mb-1.5">
+                                <div class="flex flex-wrap items-center gap-1.5 relative z-20">
+                                    <!-- Label Featured / Pilihan Editor -->
+                                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-50 text-amber-700 dark:bg-amber-950/70 dark:text-amber-300 border border-amber-200/80 dark:border-amber-900/80">
+                                        <span class="icon-[ri--star-smile-line] w-2.5 h-2.5"></span>
+                                        Rekomendasi
+                                    </span>
+
+                                    <!-- Tag Asli -->
                                     <template x-if="posts[currentIndex].tags">
-                                        <template x-for="tag in (Array.isArray(posts[currentIndex].tags) ? posts[currentIndex].tags : posts[currentIndex].tags.split(',').map(t => t.trim())).slice(0, 2)">
+                                        <template x-for="tag in (Array.isArray(posts[currentIndex].tags) ? posts[currentIndex].tags : posts[currentIndex].tags.split(',').map(t => t.trim())).slice(0, 1)">
                                             <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-900" x-text="tag"></span>
                                         </template>
                                     </template>
