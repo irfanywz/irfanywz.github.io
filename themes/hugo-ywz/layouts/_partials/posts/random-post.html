@@ -3,60 +3,61 @@
     <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-100 dark:border-gray-700 pb-3 uppercase tracking-wider">
         Artikel Pilihan
     </h3>
-    
+
     <!-- Ambil semua postingan dari section "posts", di-shuffle, lalu ambil 3 teratas -->
     {{ $randomPosts := where site.RegularPages "Section" "posts" | shuffle | first 3 }}
-    
+
     {{ if $randomPosts }}
     <ul class="space-y-4 text-sm">
         {{ range $randomPosts }}
-        <!-- Simpan konteks halaman saat ini ke dalam variabel -->
         {{ $currentPage := . }}
-        
+
         <li>
             <a href="{{ $currentPage.RelPermalink }}" class="flex items-center gap-3 group" title="{{ $currentPage.Title }}">
-                
-                <!-- Logika Pemanggilan Gambar yang Aman -->
-                {{ if $currentPage.Params.image }}
+
+                <!-- Container Thumbnail -->
+                <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
                     
-                    <!-- 1. Cek apakah gambar berupa Page Resource (satu folder dengan markdown) -->
-                    {{ $resourceImg := $currentPage.Resources.GetMatch $currentPage.Params.image }}
-                    {{ $globalImg := resources.Get $currentPage.Params.image }}
-                    
-                    <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
+                    {{ $hasImage := false }}
+
+                    {{ if $currentPage.Params.image }}
+                        {{ $resourceImg := $currentPage.Resources.GetMatch $currentPage.Params.image }}
+                        {{ $globalImg := resources.Get $currentPage.Params.image }}
+
                         {{ if $resourceImg }}
-                            <!-- Jika ditemukan di folder yang sama -->
-                            {{ $thumb := $resourceImg.Resize "1000x avif" }}
+                            {{ $thumb := $resourceImg.Resize "300x avif" }}
                             <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
-                        
+                            {{ $hasImage = true }}
+
                         {{ else if $globalImg }}
-                            <!-- Jika ditemukan sebagai global resource (di assets/) -->
-                            {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
+                            {{ $thumbGlobal := $globalImg.Resize "300x avif" }}
                             <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ $hasImage = true }}
 
                         {{ else if (fileExists (printf "static/%s" $currentPage.Params.image)) }}
-                            <!-- 2. Jika ada di dalam folder static/ -->
                             <img src="{{ $currentPage.Params.image | relURL }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
-                        
-                        {{ else if (strings.HasPrefix $currentPage.Params.image "http") }}
-                            <!-- 3. Jika berupa link eksternal -->
-                            <img src="{{ $currentPage.Params.image }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
-                        
-                        {{ else }}
-                            <!-- Fallback jika gambar tidak ditemukan -->
-                            <div class="w-full h-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-[8px] text-gray-500">No Image</div>
-                        {{ end }}
-                    </div>
-                {{ end }}
+                            {{ $hasImage = true }}
 
-                <!-- Judul & Tanggal -->
-                <div class="flex-grow">
-                    <h4 class="text-gray-700 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 font-medium line-clamp-2 transition-colors text-xs sm:text-sm">
+                        {{ else if (strings.HasPrefix $currentPage.Params.image "http") }}
+                            <img src="{{ $currentPage.Params.image }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ $hasImage = true }}
+                        {{ end }}
+                    {{ end }}
+
+                    <!-- Fallback Placeholder -->
+                    {{ if not $hasImage }}
+                        <div class="w-full h-full bg-gradient-to-br from-indigo-50/50 via-gray-100 to-indigo-100/30 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950/30 flex flex-col items-center justify-center text-indigo-500/70 dark:text-indigo-400/50 group-hover:scale-105 transition-transform duration-300">
+                            <span class="icon-[ri--article-line] w-6 h-6"></span>
+                        </div>
+                    {{ end }}
+
+                </div>
+
+                <!-- Judul Saja (Max 3 Baris) -->
+                <div class="flex-grow min-w-0">
+                    <h4 class="text-gray-700 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 font-medium line-clamp-3 transition-colors text-xs sm:text-sm leading-snug">
                         {{ $currentPage.Title }}
                     </h4>
-                    <span class="text-[11px] text-gray-400 dark:text-gray-500 mt-1 block">
-                        {{ $currentPage.Date | time.Format "02 Jan 2006" }}
-                    </span>
                 </div>
 
             </a>

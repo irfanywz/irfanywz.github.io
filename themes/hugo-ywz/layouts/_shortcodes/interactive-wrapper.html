@@ -1,0 +1,102 @@
+<div 
+  x-data="{
+    currentSlide: 0,
+    totalSlides: 0,
+    isMuted: false,
+    isFullscreen: false,
+    score: 0,
+    bgm: null,
+
+    init() {
+      this.totalSlides = this.$refs.slideContainer.children.length;
+      this.bgm = new Audio('/audio/bgm.mp3');
+      this.bgm.loop = true;
+      this.bgm.volume = 0.2;
+    },
+    playSFX(src) {
+      if (this.isMuted) return;
+      let sfx = new Audio(src);
+      sfx.volume = 0.5;
+      sfx.play().catch(() => {});
+    },
+    toggleAudio() {
+      this.isMuted = !this.isMuted;
+      this.bgm.muted = this.isMuted;
+    },
+    startModule() {
+      if (!this.isMuted) this.bgm.play().catch(() => {});
+      this.currentSlide = 1;
+      this.playSFX('/audio/click.mp3');
+    },
+    nextSlide() {
+      if (this.currentSlide < this.totalSlides - 1) {
+        this.currentSlide++;
+        this.playSFX('/audio/click.mp3');
+      }
+    },
+    prevSlide() {
+      if (this.currentSlide > 1) {
+        this.currentSlide--;
+        this.playSFX('/audio/click.mp3');
+      }
+    },
+    toggleFullscreen() {
+      let el = this.$refs.mainContainer;
+      if (!document.fullscreenElement) {
+        el.requestFullscreen();
+        this.isFullscreen = true;
+      } else {
+        document.exitFullscreen();
+        this.isFullscreen = false;
+      }
+    }
+  }"
+  x-ref="mainContainer"
+  class="relative w-full aspect-[4/3] sm:aspect-video bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800/80 select-none font-sans my-8 flex flex-col justify-between group transition-colors duration-300"
+>
+  <!-- Background Grid Texture -->
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-100 via-slate-50 to-slate-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-950 pointer-events-none"></div>
+  <div class="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1e293b15_1px,transparent_1px),linear-gradient(to_bottom,#1e293b15_1px,transparent_1px)] bg-[size:3rem_3rem] md:bg-[size:4rem_4rem] pointer-events-none"></div>
+
+  <!-- CONTAINER SLIDE (Auto Scroll untuk HP / Layar Kecil) -->
+  <div x-ref="slideContainer" class="w-full h-[calc(100%-3.5rem)] relative z-10 overflow-hidden">
+    {{ .Inner }}
+  </div>
+
+  <!-- BOTTOM NAVBAR -->
+  <div x-show="currentSlide > 0" class="h-14 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between px-4 sm:px-6 z-30 relative shrink-0">
+    <div class="flex items-center gap-2 sm:gap-4 text-xs font-medium text-slate-500 dark:text-slate-400">
+      <span>Slide <strong class="text-cyan-600 dark:text-cyan-400" x-text="currentSlide"></strong> / <span x-text="totalSlides - 1"></span></span>
+      <span class="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+      <span class="flex items-center gap-1 bg-emerald-50 dark:bg-slate-800/60 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full border border-emerald-200 dark:border-emerald-500/20 text-[11px] sm:text-xs">
+        <span class="icon-[lucide--trophy] text-sm"></span>
+        <span x-text="score"></span> PTS
+      </span>
+    </div>
+
+    <div class="flex items-center gap-1.5 sm:gap-2">
+      <button 
+        @click="prevSlide()" 
+        :disabled="currentSlide <= 1"
+        class="px-3 py-1.5 sm:px-4 sm:py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 disabled:opacity-30 text-xs font-semibold rounded-xl transition cursor-pointer flex items-center gap-1 border border-slate-200 dark:border-slate-700/50 text-slate-700 dark:text-slate-200">
+        <span class="icon-[lucide--chevron-left] text-sm"></span> Prev
+      </button>
+
+      <button 
+        @click="nextSlide()" 
+        :disabled="currentSlide >= totalSlides - 1"
+        class="px-3 py-1.5 sm:px-4 sm:py-2 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-30 text-xs font-semibold text-white rounded-xl transition cursor-pointer flex items-center gap-1 shadow-md shadow-cyan-950/20">
+        Next <span class="icon-[lucide--chevron-right] text-sm"></span>
+      </button>
+    </div>
+
+    <div class="flex items-center gap-1 sm:gap-2">
+      <button @click="toggleAudio()" class="p-1.5 sm:p-2 bg-slate-100 dark:bg-slate-800/60 hover:bg-slate-200 dark:hover:bg-slate-700/80 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-600 dark:text-slate-300 transition flex items-center justify-center">
+        <span class="text-sm sm:text-base" :class="isMuted ? 'icon-[lucide--volume-x] text-rose-500' : 'icon-[lucide--volume-2]'"></span>
+      </button>
+      <button @click="toggleFullscreen()" class="p-1.5 sm:p-2 bg-slate-100 dark:bg-slate-800/60 hover:bg-slate-200 dark:hover:bg-slate-700/80 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-600 dark:text-slate-300 transition flex items-center justify-center">
+        <span class="text-sm sm:text-base" :class="isFullscreen ? 'icon-[lucide--minimize]' : 'icon-[lucide--maximize]'"></span>
+      </button>
+    </div>
+  </div>
+</div>

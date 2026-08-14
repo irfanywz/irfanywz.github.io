@@ -1,0 +1,223 @@
+{{ $type := .Get "type" | default "material" }}
+{{ $title := .Get "title" }}
+{{ $tag := .Get "tag" }}
+{{ $icon := .Get "icon" | default "icon-[lucide--layers]" }}
+{{ $content := .Get "content" }}
+{{ $videoUrl := .Get "videoUrl" }}
+
+{{/* Quiz Options */}}
+{{ $options := .Get "options" }}
+{{ $correct := .Get "correct" | default 0 }}
+{{ $tfAnswer := .Get "tfAnswer" | default "true" }}
+{{ $answerKey := .Get "answerKey" }}
+
+<div 
+  x-data="{ slideIndex: 0 }"
+  x-init="slideIndex = Array.from($el.parentNode.children).indexOf($el)"
+  x-show="currentSlide === slideIndex"
+  class="w-full h-full absolute inset-0 flex flex-col justify-start sm:justify-center items-center py-6 px-4 sm:p-8 md:p-12 text-center overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700"
+>
+
+  <!-- 1. COVER SLIDE -->
+  {{ if eq $type "cover" }}
+    <div class="absolute inset-0 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col md:flex-row z-20 overflow-y-auto">
+      <div class="w-full md:w-1/2 h-full flex flex-col justify-center p-6 sm:p-10 md:p-12 text-left z-10 border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-800/60">
+        {{ if $tag }}
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 w-max mb-3 sm:mb-4">
+            <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-ping"></span>
+            {{ $tag }}
+          </span>
+        {{ end }}
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight mb-4 sm:mb-6 tracking-tight">{{ $title }}</h1>
+        <div>
+          <button 
+            @click="startModule()" 
+            class="px-6 py-3 sm:px-8 sm:py-3.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold rounded-2xl shadow-lg transition transform hover:-translate-y-0.5 cursor-pointer flex items-center gap-2 text-sm sm:text-base">
+            <span class="icon-[lucide--play] text-lg sm:text-xl"></span>
+            MULAI MODUL
+          </button>
+        </div>
+      </div>
+      <div class="w-full md:w-1/2 h-full bg-slate-100 dark:bg-slate-900/40 flex items-center justify-center p-8 relative overflow-hidden shrink-0">
+        <div class="absolute inset-0 bg-cyan-500/10 blur-3xl rounded-full transform scale-75 pointer-events-none"></div>
+        <span class="{{ $icon }} text-7xl sm:text-8xl md:text-9xl text-cyan-500 dark:text-cyan-400 relative z-10 drop-shadow-[0_0_25px_rgba(34,211,238,0.3)]"></span>
+      </div>
+    </div>
+
+  <!-- 2. MATERIAL SLIDE -->
+  {{ else if eq $type "material" }}
+    <div class="max-w-3xl flex flex-col items-center my-auto">
+      {{ if $tag }}<span class="px-3 py-1 bg-slate-200 dark:bg-slate-800/80 text-cyan-700 dark:text-cyan-400 border border-slate-300 dark:border-slate-700/60 rounded-full text-xs font-medium mb-3 sm:mb-4">{{ $tag }}</span>{{ end }}
+      {{ if $title }}<h2 class="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 tracking-tight text-slate-900 dark:text-white">{{ $title }}</h2>{{ end }}
+      {{ if $content }}<p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed font-normal">{{ $content }}</p>{{ end }}
+    </div>
+
+  <!-- 3. EMBED VIDEO SLIDE -->
+  {{ else if eq $type "video" }}
+    <div class="w-full max-w-3xl flex flex-col justify-center items-center my-auto">
+      {{ if $title }}<h3 class="text-lg sm:text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">{{ $title }}</h3>{{ end }}
+      <div class="w-full aspect-video rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-xl bg-black relative">
+        {{ if hasPrefix $videoUrl "http" }}
+          <iframe 
+            src="{{ $videoUrl }}" 
+            class="w-full h-full border-0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+          </iframe>
+        {{ else }}
+          <video src="{{ $videoUrl }}" controls class="w-full h-full object-cover"></video>
+        {{ end }}
+      </div>
+    </div>
+
+  <!-- 4. QUIZ: MULTIPLE CHOICE (Bisa Scroll Kalau Kebanyakan Opsi) -->
+  {{ else if eq $type "quiz" }}
+    <div 
+      x-data="{ answered: false, isCorrect: false, selected: null, correctIdx: {{ $correct }} }" 
+      class="w-full max-w-xl flex flex-col justify-center items-center my-auto pb-4"
+    >
+      {{ if $tag }}<span class="px-3 py-1 bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 rounded-full text-xs font-medium mb-2 sm:mb-3">{{ $tag }}</span>{{ end }}
+      {{ if $title }}<h2 class="text-lg sm:text-xl md:text-2xl font-bold mb-4 sm:mb-6 text-slate-900 dark:text-white leading-snug">{{ $title }}</h2>{{ end }}
+
+      {{ if $options }}
+        {{ $optList := split $options "," }}
+        <div class="grid grid-cols-1 gap-2.5 sm:gap-3 w-full text-left">
+          {{ range $idx, $opt := $optList }}
+            <button 
+              @click="
+                selected = {{ $idx }}; 
+                answered = true; 
+                isCorrect = ({{ $idx }} === correctIdx);
+                if(isCorrect) { score += 100; playSFX('/audio/correct.mp3'); } 
+                else { playSFX('/audio/wrong.mp3'); }
+              "
+              :disabled="answered"
+              :class="{
+                'bg-emerald-100 dark:bg-emerald-950/80 border-emerald-500 text-emerald-900 dark:text-emerald-200': selected === {{ $idx }} && isCorrect,
+                'bg-rose-100 dark:bg-rose-950/80 border-rose-500 text-rose-900 dark:text-rose-200': selected === {{ $idx }} && !isCorrect,
+                'bg-white dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200': selected !== {{ $idx }}
+              }"
+              class="p-3.5 sm:p-4 rounded-xl border text-xs sm:text-sm font-medium transition cursor-pointer flex items-center justify-between shadow-sm"
+            >
+              <span>{{ $opt }}</span>
+              <span x-show="selected === {{ $idx }} && isCorrect" class="icon-[lucide--check-circle-2] text-lg sm:text-xl text-emerald-600 dark:text-emerald-400 shrink-0 ml-2"></span>
+              <span x-show="selected === {{ $idx }} && !isCorrect" class="icon-[lucide--x-circle] text-lg sm:text-xl text-rose-600 dark:text-rose-400 shrink-0 ml-2"></span>
+            </button>
+          {{ end }}
+        </div>
+      {{ end }}
+    </div>
+
+  <!-- 5. QUIZ: BENAR / SALAH (TRUE / FALSE) -->
+  {{ else if eq $type "quiz-tf" }}
+    <div 
+      x-data="{ answered: false, isCorrect: false, selected: null, targetAnswer: '{{ $tfAnswer }}' }" 
+      class="w-full max-w-md flex flex-col justify-center items-center my-auto pb-4"
+    >
+      {{ if $tag }}<span class="px-3 py-1 bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 rounded-full text-xs font-medium mb-2 sm:mb-3">{{ $tag }}</span>{{ end }}
+      {{ if $title }}<h2 class="text-lg sm:text-xl md:text-2xl font-bold mb-6 text-slate-900 dark:text-white leading-snug">{{ $title }}</h2>{{ end }}
+
+      <div class="grid grid-cols-2 gap-3 sm:gap-4 w-full">
+        <button 
+          @click="
+            selected = 'true';
+            answered = true;
+            isCorrect = (targetAnswer === 'true');
+            if(isCorrect) { score += 100; playSFX('/audio/correct.mp3'); } 
+            else { playSFX('/audio/wrong.mp3'); }
+          "
+          :disabled="answered"
+          :class="{
+            'bg-emerald-100 dark:bg-emerald-950 border-emerald-500 text-emerald-900 dark:text-emerald-300': selected === 'true' && isCorrect,
+            'bg-rose-100 dark:bg-rose-950 border-rose-500 text-rose-900 dark:text-rose-300': selected === 'true' && !isCorrect,
+            'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200': selected !== 'true'
+          }"
+          class="p-4 sm:p-5 rounded-2xl border flex flex-col items-center justify-center gap-2 cursor-pointer transition shadow-sm"
+        >
+          <span class="icon-[lucide--check] text-2xl sm:text-3xl"></span>
+          <span class="font-bold text-xs sm:text-sm">BENAR</span>
+        </button>
+
+        <button 
+          @click="
+            selected = 'false';
+            answered = true;
+            isCorrect = (targetAnswer === 'false');
+            if(isCorrect) { score += 100; playSFX('/audio/correct.mp3'); } 
+            else { playSFX('/audio/wrong.mp3'); }
+          "
+          :disabled="answered"
+          :class="{
+            'bg-emerald-100 dark:bg-emerald-950 border-emerald-500 text-emerald-900 dark:text-emerald-300': selected === 'false' && isCorrect,
+            'bg-rose-100 dark:bg-rose-950 border-rose-500 text-rose-900 dark:text-rose-300': selected === 'false' && !isCorrect,
+            'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200': selected !== 'false'
+          }"
+          class="p-4 sm:p-5 rounded-2xl border flex flex-col items-center justify-center gap-2 cursor-pointer transition shadow-sm"
+        >
+          <span class="icon-[lucide--x] text-2xl sm:text-3xl"></span>
+          <span class="font-bold text-xs sm:text-sm">SALAH</span>
+        </button>
+      </div>
+    </div>
+
+  <!-- 6. QUIZ: ISIAN SINGKAT (FILL IN THE BLANK) -->
+  {{ else if eq $type "quiz-fill" }}
+    <div 
+      x-data="{ userAns: '', answered: false, isCorrect: false, key: '{{ $answerKey }}' }" 
+      class="w-full max-w-md flex flex-col justify-center items-center my-auto pb-4"
+    >
+      {{ if $tag }}<span class="px-3 py-1 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 rounded-full text-xs font-medium mb-2 sm:mb-3">{{ $tag }}</span>{{ end }}
+      {{ if $title }}<h2 class="text-base sm:text-lg font-bold mb-4 text-slate-900 dark:text-white leading-snug">{{ $title }}</h2>{{ end }}
+
+      <div class="w-full flex flex-col gap-3">
+        <input 
+          type="text" 
+          x-model="userAns" 
+          :disabled="answered"
+          placeholder="Ketik jawaban di sini..."
+          class="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-cyan-500 text-center font-medium text-sm"
+        />
+        <button 
+          @click="
+            if (!userAns.trim()) return;
+            answered = true;
+            isCorrect = (userAns.trim().toLowerCase() === key.trim().toLowerCase());
+            if(isCorrect) { score += 100; playSFX('/audio/correct.mp3'); } 
+            else { playSFX('/audio/wrong.mp3'); }
+          "
+          :disabled="answered"
+          class="w-full py-2.5 sm:py-3 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-white font-semibold rounded-xl transition cursor-pointer flex items-center justify-center gap-2 text-sm"
+        >
+          <span class="icon-[lucide--send] text-xs sm:text-sm"></span> Periksa Jawaban
+        </button>
+
+        <template x-if="answered">
+          <div 
+            :class="isCorrect ? 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border-emerald-400' : 'bg-rose-100 dark:bg-rose-950/80 text-rose-800 dark:text-rose-300 border-rose-400'"
+            class="p-3 rounded-xl border text-xs sm:text-sm font-medium mt-1 flex items-center justify-center gap-2"
+          >
+            <span :class="isCorrect ? 'icon-[lucide--check-circle-2]' : 'icon-[lucide--x-circle]'"></span>
+            <span x-text="isCorrect ? 'Jawaban Kamu Benar!' : 'Kurang Tepat, Jawaban: ' + key"></span>
+          </div>
+        </template>
+      </div>
+    </div>
+
+  <!-- 7. SUMMARY SLIDE -->
+  {{ else if eq $type "summary" }}
+    <div class="flex flex-col items-center my-auto">
+      <div class="p-4 bg-amber-500/10 border border-amber-500/20 rounded-3xl mb-4">
+        <span class="{{ $icon }} text-5xl sm:text-6xl md:text-7xl text-amber-500 dark:text-amber-400"></span>
+      </div>
+      {{ if $title }}<h2 class="text-2xl sm:text-3xl font-extrabold mb-2 text-slate-900 dark:text-white">{{ $title }}</h2>{{ end }}
+      <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mb-6">Kamu telah menyelesaikan seluruh materi dan kuis pada modul ini.</p>
+      
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl px-6 py-3 sm:px-8 sm:py-4 flex items-center gap-4 shadow-sm">
+        <span class="text-[10px] sm:text-xs uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold">Total Skor</span>
+        <span class="text-2xl sm:text-3xl font-black text-cyan-600 dark:text-cyan-400" x-text="score"></span>
+        <span class="text-xs text-slate-400 dark:text-slate-500">PTS</span>
+      </div>
+    </div>
+  {{ end }}
+
+</div>

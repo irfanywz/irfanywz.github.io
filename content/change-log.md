@@ -4,6 +4,19 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.4.1"
+    date: "15 Agustus 2026"
+    changes:
+      - tag: "Fitur Baru"
+        description: "Menambahkan layout 2 kolom pada tampilan list jurnal (sidebar filter & content list)"
+      - tag: "Fitur Baru"
+        description: "Menambahkan shortcodes baru: checklist, youtube-lite (embed dengan lazyload & tombol play), dan interactive slide"
+      - tag: "Perbaikan"
+        description: "Memperbaiki tampilan post tanpa gambar dengan menambahkan placeholder default"
+      - tag: "Perbaikan"
+        description: "Mengganti format tanggal menjadi waktu baca (reading time) pada widget recent, related, random, series, featured, dan topic post"
+      - tag: "Perbaikan"
+        description: "sidebar sticky setelah widget author"        
   - version: "2.4.0"
     date: "11 Agustus 2026"
     changes:

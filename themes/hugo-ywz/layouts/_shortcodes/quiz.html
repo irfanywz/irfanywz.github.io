@@ -1,0 +1,120 @@
+{{ $question := .Get "q" | default "Pertanyaan kuis?" }}
+{{ $optA := .Get "a" | default "Pilihan A" }}
+{{ $optB := .Get "b" | default "Pilihan B" }}
+{{ $optC := .Get "c" | default "" }}
+{{ $optD := .Get "d" | default "" }}
+{{ $answer := .Get "ans" | default "a" }}
+
+<div x-data="{
+        selected: null,
+        correct: '{{ $answer }}',
+        answered: false,
+        select(opt) {
+            if (this.answered) return;
+            this.selected = opt;
+            this.answered = true;
+        },
+        reset() {
+            this.selected = null;
+            this.answered = false;
+        }
+    }" 
+    class="my-6 p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm not-prose">
+    
+    <!-- Header Kuis / Pertanyaan -->
+    <div class="flex items-start gap-3 mb-4">
+        <span class="flex items-center justify-center w-7 h-7 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-bold text-xs flex-shrink-0 mt-0.5">
+            Q
+        </span>
+        <h4 class="text-base font-semibold text-gray-900 dark:text-white leading-snug">
+            {{ $question }}
+        </h4>
+    </div>
+
+    <!-- Pilihan Jawaban -->
+    <div class="space-y-2.5 ml-10">
+        
+        <!-- Opsi A -->
+        <button @click="select('a')" 
+                class="w-full text-left px-4 py-3 rounded-xl border text-sm font-medium transition-all flex items-center justify-between cursor-pointer"
+                :class="{
+                    'border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/40 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': !answered,
+                    'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-700 dark:text-emerald-300 font-semibold': answered && correct === 'a',
+                    'bg-rose-50 dark:bg-rose-950/30 border-rose-500 text-rose-700 dark:text-rose-300': answered && selected === 'a' && correct !== 'a',
+                    'opacity-50 border-gray-200 dark:border-gray-800 text-gray-400': answered && correct !== 'a' && selected !== 'a'
+                }">
+            <span>A. {{ $optA }}</span>
+            <span x-show="answered && correct === 'a'" class="icon-[ri--check-line] w-4 h-4 text-emerald-600" style="display: none;"></span>
+            <span x-show="answered && selected === 'a' && correct !== 'a'" class="icon-[ri--close-line] w-4 h-4 text-rose-600" style="display: none;"></span>
+        </button>
+
+        <!-- Opsi B -->
+        <button @click="select('b')" 
+                class="w-full text-left px-4 py-3 rounded-xl border text-sm font-medium transition-all flex items-center justify-between cursor-pointer"
+                :class="{
+                    'border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/40 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': !answered,
+                    'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-700 dark:text-emerald-300 font-semibold': answered && correct === 'b',
+                    'bg-rose-50 dark:bg-rose-950/30 border-rose-500 text-rose-700 dark:text-rose-300': answered && selected === 'b' && correct !== 'b',
+                    'opacity-50 border-gray-200 dark:border-gray-800 text-gray-400': answered && correct !== 'b' && selected !== 'b'
+                }">
+            <span>B. {{ $optB }}</span>
+            <span x-show="answered && correct === 'b'" class="icon-[ri--check-line] w-4 h-4 text-emerald-600" style="display: none;"></span>
+            <span x-show="answered && selected === 'b' && correct !== 'b'" class="icon-[ri--close-line] w-4 h-4 text-rose-600" style="display: none;"></span>
+        </button>
+
+        <!-- Opsi C (Hanya muncul jika diisi) -->
+        {{ if $optC }}
+        <button @click="select('c')" 
+                class="w-full text-left px-4 py-3 rounded-xl border text-sm font-medium transition-all flex items-center justify-between cursor-pointer"
+                :class="{
+                    'border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/40 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': !answered,
+                    'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-700 dark:text-emerald-300 font-semibold': answered && correct === 'c',
+                    'bg-rose-50 dark:bg-rose-950/30 border-rose-500 text-rose-700 dark:text-rose-300': answered && selected === 'c' && correct !== 'c',
+                    'opacity-50 border-gray-200 dark:border-gray-800 text-gray-400': answered && correct !== 'c' && selected !== 'c'
+                }">
+            <span>C. {{ $optC }}</span>
+            <span x-show="answered && correct === 'c'" class="icon-[ri--check-line] w-4 h-4 text-emerald-600" style="display: none;"></span>
+            <span x-show="answered && selected === 'c' && correct !== 'c'" class="icon-[ri--close-line] w-4 h-4 text-rose-600" style="display: none;"></span>
+        </button>
+        {{ end }}
+
+        <!-- Opsi D (Hanya muncul jika diisi) -->
+        {{ if $optD }}
+        <button @click="select('d')" 
+                class="w-full text-left px-4 py-3 rounded-xl border text-sm font-medium transition-all flex items-center justify-between cursor-pointer"
+                :class="{
+                    'border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/40 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': !answered,
+                    'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-700 dark:text-emerald-300 font-semibold': answered && correct === 'd',
+                    'bg-rose-50 dark:bg-rose-950/30 border-rose-500 text-rose-700 dark:text-rose-300': answered && selected === 'd' && correct !== 'd',
+                    'opacity-50 border-gray-200 dark:border-gray-800 text-gray-400': answered && correct !== 'd' && selected !== 'd'
+                }">
+            <span>D. {{ $optD }}</span>
+            <span x-show="answered && correct === 'd'" class="icon-[ri--check-line] w-4 h-4 text-emerald-600" style="display: none;"></span>
+            <span x-show="answered && selected === 'd' && correct !== 'd'" class="icon-[ri--close-line] w-4 h-4 text-rose-600" style="display: none;"></span>
+        </button>
+        {{ end }}
+
+    </div>
+
+    <!-- Feedback / Keterangan Benar atau Salah (Muncul Setelah Dipilih) -->
+    <div x-show="answered" 
+         x-transition
+         class="mt-4 ml-10 pt-3 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between"
+         style="display: none;">
+        
+        <div class="text-xs font-semibold">
+            <span x-show="selected === correct" class="text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                <span class="icon-[ri--checkbox-circle-fill] w-4 h-4"></span> Jawaban Kamu Benar! 🎉
+            </span>
+            <span x-show="selected !== correct" class="text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
+                <span class="icon-[ri--close-circle-fill] w-4 h-4"></span> Wah, Kurang Tepat! Jawaban yang benar adalah pilihan <span uppercase x-text="correct.toUpperCase()"></span>.
+            </span>
+        </div>
+
+        <!-- Tombol Coba Lagi -->
+        <button @click="reset()" class="text-xs text-indigo-600 dark:text-indigo-400 hover:underline font-medium cursor-pointer">
+            Reset Kuis
+        </button>
+    </div>
+
+</div>

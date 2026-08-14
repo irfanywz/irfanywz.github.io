@@ -1,7 +1,7 @@
 ---
 title: Kembali Menulis dengan Tampilan Baru
 slug: Kembali Menulis dengan Tampilan Baru
-date: 2026-07-22T18:30:35+07:00
+date: 2026-08-11T18:30:35+07:00
 weather: Cerah
 location: Bogor, Indonesia
 journal_category: ["Menulis"]

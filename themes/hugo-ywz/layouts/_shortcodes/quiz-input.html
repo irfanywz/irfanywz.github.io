@@ -1,0 +1,75 @@
+{{ $question := .Get "q" | default "Tebak kata?" }}
+{{ $answer := .Get "ans" | default "" }}
+{{ $hint := .Get "hint" | default "" }}
+
+<div x-data="{
+        userAnswer: '',
+        correctAnswer: '{{ lower $answer }}',
+        submitted: false,
+        isCorrect: false,
+        check() {
+            if (!this.userAnswer.trim()) return;
+            const cleanUser = this.userAnswer.trim().toLowerCase();
+            this.isCorrect = (cleanUser === this.correctAnswer);
+            this.submitted = true;
+        },
+        reset() {
+            this.userAnswer = '';
+            this.submitted = false;
+            this.isCorrect = false;
+        }
+    }" 
+    class="my-6 p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm not-prose">
+    
+    <!-- Pertanyaan -->
+    <div class="flex items-start gap-3 mb-4">
+        <span class="flex items-center justify-center w-7 h-7 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-bold text-xs flex-shrink-0 mt-0.5">
+            Q
+        </span>
+        <h4 class="text-base font-semibold text-gray-900 dark:text-white leading-snug">
+            {{ $question }}
+        </h4>
+    </div>
+
+    <!-- Input & Tombol Jawab -->
+    <div class="ml-10 space-y-3">
+        <div class="flex gap-2">
+            <input type="text" 
+                   x-model="userAnswer" 
+                   @keydown.enter="check()"
+                   :disabled="submitted"
+                   placeholder="Ketik jawabanmu di sini..." 
+                   class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/40 text-gray-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 disabled:opacity-60">
+            
+            <button @click="check()" 
+                    x-show="!submitted"
+                    class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm transition-colors cursor-pointer">
+                Jawab
+            </button>
+            
+            <button @click="reset()" 
+                    x-show="submitted"
+                    class="px-5 py-2.5 rounded-xl bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium text-sm transition-colors cursor-pointer"
+                    style="display: none;">
+                Ulangi
+            </button>
+        </div>
+
+        <!-- Hint / Petunjuk (Opsional) -->
+        {{ if $hint }}
+        <p class="text-xs text-gray-400 dark:text-gray-500 italic">
+            💡 Petunjuk: {{ $hint }}
+        </p>
+        {{ end }}
+
+        <!-- Feedback Hasil -->
+        <div x-show="submitted" x-transition class="text-xs font-semibold pt-1" style="display: none;">
+            <span x-show="isCorrect" class="text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                <span class="icon-[ri--checkbox-circle-fill] w-4 h-4"></span> Mantap! Jawaban kamu benar! 🎉
+            </span>
+            <span x-show="!isCorrect" class="text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
+                <span class="icon-[ri--close-circle-fill] w-4 h-4"></span> Kurang tepat. Jawaban yang benar adalah: <strong class="underline ml-1">{{ $answer }}</strong>
+            </span>
+        </div>
+    </div>
+</div>

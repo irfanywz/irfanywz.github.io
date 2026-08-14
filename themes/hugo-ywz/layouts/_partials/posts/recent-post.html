@@ -1,62 +1,74 @@
-<!-- Recent Posts Widget with Robust Image Handling (Universal) -->
+<!-- Recent Posts Widget with Robust Image Handling -->
 <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
     <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-100 dark:border-gray-700 pb-3 uppercase tracking-wider">
         Postingan Terbaru
     </h3>
-    
+
     <!-- Ambil 3 postingan terbaru dari section "posts" -->
     {{ $recentPosts := first 3 (where site.RegularPages "Section" "posts").ByDate.Reverse }}
-    
+
     {{ if $recentPosts }}
     <ul class="space-y-4 text-sm">
         {{ range $recentPosts }}
-        <!-- Pastikan konteks di dalam loop adalah halaman (.), bukan variabel lain -->
         {{ $currentPage := . }}
-        
+
         <li>
             <a href="{{ $currentPage.RelPermalink }}" class="flex items-center gap-3 group" title="{{ $currentPage.Title }}">
-                
-                <!-- LOGIKA PEMANGGILAN GAMBAR YANG DIPERBAIKI -->
-                {{ if $currentPage.Params.image }}
+
+                <!-- Container Thumbnail -->
+                <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
                     
-                    <!-- 1. Coba deteksi apakah gambar adalah Page Resource (satu folder) -->
-                    {{ $resourceImg := $currentPage.Resources.GetMatch $currentPage.Params.image }}
-                    {{ $globalImg := resources.Get $currentPage.Params.image }}
-                    
-                    <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
+                    {{ $hasImage := false }}
+
+                    {{ if $currentPage.Params.image }}
+                        {{ $imgPath := $currentPage.Params.image }}
+                        {{ $cleanPath := strings.TrimPrefix "/" $imgPath }}
+
+                        {{ $resourceImg := $currentPage.Resources.GetMatch $cleanPath }}
+                        {{ $globalImg := resources.Get $cleanPath }}
+
                         {{ if $resourceImg }}
-                            <!-- Jika Page Resource ditemukan -->
-                            {{ $thumb := $resourceImg.Resize "1000x avif" }}
-                            <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
-                        
+                            {{ $hasImage = true }}
+                            {{ if eq $resourceImg.MediaType.SubType "svg" }}
+                                <img src="{{ $resourceImg.RelPermalink }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ else }}
+                                {{ $thumb := $resourceImg.Resize "300x avif" }}
+                                <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ end }}
+
                         {{ else if $globalImg }}
-                            <!-- Jika ditemukan sebagai global resource (di assets/) -->
-                            {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
-                            <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ $hasImage = true }}
+                            {{ if eq $globalImg.MediaType.SubType "svg" }}
+                                <img src="{{ $globalImg.RelPermalink }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ else }}
+                                {{ $thumbGlobal := $globalImg.Resize "300x avif" }}
+                                <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ end }}
 
-                        {{ else if (fileExists (printf "static/%s" $currentPage.Params.image)) }}
-                            <!-- 2. Jika bukan Page Resource, cek apakah ada di folder static/ -->
-                            <img src="{{ $currentPage.Params.image | relURL }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
-                        
-                        {{ else if (strings.HasPrefix $currentPage.Params.image "http")}}
-                            <!-- 3. Jika berupa link eksternal -->
-                            <img src="{{ $currentPage.Params.image }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
-                        
-                        {{ else }}
-                            <!-- DEBUG: Tampilkan placeholder atau border kosong jika gambar tidak ditemukan di mana pun -->
-                            <div class="w-full h-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-[8px] text-gray-500">No Image</div>
+                        {{ else if (fileExists (printf "static/%s" $cleanPath)) }}
+                            {{ $hasImage = true }}
+                            <img src="{{ $imgPath | relURL }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+
+                        {{ else if (strings.HasPrefix $imgPath "http") }}
+                            {{ $hasImage = true }}
+                            <img src="{{ $imgPath }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                         {{ end }}
-                    </div>
-                {{ end }}
+                    {{ end }}
 
-                <!-- Judul & Tanggal -->
-                <div class="flex-grow">
-                    <h4 class="text-gray-700 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 font-medium line-clamp-2 transition-colors text-xs sm:text-sm">
+                    <!-- Fallback Placeholder -->
+                    {{ if not $hasImage }}
+                        <div class="w-full h-full bg-gradient-to-br from-indigo-50/50 via-gray-100 to-indigo-100/30 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950/30 flex flex-col items-center justify-center text-indigo-500/70 dark:text-indigo-400/50 group-hover:scale-105 transition-transform duration-300">
+                            <span class="icon-[ri--article-line] w-6 h-6"></span>
+                        </div>
+                    {{ end }}
+
+                </div>
+
+                <!-- Judul Saja (Maksimal 2 baris) -->
+                <div class="flex-grow min-w-0">
+                    <h4 class="text-gray-700 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 font-medium line-clamp-3 transition-colors text-xs sm:text-sm leading-snug">
                         {{ $currentPage.Title }}
                     </h4>
-                    <span class="text-[11px] text-gray-400 dark:text-gray-500 mt-1 block">
-                        {{ $currentPage.Date | time.Format "02 Jan 2006" }}
-                    </span>
                 </div>
 
             </a>

@@ -1,4 +1,4 @@
-<!-- Related Posts Widget (Randomized & Category-based with Thumbnail) -->
+<!-- Related Posts Widget (List Style with Reading Time) -->
 {{ $current := . }}
 {{ if and $current.IsPage $current.Params.topics }}
     
@@ -13,50 +13,65 @@
         <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-100 dark:border-gray-700 pb-3 uppercase tracking-wider">
             Artikel Terkait
         </h3>
+        
         <ul class="space-y-4 text-sm">
             {{ range $randomRelated }}
-            <!-- Simpan konteks halaman terkait ke variabel terpisah -->
             {{ $item := . }}
             
             <li>
-                <a href="{{ $item.RelPermalink }}" class="flex items-center gap-3 group">
+                <a href="{{ $item.RelPermalink }}" class="flex items-center gap-3 group" title="{{ $item.Title }}">
                     
-                    <!-- Logika Pemanggilan Gambar yang Aman -->
-                    {{ if $item.Params.image }}
+                    <!-- Container Thumbnail (Fixed 16x16) -->
+                    <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
                         
-                        <!-- Cek apakah gambar berupa Page Resource (satu folder dengan markdown) -->
-                        {{ $resourceImg := $item.Resources.GetMatch $item.Params.image }}
-                        {{ $globalImg := resources.Get $item.Params.image }}
-                        
-                        <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
+                        {{ $hasImage := false }}
+
+                        {{ if $item.Params.image }}
+                            {{ $resourceImg := $item.Resources.GetMatch $item.Params.image }}
+                            {{ $globalImg := resources.Get $item.Params.image }}
+
                             {{ if $resourceImg }}
-                                {{ $thumb := $resourceImg.Resize "1000x avif" }}
+                                {{ $thumb := $resourceImg.Resize "300x avif" }}
                                 <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
-                            
+                                {{ $hasImage = true }}
+
                             {{ else if $globalImg }}
-                                {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
+                                {{ $thumbGlobal := $globalImg.Resize "300x avif" }}
                                 <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                {{ $hasImage = true }}
 
                             {{ else if (fileExists (printf "static/%s" $item.Params.image)) }}
                                 <img src="{{ $item.Params.image | relURL }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
-                            
+                                {{ $hasImage = true }}
+
                             {{ else if (strings.HasPrefix $item.Params.image "http") }}
                                 <img src="{{ $item.Params.image }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
-                            
-                            {{ else }}
-                                <div class="w-full h-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-[8px] text-gray-500">No Image</div>
+                                {{ $hasImage = true }}
                             {{ end }}
-                        </div>
-                    {{ end }}
+                        {{ end }}
 
-                    <!-- Judul & Tanggal -->
-                    <div class="flex-grow">
-                        <h4 class="text-gray-700 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 font-medium line-clamp-2 transition-colors text-xs sm:text-sm">
+                        <!-- Fallback Placeholder -->
+                        {{ if not $hasImage }}
+                            <div class="w-full h-full bg-gradient-to-br from-indigo-50/50 via-gray-100 to-indigo-100/30 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950/30 flex items-center justify-center text-indigo-500/70 dark:text-indigo-400/50 group-hover:scale-105 transition-transform duration-300">
+                                <span class="icon-[ri--article-line] w-6 h-6"></span>
+                            </div>
+                        {{ end }}
+
+                    </div>
+
+                    <!-- Judul & Reading Time -->
+                    <div class="flex-grow min-w-0">
+                        <h4 class="text-gray-700 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 font-medium text-xs sm:text-sm line-clamp-2 leading-snug transition-colors">
                             {{ $item.Title }}
                         </h4>
-                        <span class="text-[11px] text-gray-400 dark:text-gray-500 mt-1 block">
-                            {{ $item.Date | time.Format "02 Jan 2006" }}
-                        </span>
+                        
+                        <div class="flex items-center gap-2 mt-1">
+                            <!-- Reading Time -->
+                            <span class="text-[11px] text-gray-400 dark:text-gray-500 flex items-center gap-1 font-normal">
+                                <span class="icon-[ri--time-line] w-3 h-3"></span>
+                                {{ $item.ReadingTime }} mnt baca
+                            </span>
+                        </div>
                     </div>
 
                 </a>

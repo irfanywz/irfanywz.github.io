@@ -33,7 +33,7 @@
                     <!-- Widget khusus di Halaman 1 saja -->
                     {{ if eq $paginator.PageNumber 1 }}
                         {{ partial "home/featured-random.html" . }}
-                        {{ partial "home/topic-posts.html" (dict "topic" "Kode" "title" "Seputar Kode" "limit" 4) }}
+                        {{ partial "home/topic-posts.html" (dict "topic" "Komputer" "title" "Seputar Teknologi" "limit" 4) }}
                     {{ end }}
 
                     <!-- Wrapper Header Halaman (Di-update lewat AJAX) -->
@@ -74,9 +74,10 @@
 
                 <!-- Sidebar -->
                 <aside class="w-full md:w-1/3 lg:w-1/4">
+                    <div class="mb-8">
+                        {{ partial "posts/sidebar-author.html" . }}                            
+                    </div>                    
                     <div class="space-y-8 sticky top-8">
-
-                        {{ partial "posts/sidebar-author.html" . }}                                           
                         {{ partial "posts/ads-sidebar.html" . }}                                           
                         {{ partial "posts/random-post.html" . }}                                           
                         {{ partial "posts/sidebar-topics.html" . }}                                           

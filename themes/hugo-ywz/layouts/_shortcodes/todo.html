@@ -1,0 +1,29 @@
+{{ $id := .Get "id" | default "default-todo" }}
+
+<div x-data="{
+        id: '{{ $id }}',
+        checked: JSON.parse(localStorage.getItem('todo_' + '{{ $id }}')) || false,
+        toggle() {
+            this.checked = !this.checked;
+            localStorage.setItem('todo_' + '{{ $id }}', JSON.stringify(this.checked));
+        }
+    }" 
+    @click="toggle()"
+    class="my-2 p-3 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/50 hover:bg-gray-50 dark:hover:bg-gray-800/80 transition-colors cursor-pointer flex items-start gap-3 not-prose select-none group">
+    
+    <!-- Custom Checkbox Box -->
+    <div class="relative flex items-center justify-center mt-0.5 flex-shrink-0 w-5 h-5 rounded-lg border transition-all shadow-xs"
+         :class="checked ? 'bg-indigo-600 border-indigo-600' : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700'">
+        
+        <!-- Ikon Iconify -->
+        <span x-show="checked" 
+              class="icon-[ri--check-line] w-3.5 h-3.5 text-white" 
+              style="display: none;"></span>
+    </div>
+
+    <!-- Teks Deskripsi Todo -->
+    <div class="flex-1 text-sm leading-relaxed text-gray-700 dark:text-gray-300 transition-all"
+         :class="checked ? 'line-through text-gray-400 dark:text-gray-500' : ''">
+        {{ .Inner | markdownify }}
+    </div>
+</div>

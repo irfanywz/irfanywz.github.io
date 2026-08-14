@@ -1,50 +1,121 @@
 <div x-data="{
         speaking: false,
         paused: false,
-        utterance: null,
+        chunks: [],
+        currentChunkIndex: 0,
+        synth: null,
+        
         init() {
             if (!('speechSynthesis' in window)) {
                 this.$el.style.display = 'none';
+            } else {
+                this.synth = window.speechSynthesis;
             }
         },
-        toggleSpeech() {
-            const synth = window.speechSynthesis;
 
+        // Helper untuk memecah teks menjadi potongan kecil berdasarkan tanda baca
+        chunkText(text) {
+            if (!text) return [];
+            // Split berdasarkan titik, tanda tanya, tanda seru, atau newline
+            const rawChunks = text.split(/([.?!;\n]+)/);
+            const combinedChunks = [];
+            let current = '';
+
+            for (let i = 0; i < rawChunks.length; i++) {
+                current += rawChunks[i];
+                // Gabungkan jika panjang chunk sudah ~150-200 karakter atau ketemu pembatas
+                if (current.length > 150 || i % 2 === 1) {
+                    if (current.trim().length > 0) {
+                        combinedChunks.push(current.trim());
+                    }
+                    current = '';
+                }
+            }
+            if (current.trim().length > 0) {
+                combinedChunks.push(current.trim());
+            }
+            return combinedChunks;
+        },
+
+        toggleSpeech() {
+            if (!this.synth) return;
+
+            // Jika sedang aktif -> Handle Pause / Resume
             if (this.speaking) {
                 if (this.paused) {
-                    synth.resume();
+                    this.synth.resume();
                     this.paused = false;
                 } else {
-                    synth.pause();
+                    this.synth.pause();
                     this.paused = true;
                 }
                 return;
             }
 
+            // Ambil teks dari artikel
             const articleElement = document.querySelector('.post-content-full') || document.body;
             const textToRead = articleElement.innerText;
 
-            this.utterance = new SpeechSynthesisUtterance(textToRead);
-            this.utterance.lang = 'id-ID';
-            this.utterance.rate = 1.0;
+            // Pecah teks menjadi array chunk
+            this.chunks = this.chunkText(textToRead);
+            if (this.chunks.length === 0) return;
 
-            this.utterance.onend = () => {
-                this.speaking = false;
-                this.paused = false;
-            };
-
-            synth.speak(this.utterance);
+            this.currentChunkIndex = 0;
             this.speaking = true;
             this.paused = false;
+
+            // Mulai putar chunk pertama
+            this.playNextChunk();
         },
+
+        playNextChunk() {
+            // Jika sudah di penghujung chunk atau di-stop
+            if (!this.speaking || this.currentChunkIndex >= this.chunks.length) {
+                this.stopSpeech();
+                return;
+            }
+
+            // Batalkan sisa antrean lama jika ada
+            this.synth.cancel();
+
+            const text = this.chunks[this.currentChunkIndex];
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'id-ID';
+            utterance.rate = 1.0;
+
+            // Saat chunk selesai dibaca, lanjut ke chunk berikutnya
+            utterance.onend = () => {
+                if (this.speaking && !this.paused) {
+                    this.currentChunkIndex++;
+                    this.playNextChunk();
+                }
+            };
+
+            // Handling jika terjadi error pada sintesis suara
+            utterance.onerror = (e) => {
+                console.error('SpeechSynthesis Error:', e);
+                // Coba lanjut ke chunk berikutnya jika ada error
+                if (this.speaking) {
+                    this.currentChunkIndex++;
+                    this.playNextChunk();
+                }
+            };
+
+            this.synth.speak(utterance);
+        },
+
         stopSpeech() {
-            window.speechSynthesis.cancel();
+            if (this.synth) {
+                this.synth.cancel();
+            }
             this.speaking = false;
             this.paused = false;
+            this.chunks = [];
+            this.currentChunkIndex = 0;
         }
     }" class="inline-flex items-center gap-2 not-prose">
     
-    <!-- Tombol Utama (Sederhana & Menyatu dengan Metadata) -->
+    <!-- Tombol Utama -->
     <button @click="toggleSpeech()" 
             class="inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors focus:outline-none cursor-pointer"
             :title="!speaking ? 'Dengarkan artikel' : (paused ? 'Lanjutkan' : 'Jeda')">
@@ -64,13 +135,12 @@
         <span x-text="!speaking ? 'Dengarkan' : (paused ? 'Lanjutkan' : 'Jeda Audio')"></span>
     </button>
 
-    <!-- Tombol Stop (Kecil, Hanya Muncul Saat Aktif) -->
+    <!-- Tombol Stop -->
     <button @click="stopSpeech()" 
             x-show="speaking"
             x-transition
-            class="flex align-center text-xs text-gray-400 hover:text-red-500 transition-colors focus:outline-none cursor-pointer"
-            title="Matikan audio"
-            style="display: none;">
+            class="flex items-center text-xs text-gray-400 hover:text-red-500 transition-colors focus:outline-none cursor-pointer"
+            title="Matikan audio">
         <span class="icon-[ri--close-circle-line] w-3.5 h-3.5"></span>
     </button>
 </div>

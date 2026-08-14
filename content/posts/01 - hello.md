@@ -15,12 +15,139 @@ consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
+
+{{< interactive-wrapper >}}
+
+  <!-- Cover Slide -->
+  {{< interactive-slide 
+      type="cover" 
+      title="Dasar-Dasar Jaringan Komputer" 
+      tag="Sistem Informasi" 
+      icon="icon-[lucide--network]" >}}
+
+  <!-- Slide Materi -->
+  {{< interactive-slide 
+      type="material" 
+      title="Apa itu IP Address?" 
+      tag="Materi 01" 
+      content="IP Address (Internet Protocol Address) adalah identitas numerik yang diberikan kepada setiap perangkat yang terhubung ke jaringan komputer yang menggunakan Protokol Internet untuk berkomunikasi." >}}
+
+  <!-- Slide Video Embed (Youtube) -->
+  {{< interactive-slide 
+      type="video" 
+      title="Penjelasan Visual Model OSI" 
+      videoUrl="https://www.youtube.com/embed/vv4y_uOneC0" >}}
+
+  <!-- Kuis 1: Multiple Choice -->
+  {{< interactive-slide 
+      type="quiz" 
+      title="Layer mana yang bertanggung jawab atas routing data paket?" 
+      tag="Kuis 01" 
+      options="Data Link Layer,Network Layer,Transport Layer,Application Layer" 
+      correct="1" >}}
+
+  <!-- Kuis 2: Benar / Salah -->
+  {{< interactive-slide 
+      type="quiz-tf" 
+      title="MAC Address berada pada Layer 3 (Network Layer) di Model OSI." 
+      tag="Kuis 02" 
+      tfAnswer="false" >}}
+
+  <!-- Kuis 3: Isian Singkat -->
+  {{< interactive-slide 
+      type="quiz-fill" 
+      title="Sebutkan perintah CLI untuk mengecek konektivitas IP!" 
+      tag="Kuis 03" 
+      answerKey="ping" >}}
+
+  <!-- Summary Slide -->
+  {{< interactive-slide 
+      type="summary" 
+      title="Modul Selesai!" 
+      icon="icon-[lucide--trophy]" >}}
+
+{{< /interactive-wrapper >}}
+
 ## ShortCode List
 
 ### Table of content
 <pre><code>{{&lt; toc &gt;}}</code></pre>
 
 {{< toc >}}
+
+
+### Quiz
+{{< quiz 
+    q="Proyek jaringan komputer cikal bakal internet yang dikembangkan oleh Departemen Pertahanan Amerika Serikat pada tahun 1960-an bernama?" 
+    a="ARPANET" 
+    b="MILNET" 
+    c="NSFNET" 
+    d="Ethernet" 
+    ans="a" 
+>}}
+
+{{< quiz-input 
+    q="Kepanjangan dari singkatan AI yang saat ini sedang masif digunakan di berbagai industri adalah?" 
+    ans="Artificial Intelligence" 
+    hint="Kecerdasan buatan dalam bahasa Inggris" 
+>}}
+
+{{< quiz-tf 
+    q="World Wide Web (WWW) pertama kali diciptakan dan ditemukan oleh ilmuwan asal Inggris bernama Tim Berners-Lee pada tahun 1989." 
+    ans="true" 
+>}}
+
+{{< quiz-multi 
+    q="Manakah perangkat di bawah ini yang dikategorikan sebagai perangkat keras (hardware) jenis Output pada komputer?" 
+    a="Monitor" 
+    b="Keyboard" 
+    c="Printer" 
+    d="Speaker" 
+    ans="a,c,d" 
+>}}
+
+{{< poll 
+    id="ai-poll" 
+    q="Menurut lu, seberapa besar dampak AI bakal mengubah industri konten digital dalam 5 tahun ke depan?" 
+    a="Mengubah total secara drastis! 🚀" 
+    b="Biasa aja, cuma alat bantu biasa 🤖" 
+>}}
+
+### Youtube
+
+```
+{{</* youtube-lite id="dQw4w9WgXcQ" title="Tutorial Setup Hugo & Tailwind v4" */>}}
+```
+
+{{< youtube-lite id="dQw4w9WgXcQ" title="Tutorial Setup Hugo & Tailwind v4" >}}
+
+### Todo
+
+<pre><code class="language-html">
+{{&lt; todo id=&quot;spring-seeds&quot; &gt;}}
+Beli 50 biji Parsnip di Pierre&#039;s General Store.
+{{&lt; /todo &gt;}}
+
+{{&lt; todo id=&quot;spring-barn&quot; &gt;}}
+Upgrade kandang ternak (Barn) ke level 2.
+{{&lt; /todo &gt;}}
+
+{{&lt; todo id=&quot;spring-fish&quot; &gt;}}
+Tangkap ikan Legendaris *Legend* di dekat pegunungan.
+{{&lt; /todo &gt;}}
+</code></pre>
+
+{{< todo id="spring-seeds" >}}
+Beli 50 biji Parsnip di Pierre's General Store.
+{{< /todo >}}
+
+{{< todo id="spring-barn" >}}
+Upgrade kandang ternak (Barn) ke level 2.
+{{< /todo >}}
+
+{{< todo id="spring-fish" >}}
+Tangkap ikan Legendaris *Legend* di dekat pegunungan.
+{{< /todo >}}
 
 ### Steps
 
@@ -786,22 +913,6 @@ ___
 Underscores
 
 ------
-
-# YouTube Videos
-
-```
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=YOUTUBE_VIDEO_ID_HERE" target="_blank">
-<img src="http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg" alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10">
-</a>
-```
-
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=YOUTUBE_VIDEO_ID_HERE" target="_blank">
-<img src="http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg" alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10">
-</a>
-
-```
-[![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](http://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE)
-```
 
 [Source](https://gist.githubusercontent.com/allysonsilva/85fff14a22bbdf55485be947566cc09e/raw/fa8048a906ebed3c445d08b20c9173afd1b4a1e5/Full-Markdown.md)
 

@@ -22,7 +22,7 @@
 
     {{- $.Scratch.Add "index" (dict 
       "title" .Title
-      "date" .Date
+      "readingTime" .ReadingTime
       "permalink" .Permalink
       "section" .Section
       "image" $img

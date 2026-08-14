@@ -117,3 +117,6 @@ img.goog-te-gadget-icon,
 .translated-rtl .sticky-top {
   top: 40px !important;
 }    
+
+
+[x-cloak] { display: none !important; }

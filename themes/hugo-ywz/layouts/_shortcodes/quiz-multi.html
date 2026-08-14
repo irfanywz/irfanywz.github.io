@@ -1,0 +1,153 @@
+{{ $question := .Get "q" | default "Pilih semua jawaban yang benar:" }}
+{{ $optA := .Get "a" | default "Opsi A" }}
+{{ $optB := .Get "b" | default "Opsi B" }}
+{{ $optC := .Get "c" | default "" }}
+{{ $optD := .Get "d" | default "" }}
+{{/* Kunci jawaban dipisah koma, contoh: "a,c" */}}
+{{ $answer := .Get "ans" | default "a" }}
+
+<div x-data="{
+        selected: [],
+        correct: '{{ $answer }}'.split(',').map(s => s.trim().toLowerCase()),
+        submitted: false,
+        isCorrect: false,
+        toggle(opt) {
+            if (this.submitted) return;
+            if (this.selected.includes(opt)) {
+                this.selected = this.selected.filter(item => item !== opt);
+            } else {
+                this.selected.push(opt);
+            }
+        },
+        check() {
+            if (this.selected.length === 0) return;
+            const sortedSel = [...this.selected].sort().join(',');
+            const sortedCor = [...this.correct].sort().join(',');
+            this.isCorrect = (sortedSel === sortedCor);
+            this.submitted = true;
+        },
+        reset() {
+            this.selected = [];
+            this.submitted = false;
+            this.isCorrect = false;
+        }
+    }" 
+    class="my-6 p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm not-prose">
+    
+    <!-- Pertanyaan -->
+    <div class="flex items-start gap-3 mb-4">
+        <span class="flex items-center justify-center w-7 h-7 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-bold text-xs flex-shrink-0 mt-0.5">
+            Q
+        </span>
+        <h4 class="text-base font-semibold text-gray-900 dark:text-white leading-snug">
+            {{ $question }} <span class="block text-xs font-normal text-gray-400 mt-0.5">(Bisa pilih lebih dari satu jawaban)</span>
+        </h4>
+    </div>
+
+    <!-- Pilihan Checkbox -->
+    <div class="space-y-2.5 ml-10">
+        
+        <!-- Opsi A -->
+        <div @click="toggle('a')" 
+             class="w-full text-left px-4 py-3 rounded-xl border text-sm font-medium transition-all flex items-center justify-between cursor-pointer"
+             :class="{
+                 'border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/40 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': !submitted && !selected.includes('a'),
+                 'border-indigo-500 bg-indigo-50/50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-300': !submitted && selected.includes('a'),
+                 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-700 dark:text-emerald-300': submitted && correct.includes('a'),
+                 'bg-rose-50 dark:bg-rose-950/30 border-rose-500 text-rose-700 dark:text-rose-300': submitted && selected.includes('a') && !correct.includes('a')
+             }">
+            <div class="flex items-center gap-3">
+                <div class="w-4 h-4 rounded border border-gray-300 dark:border-gray-600 flex items-center justify-center transition-colors"
+                     :class="selected.includes('a') || (submitted && correct.includes('a')) ? 'bg-indigo-600 border-indigo-600 text-white' : ''">
+                    <span class="icon-[ri--check-line] w-3 h-3" x-show="selected.includes('a') || (submitted && correct.includes('a'))"></span>
+                </div>
+                <span>A. {{ $optA }}</span>
+            </div>
+        </div>
+
+        <!-- Opsi B -->
+        <div @click="toggle('b')" 
+             class="w-full text-left px-4 py-3 rounded-xl border text-sm font-medium transition-all flex items-center justify-between cursor-pointer"
+             :class="{
+                 'border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/40 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': !submitted && !selected.includes('b'),
+                 'border-indigo-500 bg-indigo-50/50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-300': !submitted && selected.includes('b'),
+                 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-700 dark:text-emerald-300': submitted && correct.includes('b'),
+                 'bg-rose-50 dark:bg-rose-950/30 border-rose-500 text-rose-700 dark:text-rose-300': submitted && selected.includes('b') && !correct.includes('b')
+             }">
+            <div class="flex items-center gap-3">
+                <div class="w-4 h-4 rounded border border-gray-300 dark:border-gray-600 flex items-center justify-center transition-colors"
+                     :class="selected.includes('b') || (submitted && correct.includes('b')) ? 'bg-indigo-600 border-indigo-600 text-white' : ''">
+                    <span class="icon-[ri--check-line] w-3 h-3" x-show="selected.includes('b') || (submitted && correct.includes('b'))"></span>
+                </div>
+                <span>B. {{ $optB }}</span>
+            </div>
+        </div>
+
+        <!-- Opsi C -->
+        {{ if $optC }}
+        <div @click="toggle('c')" 
+             class="w-full text-left px-4 py-3 rounded-xl border text-sm font-medium transition-all flex items-center justify-between cursor-pointer"
+             :class="{
+                 'border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/40 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': !submitted && !selected.includes('c'),
+                 'border-indigo-500 bg-indigo-50/50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-300': !submitted && selected.includes('c'),
+                 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-700 dark:text-emerald-300': submitted && correct.includes('c'),
+                 'bg-rose-50 dark:bg-rose-950/30 border-rose-500 text-rose-700 dark:text-rose-300': submitted && selected.includes('c') && !correct.includes('c')
+             }">
+            <div class="flex items-center gap-3">
+                <div class="w-4 h-4 rounded border border-gray-300 dark:border-gray-600 flex items-center justify-center transition-colors"
+                     :class="selected.includes('c') || (submitted && correct.includes('c')) ? 'bg-indigo-600 border-indigo-600 text-white' : ''">
+                    <span class="icon-[ri--check-line] w-3 h-3" x-show="selected.includes('c') || (submitted && correct.includes('c'))"></span>
+                </div>
+                <span>C. {{ $optC }}</span>
+            </div>
+        </div>
+        {{ end }}
+
+        <!-- Opsi D -->
+        {{ if $optD }}
+        <div @click="toggle('d')" 
+             class="w-full text-left px-4 py-3 rounded-xl border text-sm font-medium transition-all flex items-center justify-between cursor-pointer"
+             :class="{
+                 'border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/40 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': !submitted && !selected.includes('d'),
+                 'border-indigo-500 bg-indigo-50/50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-300': !submitted && selected.includes('d'),
+                 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-700 dark:text-emerald-300': submitted && correct.includes('d'),
+                 'bg-rose-50 dark:bg-rose-950/30 border-rose-500 text-rose-700 dark:text-rose-300': submitted && selected.includes('d') && !correct.includes('d')
+             }">
+            <div class="flex items-center gap-3">
+                <div class="w-4 h-4 rounded border border-gray-300 dark:border-gray-600 flex items-center justify-center transition-colors"
+                     :class="selected.includes('d') || (submitted && correct.includes('d')) ? 'bg-indigo-600 border-indigo-600 text-white' : ''">
+                    <span class="icon-[ri--check-line] w-3 h-3" x-show="selected.includes('d') || (submitted && correct.includes('d'))"></span>
+                </div>
+                <span>D. {{ $optD }}</span>
+            </div>
+        </div>
+        {{ end }}
+
+    </div>
+
+    <!-- Tombol Submit & Feedback -->
+    <div class="mt-4 ml-10 pt-3 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
+        <template x-if="!submitted">
+            <button @click="check()" 
+                    :disabled="selected.length === 0"
+                    class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-medium text-xs transition-colors cursor-pointer">
+                Kirim Jawaban
+            </button>
+        </template>
+
+        <template x-if="submitted">
+            <div class="text-xs font-semibold">
+                <span x-show="isCorrect" class="text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                    <span class="icon-[ri--checkbox-circle-fill] w-4 h-4"></span> Sempurna! Semua jawaban benar! 🎯
+                </span>
+                <span x-show="!isCorrect" class="text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
+                    <span class="icon-[ri--close-circle-fill] w-4 h-4"></span> Ada kombinasi jawaban yang kurang tepat.
+                </span>
+            </div>
+        </template>
+
+        <button @click="reset()" x-show="submitted" class="text-xs text-indigo-600 dark:text-indigo-400 hover:underline font-medium cursor-pointer" style="display: none;">
+            Coba Lagi
+        </button>
+    </div>
+</div>

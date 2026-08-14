@@ -3,121 +3,204 @@
 
 {{ define "main" }}
     <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
-        <section class="py-6 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+        <!-- Breadcrumb / Header Navigation -->
+        <section class="py-4 sm:py-6 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
             <div class="container max-w-6xl mx-auto px-4">
-                <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                    <a href="{{ .CurrentSection.RelPermalink }}" class="flex items-center gap-1 leading-relaxed hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                    <span class="icon-[ri--newspaper-line] w-5 h-5"></span>
+                <nav class="flex items-center gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                    <a href="{{ .CurrentSection.RelPermalink }}" class="flex items-center gap-1.5 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex-shrink-0 font-medium">
+                        <span class="icon-[ri--newspaper-line] w-4 h-4 sm:w-5 sm:h-5"></span>
                         {{ .Parent.Title }}
                     </a>
-                    <span class="icon-[ri--arrow-right-s-line] w-5 h-5 text-gray-400"></span>
-                    <span class="text-gray-900 leading-relaxed dark:text-white font-medium truncate max-w-[200px] md:max-w-none">{{ .Title }}</span>
+                    <span class="icon-[ri--arrow-right-s-line] w-4 h-4 sm:w-5 sm:h-5 text-gray-400 flex-shrink-0"></span>
+                    <span class="text-gray-900 dark:text-white font-medium truncate max-w-[180px] sm:max-w-xs md:max-w-md">{{ .Title }}</span>
                 </nav>
             </div>
         </section>
 
-        <article class="py-16 bg-white dark:bg-gray-900">
+        <!-- Article Section -->
+        <article class="py-8 sm:py-12 md:py-16 bg-white dark:bg-gray-900">
             <div class="container max-w-3xl mx-auto px-4">
-                <header class="text-center mb-12 border-b border-gray-200 dark:border-gray-700 pb-12">
+                
+                <!-- Article Header -->
+                <header class="text-center mb-8 sm:mb-12 border-b border-gray-200 dark:border-gray-800 pb-8 sm:pb-12">
 
-                    <div class="flex justify-center mb-6">
-                        {{ partial "journal/datecard.html" . }}
+                    <!-- Badge Date Block -->
+                    <div class="flex justify-center mb-4 sm:mb-6">
+                        <div class="flex flex-col items-center justify-center bg-indigo-600 text-white px-4 py-3 rounded-xl min-w-[64px] text-center shadow-xs">
+                            <div class="text-2xl sm:text-3xl font-black leading-none">{{ .Date.Day }}</div>
+                            <div class="text-[10px] sm:text-xs my-0.5 font-bold uppercase tracking-wider">
+                                {{ $month := i18n .Date.Month }}
+                                {{ $prefix := lower (slicestr $month 0 3) }}
+                                {{ $prefix }}                                                
+                            </div>
+                            <div class="text-[10px] sm:text-xs opacity-80 font-mono">{{ .Date.Year }}</div>
+                        </div>
                     </div>
 
-                    <div class="flex flex-wrap justify-center gap-6 mb-6 text-gray-500 dark:text-gray-400">                                            
-                        
-                        <div class="flex items-center gap-2">
-                            <span class="icon-[ri--time-line] w-5 h-5"></span>
-                            <span>{{ .Date.Format "3:04 PM" }}</span>
+                    <!-- Metadata: Time, Weather, Location -->
+                    <div class="flex flex-wrap justify-center items-center gap-3 sm:gap-6 mb-4 sm:mb-6 text-xs sm:text-sm text-gray-500 dark:text-gray-400">                        
+                        <div class="flex items-center gap-1.5">
+                            <span class="icon-[ri--time-line] w-4 h-4 text-gray-400"></span>
+                            <span>{{ .Date.Format "15:04" }}</span>
                         </div>                    
 
                         {{ if .Params.weather }}
-                            <span class="flex items-center gap-1 leading-relaxed">
-                                {{ partial "journal/weather.html" . }}
+                            <span class="flex items-center gap-1.5">
+                                {{ if eq .Params.weather "Hujan"}}
+                                    <span class="icon-[ri--cloudy-line] w-4 h-4 text-blue-500"></span>
+                                {{ else if eq .Params.weather "Badai" }}
+                                    <span class="icon-[ri--thunderstorms-line] w-4 h-4 text-purple-500"></span>
+                                {{ else if eq .Params.weather "Cerah" }}
+                                    <span class="icon-[ri--sun-line] w-4 h-4 text-yellow-500"></span>
+                                {{ else if eq .Params.weather "Berawan" }}
+                                    <span class="icon-[ri--cloudy-line] w-4 h-4 text-gray-400"></span>
+                                {{ else if eq .Params.weather "Mendung" }}
+                                    <span class="icon-[ri--cloudy-line] w-4 h-4 text-gray-500"></span>
+                                {{ else }}
+                                    <span class="icon-[ri--sun-line] w-4 h-4 text-gray-400"></span>
+                                {{ end }}
+                                {{ .Params.weather }}
                             </span>
                         {{ end }}
 
-
                         {{ if .Params.location }}
-                        <div class="flex items-center gap-2">
-                            <span class="icon-[ri--map-pin-line] w-5 h-5"></span>
-                            <span>{{ .Params.location }}</span>
-                        </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="icon-[ri--map-pin-line] w-4 h-4 text-red-500"></span>
+                                <span>{{ .Params.location }}</span>
+                            </div>
                         {{ end }}              
                     </div>
 
-                    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white leading-tight">{{ .Title }}</h1>
+                    <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-gray-900 dark:text-white leading-tight tracking-tight">{{ .Title }}</h1>
 
-                    </header>
+                </header>
 
-                    <div class="prose prose-lg dark:prose-invert max-w-none">
+                <!-- Prose Content -->
+                <div class="prose prose-sm sm:prose-base md:prose-lg dark:prose-invert max-w-none">
+                    {{ with .Content }}
+                        {{ . | safeHTML }}
+                    {{ end }}
 
-                            {{ with .Content }}
-                            {{ . | safeHTML }}
-                            {{ end }}
-                                                     
-
-                            <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-center gap-6 not-prose">
-                                {{ partial "components/reaction.html" . }}
-                                <div>
-                                    <p>
-                                        <em>
-                                            Sampai jumpa ditulisan lainnya,
-                                            <span class="flex items-center justify-between">
-                                                <span>
-                                                    Irfan 
-                                                </span>
-                                                <span class="flex items-center text-gray-200 dark:text-red-200">
-                                                    <span class="icon-[ri--fire-line] w-5 h-5 bg-gray-200 dark:bg-red-200"></span>
-                                                    {{ partial "components/view-count.html" . }}
-                                                </span>
-                                            </span>
-                                        </em>
-                                    </p>                                    
-
-                                </div>
+                    <!-- Footer Note & Views/Reactions -->
+                    <div class="mt-10 pt-6 border-t border-gray-200 dark:border-gray-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 not-prose">
+                        {{ partial "components/reaction.html" . }}
+                        
+                        <div class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 w-full sm:w-auto">
+                            <p class="italic">
+                                Sampai jumpa di tulisan lainnya,
+                            </p>
+                            <div class="flex items-center justify-between sm:justify-start gap-3 mt-1">
+                                <span class="font-bold text-gray-900 dark:text-white">Irfan</span>
+                                <span class="flex items-center gap-1 text-xs text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-950/50 px-2 py-0.5 rounded-md border border-red-100 dark:border-red-900/50 font-mono">
+                                    <span class="icon-[ri--fire-line] w-3.5 h-3.5"></span>
+                                    {{ partial "components/view-count.html" . }}
+                                </span>
                             </div>
+                        </div>
+                    </div>
 
-                        {{ if gt .Params.tags 0 }}
-                            <div class="mt-8 not-prose">
-                                <h4 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-2">Tags:</h4>
-                                <div class="flex flex-wrap gap-2">
-                                    {{ range .Params.tags }}
-                                        <span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm">{{ . }}</span>
-                                    {{ end }}
-                                </div>
+                    <!-- Tags -->
+                    {{ if .Params.tags }}
+                        <div class="mt-6 not-prose">
+                            <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Tags:</h4>
+                            <div class="flex flex-wrap gap-1.5 sm:gap-2">
+                                {{ range .Params.tags }}
+                                    <span class="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-lg text-xs font-medium">{{ . }}</span>
+                                {{ end }}
                             </div>
+                        </div>
+                    {{ end }}
+                </div>
+
+                <!-- ========================================== -->
+                <!-- NAVIGASI NEXT & PREV (Responsive Cards)    -->
+                <!-- ========================================== -->
+                <footer class="mt-12 sm:mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
+                    
+                    <!-- Prev & Next Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-8">
+                        
+                        <!-- Jurnal Sebelumnya -->
+                        {{ with .PrevInSection }}
+                            <a href="{{ .RelPermalink }}" class="group flex flex-col justify-between p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200/80 dark:border-gray-700/80 hover:bg-white dark:hover:bg-gray-800 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-xs transition-all">
+                                <div class="flex items-center gap-1.5 text-xs font-bold text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 mb-2 transition-colors">
+                                    <span class="icon-[ri--arrow-left-s-line] w-4 h-4"></span>
+                                    <span>Jurnal Sebelumnya</span>
+                                </div>
+                                <span class="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2 leading-snug">
+                                    {{ .Title }}
+                                </span>
+                                <span class="text-[10px] text-gray-400 font-mono mt-2 block">{{ .Date.Format "02 Jan 2006" }}</span>
+                            </a>
+                        {{ else }}
+                            <div class="hidden sm:block"></div> <!-- Spacer jika tidak ada Prev -->
+                        {{ end }}
+
+                        <!-- Jurnal Selanjutnya -->
+                        {{ with .NextInSection }}
+                            <a href="{{ .RelPermalink }}" class="group flex flex-col justify-between p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200/80 dark:border-gray-700/80 hover:bg-white dark:hover:bg-gray-800 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-xs transition-all text-right sm:col-start-2">
+                                <div class="flex items-center justify-end gap-1.5 text-xs font-bold text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 mb-2 transition-colors">
+                                    <span>Jurnal Selanjutnya</span>
+                                    <span class="icon-[ri--arrow-right-s-line] w-4 h-4"></span>
+                                </div>
+                                <span class="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2 leading-snug">
+                                    {{ .Title }}
+                                </span>
+                                <span class="text-[10px] text-gray-400 font-mono mt-2 block">{{ .Date.Format "02 Jan 2006" }}</span>
+                            </a>
                         {{ end }}
 
                     </div>
 
-                    <footer class="mt-16">
-                        <div class="flex flex-col md:flex-row justify-between gap-4">
-                            <a href="javascript:window.history.go(-1);" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm">
-                                <span class="icon-[ri--arrow-left-s-line] w-5 h-5"></span>
-                                Kembali
-                            </a>
-                            <div class="flex gap-4">
+                    <!-- Tombol Kembali Ke Daftar List -->
+                    <div class="flex justify-center">
+                        <a href="{{ .CurrentSection.RelPermalink }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl text-xs sm:text-sm font-bold text-gray-700 dark:text-gray-200 transition-all">
+                            <span class="icon-[ri--grid-fill] w-4 h-4"></span>
+                            <span>Semua Jurnal</span>
+                        </a>
+                    </div>
+                </footer>
 
-                                {{ $pages := .CurrentSection.Pages.ByWeight }}
+                <!-- ========================================== -->
+                <!-- SEKSI TULISAN LAINNYA (RANDOM POSTS)       -->
+                <!-- ========================================== -->
+                {{/* 1. Ambil semua halaman jurnal dalam seksi ini selain halaman yang sedang dibuka */}}
+                {{ $otherPages := where (where .CurrentSection.Pages "Permalink" "!=" .Permalink) "Kind" "page" }}
+                
+                {{/* 2. Acak urutannya menggunakan shuffle dan ambil 3 item pertama */}}
+                {{ $randomPages := $otherPages | shuffle | first 3 }}
 
-                                {{ with $pages.Prev . }}
-                                <a href="{{ .RelPermalink }}" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm">
-                                    <span class="icon-[ri--arrow-left-s-line] w-5 h-5"></span>
-                                    Sebelumnya
-                                </a>
-                                {{ end }}
-
-                                {{ with $pages.Next . }}
-                                <a href="{{ .RelPermalink }}" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm">
-                                    Selanjutnya
-                                    <span class="icon-[ri--arrow-right-s-line] w-5 h-5"></span>
-                                </a>
-                                {{ end }}
-                            </div>
+                {{ if gt (len $randomPages) 0 }}
+                    <section class="mt-12 sm:mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-base sm:text-lg font-extrabold text-gray-900 dark:text-white flex items-center gap-2">
+                                <span class="icon-[ri--shuffle-line] text-indigo-600 dark:text-indigo-400 w-5 h-5"></span>
+                                Tulisan Lainnya
+                            </h3>
+                            <a href="{{ .CurrentSection.RelPermalink }}" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">Lihat Semua →</a>
                         </div>
-                    </footer>
-                </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                            {{ range $randomPages }}
+                                <a href="{{ .RelPermalink }}" class="group p-4 rounded-xl bg-gray-50/60 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 hover:bg-white dark:hover:bg-gray-800 hover:border-indigo-200 dark:hover:border-indigo-800 transition-all hover:shadow-2xs flex flex-col justify-between">
+                                    <div>
+                                        <span class="text-[10px] font-mono font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider block mb-1.5">
+                                            {{ .Date.Format "02 Jan 2006" }}
+                                        </span>
+                                        <h4 class="text-xs sm:text-sm font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2 leading-snug">
+                                            {{ .Title }}
+                                        </h4>
+                                    </div>
+                                    <div class="mt-3 flex items-center gap-1 text-[11px] font-semibold text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                        <span>Baca catatan</span>
+                                        <span class="icon-[ri--arrow-right-s-line] w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform"></span>
+                                    </div>
+                                </a>
+                            {{ end }}
+                        </div>
+                    </section>
+                {{ end }}
+
             </div>
         </article>
     </main>

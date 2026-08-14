@@ -1,0 +1,81 @@
+{{ $question := .Get "q" | default "Pernyataan benar atau salah?" }}
+{{ $answer := .Get "ans" | default "true" }}
+
+<div x-data="{
+        selected: null,
+        correct: {{ $answer }},
+        answered: false,
+        select(val) {
+            if (this.answered) return;
+            this.selected = val;
+            this.answered = true;
+        },
+        reset() {
+            this.selected = null;
+            this.answered = false;
+        }
+    }" 
+    class="my-6 p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm not-prose">
+    
+    <!-- Pertanyaan -->
+    <div class="flex items-start gap-3 mb-4">
+        <span class="flex items-center justify-center w-7 h-7 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-bold text-xs flex-shrink-0 mt-0.5">
+            Q
+        </span>
+        <h4 class="text-base font-semibold text-gray-900 dark:text-white leading-snug">
+            {{ $question }}
+        </h4>
+    </div>
+
+    <!-- Tombol Benar / Salah -->
+    <div class="grid grid-cols-2 gap-3 ml-10">
+        
+        <!-- Tombol Benar -->
+        <button @click="select(true)" 
+                class="px-4 py-3 rounded-xl border text-sm font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer"
+                :class="{
+                    'border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/40 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': !answered,
+                    'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-700 dark:text-emerald-300': answered && correct === true,
+                    'bg-rose-50 dark:bg-rose-950/30 border-rose-500 text-rose-700 dark:text-rose-300': answered && selected === true && correct !== true,
+                    'opacity-50 border-gray-200 dark:border-gray-800 text-gray-400': answered && correct !== true && selected !== true
+                }">
+            <span class="icon-[ri--check-line] w-4 h-4 text-emerald-600" x-show="answered && correct === true" style="display: none;"></span>
+            <span>Benar</span>
+        </button>
+
+        <!-- Tombol Salah -->
+        <button @click="select(false)" 
+                class="px-4 py-3 rounded-xl border text-sm font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer"
+                :class="{
+                    'border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/40 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': !answered,
+                    'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-700 dark:text-emerald-300': answered && correct === false,
+                    'bg-rose-50 dark:bg-rose-950/30 border-rose-500 text-rose-700 dark:text-rose-300': answered && selected === false && correct !== false,
+                    'opacity-50 border-gray-200 dark:border-gray-800 text-gray-400': answered && correct !== false && selected !== false
+                }">
+            <span class="icon-[ri--check-line] w-4 h-4 text-emerald-600" x-show="answered && correct === false" style="display: none;"></span>
+            <span>Salah</span>
+        </button>
+
+    </div>
+
+    <!-- Feedback -->
+    <div x-show="answered" 
+         x-transition
+         class="mt-4 ml-10 pt-3 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between"
+         style="display: none;">
+        
+        <div class="text-xs font-semibold">
+            <span x-show="selected === correct" class="text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                <span class="icon-[ri--checkbox-circle-fill] w-4 h-4"></span> Analisis kamu tepat!
+            </span>
+            <span x-show="selected !== correct" class="text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
+                <span class="icon-[ri--close-circle-fill] w-4 h-4"></span> Kurang tepat, pernyataan tersebut bernilai <strong class="underline ml-1" x-text="correct ? 'BENAR' : 'SALAH'"></strong>.
+            </span>
+        </div>
+
+        <button @click="reset()" class="text-xs text-indigo-600 dark:text-indigo-400 hover:underline font-medium cursor-pointer">
+            Coba Lagi
+        </button>
+    </div>
+
+</div>
