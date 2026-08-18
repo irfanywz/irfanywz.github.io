@@ -62,10 +62,14 @@ tidak lupa dengan item penting untuk penunjang progress permainan, berikut dafta
 
 | Item        | Keterangan           | 
 | ------------- |:-------------| 
+| Mysterious Portal | item summon bos evil protector  |   
 | Shine Belt | aksesoris menerangkan area sekitar | 
 | Zephyr Charm  | aksesoris meningkatkan stamina 50%      |   
-| Mysterious Portal | item summon bos pertama  |   
 | Wheat Seed | biji tanaman  |   
+| Copper Ore | batu mineral  |   
+| Iron Ore | batu mineral  |   
+| Gold Ore | batu mineral  |   
+| Sapphire | batu mineral  |   
 
 
 ### Membangun Pemukiman
@@ -90,9 +94,17 @@ setelah membangun pemukiman akan ada 1 npc bernama elder atau pemimpin pemukiman
 
 [crafting-station.avif] 
 
+### Persiapan Armor dan Senjata
+
+sebelum melawan bos pertama, hal yang saya lakukan adalah mempersiapkan senjata, armor, dan aksesoris terlebih dahulu
+
+untuk senjatanya saya menggunakan <kbd>Handgun</kbd> yang dibeli melalui NPC gunsmith, 
+
+lalu untuk armor menggunakan Iron armor yang dibuat dari iron bar
+
 ### Melawan Bos Evil Protector
 
-setelah membangun pemukiman dirasa cukup, maka sekarang saatnya melawan bos pertama dengan menggunakan item Mysterious Portal yang sebelumnya didapat dari hasil looting 
+setelah persiapan dirasa cukup, maka sekarang saatnya melawan bos pertama dengan menggunakan item Mysterious Portal yang sebelumnya didapat dari hasil looting 
 
 bos pertama yang dilawan adalah evil protector yang terlihat seperti kelalawar raksasa, perlawanan dari boss ini adalah menyemburkan api, menghujani api, serta mensummon portal hitam yang mengeluarkan monster
 
@@ -113,7 +125,7 @@ selain item yang didapat dari bos, terdapat 1 item baru yang didapat dari elder 
 ### Langkah Selanjutnya
 setelah mendapat Demonic Bar, langkah selanjutnya adalah <kbd>membuat pick axe demonic</kbd>.
 
-tidak lupa untuk mengupgrade alat crafting menjadi demonic diantaranya
+tidak lupa untuk upgrade alat crafting menjadi demonic diantaranya
 
 - [x] Demonic Anvil
 - [x] Demonic Workstation
@@ -126,7 +138,7 @@ namun sebelum menjelajah disini saya melanjutkan memperluas wilayah dengan membu
 
 untuk dapat menemukan biome salju bisa menggunakan item <kbd>village map</kbd> yang dicrafting menggunakan <kbd>map fragment</kbd> diworkstation
 
-fungsi dari village map ini menemukan pemukiman lain yang bisa kalian looting maupun merekrut npc
+fungsi dari village map ini menemukan pemukiman lain yang bisa dilooting maupun merekrut npcnya
 
 pada biome salju kalian bisa menemukan item yang berguna untuk progress permainan, diantaranya
 
@@ -151,15 +163,21 @@ setelah melakukan penjelajahan digua salju ini saya mendapati beberapa item pent
 
 | Item        | Keterangan           | 
 | ------------- |:-------------| 
+| Royal Egg  | item summon bos laba-laba raksasa  | 
 | Frost Shard  | serpihan kristal untuk membuat frost pickaxe dan cooling box   | 
 | Frozen Heart  | akesoris meningkatkan hp +50   | 
-| Royal Egg  | item summon bos laba-laba raksasa  | 
 | Calming Rose  | aksesoris menurunkan monster spawn rate | 
-| Sugar Beet Seed  | tanaman tebu yang bisa diolah jadi gula  | 
+| Sugar Beet Seed  | biji tanaman tebu yang bisa diolah jadi gula  | 
 
 ### Melawan Bos Queen Spider
 
-sebelum melawan bos laba-laba ini saya melakukan perluasan area pertarungan agar geraknya bisa lebih leluasa
+sebelum melawn bos queen spider, menyesuaikan senjata dan armor adalah hal yang harus dilakukan agar perlawanan lebih mudah dilakukan
+
+untuk senjata saya menggunakan <kbd>Machine Gun</kbd> yang dibeli dari NPC gunsmith, dan pelurunya menggunakan <kbd>Bouncing Bullet</kbd> yang dibuat menggunakan ikan Halffish
+
+dan armor saya menggunakan <kbd>Frost Armor</kbd> yang dicrafting menggunakan item frost shard
+
+dilanjut saya melakukan perluasan area pertarungan agar geraknya bisa lebih leluasa
 
 saya menghancurkan batu-batu menggunakan bom dan dinamit agar cepat
 
@@ -218,6 +236,9 @@ setelah mengalahkannya saya mendapat beberapa item penting diantaranya
 | ------------- |:-------------| 
 | Empty Pendant  | meningkatkan kapasitas aksesoris +1 (sekarang jadi bisa menggunakan aksesoris 5 buah)  | 
 | Magic Stilts | menyumon lilin yang akan memberikan sedikit penerangan |
+| Void Shard | item untuk keperluan crafting yang sangat penting |
+
+hadiah dari elder berupa <kbd>Void Pouch</kbd> yang berguna untuk menaruh item lebih banyak lagi
 
 
 ### Langkah selanjutnya
@@ -260,10 +281,14 @@ saat menjelajah gua ini saya menemukan beberapa item diantaranya
 | Item        | Keterangan           | 
 | ------------- |:-------------| 
 | Bone Offering  | item untuk summon bos Runebound | 
-| Runestone  | batuan untuk membuat peralatan  | 
+| Runestone  | batu mineral  | 
 | Cloth Scrap  | untuk membuat armor  | 
 
 ### Melawan Bos Runebound
+
+untuk melawan bos Runebound saya menggunakan <kbd>Thief's Armor</kbd> dan untuk senjatanya tetap menggunakan Machine Gun.
+
+namun kali ini saya menggunakan peluru <kbd>Void Bullet</kbd> yang ketika ditembakan akan mengincar
 
 saya menggunakan item <kbd>Chieftain Map</kbd> untuk menemukan arena bosnya, untuk melakukan craftingnya membutuhkan runestone dan map fragment
 
@@ -315,6 +340,9 @@ item yang bisa ditemukan setelah mengekslor gua rawa diantaranya
 | Item        | Keterangan           | 
 | ------------- |:-------------| 
 | Decaying Leaf | item untuk summon bos Swamp Guardian  | 
+| Ivy Ore | batu mineral | 
+| Swamp Sludge | untuk kebutuhan crafting | 
+| Vembrace | aksesoris meningkatkan resilience gain 50% | 
 | Overgrown Fishing Rood | Fishing power 25%  | 
 | Thorns | item untuk membuat potion  | 
 | Potato Seed | tanaman kentang | 
@@ -324,6 +352,8 @@ selain menemukan item saya juga menemukan basement penyihir jahat, terdapat 3 pi
 setelah berhasil mengalahkannya saya mendapat 1 set armor penyihir beserta beberapa senjata
 
 ### Melawan Bos Swamp Guardian
+
+untuk melawan bos Swamp Guardian saya menggunakan Ivy Armor dan senjatanya tetap menggunakan Machine Gun dan Shotgun
 
 saya perluas area terlebih dahulu sebelum melawannya dengan menggunakan bom dan dinamit seperti biasa
 
@@ -375,6 +405,9 @@ hasil dari menjelajah gua gurun saya menemukan beberapa item penting diantaranya
 | Ancient Statue  | item summon bos Ancient Vulture  |  
 | Ancient Feather  | aksesoris meningkatkan velocity 50%  |  
 | Mining Charm  | aksesoris meningkatkan tool damage 40%  |  
+| Air Vessel  | menambahkan dash sebanyak 2x |  
+| Quartz  | batu mineral  |  
+| Amethyst  | batu mineral  |  
 | Carrot Seed  | tanaman  |  
 | Eggplant Seed  | tanaman  |  
 
@@ -382,6 +415,8 @@ hasil dari menjelajah gua gurun saya menemukan beberapa item penting diantaranya
 setelah menemukan item summon ancient statue saya bergegas untuk mempersiapkan pertarungan selanjutnya
 
 kali ini bosnya bisa disummon diatas, jadi tidak perlu untuk memperluas area lagi
+
+untuk persiapan armor dan senjata saya menggunakan dari pertarungan sebelumnya yaitu Ivy Armor dan Machine Gun dengan peluru voidnya
 
 pertarunganpun dimulai, bos ini menyerang dengan mengeluarkan proyektil, mendekat seperti ingin mematuk, lalu mengeluarkan telur yang jika dibiarkan akan menetaskan burung kecil yang ikut menembaki
 
@@ -414,6 +449,8 @@ setelah melakukan penyerangan demi penyerangan sekaligus melakukan looting peti 
 tiba-tiba saja bos bajak laut muncul dengan sendirinya setelah pemukimannya diserang
 
 saya bawa bosnya ke-area yang lebih luas untuk bisa menghindar dengan mudah saat menembakan meriam
+
+dalam pertarungan kali ini saya menggunakan Quartz Armor dan senjata Machine Gun
 
 bos ini memiliki 2 fase serangan, fase 1 dia akan jalan seperti biasa dan menembaki meriam. kemudian dilanjut fase 2 dia akan menaiki kapal bajak laut dan terbang ditanah sambil menembaki meriam dan mendekat
 

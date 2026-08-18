@@ -10,7 +10,7 @@ tabs:
   tab_kenalan: "Perkenalan"
   tab_support: "Support"
   tab_pencapaian: "Pencapaian"
-  tab_alat_tempur: "Alat Tempur"
+  tab_portofolio: "Portofolio"
 
 # Pengaturan Konten Tab Support
 support:
@@ -27,45 +27,18 @@ achievements:
     deskripsi: "Lorem ipsum dolor sit amet, consectetur adipisicing elit"
     icon: "icon-[ri--trophy-line]"
 
-# Pengaturan Konten Tab Alat Tempur (Stack & Setup)
-alat_tempur_title: "Alat Tempur & Setup"
-alat_tempur_desc: "Perangkat keras, software, dan teknologi yang biasa saya gunakan sehari-hari dalam merancang proyek dan konten."
-tools:
-  - kategori: "Software & Editor"
-    items:
-      # - nama: "Moho Pro"
-      #   deskripsi: "Animasi 2D & rigging karakter"
-      #   icon: "icon-[ri--movie-2-line]"
-      - nama: "Sublime Text"
-        deskripsi: "Text Editor utama untuk nulis"
-        icon: "icon-[ri--code-s-slash-line]"
-  # - kategori: "Bahasa & Framework"
-  #   items:
-  #     - nama: "Python & Tornado"
-  #       deskripsi: "Backend & otomatisasi skrip"
-  #       icon: "icon-[ri--terminal-box-line]"
-  #     - nama: "Tailwind CSS v4"
-  #       deskripsi: "Styling antarmuka web modern"
-  #       icon: "icon-[ri--css3-line]"
-
-# Spesifikasi Hardware / Rig Utama
-hardware_title: "Spesifikasi Rig (PC Utama)"
-hardware_specs:
-  - bagian: "Sistem Operasi"
-    detail: "Windows 10 Enterprise LTSC 64-bit"
-    icon: "icon-[ri--windows-line]"
-  - bagian: "Prosesor (CPU)"
-    detail: "AMD A8-7650K (Kaveri 28nm)"
-    icon: "icon-[ri--cpu-line]"
-  - bagian: "Memori (RAM)"
-    detail: "16.0GB Dual-Channel DDR3 @ 798MHz"
-    icon: "icon-[ri--ram-line]"
-  - bagian: "Grafis (GPU)"
-    detail: "AMD Radeon R7 Graphics (512MB)"
-    icon: "icon-[ri--vidicon-line]"
-  - bagian: "Penyimpanan (Storage)"
-    detail: "SSD 120GB (SATA) + External/Internal 320GB"
-    icon: "icon-[ri--hard-drive-2-line]"
+# Pengaturan Konten Tab Portofolio
+portofolio_title: "Portofolio Unggulan"
+portofolio_desc: "Beberapa proyek pilihan yang pernah saya kerjakan, mulai dari pengembangan web hingga desain."
+portfolio_items:
+  - nama: "Desain Web Portofolio"
+    deskripsi: "Merancang dan mengembangkan situs portofolio pribadi dengan Hugo dan Tailwind CSS."
+    icon: "icon-[ri--palette-line]"
+    link: "#"
+  - nama: "Aplikasi Web E-commerce"
+    deskripsi: "Membangun backend untuk toko online menggunakan Python dengan framework Tornado."
+    icon: "icon-[ri--shopping-cart-line]"
+    link: "#"
 ---
 
 Halo, panggil saja **Irfan**. 

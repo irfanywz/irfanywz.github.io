@@ -6,9 +6,9 @@
     x-data="{ 
         activeTab: 'kenalan',
         init() {
-            // Cek hash URL saat halaman dimuat (misal: #support, #pencapaian, atau #alat-tempur)
+            // Cek hash URL saat halaman dimuat (misal: #support, #pencapaian, atau #portofolio)
             const hash = window.location.hash.replace('#', '');
-            if (['kenalan', 'support', 'pencapaian', 'alat-tempur'].includes(hash)) {
+            if (['kenalan', 'support', 'pencapaian', 'portofolio'].includes(hash)) {
                 this.activeTab = hash;
             }
             
@@ -70,12 +70,12 @@
                             <span>{{ with .Params.tabs }}{{ .tab_pencapaian }}{{ else }}Pencapaian{{ end }}</span>
                         </button>
 
-                        <!-- Tab Alat Tempur -->
-                        <button @click="activeTab = 'alat-tempur'" 
-                            :class="activeTab === 'alat-tempur' ? 'bg-indigo-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-gray-800 text-slate-700 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-gray-700'"
+                        <!-- Tab Portofolio -->
+                        <button @click="activeTab = 'portofolio'" 
+                            :class="activeTab === 'portofolio' ? 'bg-indigo-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-gray-800 text-slate-700 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-gray-700'"
                             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all">
-                            <span class="icon-[ri--tools-line] w-4 h-4 text-cyan-400"></span>
-                            <span>{{ with .Params.tabs }}{{ .tab_alat_tempur }}{{ else }}Alat Tempur{{ end }}</span>
+                            <span class="icon-[ri--briefcase-line] w-4 h-4 text-cyan-400"></span>
+                            <span>{{ with .Params.tabs }}{{ .tab_portofolio }}{{ else }}Portofolio{{ end }}</span>
                         </button>
 
                     </div>
@@ -156,60 +156,29 @@
                     </div>
                 </div>
 
-                <!-- 4. TAB ALAT TEMPUR -->
-                <div x-show="activeTab === 'alat-tempur'" x-transition.opacity.duration.300ms class="bg-white dark:bg-gray-900 p-6 sm:p-10 rounded-3xl border border-slate-200/80 dark:border-gray-800 shadow-xl shadow-slate-200/50 dark:shadow-none" style="display: none;">
+                <!-- 4. TAB PORTOFOLIO -->
+                <div x-show="activeTab === 'portofolio'" x-transition.opacity.duration.300ms class="bg-white dark:bg-gray-900 p-6 sm:p-10 rounded-3xl border border-slate-200/80 dark:border-gray-800 shadow-xl shadow-slate-200/50 dark:shadow-none" style="display: none;">
                     <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
-                        <span class="icon-[ri--tools-line] text-cyan-500"></span>
-                        {{ .Params.alat_tempur_title | default "Alat Tempur" }}
+                        <span class="icon-[ri--briefcase-line] text-cyan-500"></span>
+                        {{ .Params.portofolio_title | default "Portofolio" }}
                     </h3>
                     <p class="text-sm text-slate-600 dark:text-gray-400 mb-8">
-                        {{ .Params.alat_tempur_desc }}
+                        {{ .Params.portofolio_desc }}
                     </p>
 
-                    <!-- Stack Software -->
-                    <div class="space-y-8 mb-10">
-                        {{ range .Params.tools }}
-                        <div>
-                            <h4 class="text-sm font-bold uppercase tracking-wider text-slate-400 dark:text-gray-500 mb-4">{{ .kategori }}</h4>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {{ range .items }}
-                                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-gray-800/50 border border-slate-200/60 dark:border-gray-700/60 flex items-center gap-4">
-                                    <div class="p-3 bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-400 rounded-xl flex-shrink-0">
-                                        <span class="{{ .icon }} w-6 h-6"></span>
-                                    </div>
-                                    <div>
-                                        <h5 class="text-sm font-bold text-slate-900 dark:text-white">{{ .nama }}</h5>
-                                        <p class="text-xs text-slate-600 dark:text-gray-400 mt-0.5">{{ .deskripsi }}</p>
-                                    </div>
-                                </div>
-                                {{ end }}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {{ range .Params.portfolio_items }}
+                        <a href="{{ .link | relURL }}" class="group p-5 rounded-2xl bg-slate-50 dark:bg-gray-800/50 border border-slate-200/60 dark:border-gray-700/60 flex items-start gap-4 hover:bg-slate-100 dark:hover:bg-gray-800 transition-all">
+                            <div class="p-3 bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-400 rounded-xl flex-shrink-0">
+                                <span class="{{ .icon }} w-6 h-6"></span>
                             </div>
-                        </div>
+                            <div>
+                                <h4 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">{{ .nama }}</h4>
+                                <p class="text-sm text-slate-600 dark:text-gray-400 mt-1">{{ .deskripsi }}</p>
+                            </div>
+                        </a>
                         {{ end }}
                     </div>
-
-                    <!-- Spesifikasi Komputer / Hardware -->
-                    {{ if .Params.hardware_specs }}
-                    <div class="border-t border-slate-100 dark:border-gray-800 pt-8">
-                        <h4 class="text-sm font-bold uppercase tracking-wider text-slate-400 dark:text-gray-500 mb-4 flex items-center gap-2">
-                            <span class="icon-[ri--computer-line]"></span>
-                            {{ .Params.hardware_title | default "Spesifikasi PC" }}
-                        </h4>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            {{ range .Params.hardware_specs }}
-                            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-gray-800/50 border border-slate-200/60 dark:border-gray-700/60 flex items-center gap-3">
-                                <div class="p-2 bg-slate-200/60 dark:bg-gray-700/60 text-slate-700 dark:text-gray-300 rounded-xl flex-shrink-0">
-                                    <span class="{{ .icon }} w-5 h-5"></span>
-                                </div>
-                                <div class="overflow-hidden">
-                                    <p class="text-xs font-semibold text-slate-400 dark:text-gray-500">{{ .bagian }}</p>
-                                    <p class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate">{{ .detail }}</p>
-                                </div>
-                            </div>
-                            {{ end }}
-                        </div>
-                    </div>
-                    {{ end }}
                 </div>
 
             </div>

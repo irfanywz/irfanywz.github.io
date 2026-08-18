@@ -78,7 +78,7 @@ weight = 20
 
 [[menu.main]]
 name = "Layanan"
-url = "/shop/"
+url = "/services/"
 pre = "icon-[ri--store-2-line]"
 weight = 30
 
@@ -98,22 +98,6 @@ weight = 40
 
 # menu offcanvas
 # ======================
-
-# [[menu.footer]]
-# name = "Layanan"
-# url = "/shop/"
-# pre = "icon-[ri--store-2-line]"
-# weight = 5
-# [menu.footer.params]
-#   color = "text-sky-500"
-
-# [[menu.footer]]
-# name = "Portofolio"
-# url = "/portofolio/"
-# pre = "icon-[ri--briefcase-2-line]"
-# weight = 10
-# [menu.footer.params]
-#   color = "text-indigo-500"  
 
 # --- Menu yang Ingin Disembunyikan ke dalam Dropdown "Lainnya" ---
 
@@ -170,7 +154,7 @@ weight = 20
 
 [[menu.bottom]]
 name = "Layanan"
-url = "/shop/"
+url = "/services/"
 pre = "icon-[ri--store-2-line]"
 weight = 30
 
@@ -216,14 +200,10 @@ weight = 40
 
 # output format
 [outputs]
-  home = ["HTML", "RSS", "JSON"]  
+  home = ["HTML", "JSON", "RSS"]  
+  section = ["HTML"] #force section only generate HTML not with RSS
 
-[outputFormats]
-[outputFormats.journaljson]
-  mediatype = "application/json"
-  baseName = "index"
-  isPlainText = true
-  notAlternative = true  
+[outputFormats] 
 [outputFormats.JSON]
   mediaType = "application/json"
   baseName = "index"

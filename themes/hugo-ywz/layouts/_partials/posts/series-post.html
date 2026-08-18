@@ -8,7 +8,7 @@
         </h3>
         
         <ul class="space-y-4 text-sm">
-            {{ range sort $pagesInSeries ".Params.weight" "asc" }}
+            {{ range sort $pagesInSeries ".Date" "asc" }}
             {{ $item := . }}
             
             <li>
@@ -65,7 +65,7 @@
                         </h4>
                         
                         <div class="flex items-center gap-2 mt-1">
-                            <!-- Reading Time menggantikan Tanggal -->
+                            <!-- Reading Time -->
                             <span class="text-[11px] text-gray-400 dark:text-gray-500 flex items-center gap-1 font-normal">
                                 <span class="icon-[ri--time-line] w-3 h-3"></span>
                                 {{ $item.ReadingTime }} mnt baca

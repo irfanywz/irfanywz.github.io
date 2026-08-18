@@ -1,0 +1,19 @@
+{{- $journalSection := .Site.GetPage "section" "journal" -}}
+{{- $pages := where $journalSection.RegularPages "Params.hidden" "ne" true -}}
+
+{{- $data := slice -}}
+{{- range $pages -}}
+  {{- $item := dict 
+    "title" .Title 
+    "permalink" .RelPermalink 
+    "date" (.Date.Format "2006-01-02") 
+    "year" (.Date.Format "2006") 
+    "month" (.Date.Format "January 2006") 
+    "day" (.Date.Format "02") 
+    "dayName" (lower (slicestr (i18n .Date.Weekday) 0 3)) 
+    "draft" .Draft 
+  -}}
+  {{- $data = $data | append $item -}}
+{{- end -}}
+
+{{- $data | jsonify -}}
