@@ -16,6 +16,11 @@ pygmentscodefences = true
 pygmentscodefencesguesssyntax = true
 
 [params]
+  # title for seo
+  title = "irfanywz"
+  address = "irfanywz.web.id"
+
+
 	# browser icon
   favicon = "favicon.ico"
 

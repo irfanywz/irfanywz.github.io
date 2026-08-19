@@ -348,9 +348,11 @@ item penting yang didapat dari hasil menjelajah diantaranya
 
 ### Melawan Bos Fallen Wizard
 
-setelah perjalanan panjang akhirnya sampai juga melawan bos ke 12 yaitu fallen wizard
+setelah perjalanan panjang akhirnya sampai juga melawan bos fallen wizard
 
-saya masih tetap menggunakan Sharpshooter Armor dan senjata Death Ripper, karena memang cuma ini doang yang paling tinggi statusnya
+bos kali ini serangannya lebih kuat dan powerfull dari void wizard, saya harus menghapal pola serangannya dulu
+
+saya masih tetap menggunakan Sharpshooter Armor dan senjata Death Ripper, karena memang cuma ini doang senjata range berjenis peluru dengan status tertinggi
 
 ketika turun dari tangga yang telah ditemukan, fallen wizard sudah ada ditempat hanya tinggal menunggu saya mentriggernya
 
@@ -375,6 +377,6 @@ hadiah dari elder berupa <kbd>Void Bag</kbd> yang fungsinya mirip seperti void p
 
 ## Pertarungan masih terus berlanjut
 
-sudah 12 bos dikalahkan, namun permainan tidak berhenti disini. masih ada pertarungan selanjutnya yang disebut incursion
+total sudah 13 bos dikalahkan, namun permainan tidak berhenti disini. masih ada pertarungan selanjutnya yang disebut incursion
 
-seperti tulisan sebelumnya, saya akan lanjutkan ditulisan lainnya dengan judul **Pertarungan Terakhir Necesse, Melawan Bos Tier 1 Sampai 10**
+dikarnakan tulisannya sudah terlalu panjang, tulisan selanjutnya akan ditulis dihalaman terpisah dengan judul **Pertarungan Terakhir Necesse, Melawan Incursion Bos**
