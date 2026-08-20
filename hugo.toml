@@ -180,13 +180,12 @@ weight = 40
   [markup.highlight]
     codeFences = true
     guessSyntax = true
-    # hl_Lines = ""
     lineNoStart = 1
     lineNos = false
     lineNumbersInTable = true
     noClasses = false
     style = "dracula"  # or any other chroma style
-    tabWidth = 4
+    tabWidth = 2
 
 [taxonomies]
   # tag = 'tags'

@@ -1,7 +1,7 @@
-<div x-data="{ commentOpen: false, commentLoaded: false, shareOpen: false }" class="w-full">
+<div x-data="{ commentOpen: false, commentLoaded: false, shareOpen: false, copied: false }" class="w-full">
   <!-- 1 Kotak Utama (Compact & 1 Baris di Mobile) -->
   <div class="post-reactions flex items-center justify-between gap-2 sm:gap-4 p-2.5 sm:p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-x-auto" data-id='{{ .RelPermalink }}'>
-    
+
     <!-- Bagian Kiri: Reaction Items (Clap, Fire, Lightbulb) -->
     <div class="flex items-center gap-1 sm:gap-3 flex-shrink-0">
       <!-- Clap -->
@@ -28,7 +28,7 @@
 
     <!-- Bagian Kanan: Tombol Komentar, Share, & View Count -->
     <div class="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
-      
+
       <!-- Tombol Komentar -->
       <button 
         @click="commentOpen = true" 
@@ -135,7 +135,7 @@
         <div id="disqus_wrapper">
           <div id="disqus_thread"></div>
         </div>
-        
+
         <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
       </div>
     </div>
@@ -182,53 +182,68 @@
         </button>
       </div>
 
-      <!-- Body / Share Links -->
+      <!-- Body / Share Buttons JS -->
       <div class="flex-1 overflow-y-auto p-6 bg-white dark:bg-gray-950 text-left">
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {{ $shareURL := .Permalink }}
           {{ $shareTitle := .Title }}
 
           <!-- WhatsApp -->
-          <a href="https://api.whatsapp.com/send?text={{ $shareTitle }}%20-%20{{ $shareURL }}" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors group">
+          <button @click="window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent('{{ $shareTitle }} - {{ $shareURL }}'), '_blank')" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors group cursor-pointer">
             <span class="icon-[ri--whatsapp-fill] w-8 h-8 text-green-500 group-hover:text-green-600"></span>
             <span class="text-sm font-medium text-gray-700 dark:text-gray-200 mt-2">WhatsApp</span>
-          </a>
+          </button>
 
           <!-- Telegram -->
-          <a href="https://t.me/share/url?url={{ $shareURL }}&text={{ $shareTitle }}" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group">
+          <button @click="window.open('https://t.me/share/url?url=' + encodeURIComponent('{{ $shareURL }}') + '&text=' + encodeURIComponent('{{ $shareTitle }}'), '_blank')" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group cursor-pointer">
             <span class="icon-[ri--telegram-fill] w-8 h-8 text-blue-500 group-hover:text-blue-600"></span>
             <span class="text-sm font-medium text-gray-700 dark:text-gray-200 mt-2">Telegram</span>
-          </a>
+          </button>
 
-          <!-- Facebook -->
-          <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareURL }}" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group">
+          <!-- Facebook (PERBAIKAN: Menggunakan Dialog Feed API agar teks tidak kosong) -->
+          <button @click="window.open('https://www.facebook.com/sharer.php?u=' + encodeURIComponent('{{ $shareURL }}') + '&quote=' + encodeURIComponent('{{ $shareTitle }}') + '&display=popup', '_blank')" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group cursor-pointer">
             <span class="icon-[ri--facebook-fill] w-8 h-8 text-blue-600 group-hover:text-blue-700"></span>
             <span class="text-sm font-medium text-gray-700 dark:text-gray-200 mt-2">Facebook</span>
-          </a>
+          </button>
 
           <!-- Twitter (X) -->
-          <a href="https://twitter.com/intent/tweet?url={{ $shareURL }}&text={{ $shareTitle }}" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group">
+          <button @click="window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent('{{ $shareURL }}') + '&text=' + encodeURIComponent('{{ $shareTitle }}'), '_blank')" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group cursor-pointer">
             <span class="icon-[ri--twitter-x-fill] w-8 h-8 text-gray-700 dark:text-white group-hover:text-blue-400"></span>
             <span class="text-sm font-medium text-gray-700 dark:text-gray-200 mt-2">X (Twitter)</span>
-          </a>
+          </button>
 
           <!-- LinkedIn -->
-          <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ $shareURL }}&title={{ $shareTitle }}" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group">
+          <button @click="window.open('https://www.linkedin.com/shareArticle?mini=true&url=' + encodeURIComponent('{{ $shareURL }}') + '&title=' + encodeURIComponent('{{ $shareTitle }}'), '_blank')" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group cursor-pointer">
             <span class="icon-[ri--linkedin-fill] w-8 h-8 text-blue-700 group-hover:text-blue-800"></span>
             <span class="text-sm font-medium text-gray-700 dark:text-gray-200 mt-2">LinkedIn</span>
-          </a>
+          </button>
 
           <!-- Email -->
-          <a href="mailto:?subject={{ $shareTitle }}&body={{ $shareURL }}" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors group">
+          <button @click="window.location.href = 'mailto:?subject=' + encodeURIComponent('{{ $shareTitle }}') + '&body=' + encodeURIComponent('{{ $shareURL }}')" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors group cursor-pointer">
             <span class="icon-[ri--mail-fill] w-8 h-8 text-red-500 group-hover:text-red-600"></span>
             <span class="text-sm font-medium text-gray-700 dark:text-gray-200 mt-2">Email</span>
-          </a>
-
-          <!-- Copy Link -->
-          <button @click="navigator.clipboard.writeText('{{ $shareURL }}'); alert('Tautan berhasil disalin!');" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors group cursor-pointer">
-            <span class="icon-[ri--link] w-8 h-8 text-gray-500 group-hover:text-gray-600"></span>
-            <span class="text-sm font-medium text-gray-700 dark:text-gray-200 mt-2">Salin Tautan</span>
           </button>
+
+          <!-- Copy Link (PERBAIKAN: Animasi tombol berganti ceklis tanpa Alert) -->
+          <button 
+            @click="
+              navigator.clipboard.writeText('{{ $shareURL }}');
+              copied = true;
+              setTimeout(() => copied = false, 2000);
+            "
+            class="flex flex-col items-center justify-center p-4 rounded-xl transition-all duration-300 group cursor-pointer"
+            :class="copied ? 'bg-green-100 dark:bg-green-900/40 text-green-600 scale-95' : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200'"
+          >
+            <!-- Icon Tautan (Semula) -->
+            <span x-show="!copied" class="icon-[ri--link] w-8 h-8 text-gray-500 group-hover:text-gray-600"></span>
+            
+            <!-- Icon Ceklis (Saat Berhasil Dicopy) -->
+            <span x-show="copied" style="display: none;" class="icon-[ri--checkbox-circle-fill] w-8 h-8 text-green-500 transition-transform duration-200 scale-110"></span>
+            
+            <!-- Label Teks -->
+            <span class="text-sm font-medium mt-2" x-text="copied ? 'Tersalin!' : 'Salin Tautan'"></span>
+          </button>
+
         </div>
       </div>
     </div>

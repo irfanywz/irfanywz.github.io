@@ -3,6 +3,8 @@ title: "Image Merger"
 date: 2026-01-20T10:00:00+07:00
 description: "Tool to merge multiple images into one file (Vertical/Horizontal/Grid). Features border, spacing, and reordering."
 icon: "icon-[ri--layout-masonry-line]"
+categories:
+  - "Image"
 ---
 
 <!-- SortableJS Library -->

@@ -3,6 +3,8 @@ title: "URL Encoder & Decoder"
 date: 2026-01-16T10:30:00+07:00
 description: "Alat praktis untuk melakukan encoding dan decoding URL atau teks secara instan."
 icon: "icon-[ri--link-m]"
+categories:
+  - "Web"
 ---
 
 <div class="max-w-4xl mx-auto mt-6 space-y-6">

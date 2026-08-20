@@ -3,6 +3,8 @@ title: "Penukar Text ke URI Data"
 date: 2025-10-13T00:00:00+07:00
 description: "Tukar Markdown atau HTML mentah menjadi URI `data:text/html` yang disandikan"
 icon: "icon-[ri--file-transfer-line]"
+categories:
+  - "Web"
 ---
 
 <!-- Marked.js for Markdown conversion -->

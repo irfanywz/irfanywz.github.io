@@ -32,7 +32,7 @@
                             {{ if eq $resourceImg.MediaType.SubType "svg" }}
                                 <img src="{{ $resourceImg.RelPermalink }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             {{ else }}
-                                {{ $thumb := $resourceImg.Resize "300x avif" }}
+                                {{ $thumb := $resourceImg.Resize "1000x avif" }}
                                 <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             {{ end }}
 
@@ -41,7 +41,7 @@
                             {{ if eq $globalImg.MediaType.SubType "svg" }}
                                 <img src="{{ $globalImg.RelPermalink }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             {{ else }}
-                                {{ $thumbGlobal := $globalImg.Resize "300x avif" }}
+                                {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
                                 <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             {{ end }}
 

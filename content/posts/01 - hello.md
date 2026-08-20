@@ -15,6 +15,18 @@ consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
+<pre><code class="language-go">&quot;Apache&quot;: {
+    Version:    &quot;2.4.66 (VS18, win64)&quot;,
+    URL:        &quot;https://www.apachelounge.com/download/VS18/binaries/httpd-2.4.66-260223-Win64-VS18.zip&quot;,
+    InstallDir: &quot;bin/apache&quot;,
+    StripTop:   &quot;Apache24/&quot;,
+    Kind:       &quot;zip&quot;,
+    CheckFile:  &quot;bin/httpd.exe&quot;,
+    PostInstall: func(installDir string, log func(string)) error {
+        // patch httpd.conf — fix SRVROOT, ServerName, mod_cgi, vhost include
+    },
+},
+</code></pre>
 
 {{< interactive-wrapper >}}
 

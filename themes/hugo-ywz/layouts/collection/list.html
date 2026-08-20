@@ -1,21 +1,54 @@
 {{ define "main" }}
     <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300" 
         x-data="{ 
+            search: '',
             activeFilter: new URLSearchParams(window.location.search).get('filter') || 'all',
+            items: [
+                {{ range .Pages }}
+                {
+                    title: {{ .Title | lower | jsonify }},
+                    description: {{ .Params.description | default .Summary | lower | jsonify }},
+                    layout: {{ .Params.layout | default "default" | jsonify }}
+                },
+                {{ end }}
+            ],
             updateFilter(filter) {
                 this.activeFilter = filter;
                 const url = new URL(window.location);
-                url.searchParams.set('filter', filter);
+                if (filter === 'all') {
+                    url.searchParams.delete('filter');
+                } else {
+                    url.searchParams.set('filter', filter);
+                }
                 window.history.pushState({}, '', url);
             },
-            get activeFilterName() {
-                if (this.activeFilter === 'all') return 'Semua';
-                return this.activeFilter.charAt(0).toUpperCase() + this.activeFilter.slice(1);
+            get filterCounts() {
+                const counts = {};
+                this.items.forEach(item => {
+                    counts[item.layout] = (counts[item.layout] || 0) + 1;
+                });
+                return Object.entries(counts).map(([name, count]) => ({ name, count }));
+            },
+            matchesFilter(title, desc, layout) {
+                const s = this.search.toLowerCase();
+                const matchesSearch = title.includes(s) || desc.includes(s);
+                const matchesCategory = this.activeFilter === 'all' || layout === this.activeFilter;
+                return matchesSearch && matchesCategory;
+            },
+            get hasResults() {
+                const s = this.search.toLowerCase();
+                return this.items.some(item => {
+                    const matchesSearch = item.title.includes(s) || item.description.includes(s);
+                    const matchesCategory = this.activeFilter === 'all' || item.layout === this.activeFilter;
+                    return matchesSearch && matchesCategory;
+                });
             }
         }"
         @popstate.window="activeFilter = new URLSearchParams(window.location.search).get('filter') || 'all'">
+        
         <div class="container max-w-6xl mx-auto px-4 py-12">
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-gray-100 dark:border-gray-800 pb-8">
+            <!-- Header & Search -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 border-b border-gray-100 dark:border-gray-800 pb-8">
                 <div class="max-w-2xl">
                     <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tight flex items-center gap-3">
                         <span class="icon-[ri--stack-line] text-purple-500"></span>
@@ -24,44 +57,69 @@
                     <p class="text-lg text-gray-500 dark:text-gray-400">{{ .Description }}</p>
                 </div>
 
-                <!-- Filter Dropdown -->
-                <div class="relative" x-data="{ open: false }">
-                    <button @click="open = !open" @click.outside="open = false" class="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl font-bold transition-all shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200">
-                        <span class="icon-[ri--filter-3-line]"></span>
-                        <span x-text="activeFilterName"></span>
-                        <span class="icon-[ri--arrow-down-s-line] opacity-50"></span>
-                    </button>
-                    <div x-show="open" x-transition class="absolute top-full right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 z-10 overflow-hidden" style="display: none;">
-                        <a href="javascript:;" @click="updateFilter('all'); open = false" 
-                           :class="activeFilter === 'all' ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300'"
-                           class="block px-4 py-3 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-between">
-                            <span>Semua</span>
-                            <span x-show="activeFilter === 'all'" class="icon-[ri--check-line] w-5 h-5 text-indigo-600"></span>
-                        </a>
-                        {{ $layouts := slice }}
-                        {{ range .Pages }}
-                            {{ $layout := .Params.layout | default "default" }}
-                            {{ $layouts = $layouts | append $layout }}
-                        {{ end }}
-                        {{ $layouts = $layouts | uniq }}
-                        {{ range $layouts }}
-                            <a href="javascript:;" @click="updateFilter('{{ . }}'); open = false" 
-                               :class="activeFilter === '{{ . }}' ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400' : 'text-gray-700 dark:text-gray-300'"
-                               class="block px-4 py-3 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-between capitalize">
-                                <span>{{ . }}</span>
-                                <span x-show="activeFilter === '{{ . }}'" class="icon-[ri--check-line] w-5 h-5 text-indigo-600"></span>
-                            </a>
-                        {{ end }}
-                    </div>
+                <!-- Input Search -->
+                <div class="relative w-full md:w-72">
+                    <i class="icon-[ri--search-line] absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="search" x-model="search" placeholder="Cari..." 
+                        class="w-full pl-11 pr-4 py-2.5 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all shadow-sm">
                 </div>
             </div>
 
+            <!-- Horizontal Filter Buttons -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-6 mb-6 scrollbar-none">
+                <!-- Tombol Semua -->
+                <button @click="updateFilter('all')"
+                    :class="activeFilter === 'all' 
+                        ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' 
+                        : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0">
+                    <span>Semua</span>
+                    <span class="px-2 py-0.5 text-xs rounded-full"
+                        :class="activeFilter === 'all' 
+                            ? 'bg-white/20 text-white' 
+                            : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'"
+                        x-text="items.length">
+                    </span>
+                </button>
+
+                <!-- Tombol Kategori Dinamis berdasarkan Layout -->
+                <template x-for="cat in filterCounts" :key="cat.name">
+                    <button @click="updateFilter(cat.name)"
+                        :class="activeFilter === cat.name 
+                            ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' 
+                            : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0 capitalize">
+                        <span x-text="cat.name"></span>
+                        <span class="px-2 py-0.5 text-xs rounded-full"
+                            :class="activeFilter === cat.name 
+                                ? 'bg-white/20 text-white' 
+                                : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'"
+                            x-text="cat.count">
+                        </span>
+                    </button>
+                </template>
+            </div>
+
+            <!-- Grid Items -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {{ range .Pages }}
-                    <div x-show="activeFilter === 'all' || activeFilter === '{{ .Params.layout | default "default" }}'" x-transition.opacity.duration.300ms>
+                    {{ $title := .Title | lower }}
+                    {{ $desc := .Params.description | default .Summary | lower }}
+                    {{ $layout := .Params.layout | default "default" }}
+                    
+                    <div x-show="matchesFilter('{{ $title }}', '{{ $desc }}', '{{ $layout }}')" 
+                         x-transition.opacity.duration.300ms>
                         {{ partial "collection/card.html" . }}
                     </div>
                 {{ end }}
+            </div>
+
+            <!-- Empty State -->
+            <div x-show="!hasResults" x-transition class="text-center py-16" style="display: none;">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
+                    <i class="icon-[ri--search-2-line] text-2xl text-gray-400"></i>
+                </div>
+                <p class="text-gray-500 dark:text-gray-400 text-lg">Item tidak ditemukan.</p>
             </div>
         </div>
     </main>

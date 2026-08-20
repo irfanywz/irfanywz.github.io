@@ -99,6 +99,8 @@ masuklah saya kepertarungan pertama
 
 dari segi pertarungan tidak ada yang berubah, gerakannya masih sama seperti pertarungan sebelumnya. namun kali ini ketika terkena serangan sakitnya sangat terasa sekali
 
+setelah bos tier 1 dikalahkan, hadiah dari elder berupa <kbd>Tablet Box</kbd> yang berguna untuk menaruh tablet lebih banyak di-inventory
+
 ### Langkah Selanjutnya
 
 setelah bos dikalahkan, selanjutnya saya sudah bisa mengupgrade dan membuat item baru untuk kebutuhan incursion mode. item-item tersebut antara lain
@@ -127,7 +129,7 @@ dibutuhkan dash yang cepat untuk menghindar dari lompatannya
 
 untuk armor dan senjata yang saya pakai masih sama seperti saat melawan fallen wizard, hanya saja kali ini sudah saya upgrade menjadi tier 2 atau lebih
 
-[embed-video-tier-2-slime]
+[video-mother-slime-yt]
 
 ### Mendapatkan Upgrade Shard dalam jumlah banyak
 
@@ -145,9 +147,9 @@ upgrade shard ini nantinya tidak hanya untuk upgrade tapi bisa dimutasi atau dit
 
 cara ini mempercepat upgrade armor dan senjata ketier lebih tinggi agar melawan melawan bos bisa lebih seimbang
 
-## Melawan Bos Tier 3 Graveyard
+## Melawan Bos Tier 3 Night Swarm
 
-kita lanjut masuk keincursion tier 3, seperti biasa saya upgrade Fallen Altar dengan Altar dust terlebih dahulu untuk mendapatkan Table Graveyardnya
+kita lanjut masuk keincursion tier 3, seperti biasa saya upgrade Fallen Altar dengan Altar dust terlebih dahulu untuk mendapatkan Table Graveyard
 
 saat didalam incursion graveyard terasa sekali seperti berasa dikuburan, warna gelap dan pohon mati membuatnya menjadi menyeramkan
 
@@ -163,7 +165,8 @@ disini saya membawa NPC dari pemukiman yang saya gunakan sebagai tameng utama, k
 
 pola serangan yang diberikan berupa mengincar tiba-tiba, mengelilingi lalu menyerang secara tiba-tiba, membentuk barisan lalu terbang seperti jaring kotak kotak
 
-[embed-video-tier-3-graveyard]
+
+[video-night-swarm-yt]
 
 ### Membuat Nightsteel Armor
 
@@ -183,6 +186,8 @@ didalam incursion spider castle, saya mendapatkan beberapa item diantaranya
 
 saat pertarungan melawan bos Empress Spider, gerakannya cepat sekaligus area yang dijangkaunya besar, selain melakukan gerakan menyerang, bosnya juga mengeluarkan racun yang jika terkena mengurangi darah secara drastis dengan cepat
 
+[video-spider-queen-yt]
+
 ### Membuat Spiderite Armor
 
 setelah melakukan 2x incursion berbeda, saya membuat armor baru yaitu <kbd>Spiderite Armor</kbd>
@@ -191,10 +196,89 @@ armor ini berguna sekali karena ada buff untuk menghilangkan gerakan lambat yang
 
 setelah armor dibuat tidak lupa untuk diupgrade juga untuk meningkatkan tiernya agar lebih tebal lagi statusnya
 
-## Melawan Bos Tier 5 Moonlord
+## Melawan Bos Tier 5 Moonlight Dancing
+
+fallen workstation terus saya upgrade, serang sudah tier 5 dan mendapat tablet moon arena
+
+karena tabletnya bukan berjenis extraction maupun hunt, ini artinya saya bisa langsung melawan bosnya langsung
+
+ketika berada didalam incursion portal merah untuk mensummon bosnya sudah muncul, saya melakukan persiapan dulu seperti menghancurkan tembok yang berada ditengah agar pergerkan lebih leluasa
+
+pertarungan saya mulai, bos ini gerakannya tidak terlalu agresif namun ada 1 serangan dimana saya harus mengumpulkan cristal sampai 4 buah, jika tidak bisa mengmpulkannya maka saya akan terkena serangan yang sangat mematikan
+
+bos moonlight dancing ini rewardnya berupa armor magic dan aksesoris sepatu cepat
+
+hadiah dari elder ketika menyelesaikan incursion tier 5 yaitu <kbd>Wormhole Locket</kbd> yang akan meningkatkan kapasitas aksesoris menjadi 8
+
+[video-moonlight-dancer-yt]
+
 ## Melawan Bos Tier 6 Sunlight Champion
+
+kita lanjut masuk ketier 6, kali ini tablet berbentuk arena lagi
+
+artinya saya bisa langsung melawan bosnya langsung
+
+pertarungan melawan bos sunlight champion sangat agresif sekali
+
+dia memiliki 3 serangan sekaligus, pertama badan dan kedua tangannya yang gerakannya cepat
+
+untungnya tangannya juga bisa diserang jadi saya bisa dengan mudah menyerangnya
+
+reward yang didapat dari melawan bos ini adalah armor yang akan saya gunakan sebagai armor endgame yaitu <kbd>Dawn Armor</kbd>
+
+disini saya melakukan incursion sebanyak beberapa kali untuk mendapatkan armornya
+
+[video-sunlight-champion-yt]
+
 ## Melawan Bos Tier 7 Crystal Dragon
-## Melawan Bos Tier 8 Toxic Sludge
+
+masuk ketier 7 kali ini saya akan masuk keincursion crystal hollow
+
+didalam incursion ini saya bisa mendapatkan item diantaranya
+- Omni-Crystal [Hunt]
+- Pearlescent Diamond [Extraction]
+- Crystal Essence [Bos]
+
+pertarungan melawan cystal dragon tidak terlalu susah, namun jika salah melangkah sedikti saja bisa dari ulang
+
+bos akan mengeluarkan partikel kristal, lalu melempar monster yang akan membidik seketika, jika tidak bergerak maka serangan akan terkena
+
+[video-crystal-dragon-yt]
+
+### Membuat Crystal Armor
+
+setelah bos dikalahkan saya bisa membuat cystal armor, untuk melawan bos selanjutnya
+
+crystal armor memiliki benefit meningkatkan regen ressilience
+
+
+## Melawan Bos Tier 8 Mutant Hydra
+
+ini adalah bos baru yang baru saja ditambahkan diversi 1.3, bos ini terletak ditempat pembuangan sampah yang sangat toxic
+
+item yang bisa didapat dari incursion scrapyard antaran lain
+- Pristine Gear [Hunt]
+- Fuel Skull [Extraction]
+- Radiated Essence [Bos]
+
+serangan dari bos ini sangat agresif, ditambah ada jebakan dan arena yang sangat sempit membuat permainan jadi semakin sulit
+
+disini saya tidak melawannya sendirian melainkan membawa npc dari pemukiman
+
+jujur saja bos ini susah untuk dilawan apalagi ketika mengaktifkan benefit pada fallen altar yang mensummon monster seperti raven dan lainnya
+
+bos ini memiliki 4 kepala seperti mutan yang serangannya berupa memutar, menjepit, mengeluarkan racun, bahkan mengeluarkan gelombang yang membuat arah menjadi bingung. 
+
+jadi ketika berjalan akan mengarah sebaliknya, saya pencet kiri malah ke-kanan, pencet atas malah kebawah
+
+[video-toxic-sludge-yt]
+
+### Membuat Makeshift Armor
+
+armor ini memiliki set bonus akan mengeluarkan mesin tembakan ketika kita menyerang ataupun terkena serang, dengan menekan tombol V untuk menaruh mesinnya
+
+perhatikan stacknya juga karena mesin tidak selamanya muncul
+
 ## Melawan Bos Tier 10 Ascended Wizard
 
 untuk bisa melawan bos Ascended Wizard, Fallen Altar harus sudah Tier 10 terlebih dahulu

@@ -3,6 +3,8 @@ title: "HTML Preview"
 date: 2026-01-15T10:00:00+07:00
 description: "Alat untuk menguji dan melihat pratinjau kode HTML, CSS, dan JavaScript secara real-time."
 icon: "icon-[ri--html5-line]"
+categories:
+  - "Web"
 ---
 
 <div class="max-w-[90rem] mx-auto mt-6">

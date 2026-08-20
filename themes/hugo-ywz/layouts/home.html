@@ -32,8 +32,18 @@
 
                     <!-- Widget khusus di Halaman 1 saja -->
                     {{ if eq $paginator.PageNumber 1 }}
+
                         {{ partial "home/featured-random.html" . }}
-                        {{ partial "home/topic-posts.html" (dict "topic" "Komputer" "title" "Seputar Teknologi" "limit" 4) }}
+
+                        {{ partial "home/topic-posts-static.html" (dict "topic" "Komputer" "title" "Kilas Teknologi" "limit" 4 "layout" "hero" "accent" "indigo") }}
+
+                        {{ partial "home/topic-posts-static.html" (dict "topic" "Kode" "title" "Tips Koding" "limit" 4 "layout" "grid" "accent" "amber") }}
+
+                        {{ partial "home/topic-posts-static.html" (dict "topic" "Reverse" "title" "Seputar Keamanan Siber" "limit" 4 "layout" "list" "accent" "purple") }}
+
+                        {{ partial "home/topic-posts-static.html" (dict "topic" "Game" "title" "Seputar Game" "limit" 4 "layout" "compact" "accent" "rose") }}
+
+
                     {{ end }}
 
                     <!-- Wrapper Header Halaman (Di-update lewat AJAX) -->
@@ -69,7 +79,7 @@
                     </div>
                     
                     <!-- Pagination -->
-                    {{ partial "components/pagination-ajax.html" .Paginator }}
+                    {{ partial "components/pagination.html" .Paginator }}
                 </div>
 
                 <!-- Sidebar -->

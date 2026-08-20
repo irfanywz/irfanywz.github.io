@@ -4,6 +4,27 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.4.2"
+    date: "20 Agustus 2026"
+    changes:
+      - tag: "Fitur Baru"
+        description: "Menambahkan filter kategori pada halaman koleksi dan alat."
+      - tag: "Pembaruan"
+        description: "Mengubah URL layanan dari '/shop' menjadi '/services'."
+      - tag: "Pembaruan"
+        description: "Meningkatkan tampilan halaman utama, widget topic-posts kini lebih variatif."
+      - tag: "Pembaruan"
+        description: "Memisahkan script Disqus count agar hanya dimuat pada halaman single post."
+      - tag: "Perbaikan"
+        description: "Perbaikan tampilan dan UI pada halaman Tentang."
+      - tag: "Perbaikan"
+        description: "Perbaikan fungsi tombol copy pada fitur share post."
+      - tag: "Perbaikan"
+        description: "Perbaikan fitur resize gambar yang ukurannya tidak sinkron (1000px)."
+      - tag: "Perbaikan"
+        description: "Perbaikan render RSS pada halaman utama, kini khusus untuk section posts."
+      - tag: "Perbaikan"
+        description: "Perbaikan render JSON pada halaman journal dengan output yang sudah ter-minify."
   - version: "2.4.1"
     date: "15 Agustus 2026"
     changes:

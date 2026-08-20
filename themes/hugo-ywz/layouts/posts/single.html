@@ -50,24 +50,64 @@
                                 
                                 <div class="my-6 border-b border-gray-200 dark:border-gray-700"></div>
 
-                                <!-- Banner Cover Lebih Ramping & Kompak (Tinggi dikurangi jadi h-40 / h-52) -->
                                 {{ if .Params.image }}
-                                    {{ $resourceImg := .Resources.GetMatch .Params.image }}
-                                    {{ $globalImg := resources.Get .Params.image }}
-                                    <div class="mb-6 w-full h-40 sm:h-52 md:h-60 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm">
-                                        {{ if $resourceImg }}
-                                            {{ $thumb := $resourceImg.Resize "1000x avif" }}
-                                            <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ .Title }}" class="w-full h-full object-cover" loading="lazy">
-                                        {{ else if $globalImg }}
-                                            {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
-                                            <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ .Title }}" class="w-full h-full object-cover" loading="lazy">
-                                        {{ else if (fileExists (printf "static/%s" .Params.image)) }}
-                                            <img src="{{ .Params.image | relURL }}" alt="{{ .Title }}" class="w-full h-full object-cover" loading="lazy">
-                                        {{ else if (strings.HasPrefix .Params.image "http") }}
-                                            <img src="{{ .Params.image }}" alt="{{ .Title }}" class="w-full h-full object-cover" loading="lazy">
-                                        {{ end }}
-                                    </div>
-                                {{ end }}
+    {{ $resourceImg := .Resources.GetMatch .Params.image }}
+    {{ $globalImg := resources.Get .Params.image }}
+    
+    {{ $imgUrl := "" }}
+    {{ $imgW := "" }}
+    {{ $imgH := "" }}
+
+    {{ if $resourceImg }}
+        {{ $thumb := $resourceImg.Resize "1000x avif" }}
+        {{ $imgUrl = $thumb.RelPermalink }}
+        {{ $imgW = $thumb.Width }}
+        {{ $imgH = $thumb.Height }}
+    {{ else if $globalImg }}
+        {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
+        {{ $imgUrl = $thumbGlobal.RelPermalink }}
+        {{ $imgW = $thumbGlobal.Width }}
+        {{ $imgH = $thumbGlobal.Height }}
+    {{ else if (fileExists (printf "static/%s" .Params.image)) }}
+        {{ $imgUrl = .Params.image | relURL }}
+    {{ else if (strings.HasPrefix .Params.image "http") }}
+        {{ $imgUrl = .Params.image }}
+    {{ end }}
+
+    <div 
+        x-data="{
+            points: [
+                { scale: 1.25, x: '20%', y: '20%' },
+                { scale: 1.20, x: '80%', y: '30%' },
+                { scale: 1.30, x: '50%', y: '80%' },
+                { scale: 1.15, x: '30%', y: '70%' },
+                { scale: 1.25, x: '70%', y: '20%' }
+            ],
+            idx: 0,
+            curr: { scale: 1.25, x: '20%', y: '20%' },
+            move() {
+                this.idx = (this.idx + 1) % this.points.length;
+                this.curr = this.points[this.idx];
+            }
+        }"
+        x-init="
+            move();
+            setInterval(() => move(), 8000);
+        "
+        class="mb-6 w-full h-40 sm:h-52 md:h-60 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm relative"
+    >
+        {{ if $imgUrl }}
+            <img 
+                src="{{ $imgUrl }}" 
+                {{ if $imgW }}width="{{ $imgW }}" height="{{ $imgH }}"{{ end }}
+                alt="{{ .Title }}" 
+                class="w-full h-full object-cover transition-all duration-[8000ms] ease-in-out"
+                :style="`transform: scale(${curr.scale}); object-position: ${curr.x} ${curr.y};`"
+                loading="lazy"
+            >
+        {{ end }}
+    </div>
+{{ end }}
 
                                 <div class="prose prose-lg dark:prose-invert max-w-none">
                                     <div class="post-content-full">

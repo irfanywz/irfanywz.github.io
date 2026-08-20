@@ -74,7 +74,6 @@
             </div>
         </div>
     </div>
-
 {{ end }}
 
 {{ define "footer" }}
@@ -122,8 +121,9 @@
                 const startTime = performance.now();
                 
                 let results = searchData.filter(item => {
+                    const topicsStr = Array.isArray(item.topics) ? item.topics.join(' ') : (item.topics || '');
                     const tagsStr = Array.isArray(item.tags) ? item.tags.join(' ') : (item.tags || '');
-                    const targetText = `${item.title || ''} ${tagsStr}`.toLowerCase();
+                    const targetText = `${item.title || ''} ${topicsStr} ${tagsStr}`.toLowerCase();
                     return targetText.includes(query.toLowerCase());
                 });
                 
@@ -151,22 +151,37 @@
                 results.forEach(item => {
                     const titleHighlighted = highlightText(item.title || '', query);
                     
+                    // Render Topics / Tags
                     let tagsHTML = '';
-                    if (item.tags) {
-                        const tagsList = Array.isArray(item.tags) ? item.tags : item.tags.split(',').map(t => t.trim());
+                    const rawTags = item.topics || item.tags;
+                    if (rawTags) {
+                        const tagsList = Array.isArray(rawTags) ? rawTags : rawTags.split(',').map(t => t.trim());
                         tagsHTML = tagsList.map(tag => 
                             `<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 border border-indigo-200 dark:border-indigo-800">${highlightText(tag, query)}</span>`
                         ).join('');
                     }
 
-                    // Render gambar thumbnail jika ada parameternya
+                    // Render Gambar Thumbnail
                     let imageHTML = '';
                     if (item.image) {
-                        let imgUrl = item.image;
-                        // Jika path gambar relatif terhadap page bundle, pastikan menyesuaikan atau langsung pakai URL-nya
                         imageHTML = `
                             <div class="w-full sm:w-36 h-28 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
-                                <img src="${imgUrl}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            </div>
+                        `;
+                    }
+
+                    // Render Reading Time
+                    let readingTimeHTML = '';
+                    if (item.readingTime) {
+                        readingTimeHTML = `
+                            <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-2">
+                                <span class="flex items-center gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    ${item.readingTime} menit baca
+                                </span>
                             </div>
                         `;
                     }
@@ -176,14 +191,7 @@
                             ${imageHTML}
                             <div class="flex-grow min-w-0 flex flex-col justify-between h-full w-full">
                                 <div>
-                                    <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-2">
-                                        <span class="flex items-center gap-1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                            </svg>
-                                            ${formatDate(item.date)}
-                                        </span>
-                                    </div>
+                                    ${readingTimeHTML}
                                     <h3 class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors leading-snug mb-2">
                                         <a href="${item.permalink}" class="focus:outline-none">
                                             <span class="absolute inset-0" aria-hidden="true"></span>
@@ -224,13 +232,6 @@
                 if (!query) return text;
                 const regex = new RegExp(query, 'gi');
                 return text.replace(regex, match => `<span class="bg-yellow-200 dark:bg-yellow-900/50 text-gray-900 dark:text-white px-0.5 rounded">${match}</span>`);
-            }
-            
-            function formatDate(dateString) {
-                if (!dateString || dateString.includes('0001')) return '';
-                const dateObject = new Date(dateString);
-                if (isNaN(dateObject.getTime())) return '';
-                return dateObject.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
             }
             
             searchInput.addEventListener('keyup', function(e) {

@@ -5,6 +5,7 @@
     <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300"
         x-data="{
             search: '',
+            selectedCategory: 'all',
             items: [
                 {{ range .Pages }}
                 {
@@ -15,19 +16,38 @@
                     displayTitle: {{ .Title | jsonify }},
                     displayDesc: {{ .Params.description | default .Summary | jsonify }},
                     icon: {{ or .Params.icon "icon-[ri--wrench-line]" | jsonify }},
-                    date: {{ .Date | time.Format "2 January 2006" | jsonify }}
+                    date: {{ .Date | time.Format "2 January 2006" | jsonify }},
+                    categories: {{ or .Params.categories (slice "General") | jsonify }}
                 },
                 {{ end }}
             ],
-            get hasResults() {
+            // Ambil daftar kategori unik beserta jumlah (count) alatnya
+            get categoryCounts() {
+                const counts = {};
+                this.items.forEach(item => {
+                    if (Array.isArray(item.categories)) {
+                        item.categories.forEach(c => {
+                            counts[c] = (counts[c] || 0) + 1;
+                        });
+                    }
+                });
+                return Object.entries(counts).map(([name, count]) => ({ name, count }));
+            },
+            // Filter daftar alat berdasarkan kata kunci pencarian & kategori aktif
+            get filteredItems() {
                 const s = this.search.toLowerCase();
-                return this.items.some(i => i.title.includes(s) || i.description.includes(s));
+                return this.items.filter(item => {
+                    const matchesSearch = item.title.includes(s) || item.description.includes(s);
+                    const matchesCategory = this.selectedCategory === 'all' || 
+                        (Array.isArray(item.categories) && item.categories.includes(this.selectedCategory));
+                    return matchesSearch && matchesCategory;
+                });
             }
         }">
 
     <div class="container max-w-6xl mx-auto px-4 py-12">
-        <!-- Header -->
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-gray-100 dark:border-gray-800 pb-8">
+        <!-- Header & Search -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 border-b border-gray-100 dark:border-gray-800 pb-8">
             <div class="max-w-2xl">
                 <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tight flex items-center gap-3">
                     <span class="icon-[ri--tools-line] text-orange-500"></span>
@@ -42,39 +62,81 @@
                     class="w-full pl-11 pr-4 py-2.5 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all shadow-sm">
             </div>
         </div>
-        
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <template x-for="item in items">
-                        <a :href="item.permalink" 
-                           :target="item.isExternal ? '_blank' : ''"
-                           :rel="item.isExternal ? 'noopener noreferrer' : ''"
-                           x-show="search === '' || item.title.includes(search.toLowerCase()) || item.description.includes(search.toLowerCase())"
-                           class="group block bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-                            
-                            <div class="flex items-start gap-4 mb-4">
-                                <div class="w-16 h-16 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm border border-indigo-100 dark:border-indigo-900/50">
-                                    <i :class="item.icon" class="text-3xl"></i>
-                                </div>
-                                <div>
-                                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" x-text="item.displayTitle"></h2>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400" x-text="item.date"></p>
-                                </div>
-                            </div>
-                            
-                            <p class="text-gray-600 dark:text-gray-300 text-sm line-clamp-2 mb-4" x-text="item.displayDesc"></p>
-                        
-                        </a>
-                    </template>
-                </div>
-                
-                <div x-show="!hasResults" x-transition class="text-center py-16" style="display: none;">
-                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
-                        <i class="icon-[ri--search-2-line] text-2xl text-gray-400"></i>
+
+        <!-- Filter Category Buttons dengan Count -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-6 mb-6 scrollbar-none">
+            <!-- Tombol Semua -->
+            <button @click="selectedCategory = 'all'"
+                :class="selectedCategory === 'all' 
+                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' 
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0">
+                <span>Semua</span>
+                <span class="px-2 py-0.5 text-xs rounded-full"
+                    :class="selectedCategory === 'all' 
+                        ? 'bg-white/20 text-white' 
+                        : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'"
+                    x-text="items.length">
+                </span>
+            </button>
+
+            <!-- Tombol Kategori Dinamis -->
+            <template x-for="cat in categoryCounts" :key="cat.name">
+                <button @click="selectedCategory = cat.name"
+                    :class="selectedCategory === cat.name 
+                        ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' 
+                        : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0 capitalize">
+                    <span x-text="cat.name"></span>
+                    <span class="px-2 py-0.5 text-xs rounded-full"
+                        :class="selectedCategory === cat.name 
+                            ? 'bg-white/20 text-white' 
+                            : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'"
+                        x-text="cat.count">
+                    </span>
+                </button>
+            </template>
+        </div>
+
+        <!-- Grid Items -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <template x-for="item in filteredItems" :key="item.permalink">
+                <a :href="item.permalink" 
+                   :target="item.isExternal ? '_blank' : ''"
+                   :rel="item.isExternal ? 'noopener noreferrer' : ''"
+                   class="group block bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                    
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="w-16 h-16 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm border border-indigo-100 dark:border-indigo-900/50">
+                            <i :class="item.icon" class="text-3xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" x-text="item.displayTitle"></h2>
+                            <p class="text-xs text-gray-500 dark:text-gray-400" x-text="item.date"></p>
+                        </div>
                     </div>
-                    <p class="text-gray-500 dark:text-gray-400 text-lg">Alat tidak ditemukan.</p>
-                </div>
+                    
+                    <p class="text-gray-600 dark:text-gray-300 text-sm line-clamp-2 mb-4" x-text="item.displayDesc"></p>
+
+                    <!-- Category Badges -->
+                    <div class="flex flex-wrap gap-1.5 pt-2 border-t border-gray-100 dark:border-gray-700/50">
+                        <template x-for="cat in item.categories" :key="cat">
+                            <span class="inline-block px-2.5 py-0.5 text-[11px] font-medium bg-gray-100 dark:bg-gray-700/50 text-gray-600 dark:text-gray-400 rounded-md capitalize" x-text="cat"></span>
+                        </template>
+                    </div>
+                </a>
+            </template>
+        </div>
+        
+        <!-- Empty State -->
+        <div x-show="filteredItems.length === 0" x-transition class="text-center py-16" style="display: none;">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
+                <i class="icon-[ri--search-2-line] text-2xl text-gray-400"></i>
+            </div>
+            <p class="text-gray-500 dark:text-gray-400 text-lg">Alat tidak ditemukan.</p>
+        </div>
     </div>
-	</main>
+    </main>
 {{ end }}
 
 {{ define "footer" }}

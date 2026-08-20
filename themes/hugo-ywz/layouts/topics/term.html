@@ -16,7 +16,7 @@
                         Home
                     </a>
                     <span class="icon-[ri--arrow-right-s-line] w-4 h-4 text-gray-400"></span>
-                    <a href="{{ "/topic/" | relURL }}" class="flex items-center gap-1 leading-relaxed hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                    <a href="{{ "/topics/" | relURL }}" class="flex items-center gap-1 leading-relaxed hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                         <span class="icon-[ri--hashtag] w-4 h-4"></span>
                         Topik
                     </a>
@@ -32,26 +32,27 @@
                 <!-- Main Content: Posts -->
                 <div class="w-full md:w-2/3 lg:w-3/4">
 
-                    <div class="mb-8 p-4 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 text-indigo-800 dark:text-indigo-200 flex items-center gap-3">
-                        <span class="icon-[ri--information-line] text-indigo-600 dark:text-indigo-400 text-xl"></span>
-                        <p class="text-lg font-medium">Menampilkan konten dengan topik <span class="font-bold">{{ .Title }}</span>.</p>
+                    <!-- Info Topik Header (Lebih Ramping) -->
+                    <div class="mb-6 p-3.5 sm:p-4 rounded-xl bg-indigo-50/70 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/40 text-indigo-900 dark:text-indigo-200 flex items-center gap-3">
+                        <span class="icon-[ri--information-line] text-indigo-600 dark:text-indigo-400 text-xl flex-shrink-0"></span>
+                        <p class="text-xs sm:text-sm font-medium">Menampilkan artikel dengan topik <span class="font-bold underline decoration-indigo-400 underline-offset-2">{{ .Title }}</span></p>
                     </div>
 
-                    <div id="content-container" class="flex flex-col space-y-4 md:grid md:grid-cols-2 md:gap-6 md:space-y-0">
-                        <!-- 1. Filter .Pages terlebih dahulu agar hanya mengambil section "posts" -->
+                    <!-- Container Grid (1 Kolom Mobile, 2 Kolom Desktop dengan Tinggi Sejajar) -->
+                    <div id="content-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4 items-stretch">
                         {{ $filteredPages := where .Pages "Section" "posts" }}
-                        
-                        <!-- 2. Masukkan variabel yang sudah difilter ke dalam .Paginate -->
                         {{ $paginator := .Paginate $filteredPages }}
                         
                         {{ range $index, $element := $paginator.Pages }}
-                            {{ partial "posts/list-card.html" . }}
+                            {{ partial "posts/list-card-topic.html" . }}
                             {{ partial "posts/ads-list.html" (dict "context" . "index" $index) }}
                         {{ end }}
                     </div>
                     
                     <!-- Pagination -->
-                    {{ partial "components/pagination-loadmore.html" .Paginator }}
+                    <div class="mt-8">
+                        {{ partial "components/pagination-loadmore.html" .Paginator }}
+                    </div>
                 </div>
 
                 <!-- Sidebar -->
@@ -59,11 +60,10 @@
                     <div class="mb-8">
                         {{ partial "posts/sidebar-author.html" . }}                            
                     </div>                    
-                    <div class="space-y-8 sticky top-8">                                 
-                        {{ partial "posts/ads-sidebar.html" . }}                                   
-                        {{ partial "posts/random-post.html" . }}                                   
-                        {{ partial "posts/sidebar-topics.html" . }}                                   
-
+                    <div class="space-y-8 sticky top-8">                                                 
+                        {{ partial "posts/ads-sidebar.html" . }}                                    
+                        {{ partial "posts/random-post.html" . }}                                    
+                        {{ partial "posts/sidebar-topics.html" . }}                                    
                     </div>
                 </aside>
 
