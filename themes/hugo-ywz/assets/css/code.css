@@ -83,35 +83,35 @@
 /* GenericUnderline */ .chroma .gl { text-decoration:underline }
 /* TextWhitespace */ .chroma .w { color:#f8f8f2 }
 
-.highlight{margin:1.5em 0;overflow:auto;font-family:'Fira Code','Consolas','Monaco',monospace;line-height:1.5;}
-.dark .highlight{background-color: var(--color-gray-800);}
+/* Layout Dasar Codeblock */
+.highlight {
+    margin: 1.5em 0;
+    font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+    line-height: 1.5;
+}
 
-/* Styling Container Utama (Baik Single Pre maupun Table Chroma) */
+.dark .highlight {
+    background-color: var(--color-gray-800);
+}
+
+/* Container Utama */
 .post-content-full pre,
 .post-content-full .highlight {
     position: relative !important;
-    padding-top: 2.75rem !important; /* Ruang khusus untuk Header */
+    padding-top: 2.75rem !important; /* Ruang Header Header */
     border-radius: 0.75rem;
-    overflow: hidden;
-    background-color: #1e1e2e; /* Sesuaikan warna dasar codeblock */
+    background-color: #1e1e2e;
 }
 
-/* Reset margin & padding tabel Chroma */
+
+.post-content-full pre code {
+    overflow-x: auto;
+}
+
 .post-content-full .highlight pre {
     padding-top: 0 !important;
     border-radius: 0;
     background: transparent !important;
-}
-
-.post-content-full .chroma table.lntable {
-    width: 100%;
-    border-spacing: 0;
-    margin: 0;
-}
-
-.post-content-full .chroma td.lntd {
-    padding: 0;
-    vertical-align: top;
 }
 
 /* Header macOS */
@@ -128,6 +128,7 @@
     justify-content: space-between;
     padding: 0 1rem;
     user-select: none;
+    border-radius: 0.75rem;
     z-index: 20;
 }
 
@@ -179,7 +180,7 @@
     border-color: #a6e3a1;
 }
 
-/* 1. Paksa tabel Chroma menggunakan layout fixed & hilangkan spacing */
+/* Tabel Chroma */
 .post-content-full .chroma table.lntable {
     display: table !important;
     width: 100% !important;
@@ -198,18 +199,18 @@
     vertical-align: top !important;
 }
 
-/* 2. Samakan font-size dan line-height secara ketat di kedua sisi */
+/* Kunci Font & Line-Height */
 .post-content-full .chroma pre,
 .post-content-full .chroma code,
 .post-content-full .chroma .lnt,
 .post-content-full .chroma .line,
 .post-content-full .chroma .cl {
-    font-size: 0.875rem !important; /* Adjust sesuai selera */
-    line-height: 1.5rem !important; /* Kunci tinggi baris agar persis sama */
+    font-size: 0.875rem !important;
+    line-height: 1.5rem !important;
     font-family: inherit !important;
 }
 
-/* 3. Rapikan padding internal pada elemen <pre> di dalam tabel */
+/* Inner Padding Element Pre */
 .post-content-full .chroma td.lntd pre {
     padding: 0.5rem 0 !important;
     margin: 0 !important;
@@ -217,20 +218,36 @@
     border: none !important;
 }
 
-/* 4. Beri jarak horizontal antara kolom nomor dan kolom kode */
+/* Kolom 1: Nomor Baris */
+.post-content-full .chroma td.lntd:first-child {
+    width: 1% !important;
+    white-space: nowrap !important;
+}
+
 .post-content-full .chroma td.lntd:first-child pre {
     padding-left: 1rem !important;
     padding-right: 0.75rem !important;
-    text-align: right;
+    text-align: right !important;
     user-select: none;
     opacity: 0.4;
 }
 
-.post-content-full .chroma td.lntd:last-child pre {
-    padding-right: 1rem !important;
+/* Kolom 2: Area Kode (Dengan Fitur Scroll-X) */
+.post-content-full .chroma td.lntd:last-child {
+    width: 99% !important;
+    overflow-x: auto !important;
 }
 
-/* 5. Atur highlight baris (.hl) agar tidak menambah tinggi baris */
+.post-content-full .chroma td.lntd:last-child pre {
+    padding-left: 0rem !important;
+    padding-right: 1rem !important;
+    white-space: pre !important;        /* Wajib: Mencegah text wrap */
+    word-break: normal !important;       /* Mencegah potong kata */
+    word-wrap: normal !important;
+    overflow-x: auto !important;       /* Munculkan scrollbar jika lewat batas */
+}
+
+/* Line Highlight */
 .post-content-full .chroma .hl {
     display: block !important;
     width: 100% !important;
@@ -239,26 +256,14 @@
     line-height: 1.5rem !important;
 }
 
-/* Kunci lebar kolom nomor baris agar selebar kontennya saja */
-.post-content-full .chroma td.lntd:first-child {
-    width: 1% !important;
-    white-space: nowrap !important;
+/* Scrollbar Styling untuk Kolom Kode */
+.post-content-full .chroma td.lntd:last-child::-webkit-scrollbar,
+.post-content-full .chroma td.lntd:last-child pre::-webkit-scrollbar {
+    height: 6px;
 }
 
-/* Kolom kode mengambil sisa ruang penuh */
-.post-content-full .chroma td.lntd:last-child {
-    width: 99% !important;
-}
-
-/* Rapikan padding nomor baris */
-.post-content-full .chroma td.lntd:first-child pre {
-    padding-left: 1rem !important;
-    padding-right: 0.75rem !important;
-    text-align: right !important;
-}
-
-/* Rapikan padding kode utama */
-.post-content-full .chroma td.lntd:last-child pre {
-    padding-left: 0rem !important;
-    padding-right: 1rem !important;
+.post-content-full .chroma td.lntd:last-child::-webkit-scrollbar-thumb,
+.post-content-full .chroma td.lntd:last-child pre::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
 }

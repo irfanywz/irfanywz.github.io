@@ -15,70 +15,181 @@ consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-<pre><code class="language-go">&quot;Apache&quot;: {
-    Version:    &quot;2.4.66 (VS18, win64)&quot;,
-    URL:        &quot;https://www.apachelounge.com/download/VS18/binaries/httpd-2.4.66-260223-Win64-VS18.zip&quot;,
-    InstallDir: &quot;bin/apache&quot;,
-    StripTop:   &quot;Apache24/&quot;,
-    Kind:       &quot;zip&quot;,
-    CheckFile:  &quot;bin/httpd.exe&quot;,
-    PostInstall: func(installDir string, log func(string)) error {
-        // patch httpd.conf — fix SRVROOT, ServerName, mod_cgi, vhost include
-    },
-},
-</code></pre>
+{{< spoiler-quiz q="Sebutkan nama planet ke-3?" a="Bumi" cooldown="8" >}}
+Isi spoiler rahasia!
+{{< /spoiler-quiz >}}
 
-{{< interactive-wrapper >}}
+{{< spoiler-quiz-mc 
+    q="Berapa durasi perikanan dasar di Stardew Valley?" 
+    options="10 Detik,15 Detik,20 Detik,Sesuai Mini Game" 
+    correct="3" 
+    cooldown="10"
+    label="Kuis Stardew Valley" >}}
+Ini adalah konten rahasia yang berhasil kamu buka!
+{{< /spoiler-quiz-mc >}}
 
-  <!-- Cover Slide -->
-  {{< interactive-slide 
-      type="cover" 
-      title="Dasar-Dasar Jaringan Komputer" 
-      tag="Sistem Informasi" 
-      icon="icon-[lucide--network]" >}}
+{{< spoiler-quiz-tf q="1 + 1 = 3" correct="false" cooldown="10" >}}
+Isi spoiler rahasia!
+{{< /spoiler-quiz-tf >}}
 
-  <!-- Slide Materi -->
-  {{< interactive-slide 
+```JSON
+[
+  {
+    "image": "/pertarungan-terakhir-necesse-melawan-incursion-bos/necesse-cover.avif",
+    "permalink": "/pertarungan-terakhir-necesse-melawan-incursion-bos/",
+    "readingTime": 12,
+    "section": "posts",
+    "title": "Pertarungan Terakhir Necesse, Melawan Incursion Bos",
+    "topics": [
+      "Game"
+    ]
+  }
+]
+```
+
+{{< exam-wrapper 
+    title="Ujian Komprehensif" 
+    passingScore="75" 
+    musicYoutubeId="6T-MZbb8HJM" 
+>}}
+
+  <!-- 1. Pilihan Ganda: Algoritma & Metrik -->
+  {{< exam-question 
+      type="mc"
+      title="Dua metrik paling mendasar yang dijadikan indikator utama oleh algoritma YouTube untuk mempromosikan video di Halaman Beranda (Browse Features) adalah..." 
+      options="Banyaknya Like dan Komentar,Click-Through Rate (CTR) dan Average View Duration (AVD),Jumlah Subscribers dan Tag Video,Ukuran File Video dan Resolusi 4K" 
+      correct=1 
+      time=20
+      explanation="CTR mengukur efektivitas Judul/Thumbnail, sedangkan AVD (Retensi) mengukur seberapa mampu video menahan perhatian penonton."
+  >}}
+
+  <!-- 2. Benar / Salah: Produksi & Niche -->
+  {{< exam-question 
+      type="tf"
+      title="Dalam membangun channel Lofi Ambience atau ASMR dari awal, mengganti-ganti topik konten secara drastis setiap minggu disarankan agar mendapat jangkauan audiens yang luas." 
+      tfAnswer="false" 
+      time=15
+      explanation="Membuat konten bergenre acak akan membingungkan sistem pengelompokan penonton (Audience Clustering) pada algoritma YouTube."
+  >}}
+
+  <!-- 3. Isian Singkat: Terminology -->
+  {{< exam-question 
+      type="fill"
+      title="Tiga puluh detik pertama pada sebuah video yang berfungsi menahan penonton agar tidak berpindah ke video lain disebut..." 
+      answerKey="hook" 
+      time=20
+      explanation="Hook adalah bagian krusial di awal durasi untuk membangkitkan rasa penasaran penonton."
+  >}}
+
+  <!-- 4. Multiple Answer (Centang Banyak): Platform & Format -->
+  {{< exam-question 
+      type="checkbox"
+      title="Pilihlah platform dan format yang menggunakan rasio aspek vertikal (9:16) untuk distribusi short-form video!" 
+      options="YouTube Shorts,Instagram Reels,TikTok,YouTube Long-form" 
+      correctKey="0,1,2" 
+      time=25
+      explanation="Shorts, Reels, dan TikTok diproduksi dalam format vertikal 9:16, sedangkan YouTube Long-form menggunakan format lanskap 16:9."
+  >}}
+
+  <!-- 5. Pilihan Ganda: Alur Kerja Produksi -->
+  {{< exam-question 
+      type="mc"
+      title="Metode efisien dengan merekam atau memproduksi beberapa bahan video sekaligus dalam satu sesi kerja disebut..." 
+      options="Content Pivoting,Batch Filming,Spontaneous Streaming,Daily Vloging" 
+      correct=1 
+      time=15
+      explanation="Batch filming memangkas waktu setup alat dan transisi mental (mental switching)."
+  >}}
+
+  <!-- 6. Benar / Salah: SEO & Hak Cipta -->
+  {{< exam-question 
+      type="tf"
+      title="Menggunakan musik berhak cipta (copyrighted) tanpa lisensi pada channel YouTube yang belum termonetisasi tidak akan memberikan dampak risikonya di masa mendatang." 
+      tfAnswer="false" 
+      time=15
+      explanation="Klaim Hak Cipta (Content ID Claim) atau Strike dapat menghambat pendaftaran Program Kemitraan YouTube (YPP) dan monetisasi channel."
+  >}}
+
+  <!-- 7. Multiple Answer (Centang Banyak): Lofi & ASMR Audio -->
+  {{< exam-question 
+      type="checkbox"
+      title="Manakah elemen suara yang umum digabungkan dalam membuat audio Lofi atau ASMR Nature Ambience yang menenangkan?" 
+      options="Suara gemericik hujan (Rain Sound),Siren ambulan,KRETA/Suara kayu terbakar (Fireplace crackle),Vinyl crackle / Noise tape" 
+      correctKey="0,2,3" 
+      time=25
+      explanation="Suara alam (hujan, kayu terbakar) dan tekstur vintage (vinyl/tape noise) merupakan elemen fondasi dalam Lofi ASMR audio."
+  >}}
+
+  <!-- 8. Isian Singkat: Desain Thumbnail -->
+  {{< exam-question 
+      type="fill"
+      title="Rasio aspek visual standar yang digunakan untuk membuat gambar Thumbnail YouTube lanskap adalah..." 
+      answerKey="16:9" 
+      time=15
+      explanation="16:9 adalah rasio standar untuk thumbnail dan player video horizontal YouTube."
+  >}}
+
+{{< /exam-wrapper >}}
+
+
+{{< edu-wrapper 
+    title="Strategi Fondasi Konten Kreator & Monetisasi" 
+    description="Pelajari cara membangun niche, memahami algoritma rekomendasi YouTube, dan merancang alur kerja produksi konten yang konsisten."
+    tag="Modul 01 • Content Mastery"
+    icon="icon-[lucide--clapperboard]"
+    musicYoutubeId="yNXkRYhcH3c" 
+>}}
+
+  {{< edu-slide 
       type="material" 
-      title="Apa itu IP Address?" 
-      tag="Materi 01" 
-      content="IP Address (Internet Protocol Address) adalah identitas numerik yang diberikan kepada setiap perangkat yang terhubung ke jaringan komputer yang menggunakan Protokol Internet untuk berkomunikasi." >}}
+      tag="Langkah 1: Mindset & Niche" 
+      title="Menentukan Niche & Target Audience" 
+      content="Banyak kreator pemula gagal karena membuat konten yang terlalu acak. Konten yang sukses berawal dari niche yang spesifik (misal: 'ASMR Relaxing Nature' atau 'Edukasi Tech Pemula') dan pemahaman mendalam tentang masalah atau kebutuhan audience target." 
+  >}}
 
-  <!-- Slide Video Embed (Youtube) -->
-  {{< interactive-slide 
-      type="video" 
-      title="Penjelasan Visual Model OSI" 
-      videoUrl="https://www.youtube.com/embed/vv4y_uOneC0" >}}
-
-  <!-- Kuis 1: Multiple Choice -->
-  {{< interactive-slide 
-      type="quiz" 
-      title="Layer mana yang bertanggung jawab atas routing data paket?" 
-      tag="Kuis 01" 
-      options="Data Link Layer,Network Layer,Transport Layer,Application Layer" 
-      correct="1" >}}
-
-  <!-- Kuis 2: Benar / Salah -->
-  {{< interactive-slide 
+  {{< edu-slide 
       type="quiz-tf" 
-      title="MAC Address berada pada Layer 3 (Network Layer) di Model OSI." 
-      tag="Kuis 02" 
-      tfAnswer="false" >}}
+      tag="Uji Pemahaman" 
+      title="Membuat konten dengan niche yang acak (campur-campur) di awal karier lebih disukai oleh algoritma rekomendasi YouTube." 
+      tfAnswer="false" 
+      explanation="Algoritma YouTube mengelompokkan penonton berdasarkan minat. Konten acak membuat sistem rekomendasi bingung menentukan siapa penonton ideal untuk channel kamu." 
+  >}}
 
-  <!-- Kuis 3: Isian Singkat -->
-  {{< interactive-slide 
-      type="quiz-fill" 
-      title="Sebutkan perintah CLI untuk mengecek konektivitas IP!" 
-      tag="Kuis 03" 
-      answerKey="ping" >}}
+  {{< edu-slide 
+      type="material" 
+      tag="Langkah 2: Metrics Utama" 
+      title="Memahami CTR & Retention (AVD)" 
+      content="Dua metrik paling krusial di YouTube Studio adalah Click-Through Rate (CTR) dan Average View Duration (AVD). CTR dipengaruhi oleh Judul & Thumbnail yang memikat, sedangkan AVD dipengaruhi oleh Hook 30 detik pertama dan struktur storytelling video." 
+  >}}
 
-  <!-- Summary Slide -->
-  {{< interactive-slide 
+  {{< edu-slide 
+      type="quiz" 
+      tag="Uji Pemahaman" 
+      title="Elemen utama yang paling menentukan tinggi atau rendahnya nilai Click-Through Rate (CTR) adalah..." 
+      options="Banyaknya jumlah kata di deskripsi,Kombinasi Judul dan Thumbnail yang menarik perhatian,Menggunakan mikrofon mahal,Panjang durasi total video" 
+      correct="1" 
+      explanation="CTR mengukur berapa banyak orang yang mengklik video setelah melihat impresi thumbnail dan judul kamu di beranda atau pencarian." 
+  >}}
+
+
+
+  {{< edu-slide 
+      type="quiz" 
+      tag="Uji Pemahaman" 
+      title="Fungsi utama dari 'Hook' pada 30 detik pertama video adalah..." 
+      options="Meminta penonton langsung subscribe dan like,Mencegah penonton mengklik tombol back dan meningkatkan retensi,Menjelaskan seluruh isi latar belakang biodata kreator,Menampilkan daftar sponsor secara langsung" 
+      correct="1" 
+      explanation="Hook dibuat untuk langsung memicu rasa penasaran penonton agar tidak melakukan drop-off di awal durasi video." 
+  >}}
+
+  {{< edu-slide 
       type="summary" 
-      title="Modul Selesai!" 
-      icon="icon-[lucide--trophy]" >}}
+      icon="icon-[lucide--award]" 
+      title="Rangkuman & Langkah Selanjutnya" 
+      content="Kamu telah mempelajari 3 pilar utama: Spesifikasi Niche, Optimalisasi CTR (Judul + Thumbnail), dan Peningkatan Retensi via Hook. Langkah selanjutnya adalah menyusun Scripting & Production Workflow untuk video pertama kamu!" 
+  >}}
 
-{{< /interactive-wrapper >}}
+{{< /edu-wrapper >}}
 
 ## ShortCode List
 

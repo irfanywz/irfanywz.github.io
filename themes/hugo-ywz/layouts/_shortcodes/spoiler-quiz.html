@@ -1,0 +1,93 @@
+{{ $q := .Get "q" | default "Pertanyaan Kuis" }}
+{{ $a := .Get "a" | default "" }}
+{{ $cooldownSec := .Get "cooldown" | default "5" }}
+{{ $label := .Get "label" | default "Spoiler Terkunci (Selesaikan Kuis)" }}
+
+<div class="my-6 not-prose" 
+     x-data="{ 
+         unlocked: false, 
+         answerInput: '', 
+         errorMsg: '', 
+         targetAnswer: '{{ $a }}',
+         cooldown: 0,
+         cooldownMax: {{ $cooldownSec }},
+         timer: null,
+
+         checkAnswer() {
+             if (this.cooldown > 0) return;
+
+             if (this.answerInput.trim().toLowerCase() === this.targetAnswer.trim().toLowerCase()) {
+                 this.unlocked = true;
+                 this.errorMsg = '';
+             } else {
+                 this.startCooldown();
+             }
+         },
+
+         startCooldown() {
+             this.cooldown = this.cooldownMax;
+             this.errorMsg = `Jawaban salah, coba lagi dalam ${this.cooldown} detik!`;
+             
+             clearInterval(this.timer);
+             this.timer = setInterval(() => {
+                 this.cooldown--;
+                 if (this.cooldown > 0) {
+                     this.errorMsg = `Jawaban salah, coba lagi dalam ${this.cooldown} detik!`;
+                 } else {
+                     clearInterval(this.timer);
+                     this.errorMsg = '';
+                 }
+             }, 1000);
+         }
+     }">
+    <div class="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden transition-all duration-200 shadow-sm">
+        
+        <!-- Header -->
+        <div class="w-full flex items-center justify-between px-4 py-3 bg-zinc-100/80 dark:bg-zinc-800/80 text-sm font-semibold text-zinc-700 dark:text-zinc-300 select-none">
+            <span class="flex items-center gap-2">
+                <span class="icon-[ri--lock-line] w-4 h-4 text-amber-500 dark:text-amber-400 shrink-0" x-show="!unlocked"></span>
+                <span class="icon-[ri--lock-unlock-line] w-4 h-4 text-emerald-500 dark:text-emerald-400 shrink-0" x-show="unlocked"></span>
+                <span x-text="unlocked ? 'Spoiler Terbuka' : '{{ $label }}'"></span>
+            </span>
+            <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded"
+                  :class="unlocked ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20' : 'bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20'"
+                  x-text="unlocked ? 'Unlocked' : 'Quiz Locked'">
+            </span>
+        </div>
+
+        <!-- Body -->
+        <div class="p-4 sm:p-5 text-base text-zinc-700 dark:text-zinc-300 relative">
+            <template x-if="!unlocked">
+                <div class="space-y-4">
+                    <div class="text-base font-normal text-zinc-800 dark:text-zinc-200 leading-relaxed">
+                        <span class="text-amber-600 dark:text-amber-400 font-bold">Pertanyaan:</span> {{ $q }}
+                    </div>
+                    
+                    <form @submit.prevent="checkAnswer()" class="flex flex-col sm:flex-row gap-2.5">
+                        <input type="text" 
+                               x-model="answerInput" 
+                               :disabled="cooldown > 0"
+                               placeholder="Ketik jawaban di sini..." 
+                               class="flex-1 bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700/80 focus:border-sky-500 text-zinc-800 dark:text-zinc-200 text-base rounded-lg px-3.5 py-2.5 outline-none transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                        
+                        <button type="submit" 
+                                :disabled="cooldown > 0"
+                                class="bg-sky-600 hover:bg-sky-500 disabled:bg-zinc-200 dark:disabled:bg-zinc-800 disabled:text-zinc-400 dark:disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 shrink-0">
+                            <span>Jawab</span>
+                            <span class="icon-[ri--arrow-right-line] w-4 h-4"></span>
+                        </button>
+                    </form>
+
+                    <p x-show="errorMsg" x-text="errorMsg" class="text-xs text-rose-600 dark:text-rose-400 font-medium animate-pulse"></p>
+                </div>
+            </template>
+
+            <!-- Isi Spoiler -->
+            <template x-if="unlocked">
+                <div class="animate-fadeIn prose dark:prose-invert max-w-none">
+                    {{ .Inner | markdownify }}
+                </div>
+            </template>
+        </div>
+    </div>
+</div>

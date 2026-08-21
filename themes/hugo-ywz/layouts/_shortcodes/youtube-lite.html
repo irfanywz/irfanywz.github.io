@@ -4,43 +4,41 @@
 <div x-data="{ playing: false }" class="my-6 not-prose">
     <div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-md">
         
-        <!-- Kondisi 1: Tampilkan Thumbnail & Tombol Play (Sebelum Diklik) -->
-        <template x-if="!playing">
-            <div @click="playing = true" 
-                 class="relative w-full h-full cursor-pointer group flex items-center justify-center">
-                
-                <!-- Thumbnail YouTube (Mengambil kualitas tinggi 'hqdefault' atau 'maxresdefault') -->
-                <img src="https://img.youtube.com/vi/{{ $id }}/maxresdefault.jpg" 
-                     alt="{{ $title }}"
-                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                     loading="lazy"
-                     onerror="this.src='https://img.youtube.com/vi/{{ $id }}/hqdefault.jpg'">
-                
-                <!-- Overlay Gelap Tipis Biar Thumbnail Lebih Kontras -->
-                <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+        <!-- Condition 1: Thumbnail & Play Button (Sebelum Diklik) -->
+        <div x-show="!playing" 
+             @click="playing = true" 
+             class="relative w-full h-full cursor-pointer group flex items-center justify-center">
+            
+            <!-- Thumbnail YouTube -->
+            <img src="https://img.youtube.com/vi/{{ $id }}/maxresdefault.jpg" 
+                 alt="{{ $title }}"
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                 loading="lazy"
+                 onerror="this.src='https://img.youtube.com/vi/{{ $id }}/hqdefault.jpg'">
+            
+            <!-- Overlay Gelap -->
+            <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
 
-                <!-- Tombol Play Bulat Estetik di Tengah -->
-                <div class="absolute w-14 h-14 rounded-2xl bg-indigo-600/90 dark:bg-indigo-500/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-indigo-600 transition-all duration-300">
-                    <span class="icon-[ri--play-fill] w-7 h-7 ml-0.5"></span>
-                </div>
-
-                <!-- Judul Video di Pojok Bawah (Opsional) -->
-                <div class="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/80 via-black/40 to-transparent text-white text-sm font-medium truncate">
-                    {{ $title }}
-                </div>
+            <!-- Tombol Play -->
+            <div class="absolute w-14 h-14 rounded-2xl bg-indigo-600/90 dark:bg-indigo-500/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-indigo-600 transition-all duration-300">
+                <span class="icon-[ri--play-fill] w-7 h-7 ml-0.5"></span>
             </div>
-        </template>
 
-        <!-- Kondisi 2: Tampilkan Iframe Video Asli (Muncul Otomatis Begitu Diklik) -->
-        <template x-if="playing">
-            <iframe class="w-full h-full absolute inset-0"
-                    src="https://www.youtube-nocookie.com/embed/{{ $id }}?autoplay=1&rel=0"
-                    title="{{ $title }}"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-            </iframe>
-        </template>
+            <!-- Judul Video -->
+            <div class="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/80 via-black/40 to-transparent text-white text-sm font-medium truncate">
+                {{ $title }}
+            </div>
+        </div>
+
+        <!-- Condition 2: Iframe Video (Hanya Inject SRC Saat playing == true) -->
+        <iframe x-show="playing"
+                class="w-full h-full absolute inset-0"
+                :src="playing ? 'https://www.youtube-nocookie.com/embed/{{ $id }}?autoplay=1&rel=0' : ''"
+                title="{{ $title }}"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+        </iframe>
 
     </div>
 </div>

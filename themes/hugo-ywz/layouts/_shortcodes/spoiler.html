@@ -1,35 +1,42 @@
 {{ $label := .Get "label" | default "Buka Spoiler (Klik untuk melihat)" }}
 
-<div class="my-4 not-prose" x-data="{ revealed: false }">
-    <div class="rounded-xl border border-zinc-800 bg-zinc-900 overflow-hidden transition-all duration-200">
+<div class="my-6 not-prose" x-data="{ revealed: false }">
+    <div class="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden transition-all duration-200 shadow-sm">
+        
         <!-- Tombol / Header Spoiler -->
         <button type="button" 
                 @click="revealed = !revealed" 
-                class="w-full flex items-center justify-between px-4 py-2.5 bg-zinc-800/80 hover:bg-zinc-800 text-xs font-semibold text-zinc-400 hover:text-zinc-200 transition-colors focus:outline-none select-none">
+                class="w-full flex items-center justify-between px-4 py-3 bg-zinc-100/80 dark:bg-zinc-800/80 hover:bg-zinc-200/70 dark:hover:bg-zinc-800 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors focus:outline-none select-none">
             <span class="flex items-center gap-2">
-                <span class="icon-[ri--eye-off-line] w-4 h-4" x-show="!revealed"></span>
-                <span class="icon-[ri--eye-line] w-4 h-4 text-sky-400" x-show="revealed"></span>
+                <span class="icon-[ri--eye-off-line] w-4 h-4 text-zinc-500 dark:text-zinc-400 shrink-0" x-show="!revealed"></span>
+                <span class="icon-[ri--eye-line] w-4 h-4 text-sky-600 dark:text-sky-400 shrink-0" x-show="revealed"></span>
                 <span x-text="revealed ? 'Sembunyikan Spoiler' : '{{ $label }}'"></span>
             </span>
-            <span class="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-zinc-700/50 text-zinc-300" x-text="revealed ? 'Terbuka' : 'Spoiler'"></span>
+            <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded transition-colors"
+                  :class="revealed ? 'bg-sky-100 text-sky-700 dark:bg-sky-500/10 dark:text-sky-400 border border-sky-200 dark:border-sky-500/20' : 'bg-zinc-200/70 text-zinc-600 dark:bg-zinc-700/50 dark:text-zinc-300 border border-zinc-300/50 dark:border-zinc-600/30'"
+                  x-text="revealed ? 'Terbuka' : 'Spoiler'">
+            </span>
         </button>
 
-        <!-- Konten yang Diblur / Disembunyikan -->
-        <div class="p-4 text-sm text-zinc-300 transition-all duration-300 relative">
+        <!-- Area Konten (Diblur jika belum dibuka) -->
+        <div class="p-4 sm:p-5 text-base text-zinc-700 dark:text-zinc-300 relative">
             <div :class="revealed ? 'blur-none select-text' : 'blur-sm select-none cursor-pointer'" 
                  @click="if(!revealed) revealed = true"
-                 title="Klik untuk membuka spoiler">
+                 title="Klik untuk membuka spoiler"
+                 class="transition-all duration-300 prose dark:prose-invert max-w-none">
                 {{ .Inner | markdownify }}
             </div>
             
             <!-- Overlay hint kalau belum dibuka -->
-            <div class="absolute inset-0 flex items-center justify-center bg-zinc-950/40 backdrop-blur-[2px] transition-opacity duration-200 cursor-pointer pointer-events-none" 
+            <div class="absolute inset-0 flex items-center justify-center bg-zinc-950/20 dark:bg-zinc-950/40 backdrop-blur-[2px] transition-opacity duration-200 cursor-pointer pointer-events-none" 
                  x-show="!revealed" 
                  @click="revealed = true">
-                <span class="text-xs font-medium text-sky-400 bg-zinc-900/90 border border-zinc-700 px-3 py-1.5 rounded-full shadow-lg pointer-events-auto hover:bg-zinc-800 transition-all">
-                    🔒 Klik untuk membuka
+                <span class="text-sm font-medium text-sky-700 dark:text-sky-400 bg-white/95 dark:bg-zinc-900/95 border border-zinc-200 dark:border-zinc-700 px-4 py-2 rounded-full shadow-md pointer-events-auto hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all flex items-center gap-2">
+                    <span class="icon-[ri--lock-line] w-4 h-4"></span>
+                    <span>Klik untuk membuka</span>
                 </span>
             </div>
         </div>
+
     </div>
 </div>

@@ -1,0 +1,218 @@
+{{ $type := .Get "type" | default "material" }}
+{{ $title := .Get "title" }}
+{{ $tag := .Get "tag" }}
+{{ $icon := .Get "icon" | default "icon-[lucide--layers]" }}
+{{ $content := .Get "content" }}
+
+{{/* Parameter Khusus Video */}}
+{{ $rawId := .Get "id" | default (.Get "videoId") | default (.Get "videoUrl") }}
+{{ $youtubeId := "" }}
+{{ if $rawId }}
+  {{ if (hasPrefix $rawId "http") }}
+    {{ $youtubeId = (replaceRE `^.*(?:youtu.be/|v/|u/\w/|embed/|watch\?v=|\&v=)([^#\&\?]*).*` "$1" $rawId) }}
+  {{ else }}
+    {{ $youtubeId = $rawId }}
+  {{ end }}
+{{ end }}
+
+{{/* Parameter Khusus Kuis / Checkpoint */}}
+{{ $options := .Get "options" }}
+{{ $correct := .Get "correct" | default 0 }}
+{{ $tfAnswer := .Get "tfAnswer" | default "true" }}
+{{ $explanation := .Get "explanation" }}
+
+<div 
+  x-data="{ slideIndex: 0 }"
+  x-init="slideIndex = Array.from($el.parentNode.children).indexOf($el) + 1"
+  x-show="currentSlide === slideIndex"
+  x-transition:enter="transition ease-out duration-300"
+  x-transition:enter-start="opacity-0 translate-x-4"
+  x-transition:enter-end="opacity-100 translate-x-0"
+  class="w-full h-full absolute inset-0 flex flex-col justify-start sm:justify-center items-center py-6 px-4 sm:p-8 md:p-10 text-center overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700 not-prose"
+>
+
+  <!-- 1. MATERIAL / EXPLANATION SLIDE -->
+  {{ if or (eq $type "material") (eq $type "explanation") }}
+    <div class="max-w-3xl flex flex-col items-center my-auto">
+      {{ if $tag }}<span class="px-3 py-1 bg-slate-200 dark:bg-slate-800/80 text-cyan-700 dark:text-cyan-400 border border-slate-300 dark:border-slate-700/60 rounded-full text-xs font-semibold mb-3">{{ $tag }}</span>{{ end }}
+      {{ if $title }}<h2 class="!mt-0 !mb-4 text-lg sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{{ $title }}</h2>{{ end }}
+      {{ if $content }}
+        <div class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed font-normal text-left bg-white/60 dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200 dark:border-slate-800/80 backdrop-blur-sm shadow-sm">
+          {{ $content }}
+        </div>
+      {{ end }}
+    </div>
+
+  <!-- 2. LAZY LOAD VIDEO YOUTUBE SLIDE -->
+  {{ else if eq $type "video" }}
+    <div class="w-full max-w-3xl flex flex-col justify-center items-center my-auto">
+      {{ if $tag }}<span class="px-3 py-1 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 rounded-full text-xs font-semibold mb-2">{{ $tag }}</span>{{ end }}
+      {{ if $title }}<h3 class="!mt-0 !mb-3 text-base sm:text-lg font-bold text-slate-800 dark:text-slate-200">{{ $title }}</h3>{{ end }}
+      
+      <div x-data="{ playing: false }" class="w-full">
+        <div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
+          
+          <!-- State 1: Thumbnail & Play Button -->
+          <template x-if="!playing">
+            <div @click="playing = true" 
+                 class="relative w-full h-full cursor-pointer group flex items-center justify-center">
+              
+              <img src="https://img.youtube.com/vi/{{ $youtubeId }}/maxresdefault.jpg" 
+                   alt="{{ $title }}"
+                   class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                   loading="lazy"
+                   onerror="this.src='https://img.youtube.com/vi/{{ $youtubeId }}/hqdefault.jpg'">
+              
+              <div class="absolute inset-0 bg-black/30 group-hover:bg-black/15 transition-colors"></div>
+
+              <div class="absolute w-14 h-14 rounded-2xl bg-cyan-600/90 dark:bg-cyan-500/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-cyan-600 transition-all duration-300">
+                <span class="icon-[lucide--play] text-2xl ml-0.5 fill-current"></span>
+              </div>
+
+              <div class="absolute bottom-3 right-3 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white text-[10px] sm:text-xs font-medium border border-white/10">
+                Klik untuk memutar
+              </div>
+            </div>
+          </template>
+
+          <!-- State 2: Iframe Auto Play -->
+          <template x-if="playing">
+            <iframe class="w-full h-full absolute inset-0 border-0"
+                    src="https://www.youtube-nocookie.com/embed/{{ $youtubeId }}?autoplay=1&rel=0"
+                    title="{{ $title }}"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+            </iframe>
+          </template>
+
+        </div>
+      </div>
+    </div>
+
+  <!-- 3. CHECKPOINT / QUIZ: MULTIPLE CHOICE -->
+  {{ else if eq $type "quiz" }}
+    <div 
+      x-data="{ answered: false, isCorrect: false, selected: null, correctIdx: {{ $correct }} }" 
+      class="w-full max-w-xl flex flex-col justify-center items-center my-auto pb-2"
+    >
+      {{ if $tag }}<span class="px-3 py-1 bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 rounded-full text-xs font-semibold mb-2">UJI PEMAHAMAN</span>{{ end }}
+      {{ if $title }}<h2 class="!mt-0 !mb-4 text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-snug">{{ $title }}</h2>{{ end }}
+
+      {{ if $options }}
+        {{ $optList := split $options "," }}
+        <div class="grid grid-cols-1 gap-2.5 w-full text-left">
+          {{ range $idx, $opt := $optList }}
+            <button 
+              @click="
+                selected = {{ $idx }}; 
+                answered = true; 
+                isCorrect = ({{ $idx }} === correctIdx);
+                if(isCorrect) { playSFX('/audio/correct.mp3'); } 
+                else { playSFX('/audio/wrong.mp3'); }
+              "
+              :disabled="answered"
+              :class="{
+                'bg-emerald-100 dark:bg-emerald-950/80 border-emerald-500 text-emerald-900 dark:text-emerald-200 font-semibold': answered && {{ $idx }} === correctIdx,
+                'bg-rose-100 dark:bg-rose-950/80 border-rose-500 text-rose-900 dark:text-rose-200': answered && selected === {{ $idx }} && !isCorrect,
+                'bg-white dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200': !answered || (answered && {{ $idx }} !== correctIdx && selected !== {{ $idx }})
+              }"
+              class="p-3 sm:p-3.5 rounded-xl border text-xs sm:text-sm transition cursor-pointer flex items-center justify-between shadow-sm"
+            >
+              <span>{{ $opt }}</span>
+              
+              <span x-show="answered && {{ $idx }} === correctIdx" class="icon-[lucide--check-circle-2] text-lg text-emerald-600 dark:text-emerald-400 shrink-0 ml-2"></span>
+              <span x-show="answered && selected === {{ $idx }} && !isCorrect" class="icon-[lucide--x-circle] text-lg text-rose-600 dark:text-rose-400 shrink-0 ml-2"></span>
+            </button>
+          {{ end }}
+        </div>
+      {{ end }}
+
+      {{ if $explanation }}
+        <template x-if="answered">
+          <div class="mt-3 p-3 bg-cyan-500/10 border border-cyan-500/20 text-cyan-800 dark:text-cyan-200 rounded-xl text-xs text-left w-full">
+            <strong>Penjelasan:</strong> {{ $explanation }}
+          </div>
+        </template>
+      {{ end }}
+    </div>
+
+  <!-- 4. CHECKPOINT: BENAR / SALAH (TRUE / FALSE) -->
+  {{ else if eq $type "quiz-tf" }}
+    <div 
+      x-data="{ answered: false, isCorrect: false, selected: null, targetAnswer: '{{ $tfAnswer }}' }" 
+      class="w-full max-w-md flex flex-col justify-center items-center my-auto pb-2"
+    >
+      {{ if $tag }}<span class="px-3 py-1 bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 rounded-full text-xs font-semibold mb-2">UJI PEMAHAMAN</span>{{ end }}
+      {{ if $title }}<h2 class="!mt-0 !mb-4 text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-snug">{{ $title }}</h2>{{ end }}
+
+      <div class="grid grid-cols-2 gap-3 w-full">
+        <!-- Button BENAR -->
+        <button 
+          @click="
+            selected = 'true';
+            answered = true;
+            isCorrect = (targetAnswer === 'true');
+            if(isCorrect) { playSFX('/audio/correct.mp3'); } 
+            else { playSFX('/audio/wrong.mp3'); }
+          "
+          :disabled="answered"
+          :class="{
+            'bg-emerald-100 dark:bg-emerald-950 border-emerald-500 text-emerald-900 dark:text-emerald-300 font-semibold': answered && targetAnswer === 'true',
+            'bg-rose-100 dark:bg-rose-950 border-rose-500 text-rose-900 dark:text-rose-300': answered && selected === 'true' && targetAnswer !== 'true',
+            'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200': !answered || (answered && targetAnswer !== 'true' && selected !== 'true')
+          }"
+          class="p-4 rounded-2xl border flex flex-col items-center justify-center gap-1.5 cursor-pointer transition shadow-sm"
+        >
+          <span class="icon-[lucide--check] text-2xl"></span>
+          <span class="font-bold text-xs">BENAR</span>
+        </button>
+
+        <!-- Button SALAH -->
+        <button 
+          @click="
+            selected = 'false';
+            answered = true;
+            isCorrect = (targetAnswer === 'false');
+            if(isCorrect) { playSFX('/audio/correct.mp3'); } 
+            else { playSFX('/audio/wrong.mp3'); }
+          "
+          :disabled="answered"
+          :class="{
+            'bg-emerald-100 dark:bg-emerald-950 border-emerald-500 text-emerald-900 dark:text-emerald-300 font-semibold': answered && targetAnswer === 'false',
+            'bg-rose-100 dark:bg-rose-950 border-rose-500 text-rose-900 dark:text-rose-300': answered && selected === 'false' && targetAnswer !== 'false',
+            'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200': !answered || (answered && targetAnswer !== 'false' && selected !== 'false')
+          }"
+          class="p-4 rounded-2xl border flex flex-col items-center justify-center gap-1.5 cursor-pointer transition shadow-sm"
+        >
+          <span class="icon-[lucide--x] text-2xl"></span>
+          <span class="font-bold text-xs">SALAH</span>
+        </button>
+      </div>
+
+      {{ if $explanation }}
+        <template x-if="answered">
+          <div class="mt-3 p-3 bg-cyan-500/10 border border-cyan-500/20 text-cyan-800 dark:text-cyan-200 rounded-xl text-xs text-left w-full">
+            <strong>Penjelasan:</strong> {{ $explanation }}
+          </div>
+        </template>
+      {{ end }}
+    </div>
+
+  <!-- 5. SUMMARY SLIDE -->
+  {{ else if eq $type "summary" }}
+    <div class="flex flex-col items-center my-auto max-w-xl">
+      <div class="p-3.5 bg-cyan-500/10 border border-cyan-500/20 rounded-2xl mb-3">
+        <span class="{{ $icon }} text-5xl text-cyan-500 dark:text-cyan-400"></span>
+      </div>
+      {{ if $title }}<h2 class="!mt-0 !mb-1.5 text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">{{ $title }}</h2>{{ end }}
+      <p class="text-slate-500 dark:text-slate-400 text-xs mb-4">Selamat! Kamu telah menyelesaikan modul pembelajaran ini.</p>
+      
+      {{ if $content }}
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed shadow-sm">
+          {{ $content }}
+        </div>
+      {{ end }}
+    </div>
+  {{ end }}
+
+</div>

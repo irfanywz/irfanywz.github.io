@@ -18,7 +18,7 @@
 
     {{ $hideHeader := .Scratch.Get "hideHeader" }}
     {{ if not $hideHeader }}
-        {{ partial "baseof/header.html" . }}
+        {{ partialCached "baseof/header.html" . }}
     {{ end }}
 
     {{ block "main" . }}{{ end }}
@@ -26,23 +26,23 @@
     {{ $hideFooter := .Scratch.Get "hideFooter" }}
     {{ if not $hideFooter }}
         {{ partial "baseof/footer.html" . }}
-        {{ partial "baseof/nav-bottom.html" . }}
-        {{ partial "baseof/nav-offcanvas.html" . }}
-        {{ partial "baseof/back-to-top.html" . }}
+        {{ partialCached "baseof/nav-bottom.html" . }}
+        {{ partialCached "baseof/nav-offcanvas.html" . }}
+        {{ partialCached "baseof/back-to-top.html" . }}
     {{ end }}
     
 
     <!-- Lightbox Component -->
-    {{ partial "baseof/lightbox.html" . }}
+    {{ partialCached "baseof/lightbox.html" . }}
 
     <!-- Cookie Consent Component -->
-    {{ partial "baseof/cookie-consent.html" . }}
+    {{ partialCached "baseof/cookie-consent.html" . }}
 
     <!-- Exit Intent Popup Component -->
-    {{ partial "baseof/exit-intent-popup.html" . }}
+    {{ partialCached "baseof/exit-intent-popup.html" . }}
 
     {{ if not $hideFooter }}
-        {{ partial "baseof/js-bottom.html" . }}
+        {{ partialCached "baseof/js-bottom.html" . }}
     {{ end }}
 
     {{ block "footer" . }}{{ end }}

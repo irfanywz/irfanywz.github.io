@@ -1,10 +1,11 @@
 {{ $isOpen := .Get "open" | default "true" }}
-<div class="code-block-wrapper my-6 overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900" x-data="{ open: {{ $isOpen }} }">
+<div class="code-block-wrapper my-6 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 transition-all duration-200 shadow-sm" x-data="{ open: {{ $isOpen }} }">
     {{ if .Get "title" }}
-    <div class="flex items-center justify-between px-4 py-2.5 bg-zinc-800/80 border-b border-zinc-700/60 cursor-pointer select-none" @click="open = !open">
-        <span class="font-semibold text-sky-400 text-sm tracking-wide">{{ .Get "title" }}</span>
+    <!-- Header -->
+    <div class="flex items-center justify-between px-4 py-3 bg-zinc-100/80 dark:bg-zinc-800/80 border-b border-zinc-200 dark:border-zinc-700/60 cursor-pointer select-none transition-colors hover:bg-zinc-200/60 dark:hover:bg-zinc-800" @click="open = !open">
+        <span class="font-semibold text-sky-600 dark:text-sky-400 text-sm tracking-wide">{{ .Get "title" }}</span>
         
-        <button type="button" class="flex items-center gap-1.5 text-sm text-zinc-400 hover:text-zinc-200 transition-colors focus:outline-none">
+        <button type="button" class="flex items-center gap-1.5 text-xs sm:text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors focus:outline-none">
             <span x-text="open ? 'Hide' : 'Show'"></span>
             <!-- Iconify CSS class untuk panah bawah/atas -->
             <span class="icon-[lucide--chevron-down] w-4 h-4 transition-transform duration-200" :class="open ? 'rotate-180' : ''"></span>
@@ -12,8 +13,9 @@
     </div>
     {{ end }}
     
+    <!-- Code Content -->
     <div class="code-content overflow-hidden transition-all duration-200" x-show="open" x-collapse>
-        <div class="p-0 [&>pre]:!my-0 [&>pre]:!bg-transparent [&>pre]:!border-none [&>pre]:!p-0">
+        <div class="p-4 overflow-x-auto text-xs sm:text-sm font-mono leading-relaxed text-zinc-800 dark:text-zinc-200 [&>pre]:!my-0 [&>pre]:!bg-transparent [&>pre]:!border-none [&>pre]:!p-0">
             {{ highlight (trim .Inner "\n") (.Get "lang") "" }}
         </div>
     </div>

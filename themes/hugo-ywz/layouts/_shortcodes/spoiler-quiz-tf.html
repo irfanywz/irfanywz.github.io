@@ -1,0 +1,87 @@
+{{ $q := .Get "q" | default "Pernyataan di bawah ini benar atau salah?" }}
+{{ $correct := .Get "correct" | default "true" }}
+{{ $cooldownSec := .Get "cooldown" | default "5" }}
+{{ $label := .Get "label" | default "Kuis Benar / Salah" }}
+
+<div class="my-6 not-prose" 
+     x-data="{ 
+         unlocked: false, 
+         correctAnswer: {{ $correct }},
+         errorMsg: '',
+         cooldown: 0,
+         cooldownMax: {{ $cooldownSec }},
+         timer: null,
+
+         checkTF(val) {
+             if (this.cooldown > 0) return;
+
+             if (val === this.correctAnswer) {
+                 this.unlocked = true;
+                 this.errorMsg = '';
+             } else {
+                 this.startCooldown();
+             }
+         },
+
+         startCooldown() {
+             this.cooldown = this.cooldownMax;
+             this.errorMsg = `Jawaban salah, coba lagi dalam ${this.cooldown} detik!`;
+             
+             clearInterval(this.timer);
+             this.timer = setInterval(() => {
+                 this.cooldown--;
+                 if (this.cooldown > 0) {
+                     this.errorMsg = `Jawaban salah, coba lagi dalam ${this.cooldown} detik!`;
+                 } else {
+                     clearInterval(this.timer);
+                     this.errorMsg = '';
+                 }
+             }, 1000);
+         }
+     }">
+    <div class="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden transition-all duration-200 shadow-sm">
+        <!-- Header -->
+        <div class="w-full flex items-center justify-between px-4 py-3 bg-zinc-100/80 dark:bg-zinc-800/80 text-sm font-semibold text-zinc-700 dark:text-zinc-300 select-none">
+            <span class="flex items-center gap-2">
+                <span class="icon-[ri--question-line] w-4 h-4 text-amber-500 dark:text-amber-400 shrink-0" x-show="!unlocked"></span>
+                <span class="icon-[ri--lock-unlock-line] w-4 h-4 text-emerald-500 dark:text-emerald-400 shrink-0" x-show="unlocked"></span>
+                <span x-text="unlocked ? 'Spoiler Terbuka' : '{{ $label }}'"></span>
+            </span>
+            <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20" x-show="!unlocked">True / False</span>
+        </div>
+
+        <!-- Body -->
+        <div class="p-4 sm:p-5 text-base text-zinc-700 dark:text-zinc-300 relative">
+            <template x-if="!unlocked">
+                <div class="space-y-4">
+                    <div class="text-base font-normal text-zinc-800 dark:text-zinc-200 leading-relaxed">
+                        {{ $q }}
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button type="button" 
+                                @click="checkTF(true)" 
+                                :disabled="cooldown > 0"
+                                class="flex-1 bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 disabled:opacity-50 disabled:cursor-not-allowed border border-emerald-300 dark:border-emerald-800/60 text-emerald-700 dark:text-emerald-400 text-sm font-semibold py-2.5 rounded-lg transition-colors">
+                            BENAR
+                        </button>
+                        <button type="button" 
+                                @click="checkTF(false)" 
+                                :disabled="cooldown > 0"
+                                class="flex-1 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/50 disabled:opacity-50 disabled:cursor-not-allowed border border-rose-300 dark:border-rose-800/60 text-rose-700 dark:text-rose-400 text-sm font-semibold py-2.5 rounded-lg transition-colors">
+                            SALAH
+                        </button>
+                    </div>
+
+                    <p x-show="errorMsg" x-text="errorMsg" class="text-xs text-rose-600 dark:text-rose-400 font-medium animate-pulse"></p>
+                </div>
+            </template>
+
+            <template x-if="unlocked">
+                <div class="animate-fadeIn prose dark:prose-invert max-w-none">
+                    {{ .Inner | markdownify }}
+                </div>
+            </template>
+        </div>
+    </div>
+</div>

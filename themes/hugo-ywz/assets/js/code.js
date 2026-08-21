@@ -10,19 +10,42 @@
         'toml': 'TOML', 'sql': 'SQL', 'php': 'PHP'
     };
 
+    // Helper ambil teks murni
+    function getCodeText(el) {
+        var codeTd = el.querySelector('td.lntd:last-child code');
+        var code = el.querySelector('code');
+        if (codeTd) return codeTd.textContent;
+        if (code) return code.textContent;
+        return el.textContent;
+    }
+
+    // Buka POPUP Murni Plain Text via Blob URL
+    function openRawPopup(codeText) {
+        var width = 800;
+        var height = 600;
+        var left = (screen.width / 2) - (width / 2);
+        var top = (screen.height / 2) - (height / 2);
+        var features = 'width=' + width + ',height=' + height + ',top=' + top + ',left=' + left + ',resizable=yes,scrollbars=yes,status=no';
+
+        // Buat objek Blob bertipe text/plain murni
+        var blob = new Blob([codeText], { type: 'text/plain;charset=utf-8' });
+        var blobUrl = URL.createObjectURL(blob);
+
+        var popupWin = window.open(blobUrl, '_blank', features);
+
+        if (!popupWin) {
+            alert('Popup terblokir browser! Tolong izinkan popup untuk situs ini.');
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
-            // Ambil semua container kode (baik yang ber-nomor / .highlight maupun pre biasa)
             var targets = document.querySelectorAll('.post-content-full .highlight, .post-content-full pre');
 
             targets.forEach(function(el) {
-                // Jangan proses pre yang ada di DALAM .highlight biar ga double
                 if (el.tagName.toLowerCase() === 'pre' && el.closest('.highlight')) return;
-                
-                // Jangan proses jika header sudah terpasang
                 if (el.querySelector('.code-header')) return;
 
-                // Cari elemen code untuk deteksi bahasa
                 var code = el.querySelector('code');
                 var langName = 'CODE';
 
@@ -36,7 +59,7 @@
                     }
                 }
 
-                // Buat Header macOS
+                // Header macOS
                 var header = document.createElement('div');
                 header.className = 'code-header';
                 header.innerHTML = 
@@ -49,29 +72,25 @@
                         '<span class="lang-label">' + langName + '</span>' +
                     '</div>';
 
-                // Buat Tombol Copy
+                // Tombol Kanan
+                var actionGroup = document.createElement('div');
+                actionGroup.style.cssText = 'position: absolute; top: 0.35rem; right: 0.75rem; z-index: 30; display: flex; gap: 0.35rem;';
+
+                var rawBtn = document.createElement('button');
+                rawBtn.className = 'code-copy-btn';
+                rawBtn.style.position = 'static';
+                rawBtn.textContent = 'Raw';
+                rawBtn.addEventListener('click', function() {
+                    var text = getCodeText(el);
+                    openRawPopup(text);
+                });
+
                 var copyBtn = document.createElement('button');
                 copyBtn.className = 'code-copy-btn';
+                copyBtn.style.position = 'static';
                 copyBtn.textContent = 'Copy';
-
-                // Inject ke paling atas container utama
-                el.insertBefore(header, el.firstChild);
-                el.appendChild(copyBtn);
-
-                // Logika Klik Copy
                 copyBtn.addEventListener('click', function() {
-                    var textToCopy = '';
-                    
-                    // Jika Hugo Chroma Table (ber-nomor), ambil teks dari kolom kanan (td.lntd kedua)
-                    var codeTd = el.querySelector('td.lntd:last-child code');
-                    if (codeTd) {
-                        textToCopy = codeTd.textContent;
-                    } else if (code) {
-                        textToCopy = code.textContent;
-                    } else {
-                        textToCopy = el.textContent;
-                    }
-
+                    var textToCopy = getCodeText(el);
                     navigator.clipboard.writeText(textToCopy).then(function() {
                         copyBtn.textContent = 'Copied!';
                         copyBtn.classList.add('copied');
@@ -81,6 +100,12 @@
                         }, 2000);
                     });
                 });
+
+                actionGroup.appendChild(rawBtn);
+                actionGroup.appendChild(copyBtn);
+
+                el.insertBefore(header, el.firstChild);
+                el.appendChild(actionGroup);
             });
         }, 100);
     });
