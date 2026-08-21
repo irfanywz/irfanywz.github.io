@@ -1,7 +1,7 @@
 {{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 <urlset xmlns="http://www.sitemap.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  {{ range .Data.Pages }}
+  {{ range .Pages }}
     {{ $excludedSections := slice "journal" "topics" "collection" "tools" }}
     {{ if and (not .Params.private) (not (in $excludedSections .Section)) }}
     <url>
