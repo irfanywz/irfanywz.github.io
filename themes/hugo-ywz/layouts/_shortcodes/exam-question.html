@@ -7,6 +7,7 @@
 {{ $answerKey := .Get "answerKey" | default "" }}
 {{ $time := .Get "time" | default 20 }}
 {{ $explanation := .Get "explanation" | default "" }}
+{{ $suggestions := .Get "suggestions" | default "" }}
 
 <div 
   x-data="{ qIndex: 0 }"
@@ -27,7 +28,7 @@
     {{ $title }}
   </h2>
 
-  <!-- TYPE 1: MULTIPLE CHOICE (Pilihan Ganda Tunggal) -->
+  <!-- TYPE 1: MULTIPLE CHOICE -->
   {{ if or (eq $type "mc") (eq $type "multiple-choice") }}
     {{ if $options }}
       {{ $optList := split $options "," }}
@@ -36,7 +37,7 @@
         {{ range $idx, $opt := $optList }}
           {{ $label := index $labels $idx }}
           <button
-            @click="selectOption({{ $idx }})"
+            @click="playSFX('click.mp3'); selectOption({{ $idx }})"
             :class="{
               'border-cyan-500 bg-cyan-50 dark:bg-cyan-950/40 text-cyan-900 dark:text-cyan-100 shadow-md shadow-cyan-500/10': userAnswers[currentQ] === {{ $idx }},
               'border-slate-200 dark:border-slate-800/90 bg-white/50 dark:bg-slate-900/40 hover:border-slate-300 dark:hover:border-slate-700 text-slate-700 dark:text-slate-300': userAnswers[currentQ] !== {{ $idx }}
@@ -70,7 +71,7 @@
       </div>
     {{ end }}
 
-  <!-- TYPE 2: MULTIPLE ANSWER / CHECKBOX (Pilih Beberapa Jawaban) -->
+  <!-- TYPE 2: CHECKBOX / MULTIPLE ANSWER -->
   {{ else if or (eq $type "checkbox") (eq $type "multiple-answer") }}
     {{ if $options }}
       {{ $optList := split $options "," }}
@@ -78,7 +79,7 @@
       <div class="space-y-3 w-full">
         {{ range $idx, $opt := $optList }}
           <button
-            @click="toggleCheckboxOption({{ $idx }})"
+            @click="playSFX('click.mp3'); toggleCheckboxOption({{ $idx }})"
             :class="{
               'border-cyan-500 bg-cyan-50 dark:bg-cyan-950/40 text-cyan-900 dark:text-cyan-100 shadow-md shadow-cyan-500/10': Array.isArray(userAnswers[currentQ]) && userAnswers[currentQ].includes({{ $idx }}),
               'border-slate-200 dark:border-slate-800/90 bg-white/50 dark:bg-slate-900/40 hover:border-slate-300 dark:hover:border-slate-700 text-slate-700 dark:text-slate-300': !Array.isArray(userAnswers[currentQ]) || !userAnswers[currentQ].includes({{ $idx }})
@@ -105,7 +106,7 @@
   {{ else if or (eq $type "tf") (eq $type "true-false") }}
     <div class="grid grid-cols-2 gap-4 w-full max-w-md mx-auto">
       <button
-        @click="selectOption('true')"
+        @click="playSFX('click.mp3'); selectOption('true')"
         :class="{
           'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 shadow-md': userAnswers[currentQ] === 'true',
           'border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/40 hover:bg-slate-100 dark:hover:bg-slate-800/80 text-slate-800 dark:text-slate-200': userAnswers[currentQ] !== 'true'
@@ -117,7 +118,7 @@
       </button>
 
       <button
-        @click="selectOption('false')"
+        @click="playSFX('click.mp3'); selectOption('false')"
         :class="{
           'border-rose-500 bg-rose-50 dark:bg-rose-950/40 text-rose-900 dark:text-rose-200 shadow-md': userAnswers[currentQ] === 'false',
           'border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/40 hover:bg-slate-100 dark:hover:bg-slate-800/80 text-slate-800 dark:text-slate-200': userAnswers[currentQ] !== 'false'
@@ -129,16 +130,43 @@
       </button>
     </div>
 
-  <!-- TYPE 4: FILL IN THE BLANK -->
+<!-- TYPE 4: FILL IN THE BLANK WITH SUGGESTIONS -->
   {{ else if or (eq $type "fill") (eq $type "fill-in-the-blank") }}
     <div class="w-full max-w-md mx-auto flex flex-col gap-3">
+      <!-- Input Text -->
       <input 
         type="text" 
         :value="userAnswers[currentQ] || ''"
         @input="selectOption($event.target.value)"
         placeholder="Ketik jawaban di sini..."
-        class="w-full px-4 py-3.5 bg-white dark:bg-slate-900/80 border-2 border-slate-200 dark:border-slate-800 focus:border-cyan-500 dark:focus:border-cyan-500 rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none text-center font-semibold text-sm transition"
+        class="w-full px-4 py-3.5 bg-white dark:bg-slate-900/80 border-2 border-slate-200 dark:border-slate-800 focus:border-cyan-500 dark:focus:border-cyan-500 rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none text-center font-semibold text-sm transition shadow-sm"
       />
+
+      <!-- List Suggestion Chips (Jika Ada) -->
+      {{ if $suggestions }}
+        {{ $sugList := split $suggestions "," }}
+        <div class="flex flex-col items-center gap-2 mt-1">
+          <span class="text-[11px] font-medium text-slate-400 dark:text-slate-500">Pilih saran jawaban:</span>
+          <div class="flex flex-wrap justify-center gap-1.5">
+            {{ range $sugList }}
+              {{ $item := trim . " " }}
+              <button
+                type="button"
+                @click="playSFX('click.mp3'); selectOption('{{ $item }}')"
+                :class="{
+                  'bg-cyan-500 text-white border-cyan-500': userAnswers[currentQ] === '{{ $item }}',
+                  'bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700/60': userAnswers[currentQ] !== '{{ $item }}'
+                }"
+                class="px-3 py-1.5 rounded-xl border text-xs font-semibold transition cursor-pointer flex items-center gap-1 shadow-sm active:scale-95"
+              >
+                <span class="icon-[lucide--sparkles] text-[10px] text-cyan-400"></span>
+                <span>{{ $item }}</span>
+              </button>
+            {{ end }}
+          </div>
+        </div>
+      {{ end }}
+
       <span class="text-[11px] text-slate-400 text-center">Jawaban tidak terpengaruh huruf besar/kecil.</span>
     </div>
   {{ end }}

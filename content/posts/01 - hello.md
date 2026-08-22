@@ -63,6 +63,15 @@ Isi spoiler rahasia!
       explanation="CTR mengukur efektivitas Judul/Thumbnail, sedangkan AVD (Retensi) mengukur seberapa mampu video menahan perhatian penonton."
   >}}
 
+{{< exam-question 
+  type="fill" 
+  title="Bahasa pemrograman utama yang digunakan dalam pengembangan framework Tornado adalah?" 
+  answerKey="Python" 
+  suggestions="Python, JavaScript, Go, PHP" 
+  time="15" 
+  explanation="Tornado adalah web framework dan asynchronous networking library yang ditulis menggunakan bahasa Python." 
+>}}  
+
   <!-- 2. Benar / Salah: Produksi & Niche -->
   {{< exam-question 
       type="tf"
@@ -146,6 +155,13 @@ Isi spoiler rahasia!
       title="Menentukan Niche & Target Audience" 
       content="Banyak kreator pemula gagal karena membuat konten yang terlalu acak. Konten yang sukses berawal dari niche yang spesifik (misal: 'ASMR Relaxing Nature' atau 'Edukasi Tech Pemula') dan pemahaman mendalam tentang masalah atau kebutuhan audience target." 
   >}}
+
+{{< edu-slide 
+  type="video" 
+  tag="Video Tutorial" 
+  title="Belajar Dasar HTML dalam 10 Menit" 
+  id="dQw4w9WgXcQ" 
+>}}  
 
   {{< edu-slide 
       type="quiz-tf" 

@@ -4,7 +4,6 @@
 {{ $icon := .Get "icon" | default "icon-[lucide--layers]" }}
 {{ $content := .Get "content" }}
 
-{{/* Parameter Khusus Video */}}
 {{ $rawId := .Get "id" | default (.Get "videoId") | default (.Get "videoUrl") }}
 {{ $youtubeId := "" }}
 {{ if $rawId }}
@@ -15,7 +14,6 @@
   {{ end }}
 {{ end }}
 
-{{/* Parameter Khusus Kuis / Checkpoint */}}
 {{ $options := .Get "options" }}
 {{ $correct := .Get "correct" | default 0 }}
 {{ $tfAnswer := .Get "tfAnswer" | default "true" }}
@@ -23,7 +21,12 @@
 
 <div 
   x-data="{ slideIndex: 0 }"
-  x-init="slideIndex = Array.from($el.parentNode.children).indexOf($el) + 1"
+  x-init="
+    slideIndex = Array.from($el.parentNode.children).indexOf($el) + 1;
+    if ('{{ $type }}' === 'quiz' || '{{ $type }}' === 'quiz-tf') {
+      isQuizAnswered[slideIndex] = false;
+    }
+  "
   x-show="currentSlide === slideIndex"
   x-transition:enter="transition ease-out duration-300"
   x-transition:enter-start="opacity-0 translate-x-4"
@@ -52,38 +55,40 @@
       <div x-data="{ playing: false }" class="w-full">
         <div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
           
-          <!-- State 1: Thumbnail & Play Button -->
-          <template x-if="!playing">
-            <div @click="playing = true" 
-                 class="relative w-full h-full cursor-pointer group flex items-center justify-center">
-              
-              <img src="https://img.youtube.com/vi/{{ $youtubeId }}/maxresdefault.jpg" 
-                   alt="{{ $title }}"
-                   class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                   loading="lazy"
-                   onerror="this.src='https://img.youtube.com/vi/{{ $youtubeId }}/hqdefault.jpg'">
-              
-              <div class="absolute inset-0 bg-black/30 group-hover:bg-black/15 transition-colors"></div>
+          <!-- Condition 1: Thumbnail & Play Button (Sebelum Diklik) -->
+          <div x-show="!playing" 
+               @click="playing = true" 
+               class="relative w-full h-full cursor-pointer group flex items-center justify-center">
+            
+            <!-- Thumbnail YouTube -->
+            <img src="https://img.youtube.com/vi/{{ $youtubeId }}/maxresdefault.jpg" 
+                 alt="{{ $title }}"
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                 loading="lazy"
+                 onerror="this.src='https://img.youtube.com/vi/{{ $youtubeId }}/hqdefault.jpg'">
+            
+            <!-- Overlay Gelap -->
+            <div class="absolute inset-0 bg-black/30 group-hover:bg-black/15 transition-colors"></div>
 
-              <div class="absolute w-14 h-14 rounded-2xl bg-cyan-600/90 dark:bg-cyan-500/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-cyan-600 transition-all duration-300">
-                <span class="icon-[lucide--play] text-2xl ml-0.5 fill-current"></span>
-              </div>
-
-              <div class="absolute bottom-3 right-3 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white text-[10px] sm:text-xs font-medium border border-white/10">
-                Klik untuk memutar
-              </div>
+            <!-- Tombol Play -->
+            <div class="absolute w-14 h-14 rounded-2xl bg-cyan-600/90 dark:bg-cyan-500/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-cyan-600 transition-all duration-300">
+              <span class="icon-[lucide--play] text-2xl ml-0.5 fill-current"></span>
             </div>
-          </template>
 
-          <!-- State 2: Iframe Auto Play -->
-          <template x-if="playing">
-            <iframe class="w-full h-full absolute inset-0 border-0"
-                    src="https://www.youtube-nocookie.com/embed/{{ $youtubeId }}?autoplay=1&rel=0"
-                    title="{{ $title }}"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-            </iframe>
-          </template>
+            <!-- Badge / Petunjuk Klik -->
+            <div class="absolute bottom-3 right-3 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white text-[10px] sm:text-xs font-medium border border-white/10">
+              Klik untuk memutar
+            </div>
+          </div>
+
+          <!-- Condition 2: Iframe Video (Hanya Inject SRC Saat playing == true) -->
+          <iframe x-show="playing"
+                  class="w-full h-full absolute inset-0 border-0"
+                  :src="playing ? 'https://www.youtube-nocookie.com/embed/{{ $youtubeId }}?autoplay=1&rel=0' : ''"
+                  title="{{ $title }}"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen>
+          </iframe>
 
         </div>
       </div>
@@ -107,6 +112,7 @@
                 selected = {{ $idx }}; 
                 answered = true; 
                 isCorrect = ({{ $idx }} === correctIdx);
+                isQuizAnswered[slideIndex] = true;
                 if(isCorrect) { playSFX('/audio/correct.mp3'); } 
                 else { playSFX('/audio/wrong.mp3'); }
               "
@@ -119,7 +125,6 @@
               class="p-3 sm:p-3.5 rounded-xl border text-xs sm:text-sm transition cursor-pointer flex items-center justify-between shadow-sm"
             >
               <span>{{ $opt }}</span>
-              
               <span x-show="answered && {{ $idx }} === correctIdx" class="icon-[lucide--check-circle-2] text-lg text-emerald-600 dark:text-emerald-400 shrink-0 ml-2"></span>
               <span x-show="answered && selected === {{ $idx }} && !isCorrect" class="icon-[lucide--x-circle] text-lg text-rose-600 dark:text-rose-400 shrink-0 ml-2"></span>
             </button>
@@ -146,12 +151,12 @@
       {{ if $title }}<h2 class="!mt-0 !mb-4 text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-snug">{{ $title }}</h2>{{ end }}
 
       <div class="grid grid-cols-2 gap-3 w-full">
-        <!-- Button BENAR -->
         <button 
           @click="
             selected = 'true';
             answered = true;
             isCorrect = (targetAnswer === 'true');
+            isQuizAnswered[slideIndex] = true;
             if(isCorrect) { playSFX('/audio/correct.mp3'); } 
             else { playSFX('/audio/wrong.mp3'); }
           "
@@ -167,12 +172,12 @@
           <span class="font-bold text-xs">BENAR</span>
         </button>
 
-        <!-- Button SALAH -->
         <button 
           @click="
             selected = 'false';
             answered = true;
             isCorrect = (targetAnswer === 'false');
+            isQuizAnswered[slideIndex] = true;
             if(isCorrect) { playSFX('/audio/correct.mp3'); } 
             else { playSFX('/audio/wrong.mp3'); }
           "
