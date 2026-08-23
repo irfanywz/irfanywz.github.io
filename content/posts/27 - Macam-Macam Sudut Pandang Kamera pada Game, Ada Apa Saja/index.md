@@ -82,6 +82,6 @@ tidak banyak game yang menggunakan fixed camera ini, karena sudah diwakilkan den
 
 nah mungkin segitu saja penjelasan soal sudut pandang kamera ini, 
 
-menurut gua yang paling cocok buat game 2d adalah side scroller karena mudah dan gerakannya juga gak banyak
+menurut saya, yang paling cocok buat game 2d adalah side scroller karena mudah dan gerakannya juga gak banyak
 
 selain itu mirip seperti film animasi 2d juga keliatannya
