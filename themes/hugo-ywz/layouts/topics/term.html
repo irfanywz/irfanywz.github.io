@@ -6,25 +6,10 @@
 
 {{ define "main" }}
 
+    {{ partial "baseof/nav-topics.html" . }}
+
     <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
         
-        <section class="py-4 sm:py-6 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
-            <div class="container max-w-6xl mx-auto px-4">
-                <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                    <a href="/" class="flex items-center gap-1 leading-relaxed hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                        <span class="icon-[heroicons--home] w-4 h-4"></span>
-                        Home
-                    </a>
-                    <span class="icon-[ri--arrow-right-s-line] w-4 h-4 text-gray-400"></span>
-                    <a href="{{ "/topics/" | relURL }}" class="flex items-center gap-1 leading-relaxed hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                        <span class="icon-[ri--hashtag] w-4 h-4"></span>
-                        Topik
-                    </a>
-                    <span class="icon-[ri--arrow-right-s-line] w-4 h-4 text-gray-400"></span>
-                    <span class="leading-relaxed text-gray-900 dark:text-white truncate max-w-[200px] md:max-w-none">{{ .Title }}</span>
-                </nav>
-            </div>
-        </section>
 
         <div class="container max-w-6xl mx-auto px-4 py-8 md:py-12">
             <div class="flex flex-col md:flex-row gap-8 lg:gap-12"> 
@@ -32,10 +17,19 @@
                 <!-- Main Content: Posts -->
                 <div class="w-full md:w-2/3 lg:w-3/4">
 
-                    <!-- Info Topik Header (Lebih Ramping) -->
-                    <div class="mb-6 p-3.5 sm:p-4 rounded-xl bg-indigo-50/70 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/40 text-indigo-900 dark:text-indigo-200 flex items-center gap-3">
-                        <span class="icon-[ri--information-line] text-indigo-600 dark:text-indigo-400 text-xl flex-shrink-0"></span>
-                        <p class="text-xs sm:text-sm font-medium">Menampilkan artikel dengan topik <span class="font-bold underline decoration-indigo-400 underline-offset-2">{{ .Title }}</span></p>
+                    <!-- Info Topik Header (Lebih Ramping & Dinamis dengan Paginasi) -->
+                    {{ $paginator := .Paginator }}
+                    <div class="mb-6 p-3.5 sm:p-4 rounded-xl bg-indigo-50/70 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/40 text-indigo-900 dark:text-indigo-200 flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <span class="icon-[ri--information-line] text-indigo-600 dark:text-indigo-400 text-xl flex-shrink-0"></span>
+                            <p class="text-xs sm:text-sm font-medium">
+                                Menampilkan artikel dengan topik 
+                                <span class="font-bold underline decoration-indigo-400 underline-offset-2">#{{ .Title }}</span>
+                                {{ if gt $paginator.PageNumber 1 }}
+                                    <span class="text-indigo-600 dark:text-indigo-400 font-semibold">— Halaman {{ $paginator.PageNumber }}</span>
+                                {{ end }}
+                            </p>
+                        </div>
                     </div>
 
                     <!-- Container Grid (1 Kolom Mobile, 2 Kolom Desktop dengan Tinggi Sejajar) -->
@@ -63,7 +57,7 @@
                     <div class="space-y-8 sticky top-8">                                                 
                         {{ partialCached "posts/ads-sidebar.html" . }}                                    
                         {{ partial "posts/random-post.html" . }}                                    
-                        {{ partialCached "posts/sidebar-topics.html" . }}                                    
+                        {{ partial "posts/sidebar-topics.html" . }}                                    
                     </div>
                 </aside>
 

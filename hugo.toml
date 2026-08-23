@@ -9,7 +9,7 @@ enableGitInfo = true
 enableRobotsTXT = true
 canonifyURLs = true
 
-pagination.pagerSize = 6
+pagination.pagerSize = 4
 
 pygmentsstyle = "vs"
 pygmentscodefences = true
@@ -115,13 +115,13 @@ weight = 20
   color = "text-amber-500"
   # group = "dropdown"
 
-[[menu.footer]]
-name = "Musik"
-url = "/music-playlist/"
-pre = "icon-[ri--music-2-line]"
-weight = 42
-[menu.footer.params]
-  color = "text-violet-500"
+# [[menu.footer]]
+# name = "Musik"
+# url = "/music-playlist/"
+# pre = "icon-[ri--music-2-line]"
+# weight = 42
+# [menu.footer.params]
+#   color = "text-violet-500"
   # group = "dropdown"
 
 [[menu.footer]]

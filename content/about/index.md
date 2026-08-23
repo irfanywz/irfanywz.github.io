@@ -1,6 +1,6 @@
 ---
 title: "Tentang Blog"
-description: "ikan lohan ikan gabus, direndam dulu baru direbus, agar silahturahmi tidak terputus, pinjam dulu seratus"
+description: "ikan lohan ikan gabus, direndam dulu baru direbus, agar silahturahmi tidak terputus, pinjam dulu seratus. 😜"
 layout: "about"
 profile_picture: "avatar.avif"
 draft: false

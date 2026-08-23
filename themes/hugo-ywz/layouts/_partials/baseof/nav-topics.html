@@ -1,0 +1,29 @@
+<!-- Topics Horizontal Navigation Bar (Centered & Minimalist) -->
+{{ $showtopics := .Site.Params.showtopics | default true }}
+{{ if $showtopics }}
+    {{ $validtopics := slice }}
+    {{ range .Site.Taxonomies.topics }}
+        {{ $filteredPages := where .Pages "Section" "posts" }}
+        {{ if gt (len $filteredPages) 0 }}
+            {{ $validtopics = $validtopics | append (dict "Title" .Page.Title "Page" .Page) }}
+        {{ end }}
+    {{ end }}
+
+    {{ if $validtopics }}
+    <div class="bg-white/80 dark:bg-gray-900/80 block sm:hidden transition-colors duration-300">
+        <div class="container max-w-6xl mx-auto px-4 py-2">
+            <!-- md:justify-center membuat posisi di tengah saat layar lebar, overflow-x-auto & justify-start menjaga fungsionalitas scroll di mobile -->
+            <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar whitespace-nowrap justify-start md:justify-center">
+                
+                {{ range $validtopics }}
+                {{ $isActive := eq .Page.Permalink $.Permalink }}
+                <a href="{{ .Page.Permalink }}" class="px-3 py-1 text-[11px] font-medium rounded-md transition-colors shrink-0 {{ if $isActive }}bg-indigo-600 text-white{{ else }}bg-gray-100 dark:bg-gray-800/80 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white{{ end }}">
+                    {{ .Title }}
+                </a>
+                {{ end }}
+                
+            </div>
+        </div>
+    </div>
+    {{ end }}
+{{ end }}

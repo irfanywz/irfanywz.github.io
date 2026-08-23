@@ -2,31 +2,17 @@
 
 {{ define "main" }}
 
+    <!-- Navigasi Topik di Atas -->
+    {{ partial "baseof/nav-topics.html" . }}
+
     <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
         
         {{ $paginator := .Paginate (where .Site.RegularPages "Section" "in" (slice "posts")) }}
-        
-        <!-- Breadcrumb khusus jika diakses langsung via URL halaman > 1 -->
-        {{ if gt $paginator.PageNumber 1 }}
-        <section class="py-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
-            <div class="container max-w-6xl mx-auto px-4">
-                <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                    <a href="/" class="flex items-center gap-1 leading-relaxed hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                        <span class="icon-[heroicons--home] w-4 h-4"></span>
-                        Home
-                    </a>
-                    <span class="icon-[ri--arrow-right-s-line] w-4 h-4 text-gray-400"></span>
-                    <span class="leading-relaxed text-gray-900 dark:text-white font-medium">Halaman {{ $paginator.PageNumber }}</span>
-                </nav>
-            </div>
-        </section>
-        {{ end }}
-        
-        <div class="container max-w-6xl mx-auto px-4 py-8 md:py-12">
+            
+        <div class="container max-w-6xl mx-auto px-4 sm:px-6 py-6 md:py-8">
 
             <div class="flex flex-col md:flex-row gap-8 lg:gap-12">
                 
-
                 <!-- Main Content: Posts -->
                 <div class="w-full md:w-2/3 lg:w-3/4">
 
@@ -79,7 +65,7 @@
                     </div>
                     
                     <!-- Pagination -->
-                    {{ partial "components/pagination.html" .Paginator }}
+                    {{ partial "components/pagination-loadmore.html" .Paginator }}
                 </div>
 
                 <!-- Sidebar -->
@@ -88,9 +74,9 @@
                         {{ partialCached "posts/sidebar-author.html" . }}                            
                     </div>                    
                     <div class="space-y-8 sticky top-8">
-                        {{ partialCached "posts/ads-sidebar.html" . }}                                           
-                        {{ partial "posts/random-post.html" . }}                                           
-                        {{ partialCached "posts/sidebar-topics.html" . }}                                           
+                        {{ partialCached "posts/ads-sidebar.html" . }}                                       
+                        {{ partial "posts/random-post.html" . }}                                       
+                        {{ partial "posts/sidebar-topics.html" . }}                                       
 
                     </div>
                 </aside>
