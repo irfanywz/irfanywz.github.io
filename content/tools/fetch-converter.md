@@ -4,7 +4,7 @@ date: 2026-01-16T11:00:00+07:00
 description: "Alat untuk mengubah perintah fetch (Copy as fetch) dari browser menjadi kode Python Requests."
 icon: "icon-[ri--translate-2]"
 categories:
-  - "Reverse"
+  - "Web"
 ---
 
 <div class="max-w-[90rem] mx-auto mt-6">

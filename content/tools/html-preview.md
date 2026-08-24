@@ -43,9 +43,14 @@ Tips: Tekan <kbd class="font-sans bg-gray-100 dark:bg-gray-700 px-1 rounded bord
 <label class="font-bold text-gray-700 dark:text-gray-300 flex items-center gap-2">
 <i class="icon-[ri--eye-line] text-emerald-500"></i> Pratinjau
 </label>
+<div class="flex gap-2">
+<button id="saveTxtBtn" class="px-3 py-1.5 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center gap-1" title="Simpan sebagai TXT">
+<i class="icon-[ri--save-line]"></i> Save TXT
+</button>
 <button id="newTabBtn" class="px-3 py-1.5 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center gap-1" title="Buka di Tab Baru">
 <i class="icon-[ri--external-link-line]"></i> Tab Baru
 </button>
+</div>
 </div>
 
 <div id="previewContainer" class="flex-grow w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white overflow-hidden shadow-sm relative">
@@ -76,6 +81,7 @@ const runBtn = document.getElementById('runBtn');
 const clearBtn = document.getElementById('clearBtn');
     const fullscreenBtn = document.getElementById('fullscreenBtn');
     const newTabBtn = document.getElementById('newTabBtn');
+    const saveTxtBtn = document.getElementById('saveTxtBtn');
 const storageKey = 'html_preview_content_v2';
 
     const defaultCode = ``;
@@ -120,6 +126,20 @@ updatePreview();
 
     // Auto update with debounce (delay)
     editor.addEventListener('input', debounce(updatePreview, 300));
+
+    // Save as TXT Logic
+    saveTxtBtn.addEventListener('click', () => {
+        const code = editor.value;
+        const blob = new Blob([code], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'snippet-code.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    });
 
     // Fullscreen Logic
     function toggleFullscreen() {

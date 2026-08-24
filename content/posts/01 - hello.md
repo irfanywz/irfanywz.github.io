@@ -15,6 +15,10 @@ consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
+{{< qna q="Kenapa harus pakai Alpine.js?" >}}
+Karena Alpine.js ringan, gak pakai build step yang ribet, dan sintaksnya langsung nempel di HTML mirip Vue.js tapi versi minimalis.
+{{< /qna >}}
+
 {{< spoiler-quiz q="Sebutkan nama planet ke-3?" a="Bumi" cooldown="8" >}}
 Isi spoiler rahasia!
 {{< /spoiler-quiz >}}

@@ -4,7 +4,7 @@ date: 2026-03-25T22:35:00+07:00
 description: "Alat praktis untuk membuat prompt musik instrumental Suno AI menggunakan Gemini AI."
 icon: "icon-[ri--music-2-line]"
 categories:
-  - "Prompt Generator"
+  - "AI"
 ---
 
 <div class="max-w-6xl mx-auto mt-6" x-data="promptGenerator()">

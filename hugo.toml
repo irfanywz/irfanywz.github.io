@@ -9,7 +9,7 @@ enableGitInfo = true
 enableRobotsTXT = true
 canonifyURLs = true
 
-pagination.pagerSize = 4
+pagination.pagerSize = 6
 
 pygmentsstyle = "vs"
 pygmentscodefences = true
@@ -122,6 +122,15 @@ weight = 20
 # weight = 42
 # [menu.footer.params]
 #   color = "text-violet-500"
+  # group = "dropdown"
+
+[[menu.footer]]
+name = "Kosa Kata"
+url = "/vocabulary/"
+pre = "icon-[ri--book-2-line]"
+weight = 85
+[menu.footer.params]
+  color = "text-emerald-500"
   # group = "dropdown"
 
 [[menu.footer]]

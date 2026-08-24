@@ -1,0 +1,78 @@
+<!-- Grid Card Widget with Thumbnail & Reading Time (2 Columns) -->
+<div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700">
+    <!-- Header Widget -->
+    <div class="flex items-center gap-2 mb-4 border-b border-gray-100 dark:border-gray-700 pb-3">
+        <div class="w-1.5 h-5 bg-indigo-600 rounded-full"></div>
+        <h3 class="text-base font-bold text-gray-900 dark:text-white tracking-wide">
+            Artikel Pilihan
+        </h3>
+    </div>
+
+    <!-- Ambil postingan dari section "posts", di-shuffle, ambil 4 teratas -->
+    {{ $randomPosts := where site.RegularPages "Section" "posts" | shuffle | first 4 }}
+
+    {{ if $randomPosts }}
+    <div class="grid grid-cols-2 gap-3.5">
+        {{ range $randomPosts }}
+        {{ $currentPage := . }}
+
+        <a href="{{ $currentPage.RelPermalink }}" class="flex flex-col bg-gray-50/70 dark:bg-gray-700/30 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden group hover:shadow-md transition-all duration-300" title="{{ $currentPage.Title }}">
+
+            <!-- Container Thumbnail (Diperlebar tingginya biar tidak gepeng) -->
+            <div class="w-full h-28 sm:h-20 flex-shrink-0 overflow-hidden bg-gray-100 dark:bg-gray-700 relative">
+                
+                {{ $hasImage := false }}
+
+                {{ if $currentPage.Params.image }}
+                    {{ $resourceImg := $currentPage.Resources.GetMatch $currentPage.Params.image }}
+                    {{ $globalImg := resources.Get $currentPage.Params.image }}
+
+                    {{ if $resourceImg }}
+                        {{ $thumb := $resourceImg.Resize "1000x avif" }}
+                        <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        {{ $hasImage = true }}
+
+                    {{ else if $globalImg }}
+                        {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
+                        <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        {{ $hasImage = true }}
+
+                    {{ else if (fileExists (printf "static/%s" $currentPage.Params.image)) }}
+                        <img src="{{ $currentPage.Params.image | relURL }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        {{ $hasImage = true }}
+
+                    {{ else if (strings.HasPrefix $currentPage.Params.image "http") }}
+                        <img src="{{ $currentPage.Params.image }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        {{ $hasImage = true }}
+                    {{ end }}
+                {{ end }}
+
+                <!-- Fallback Placeholder -->
+                {{ if not $hasImage }}
+                    <div class="w-full h-full bg-gradient-to-br from-indigo-50/50 via-gray-100 to-indigo-100/30 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950/30 flex flex-col items-center justify-center text-indigo-500/70 dark:text-indigo-400/50 group-hover:scale-105 transition-transform duration-300">
+                        <span class="icon-[ri--article-line] w-8 h-8"></span>
+                    </div>
+                {{ end }}
+
+            </div>
+
+            <!-- Konten Teks: Judul & Reading Time -->
+            <div class="p-3.5 flex flex-col justify-between flex-grow">
+                <h4 class="text-gray-800 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 font-semibold line-clamp-2 transition-colors text-xs leading-snug mb-3">
+                    {{ $currentPage.Title }}
+                </h4>
+                
+                <!-- Info Waktu Baca (Reading Time) -->
+                <div class="flex items-center gap-1.5 text-[10px] text-gray-400 dark:text-gray-500 font-medium">
+                    <span class="icon-[ri--time-line] text-xs"></span>
+                    <span>{{ $currentPage.ReadingTime }} min read</span>
+                </div>
+            </div>
+
+        </a>
+        {{ end }}
+    </div>
+    {{ else }}
+        <p class="text-xs text-gray-400">Belum ada artikel.</p>
+    {{ end }}
+</div>

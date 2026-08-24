@@ -21,6 +21,29 @@
                 },
                 {{ end }}
             ],
+            // Inisialisasi: baca parameter 'category' dari URL saat pertama kali load
+            init() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const catParam = urlParams.get('category');
+                if (catParam) {
+                    // Validasi apakah kategori tersebut ada di data items
+                    const isValid = catParam === 'all' || this.categoryCounts.some(c => c.name.toLowerCase() === catParam.toLowerCase());
+                    if (isValid) {
+                        this.selectedCategory = catParam;
+                    }
+                }
+
+                // Watch perubahan selectedCategory untuk update URL otomatis tanpa reload
+                this.$watch('selectedCategory', (value) => {
+                    const url = new URL(window.location);
+                    if (value === 'all') {
+                        url.searchParams.delete('category');
+                    } else {
+                        url.searchParams.set('category', value);
+                    }
+                    window.history.pushState({}, '', url);
+                });
+            },
             // Ambil daftar kategori unik beserta jumlah (count) alatnya
             get categoryCounts() {
                 const counts = {};
@@ -70,7 +93,7 @@
                 :class="selectedCategory === 'all' 
                     ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' 
                     : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0">
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0 cursor-pointer">
                 <span>Semua</span>
                 <span class="px-2 py-0.5 text-xs rounded-full"
                     :class="selectedCategory === 'all' 
@@ -86,7 +109,7 @@
                     :class="selectedCategory === cat.name 
                         ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' 
                         : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
-                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0 capitalize">
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0 capitalize cursor-pointer">
                     <span x-text="cat.name"></span>
                     <span class="px-2 py-0.5 text-xs rounded-full"
                         :class="selectedCategory === cat.name 
@@ -103,7 +126,7 @@
             <template x-for="item in filteredItems" :key="item.permalink">
                 <a :href="item.permalink" 
                    :target="item.isExternal ? '_blank' : ''"
-                   :rel="item.isExternal ? 'noopener noreferrer' : ''"
+                   :rel="item.isExternal ? 'noopener noreferrer nofollow' : ''"
                    class="group block bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
                     
                     <div class="flex items-start gap-4 mb-4">

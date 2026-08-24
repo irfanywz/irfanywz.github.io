@@ -1,0 +1,74 @@
+{{ $url := .Get "url" }}
+{{ $text := .Get "text" | default "Unduh" }}
+
+<span x-data="{
+    donateModalOpen: false,
+    downloadLink: '',
+    timeLeft: 3,
+    timer: null,
+    initDownload(url) {
+        this.downloadLink = url;
+        this.donateModalOpen = true;
+        this.timeLeft = 3;
+        if (this.timer) clearInterval(this.timer);
+        this.timer = setInterval(() => {
+            this.timeLeft--;
+            if (this.timeLeft <= 0) {
+                clearInterval(this.timer);
+            }
+        }, 1000);
+    },
+    closeModal() {
+        this.donateModalOpen = false;
+        if (this.timer) clearInterval(this.timer);
+    }
+}">
+    <!-- Tombol Utama yang memicu modal -->
+    <button @click="initDownload('{{ $url }}')" class="inline-flex items-center gap-1.5 text-indigo-600 dark:text-indigo-400 hover:underline font-medium cursor-pointer">
+        <span class="icon-[heroicons--arrow-down-tray] w-4 h-4"></span>
+        <span class="underline">{{ $text }}</span>
+    </button>
+
+    <!-- Modal Support -->
+    <div x-show="donateModalOpen" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" x-transition.opacity>
+        <div @click.outside="closeModal()" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 relative border border-gray-200 dark:border-gray-700 not-prose" x-transition.scale>
+            <button @click="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer">
+                <span class="icon-[ri--close-line] w-6 h-6"></span>
+            </button>
+            
+            <div class="text-center">
+                <div class="w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="icon-[ri--cup-line] w-8 h-8"></span>
+                </div>
+                
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Traktir Kopi ☕</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-6 text-sm">
+                    Suka dengan konten ini? Boleh banget kalau mau traktir secangkir kopi buat apresiasi
+                </p>
+                
+                <div class="flex flex-col gap-3">
+                    <a href="{{ "about/#support" | relURL }}" target="_blank" class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-sm">
+                        <span class="icon-[ri--cup-line]"></span>
+                        Traktir Kopi
+                    </a>
+                    
+                    <div class="relative py-2">
+                        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                            <div class="w-full border-t border-gray-200 dark:border-gray-700"></div>
+                        </div>
+                        <div class="relative flex justify-center">
+                            <span class="bg-white dark:bg-gray-800 px-2 text-xs text-gray-500">Tautan siap dalam <span x-text="timeLeft" class="font-bold text-indigo-600 dark:text-indigo-400"></span>s</span>
+                        </div>
+                    </div>
+
+                    <div x-show="timeLeft <= 0" style="display: none;">
+                        <a :href="downloadLink" target="_blank" class="w-full py-3 px-4 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-sm">
+                            <span class="icon-[heroicons--arrow-down-tray]"></span>
+                            Lanjutkan Akses
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>

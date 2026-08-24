@@ -4,6 +4,17 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.4.3"
+    date: "23 Agustus 2026"
+    changes:
+      - tag: "Fitur Baru"
+        description: Peningkatan fitur shortcode edu dan examp
+      - tag: "Fitur Baru"
+        description: Menambahkan navigasi topik di bawah header khusus mobile
+      - tag: "Pembaruan"
+        description: Pembaruan kebijakan privasi dan syarat ketentuan
+      - tag: "Perbaikan"
+        description: Perbaikan breadcrumb single post
   - version: "2.4.2"
     date: "20 Agustus 2026"
     changes:

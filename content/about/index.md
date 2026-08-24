@@ -1,6 +1,8 @@
 ---
 title: "Tentang Blog"
-description: "ikan lohan ikan gabus, direndam dulu baru direbus, agar silahturahmi tidak terputus, pinjam dulu seratus. 😜"
+# description: "ikan lohan ikan gabus, direndam dulu baru direbus, agar silahturahmi tidak terputus, pinjam dulu seratus. 😜"
+# description: "Beli bubur dicampur kuah,Dimakan hangat di atas kardus,Agar silaturahmi tidak terputus,Pinjam dulu seratus. 😆"
+description: "Pergi ke pasar membeli mangga, pulangnya naik kereta cepat. Selamat datang di halaman saya, semoga ada ilmu yang bermanfaat."
 layout: "about"
 profile_picture: "avatar.avif"
 draft: false
@@ -60,7 +62,7 @@ portfolio_items:
     tahun: "2025-12"
     kategori: "aplikasi"
     deskripsi: "Desktop app otomatisasi manajemen akun dan optimasi SEO YouTube."
-    link: "/"
+    link: "/promise-ety"
     tags: ["Python", "Tornado", "Pyarmor"]
 
 ---

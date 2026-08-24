@@ -3,6 +3,7 @@ draft
 .external
 .del
 public
+resources
 
 *.mp4
 .video

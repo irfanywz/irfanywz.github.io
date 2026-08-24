@@ -9,7 +9,7 @@ draft: false
 
 banyak yang ingin mendapatkan hasilnya, tapi tidak melihat prosesnya
 
-ada hal yang tidak nampak, yang harus diketahi harusnya dari awal
+ada hal yang tidak nampak, yang harus diketahui dari awal
 
 kamu melihat postingan sosial media yang memamerkan nominal uang yang besar
 

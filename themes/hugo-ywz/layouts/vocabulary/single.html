@@ -1,0 +1,46 @@
+{{ define "main" }}
+<div class="container max-w-3xl mx-auto px-4 py-10">
+
+    <!-- Header -->
+    <div class="mb-8 border-b border-gray-100 dark:border-gray-800 pb-6">
+        {{ with .Parent }}
+        <a href="{{ .RelPermalink }}" class="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-emerald-600 transition-colors mb-3">
+            <i class="icon-[ri--arrow-left-line]"></i> Daftar Kosakata
+        </a>
+        {{ end }}
+
+        <h1 class="text-3xl font-black text-gray-900 dark:text-white tracking-tight">{{ .Title }}</h1>
+        {{ with .Description }}
+        <p class="mt-1.5 text-sm text-gray-500 dark:text-gray-400">{{ . }}</p>
+        {{ end }}
+    </div>
+
+    <!-- Intro -->
+    {{ with .Content }}
+    <div class="prose dark:prose-invert max-w-none mb-8 text-sm">
+        {{ . }}
+    </div>
+    {{ end }}
+
+    <!-- Daftar Kata (Compact List) -->
+    {{ if .Params.words }}
+    <ul class="divide-y divide-gray-100 dark:divide-gray-800 border-y border-gray-100 dark:border-gray-800">
+        {{ range $i, $w := .Params.words }}
+        <li class="py-3.5 flex items-baseline gap-4 text-sm">
+            <!-- Nomor urut tipis -->
+            <span class="w-6 shrink-0 text-xs font-mono text-gray-300 dark:text-gray-600 text-right tabular-nums">{{ add $i 1 }}.</span>
+            
+            <!-- Kata -->
+            <span class="w-40 shrink-0 font-bold text-gray-900 dark:text-white">{{ $w.word }}</span>
+            
+            <!-- Arti -->
+            <span class="flex-1 text-gray-600 dark:text-gray-300 leading-normal">{{ $w.meaning }}</span>
+        </li>
+        {{ end }}
+    </ul>
+    {{ else }}
+    <p class="text-sm text-gray-500 dark:text-gray-400 text-center py-8">Belum ada kosakata.</p>
+    {{ end }}
+
+</div>
+{{ end }}
