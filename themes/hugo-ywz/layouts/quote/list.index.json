@@ -1,0 +1,24 @@
+{
+  "section": {{ .Title | jsonify }},
+  "description": {{ .Description | jsonify }},
+  "categories": [
+    {{- $pages := .RegularPages -}}
+    {{- range $index, $page := $pages -}}
+    {
+      "category_title": {{ $page.Title | jsonify }},
+      "slug": {{ $page.Params.slug | default $page.File.BaseFileName | jsonify }},
+      "description": {{ $page.Description | jsonify }},
+      "quotes": [
+        {{- $quotes := $page.Params.quotes -}}
+        {{- range $qIndex, $q := $quotes -}}
+        {
+          "text": {{ $q.text | jsonify }},
+          "author": {{ $q.author | default "Anonymous" | jsonify }},
+          "date": {{ $q.date | jsonify }}
+        }{{ if lt (add $qIndex 1) (len $quotes) }},{{ end }}
+        {{- end -}}
+      ]
+    }{{ if lt (add $index 1) (len $pages) }},{{ end }}
+    {{- end -}}
+  ]
+}

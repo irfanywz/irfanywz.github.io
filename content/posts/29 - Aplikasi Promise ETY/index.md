@@ -6,6 +6,9 @@ date: 2026-08-24T16:00:00+07:00
 image: promise-ety.avif
 topics: ["Aplikasi"]
 # series: ""
+series_name: "Portofolio"
+series_links:
+  - "promise-ety"
 showAds: false
 adPositions: []
 draft: false

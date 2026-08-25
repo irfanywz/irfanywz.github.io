@@ -6,6 +6,11 @@
 @plugin "@tailwindcss/typography";
 @plugin "@iconify/tailwind4";
 
+/* Import CSS Swiper dari node_modules */
+@import "swiper/css";
+@import "swiper/css/free-mode";
+@import "swiper/css/mousewheel";
+
 /* baris ini untuk mengaktifkan dark mode via class .dark */
 @variant dark (&:where(.dark, .dark *));
 

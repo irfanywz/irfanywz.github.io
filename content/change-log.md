@@ -4,6 +4,21 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.5.0"
+    date: "25 Agustus 2026"
+    changes:
+      - tag: "Fitur Baru"
+        description: "Menambahkan fitur quote pada halaman journal beserta dukungan arsip offcanvas dan kategori."
+      - tag: "Fitur Baru"
+        description: "Menambahkan Swiper JS untuk navigasi nav-topics, filter tahun journal, dan kategori quote agar lebih mulus di perangkat seluler."
+      - tag: "Fitur Baru"
+        description: "Menambahkan fitur series-manual untuk menampilkan series utama dan alternatif secara otomatis."
+      - tag: "Fitur Baru"
+        description: "Menambahkan layout baru untuk halaman cheat-sheet pada koleksi."
+      - tag: "Pembaruan"
+        description: "Memperbaiki tampilan breadcrumb pada halaman koleksi."
+      - tag: "Perbaikan"
+        description: "Memperbaiki interaksi partial dengan menghilangkan overflow yang tidak perlu pada tampilan mobile."
   - version: "2.4.3"
     date: "23 Agustus 2026"
     changes:

@@ -15,6 +15,11 @@ consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
+{{% references %}}
+  {{% ref-item "https://irfanywz.github.io" "Dokumentasi Resmi Hugo" %}}
+  {{% ref-item "https://irfanywz.github.io" "Panduan Styling Tailwind CSS" %}}
+{{% /references %}}
+
 {{< qna q="Kenapa harus pakai Alpine.js?" >}}
 Karena Alpine.js ringan, gak pakai build step yang ribet, dan sintaksnya langsung nempel di HTML mirip Vue.js tapi versi minimalis.
 {{< /qna >}}

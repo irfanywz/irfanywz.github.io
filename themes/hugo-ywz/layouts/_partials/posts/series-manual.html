@@ -1,0 +1,87 @@
+{{ if .Params.series_links }}
+    {{ $currentSeriesName := .Params.series_name | default "Seri Artikel" }}
+    
+    <div class="mb-8 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-100 dark:border-gray-700 pb-3 uppercase tracking-wider">
+            Seri: <span class="text-indigo-600 dark:text-indigo-400 normal-case">{{ $currentSeriesName }}</span>
+        </h3>
+        
+        <ul class="space-y-4 text-sm">
+            {{ range .Params.series_links }}
+                {{ $targetSlug := . }}
+                
+                <!-- Cari halaman berdasarkan slug atau dari path -->
+                {{ $item := site.GetPage (printf "%s" $targetSlug) }}
+                {{ if not $item }}
+                    <!-- Fallback cari via parameter slug jika GetPage path gagal -->
+                    {{ $item = index (where site.RegularPages "Params.slug" $targetSlug) 0 }}
+                {{ end }}
+                
+                {{ if $item }}
+                <li>
+                    <a href="{{ $item.RelPermalink }}" class="flex items-center gap-3 group 
+                        {{ if eq $item $ }} pointer-events-none opacity-80 {{ end }}" title="{{ $item.Title }}">
+                        
+                        <!-- Container Thumbnail -->
+                        <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
+                            {{ $hasImage := false }}
+                            {{ if $item.Params.image }}
+                                {{ $resourceImg := $item.Resources.GetMatch $item.Params.image }}
+                                {{ $globalImg := resources.Get $item.Params.image }}
+
+                                {{ if $resourceImg }}
+                                    {{ $thumb := $resourceImg.Resize "1000x avif" }}
+                                    <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                    {{ $hasImage = true }}
+                                {{ else if $globalImg }}
+                                    {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
+                                    <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                    {{ $hasImage = true }}
+                                {{ else if (fileExists (printf "static/%s" $item.Params.image)) }}
+                                    <img src="{{ $item.Params.image | relURL }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                    {{ $hasImage = true }}
+                                {{ else if (strings.HasPrefix $item.Params.image "http") }}
+                                    <img src="{{ $item.Params.image }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                    {{ $hasImage = true }}
+                                {{ end }}
+                            {{ end }}
+
+                            <!-- Fallback Placeholder -->
+                            {{ if not $hasImage }}
+                                <div class="w-full h-full bg-gradient-to-br from-indigo-50/50 via-gray-100 to-indigo-100/30 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950/30 flex flex-col items-center justify-center text-indigo-500/70 dark:text-indigo-400/50 group-hover:scale-105 transition-transform duration-300">
+                                    <span class="icon-[ri--article-line] w-6 h-6"></span>
+                                </div>
+                            {{ end }}
+                        </div>
+
+                        <!-- Judul, Indikator Aktif, & Reading Time -->
+                        <div class="flex-grow min-w-0">
+                            <h4 class="font-medium line-clamp-2 transition-colors text-xs sm:text-sm leading-snug
+                                {{ if eq $item $ }}
+                                    text-indigo-600 dark:text-indigo-400 font-semibold
+                                {{ else }}
+                                    text-gray-700 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400
+                                {{ end }}">
+                                {{ $item.Title }}
+                            </h4>
+                            
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-[11px] text-gray-400 dark:text-gray-500 flex items-center gap-1 font-normal">
+                                    <span class="icon-[ri--time-line] w-3 h-3"></span>
+                                    {{ $item.ReadingTime }} mnt baca
+                                </span>
+
+                                {{ if eq $item $ }}
+                                    <span class="text-[10px] font-normal italic text-indigo-500 bg-indigo-50 dark:bg-indigo-950/50 px-1.5 py-0.5 rounded border border-indigo-100 dark:border-indigo-900">
+                                        Sedang Dibaca
+                                    </span>
+                                {{ end }}
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                {{ end }}
+            {{ end }}
+        </ul>
+    </div>
+{{ end }}

@@ -3,7 +3,6 @@ title: "Nonton Drama Korea"
 slug: nonton drama korea pertama kali
 date: 2022-06-15T16:00:35+07:00
 draft: False
-tags: []
 ---
 
 

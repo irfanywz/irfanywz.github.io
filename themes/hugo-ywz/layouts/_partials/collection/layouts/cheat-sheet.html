@@ -1,0 +1,49 @@
+<div class="container max-w-6xl mx-auto px-4 py-12" x-data="{ search: '' }">
+    <!-- Header -->
+    <header class="mb-12 border-b border-gray-100 dark:border-gray-800 pb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+        <div class="max-w-2xl">
+            <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tight flex items-center gap-3">
+                {{ if .Params.icon }}
+                    <span class="{{ .Params.icon }} {{ .Params.icon_color | default "text-indigo-500" }}"></span>
+                {{ end }}
+                {{ .Title }}
+            </h1>
+            <p class="text-lg text-gray-500 dark:text-gray-400">{{ .Description }}</p>
+        </div>
+
+        <!-- Live Search -->
+        <div class="w-full md:w-72">
+            <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
+                    <span class="icon-[ri--search-line] w-4 h-4"></span>
+                </span>
+                <input type="text" x-model="search" placeholder="Cari cheat sheet..." 
+                       class="w-full pl-9 pr-4 py-2.5 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+            </div>
+        </div>
+    </header>
+
+    <!-- Grid Cheat Sheet -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {{ range .Params.sheets }}
+        <div class="bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 flex flex-col justify-between"
+             x-data="{ copied: false }"
+             x-show="!search || $el.innerText.toLowerCase().includes(search.toLowerCase())">
+            
+            <h3 class="text-base font-bold text-gray-900 dark:text-white mb-3">{{ .title }}</h3>
+            
+            <div class="relative bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200/60 dark:border-gray-700/60 mt-auto">
+                <pre x-ref="codeText" class="whitespace-pre-wrap text-xs text-gray-700 dark:text-gray-300 font-mono pr-8 overflow-x-auto"><code>{{ .code }}</code></pre>
+                
+                <!-- Tombol Copy -->
+                <button @click="navigator.clipboard.writeText($refs.codeText.innerText); copied = true; setTimeout(() => copied = false, 2000)" 
+                        class="absolute top-2 right-2 p-1.5 rounded-md bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors shadow-sm"
+                        title="Salin Kode">
+                    <span x-show="!copied" class="icon-[ri--clipboard-line] text-gray-500 w-4 h-4"></span>
+                    <span x-show="copied" class="icon-[ri--check-line] text-green-500 w-4 h-4" style="display: none;"></span>
+                </button>
+            </div>
+        </div>
+        {{ end }}
+    </div>
+</div>

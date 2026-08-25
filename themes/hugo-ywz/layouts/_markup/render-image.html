@@ -9,6 +9,6 @@
    @click="$store.lightbox.open('{{ $destination }}', '{{ $title }}', '{{ $altText }}')"
    alt="{{ $altText }}" 
    {{ with $title }}title="{{ . }}"{{ end }}
-   loading="lazy" />
+   loading="lazy" decoding="async" />
 
 {{- /* Pastikan tidak ada newline berlebih */ -}}

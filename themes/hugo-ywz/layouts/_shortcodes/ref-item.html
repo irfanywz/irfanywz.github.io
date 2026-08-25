@@ -1,0 +1,9 @@
+{{ $url := .Get "url" | default (.Get 0) }}
+{{ $text := .Get "text" | default (.Get 1) | default $url }}
+
+<li>
+  <a href="{{ $url }}" target="_blank" rel="nofollow noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center gap-1">
+    <span>{{ $text }}</span>
+    <span class="icon-[ri--external-link-line] w-3 h-3 text-gray-400"></span>
+  </a>
+</li>

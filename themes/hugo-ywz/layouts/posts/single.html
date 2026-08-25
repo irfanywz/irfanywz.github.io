@@ -146,8 +146,15 @@
 
                                 <footer class="mt-8">
                                     {{ if .Params.series }}
+                                        <!-- Versi 1: Seri Otomatis (berdasarkan parameter series bawaan) -->
                                         {{ partial "posts/series-post.html" . }}
+
+                                    {{ else if .Params.series_links }}
+                                        <!-- Versi 2: Seri Manual (berdasarkan list path/slug yang baru kita buat) -->
+                                        {{ partial "posts/series-manual.html" . }}
+
                                     {{ else }}
+                                        <!-- Versi 3: Default / Artikel Terkait jika tidak masuk keduanya -->
                                         {{ partial "posts/related-post.html" . }}
                                     {{ end }}
                                     
@@ -167,7 +174,7 @@
                         {{ partialCached "posts/ads-sidebar.html" . }}                                    
                         {{ partialCached "posts/recent-post.html" . }}                                    
                         {{ partial "posts/sidebar-topics.html" . }}
-                        {{ partial "posts/sidebar-logo.html" . }}
+                        {{ partialCached "posts/sidebar-logo.html" . }} 
                     </div>
                 </aside>
 

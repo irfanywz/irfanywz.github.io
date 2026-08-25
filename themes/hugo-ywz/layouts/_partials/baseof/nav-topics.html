@@ -1,4 +1,4 @@
-<!-- Topics Horizontal Navigation Bar (Centered & Minimalist) -->
+<!-- Topics Horizontal Navigation Bar (Centered & Minimalist with Swiper) -->
 {{ $showtopics := .Site.Params.showtopics | default true }}
 {{ if $showtopics }}
     {{ $validtopics := slice }}
@@ -12,17 +12,44 @@
     {{ if $validtopics }}
     <div class="bg-white/80 dark:bg-gray-900/80 block sm:hidden transition-colors duration-300">
         <div class="container max-w-6xl mx-auto px-4 py-2">
-            <!-- md:justify-center membuat posisi di tengah saat layar lebar, overflow-x-auto & justify-start menjaga fungsionalitas scroll di mobile -->
-            <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar whitespace-nowrap justify-start md:justify-center">
-                
-                {{ range $validtopics }}
-                {{ $isActive := eq .Page.Permalink $.Permalink }}
-                <a href="{{ .Page.Permalink }}" class="px-3 py-1 text-[11px] font-medium rounded-md transition-colors shrink-0 {{ if $isActive }}bg-indigo-600 text-white{{ else }}bg-gray-100 dark:bg-gray-800/80 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white{{ end }}">
-                    {{ .Title }}
-                </a>
-                {{ end }}
-                
+            
+            <!-- Inisialisasi Alpine.js untuk Swiper -->
+            <div 
+              x-data="{
+                swiper: null,
+                init() {
+                  this.swiper = new Swiper(this.$refs.container, {
+                    modules: window.SwiperModules,
+                    slidesPerView: 'auto',
+                    spaceBetween: 6, // Menyesuaikan dengan gap-1.5 sebelumnya (kira-kira 6px)
+                    freeMode: true,
+                    grabCursor: true,
+                    mousewheel: {
+                      forceToAxis: true,
+                    },
+                  });
+                }
+              }"
+              class="relative group"
+            >
+              <!-- Swiper Container -->
+              <div x-ref="container" class="swiper overflow-hidden py-1 px-0.5">
+                  <div class="swiper-wrapper items-center">
+                      
+                      {{ range $validtopics }}
+                      {{ $isActive := eq .Page.Permalink $.Permalink }}
+                      <!-- Setiap item harus dibungkus swiper-slide dan !w-auto -->
+                      <div class="swiper-slide !w-auto">
+                          <a href="{{ .Page.Permalink }}" class="block px-3 py-1 text-[11px] font-medium rounded-md transition-colors shrink-0 {{ if $isActive }}bg-indigo-600 text-white{{ else }}bg-gray-100 dark:bg-gray-800/80 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white{{ end }}">
+                              {{ .Title }}
+                          </a>
+                      </div>
+                      {{ end }}
+                      
+                  </div>
+              </div>
             </div>
+
         </div>
     </div>
     {{ end }}

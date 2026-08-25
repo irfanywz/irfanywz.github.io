@@ -1,7 +1,7 @@
 ---
 title: "Tautan Bermanfaat"
 description: "Koleksi tautan ke situs web, alat, dan sumber daya yang berguna."
-draft: false
+draft: true
 layout: "link"
 icon: "icon-[ri--links-line]"
 icon_color: "text-blue-500"

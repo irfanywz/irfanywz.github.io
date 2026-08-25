@@ -16,13 +16,16 @@
             
             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ .title }}</h3>
             
-            <div class="relative bg-white dark:bg-gray-900 p-4 rounded-lg flex-grow">
-                <!-- Tambahkan x-ref agar kita bisa mengambil teksnya dengan aman -->
-                <pre x-ref="promptText" class="whitespace-pre-wrap text-gray-700 dark:text-gray-300 text-sm h-full"><code>{{ .prompt }}</code></pre>
+            <div class="relative bg-white dark:bg-gray-900 p-4 rounded-lg flex-grow flex flex-col">
+                <!-- Kotak Scrollable dengan batasan tinggi maksimum (max-h-64) -->
+                <div class="max-h-64 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700">
+                    <pre x-ref="promptText" class="whitespace-pre-wrap text-gray-700 dark:text-gray-300 text-sm"><code>{{ .prompt }}</code></pre>
+                </div>
                 
-                <!-- Panggil $refs.promptText.innerText sebagai gantinya -->
+                <!-- Tombol Copy (posisi tetap di pojok kanan atas area prompt) -->
                 <button @click="navigator.clipboard.writeText($refs.promptText.innerText); copied = true; setTimeout(() => copied = false, 2000)" 
-                        class="absolute top-2 right-2 p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        class="absolute top-2 right-2 p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors z-10 shadow-sm"
+                        title="Salin Prompt">
                     <span x-show="!copied" class="icon-[ri--clipboard-line] text-gray-500"></span>
                     <span x-show="copied" class="icon-[ri--check-line] text-green-500" style="display: none;"></span>
                 </button>
