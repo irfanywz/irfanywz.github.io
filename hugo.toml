@@ -47,8 +47,9 @@ pygmentscodefencesguesssyntax = true
     </div>
   '''
 
-  # categories sidebar
-  showCategories = true
+  # sidebar configuration
+  showSidebarTopics = true
+  showSidebarPartner = false
 
   # ads sidebar
   showAdsSidebar = false

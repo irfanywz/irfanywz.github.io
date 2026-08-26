@@ -1,6 +1,6 @@
 <!-- topics Widget -->
-{{ $showtopics := .Site.Params.showtopics | default true }}
-{{ if $showtopics }}
+{{ $showSidebarTopics := .Site.Params.showSidebarTopics | default true }}
+{{ if $showSidebarTopics }}
     <!-- 1. Kumpulkan dan filter kategori yang hanya punya konten di section "posts" -->
     {{ $validtopics := slice }}
     {{ range .Site.Taxonomies.topics }}

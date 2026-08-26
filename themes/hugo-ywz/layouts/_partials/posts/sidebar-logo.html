@@ -1,4 +1,6 @@
-<!-- /layouts/partials/sidebar-logo.html -->
+<!-- topics Widget -->
+{{ $showSidebarPartner := .Site.Params.showSidebarPartner | default true }}
+{{ if $showSidebarPartner }}
 <div class="grid grid-cols-2 gap-3 my-4">
   
   {{ $remoteUrl := "https://id.seedbacklink.com/wp-content/uploads/2023/11/Badge-Seedbacklink_Artboard-1-webp-version.webp" }}
@@ -41,3 +43,4 @@
   </div>
 
 </div>
+{{ end }}
