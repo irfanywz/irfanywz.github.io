@@ -4,6 +4,17 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.5.1"
+    date: "26 Agustus 2026"
+    changes:
+      - tag: "Fitur Baru"
+        description: "Menambahkan layout posts single nosidebar."
+      - tag: "Fitur Baru"
+        description: "Menambahkan halaman keywords."
+      - tag: "Perbaikan"
+        description: "Memperbaiki sidebar topic sekarang ada pilihan keywordnya."
+      - tag: "Perbaikan"
+        description: "Memperbaiki tampilan halaman service."
   - version: "2.5.0"
     date: "25 Agustus 2026"
     changes:

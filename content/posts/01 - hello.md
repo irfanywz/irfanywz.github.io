@@ -4,7 +4,8 @@ slug: 'hello-world'
 description: "this is description if you want"
 date: 2011-12-07T09:08:30+07:00
 image: hello-world.avif
-topics: ["Kode"]
+topics: ["Teknologi"]
+keywords: ["Kode"]
 draft: false
 ---
 

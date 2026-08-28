@@ -3,7 +3,8 @@ title: "Kode itu hanya sebuah perintah"
 slug: kode hanya sebuah perintah
 date: 2024-04-24T09:00:35+07:00
 image: kode-perintah.avif
-topics: ["Kode"]
+topics: ["Teknologi"]
+keywords: ["Kode"]
 draft: False
 ---
 

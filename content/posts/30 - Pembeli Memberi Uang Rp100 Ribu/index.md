@@ -4,7 +4,8 @@ slug: cek-keaslian-uang-100-ribu
 description: "ketika pembeli memberi uang besar, mengecek keaslian uang adalah keharusan agar terhindari dari uang palsu"
 date: 2026-08-25T19:00:00+07:00
 image: cover-uang-100ribu.avif
-topics: ["Uang"]
+topics: ["Bisnis"]
+keywords: ["Keuangan"]
 # series: ""
 showAds: false
 adPositions: []

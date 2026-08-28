@@ -3,7 +3,8 @@ title: "Pentingnya Menggunakan Power Supply Baru"
 slug: pentingnya menggunakan power supply baru
 date: 2024-01-02T19:49:16+07:00
 image: power-supply-rusak.avif
-topics: ["Komputer"]
+topics: ["Teknologi"]
+keywords: ["Komputer"]
 draft: False
 ---
 

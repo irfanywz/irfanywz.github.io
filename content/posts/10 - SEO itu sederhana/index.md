@@ -4,7 +4,8 @@ slug: seo itu sederhana
 description: Bisa ditarik kesimpulan kira-kira seperti ini
 date: 2025-01-02T18:00:35+07:00
 image: seo-sederhana.avif
-topics: ["Pemasaran Digital"]
+topics: ["Konten Kreator"]
+keywords: ["Pemasaran Digital"]
 draft: false
 ---
 

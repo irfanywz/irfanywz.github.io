@@ -4,13 +4,15 @@ slug: promise-ety
 description: "kumpulan alat untuk ngeyoutube mulai dari research konten, mencari konten trending, dan analisa channel"
 date: 2026-08-24T16:00:00+07:00
 image: promise-ety.avif
-topics: ["Aplikasi"]
+topics: ["Teknologi"]
+keywords: ["Aplikasi"]
 # series: ""
 series_name: "Portofolio"
 series_links:
   - "promise-ety"
 showAds: false
 adPositions: []
+layout: "nosidebar"
 draft: false
 ---
 
@@ -69,7 +71,7 @@ Pastikan komputer Anda memenuhi persyaratan sistem minimum untuk menjalankan Pro
 Ikuti langkah-langkah berikut untuk menginstal Promise ETY:
 
 1. **Unduh Aplikasi**: pertama unduh aplikasi {{< donate-download url="https://www.mediafire.com/file/lud6wfwgkcaktbl/Promise_ETY_v1.0.2.exe/file" text="Promise ETY" >}}
-2. **Ekstrak File**: Unduh file zip aplikasi yang telah diberikan setelah pembelian. Ekstrak seluruh isi file zip ke lokasi yang Anda inginkan di komputer Anda (misalnya, `D:\Apps\Promise ETY`).
+2. **Ekstrak File**: Ekstrak file zip ke lokasi tertentu (misalnya, `D:\Apps\Promise ETY`). jika meminta password masukan <kbd>123</kbd>
 3. **Jalankan Aplikasi**: Masuk ke folder yang telah diekstrak, lalu cari dan jalankan file `Promise ETY.exe`.
 
 
@@ -89,7 +91,11 @@ Ikuti langkah-langkah berikut untuk menginstal Promise ETY:
 {{< spoiler label="Perjalanan Pengembangan" >}}
 awalnya saya kira dengan membuat aplikasi saya bisa terjun ngeyoutube, tapi setelah aplikasi jadi, saya tidak sama sekali menyentuh dunia perkonten kreatoran.
 
+<br><br>
+
 saya menyesalinya karena membuang waktu lagi, seperti terjebak pada lingkaran waktu dan tidak bisa keluar, melakukan hal yang sama berulang kali.
+
+<br><br>
 
 sampai akhirnya saya sadar bahwa bukan tidak cukup alatnya, tapi belum adanya keinginan untuk memulainya...
 {{< /spoiler >}}

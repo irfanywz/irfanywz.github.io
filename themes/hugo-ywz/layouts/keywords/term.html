@@ -1,0 +1,78 @@
+{{ define "head" }}{{ end }}
+
+{{ define "config" }}
+    {{ .Scratch.Set "noIndex" true }} 
+{{ end }}
+
+{{ define "main" }}
+
+    {{ partial "baseof/nav-topics.html" . }}
+
+    <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
+        
+        <div class="container max-w-6xl mx-auto px-4 py-8 md:py-12">
+            <div class="flex flex-col md:flex-row gap-8 lg:gap-12">    
+                
+                <!-- Main Content: Posts -->
+                <div class="w-full md:w-2/3 lg:w-3/4">
+
+                    <!-- Persiapan Data & Paginator dengan Limit 10 -->
+                    {{ $filteredPages := where .Pages "Section" "posts" }}
+                    {{ $limit := 10 }}
+                    {{ $paginator := .Paginate $filteredPages $limit }}
+
+                    <!-- Info Keyword Header: Gaya Minimalis / Badge -->
+                    <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-100 dark:border-gray-800">
+                        <div class="flex items-center gap-2.5">
+                            <span class="p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400">
+                                <span class="icon-[ri--hashtag] w-5 h-5 block"></span>
+                            </span>
+                            <div>
+                                <span class="text-xs text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider">Arsip Keyword</span>
+                                <h1 class="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white flex items-center gap-1.5">
+                                    <span>{{ .Title }}</span>
+                                    {{ if gt $paginator.PageNumber 1 }}
+                                        <span class="text-sm font-normal text-gray-400">(Hal. {{ $paginator.PageNumber }})</span>
+                                    {{ end }}
+                                </h1>
+                            </div>
+                        </div>
+                        <!-- Jumlah total artikel menggunakan len $filteredPages -->
+                        <div class="text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/60 px-3 py-1.5 rounded-full self-start sm:self-auto border border-gray-200/60 dark:border-gray-700/60">
+                            Total: <span class="font-bold text-gray-800 dark:text-gray-200">{{ len $filteredPages }}</span> artikel
+                        </div>
+                    </div>
+
+                    <!-- Container Grid -->
+                    <div id="content-container" class="grid grid-cols-1 sm:grid-cols-1 gap-3.5 sm:gap-4 items-stretch">
+                        {{ range $index, $element := $paginator.Pages }}
+                            {{ partial "posts/list-card-keyword.html" . }}
+                            {{ partial "posts/ads-list.html" (dict "context" . "index" $index) }}
+                        {{ end }}
+                    </div>
+                    
+                    <!-- Pagination (Menggunakan variabel $paginator yang konsisten) -->
+                    <div class="mt-8">
+                        {{ partial "components/pagination-loadmore.html" $paginator }}
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="w-full md:w-1/3 lg:w-1/4">
+                    <div class="mb-8">
+                        {{ partialCached "posts/sidebar-author.html" . }}                            
+                    </div>                    
+                    
+                    <div class="space-y-8 sticky top-8">                                                       
+                        {{ partialCached "posts/sidebar-ads.html" . }}                            
+                        {{ partial "posts/sidebar-random-post.html" . }}                            
+                        {{ partial "posts/sidebar-topics.html" . }}                            
+                    </div>
+                </aside>
+
+            </div>
+        </div>
+
+    </main>
+
+{{ end }}

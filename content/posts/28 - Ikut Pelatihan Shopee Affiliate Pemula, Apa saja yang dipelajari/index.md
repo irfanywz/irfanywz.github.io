@@ -4,7 +4,8 @@ slug: Pelatihan Shopee Affiliate Pemula
 description: "affiliate masih menjanjikan untuk digarap sebagai penghasilan sampingan, pelatihan shopee affiliate pemula yang saya ikuti memberikan pemahaman yang mendalam"
 date: 2026-08-23T22:00:00+07:00
 image: shopee-affiliate.avif
-topics: ["Pemasaran Digital"]
+topics: ["Konten Kreator"]
+keywords: ["Monetisasi"]
 series: "Shopee Affiliate"
 showAds: false
 adPositions: []

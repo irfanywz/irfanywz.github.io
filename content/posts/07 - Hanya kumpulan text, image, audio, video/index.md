@@ -3,7 +3,8 @@ title: "Hanya Kumpulan Text, Image, Audio dan Video"
 slug: hanya kumpulan data
 date: 2023-12-18T07:03:40+07:00
 image: hanya-text-audio-visual.avif
-topics: ["Komputer"]
+topics: ["Teknologi"]
+keywords: ["Komputer"]
 draft: false
 ---
 

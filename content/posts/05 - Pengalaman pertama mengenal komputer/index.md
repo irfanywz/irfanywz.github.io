@@ -3,7 +3,8 @@ title: 'Pengalaman pertama mengenal komputer'
 slug: pengalaman mengenal komputer
 date: 2023-01-01T11:00:00-07:00
 image: pengalaman-komputer.avif
-topics: ["Komputer"]
+topics: ["Teknologi"]
+keywords: ["Komputer"]
 draft: false
 ---
 

@@ -3,7 +3,8 @@ title: Memperbaiki Tautan Telegram yang tidak bisa membuka lewat aplikasi
 slug: Memperbaiki Tautan Telegram yang tidak bisa membuka lewat aplikasi
 date: 2026-03-26T04:30:31+07:00
 image: tautan-telegram-rusak.avif
-topics: ["Aplikasi"]
+topics: ["Teknologi"]
+keywords: ["Aplikasi"]
 draft: false
 series: "Artikel Series"
 ---

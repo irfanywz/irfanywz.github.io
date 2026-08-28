@@ -1,0 +1,56 @@
+<article class="group bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700/70 hover:border-emerald-300 dark:hover:border-emerald-700/80 hover:shadow-md transition-all duration-300 p-3.5 sm:p-4 flex flex-row items-center gap-4 relative w-full">
+
+    <!-- Cek & Ambil Gambar -->
+    {{ $image := "" }}
+    {{ $thumb := "" }}
+    {{ if .Params.image }}
+        {{ $res := .Resources.GetMatch .Params.image }}
+        {{ if $res }}
+            {{ $thumb = $res.Resize "400x avif" }}
+        {{ else }}
+            {{ $globalRes := resources.Get .Params.image }}
+            {{ if $globalRes }}
+                {{ $thumb = $globalRes.Resize "400x avif" }}
+            {{ else }}
+                {{ $image = .Params.image | relURL }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
+
+    <!-- Thumbnail (Diubah jadi ukuran kotak vertikal/persegi untuk model list) -->
+    <a href="{{ .RelPermalink }}" class="block w-24 h-24 sm:w-32 sm:h-24 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900 flex-shrink-0 relative">
+        {{ if $thumb }}
+            <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ .Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+        {{ else if $image }}
+            <img src="{{ $image }}" alt="{{ .Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+        {{ else }}
+            <div class="w-full h-full flex items-center justify-center text-gray-400 bg-gray-50 dark:bg-gray-800/50">
+                <span class="icon-[ri--image-line] w-7 h-7 opacity-40"></span>
+            </div>
+        {{ end }}
+    </a>
+
+    <!-- Detail Konten -->
+    <div class="flex-1 min-w-0 flex flex-col justify-center">
+        <!-- Meta Info -->
+        <div class="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 font-normal mb-1.5">
+            <span class="flex items-center gap-1">
+                <span class="icon-[ri--calendar-line] w-3.5 h-3.5 flex-shrink-0"></span>
+                {{ .Date | time.Format "02 Jan 2006" }}
+            </span>
+            <span class="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-600"></span>
+            <span class="flex items-center gap-1">
+                <span class="icon-[ri--time-line] w-3.5 h-3.5 flex-shrink-0"></span>
+                {{ printf "%d mnt baca" .ReadingTime }}
+            </span>
+        </div>
+
+        <!-- Judul Artikel -->
+        <h3 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors leading-snug line-clamp-2">
+            <a href="{{ .RelPermalink }}" class="before:absolute before:inset-0">
+                {{ .Title }}
+            </a>
+        </h3>
+    </div>
+
+</article>

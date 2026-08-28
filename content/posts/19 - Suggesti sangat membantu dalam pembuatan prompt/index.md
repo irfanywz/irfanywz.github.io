@@ -3,7 +3,8 @@ title: Suggesti sangat membantu dalam pembuatan prompt
 slug: suggesti membantu pembuatan prompt
 date: 2026-01-30T00:14:31+07:00
 image: sugesti-membantu.avif
-topics: ["AI"]
+topics: ["Teknologi"]
+keywords: ["AI"]
 draft: false
 ---
 

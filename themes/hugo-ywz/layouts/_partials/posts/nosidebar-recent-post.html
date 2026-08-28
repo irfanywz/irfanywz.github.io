@@ -1,0 +1,95 @@
+<!-- Recent Posts Widget (Full-Width Section dengan Filter Section) -->
+<section class="mt-16 py-12 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-800">
+    <div class="container max-w-7xl mx-auto px-4 sm:px-6">
+        
+        <div class="flex items-center justify-between mb-6 pb-3 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 uppercase tracking-wider">
+                <span class="icon-[ri--history-line] text-indigo-600 dark:text-indigo-400 w-5 h-5"></span>
+                Postingan Terbaru
+            </h3>
+            <a href="/" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">Semua Artikel →</a>
+        </div>
+
+        <!-- Ambil 4 postingan terbaru -->
+        {{ $recentPosts := first 4 (where site.RegularPages "Section" "posts").ByDate.Reverse }}
+
+        {{ if $recentPosts }}
+        <!-- Mobile: Flex Column (List), Tablet: Grid 2 Kolom, Desktop (lg ke atas): Grid 4 Kolom -->
+        <div class="flex flex-col sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {{ range $recentPosts }}
+            {{ $currentPage := . }}
+
+            <!-- Kartu Artikel: Flex Row di HP, Flex Col di Tablet/Desktop -->
+            <a href="{{ $currentPage.RelPermalink }}" class="group flex flex-row sm:flex-col bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200/80 dark:border-gray-700/80 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-md transition-all" title="{{ $currentPage.Title }}">
+
+                <!-- Container Thumbnail (Lebar fix di HP agar rapi jadi list, full di atas saat grid) -->
+                <div class="w-32 sm:w-full h-auto sm:h-44 shrink-0 overflow-hidden bg-gray-100 dark:bg-gray-700 relative">
+                    
+                    {{ $hasImage := false }}
+
+                    {{ if $currentPage.Params.image }}
+                        {{ $imgPath := $currentPage.Params.image }}
+                        {{ $cleanPath := strings.TrimPrefix "/" $imgPath }}
+
+                        {{ $resourceImg := $currentPage.Resources.GetMatch $cleanPath }}
+                        {{ $globalImg := resources.Get $cleanPath }}
+
+                        {{ if $resourceImg }}
+                            {{ $hasImage = true }}
+                            {{ if eq $resourceImg.MediaType.SubType "svg" }}
+                                <img src="{{ $resourceImg.RelPermalink }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ else }}
+                                {{ $thumb := $resourceImg.Resize "800x avif" }}
+                                <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ end }}
+
+                        {{ else if $globalImg }}
+                            {{ $hasImage = true }}
+                            {{ if eq $globalImg.MediaType.SubType "svg" }}
+                                <img src="{{ $globalImg.RelPermalink }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ else }}
+                                {{ $thumbGlobal := $globalImg.Resize "800x avif" }}
+                                <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ end }}
+
+                        {{ else if (fileExists (printf "static/%s" $cleanPath)) }}
+                            {{ $hasImage = true }}
+                            <img src="{{ $imgPath | relURL }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+
+                        {{ else if (strings.HasPrefix $imgPath "http") }}
+                            {{ $hasImage = true }}
+                            <img src="{{ $imgPath }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        {{ end }}
+                    {{ end }}
+
+                    <!-- Fallback Placeholder -->
+                    {{ if not $hasImage }}
+                        <div class="w-full h-full bg-gradient-to-br from-indigo-50/50 via-gray-100 to-indigo-100/30 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950/30 flex flex-col items-center justify-center text-indigo-500/70 dark:text-indigo-400/50 group-hover:scale-105 transition-transform duration-300">
+                            <span class="icon-[ri--article-line] w-8 h-8"></span>
+                        </div>
+                    {{ end }}
+
+                </div>
+
+                <!-- Konten Teks -->
+                <div class="p-3.5 sm:p-5 flex flex-col justify-between flex-grow">
+                    <div>
+                        <div class="flex items-center gap-1.5 text-[11px] sm:text-xs font-medium text-indigo-600 dark:text-indigo-400 mb-1 sm:mb-2">
+                            <span class="icon-[ri--time-line] w-3.5 h-3.5"></span>
+                            <span>{{ printf "%d min waktu baca" $currentPage.ReadingTime }}</span>
+                        </div>
+                        <h4 class="text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 font-bold line-clamp-2 transition-colors text-xs sm:text-base leading-snug">
+                            {{ $currentPage.Title }}
+                        </h4>
+                    </div>
+                </div>
+
+            </a>
+            {{ end }}
+        </div>
+        {{ else }}
+            <p class="text-xs text-gray-400">Belum ada artikel.</p>
+        {{ end }}
+
+    </div>
+</section>

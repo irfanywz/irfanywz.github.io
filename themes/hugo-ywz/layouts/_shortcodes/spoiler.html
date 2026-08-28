@@ -1,7 +1,7 @@
-{{ $label := .Get "label" | default "Buka Spoiler (Klik untuk melihat)" }}
+{{ $label := .Get "label" | default (.Get 0) | default "Buka Spoiler (Klik untuk melihat)" }}
 
-<div class="my-6" x-data="{ revealed: false }">
-    <div class="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden transition-all duration-200 shadow-sm">
+<div class="my-6 not-prose" x-data="{ revealed: false }">
+    <div class="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden transition-all duration-200 shadow-xs">
         
         <!-- Tombol / Header Spoiler -->
         <button type="button" 
@@ -21,10 +21,10 @@
         <!-- Area Konten (Diblur jika belum dibuka) -->
         <div class="p-4 sm:p-5 text-base text-zinc-700 dark:text-zinc-300 relative">
             <div :class="revealed ? 'blur-none select-text' : 'blur-sm select-none cursor-pointer'" 
-                 @click="if(!revealed) revealed = true"
-                 title="Klik untuk membuka spoiler"
-                 class="transition-all duration-300 prose dark:prose-invert max-w-none">
-                {{ .Inner | markdownify }}
+                   @click="if(!revealed) revealed = true"
+                   title="Klik untuk membuka spoiler"
+                   class="transition-all duration-300 prose dark:prose-invert max-w-none">
+                {{ .Inner | safeHTML }}
             </div>
             
             <!-- Overlay hint kalau belum dibuka -->

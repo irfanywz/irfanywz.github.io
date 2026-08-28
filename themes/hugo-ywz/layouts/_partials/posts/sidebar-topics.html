@@ -1,32 +1,86 @@
-<!-- topics Widget -->
-{{ $showSidebarTopics := .Site.Params.showSidebarTopics | default true }}
-{{ if $showSidebarTopics }}
-    <!-- 1. Kumpulkan dan filter kategori yang hanya punya konten di section "posts" -->
-    {{ $validtopics := slice }}
+<!-- Sidebar Tabbed Widget: Topics & Keywords -->
+{{ $showSidebarTabbed := .Site.Params.showSidebarTabbed | default true }}
+{{ if $showSidebarTabbed }}
+
+    <!-- 1. Ambil & Filter Topics -->
+    {{ $validTopics := slice }}
     {{ range .Site.Taxonomies.topics }}
         {{ $filteredPages := where .Pages "Section" "posts" }}
         {{ $filteredCount := len $filteredPages }}
-        
         {{ if gt $filteredCount 0 }}
-            <!-- Simpan data dengan key yang aman (.Page.Title dan .Page) -->
-            {{ $validtopics = $validtopics | append (dict "Title" .Page.Title "Page" .Page "Count" $filteredCount) }}
+            {{ $validTopics = $validTopics | append (dict "Title" .Page.Title "Page" .Page "Count" $filteredCount) }}
         {{ end }}
     {{ end }}
+    {{ $sortedTopics := sort $validTopics "Count" "desc" }}
 
-    <!-- 2. Urutkan berdasarkan jumlah terbanyak -->
-    {{ $sortedtopics := sort $validtopics "Count" "desc" }}
+    <!-- 2. Ambil & Filter Keywords -->
+    {{ $validKeywords := slice }}
+    {{ range .Site.Taxonomies.keywords }}
+        {{ $filteredPages := where .Pages "Section" "posts" }}
+        {{ $filteredCount := len $filteredPages }}
+        {{ if gt $filteredCount 0 }}
+            {{ $validKeywords = $validKeywords | append (dict "Title" .Page.Title "Page" .Page "Count" $filteredCount) }}
+        {{ end }}
+    {{ end }}
+    {{ $sortedKeywords := sort $validKeywords "Count" "desc" }}
 
-    {{ if $sortedtopics }}
-    <div class="hidden sm:block bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-100 dark:border-gray-700 pb-3">Jelajahi Topik</h3>
-        <div class="flex flex-wrap gap-2">
-            {{ range first 10 $sortedtopics }}
-            {{ $isActive := eq .Page.Permalink $.Permalink }}
-            <a href="{{ .Page.Permalink }}" class="px-3 py-1 text-xs font-medium rounded-full transition-colors {{ if $isActive }}bg-indigo-600 text-white dark:bg-indigo-600 dark:text-white{{ else }}bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-indigo-100 hover:text-indigo-700 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-300{{ end }}">
-                {{ .Title }} ({{ .Count }})
-            </a>
-            {{ end }}
+    <!-- 3. Cek apakah halaman saat ini adalah halaman keyword (berdasarkan URL atau taksonomi) -->
+    {{ $isKeywordPage := and (eq .Kind "taxonomy") (in .Permalink "/keywords/") }}
+    <!-- Atau alternatif jika struktur permalink taksonomi keyword Anda mengandung kata keywords: -->
+    {{ $defaultTab := "topics" }}
+    {{ if or (in .Permalink "/keywords/") (and (eq .Section "keywords") (eq .Kind "term")) }}
+        {{ $defaultTab = "keywords" }}
+    {{ end }}
+
+    {{ if or $sortedTopics $sortedKeywords }}
+    <!-- Gunakan variabel $defaultTab ke dalam x-data -->
+    <div class="hidden sm:block bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700" x-data="{ activeTab: '{{ $defaultTab }}' }">
+        
+        <!-- Header Tabs -->
+        <div class="flex items-center p-1 bg-gray-100 dark:bg-gray-900/60 rounded-xl mb-4 border border-gray-200/60 dark:border-gray-800">
+            <!-- Tab 1: Topics -->
+            <button @click="activeTab = 'topics'" 
+                :class="activeTab === 'topics' ? 'bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-400 shadow-xs font-bold' : 'text-gray-500 dark:text-gray-400 font-medium hover:text-gray-900 dark:hover:text-white'"
+                class="flex-1 py-1.5 px-3 text-xs rounded-lg transition-all duration-200 text-center">
+                Topik
+            </button>
+            
+            <!-- Tab 2: Keywords -->
+            <button @click="activeTab = 'keywords'" 
+                :class="activeTab === 'keywords' ? 'bg-white dark:bg-gray-800 text-emerald-600 dark:text-emerald-400 shadow-xs font-bold' : 'text-gray-500 dark:text-gray-400 font-medium hover:text-gray-900 dark:hover:text-white'"
+                class="flex-1 py-1.5 px-3 text-xs rounded-lg transition-all duration-200 text-center">
+                Keywords
+            </button>
         </div>
+
+        <!-- Konten Tab 1: Topics -->
+        <div x-show="activeTab === 'topics'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+            <div class="max-h-60 overflow-y-auto pr-1.5 custom-scrollbar">
+                <div class="flex flex-wrap gap-2">
+                    {{ range $sortedTopics }}
+                    {{ $isActive := eq .Page.Permalink $.Permalink }}
+                    <a href="{{ .Page.Permalink }}" class="px-3 py-1 text-xs font-medium rounded-full transition-colors {{ if $isActive }}bg-indigo-600 text-white dark:bg-indigo-600 dark:text-white{{ else }}bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-indigo-100 hover:text-indigo-700 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-300{{ end }}">
+                        {{ .Title }} ({{ .Count }})
+                    </a>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Konten Tab 2: Keywords -->
+        <div x-show="activeTab === 'keywords'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" style="display: none;">
+            <div class="max-h-60 overflow-y-auto pr-1.5 custom-scrollbar">
+                <div class="flex flex-wrap gap-2">
+                    {{ range $sortedKeywords }}
+                    {{ $isActive := eq .Page.Permalink $.Permalink }}
+                    <a href="{{ .Page.Permalink }}" class="px-3 py-1 text-xs font-medium rounded-full transition-colors {{ if $isActive }}bg-emerald-600 text-white dark:bg-emerald-600 dark:text-white{{ else }}bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-emerald-100 hover:text-emerald-700 dark:hover:bg-emerald-900/50 dark:hover:text-emerald-300{{ end }}">
+                        #{{ .Title }} ({{ .Count }})
+                    </a>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+
     </div>
     {{ end }}
 {{ end }}

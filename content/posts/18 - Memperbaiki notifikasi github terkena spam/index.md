@@ -4,7 +4,8 @@ slug: notifikasi github kena spam
 description: mendapat notifikasi spam pada akun github dan cara menghilangkannya, mudah dilakukan hanya membutuhkan akses api
 date: 2025-10-10T00:14:31+07:00
 image: notifikasi-github.avif
-topics: ["Kode"]
+topics: ["Teknologi"]
+keywords: ["Kode"]
 draft: false
 ---
 

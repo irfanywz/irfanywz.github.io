@@ -198,7 +198,7 @@ weight = 40
     tabWidth = 2
 
 [taxonomies]
-  # tag = 'tags'
+  keyword = 'keywords'
   topic = "topics"
 
 [permalinks]

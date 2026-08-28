@@ -3,7 +3,8 @@ title: Gagal Build Pyinstaller karena subfolder memiliki karakter []
 slug: gagal-build-pyinstaller
 date: 2025-06-30T15:59:43+07:00
 image: error-python.avif
-topics: ["Kode"]
+topics: ["Teknologi"]
+keywords: ["Kode"]
 draft: false
 ---
 

@@ -1,0 +1,243 @@
+<div x-data="{ commentOpen: false, commentLoaded: false, shareOpen: false, copied: false }" class="w-full">
+  <!-- 1 Kotak Utama (Compact & Muat 1 Baris di Mobile Tanpa Scroll) -->
+  <div class="post-reactions flex items-center justify-between gap-1 sm:gap-4 p-2 sm:p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700" data-id='{{ .RelPermalink }}'>
+
+    <!-- Bagian Kiri: Reaction Items (Clap, Fire, Lightbulb) -->
+    <div class="flex items-center gap-0.5 sm:gap-2 flex-shrink-0">
+      <!-- Clap -->
+      <div class="reaction-item relative flex items-center sm:flex-col py-1 px-1.5 sm:px-3 cursor-pointer rounded-xl transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 gap-1 sm:gap-0" data-type="clap">
+        <span class="icon-[ri--thumb-up-line] w-4 h-4 sm:w-6 sm:h-6 text-indigo-500"></span>
+        <span class="count reaction-loading text-[11px] sm:text-xs font-semibold text-gray-900 dark:text-white">0</span> 
+      </div>
+
+      <!-- Wow / Fire -->
+      <div class="reaction-item relative flex items-center sm:flex-col py-1 px-1.5 sm:px-3 cursor-pointer rounded-xl transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 gap-1 sm:gap-0" data-type="wow">
+        <span class="icon-[ri--fire-line] w-4 h-4 sm:w-6 sm:h-6 text-orange-500"></span>
+        <span class="count reaction-loading text-[11px] sm:text-xs font-semibold text-gray-900 dark:text-white">0</span>
+      </div>
+
+      <!-- Hmm / Lightbulb -->
+      <div class="reaction-item relative flex items-center sm:flex-col py-1 px-1.5 sm:px-3 cursor-pointer rounded-xl transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 gap-1 sm:gap-0" data-type="hmm">
+        <span class="icon-[ri--lightbulb-line] w-4 h-4 sm:w-6 sm:h-6 text-yellow-500"></span>
+        <span class="count reaction-loading text-[11px] sm:text-xs font-semibold text-gray-900 dark:text-white">0</span>
+      </div>
+    </div>
+
+    <!-- Bagian Kanan: Tombol Komentar, Share, & View Count -->
+    <div class="flex items-center gap-1 sm:gap-2.5 flex-shrink-0">
+
+      <!-- Tombol Komentar -->
+      <button 
+        @click="commentOpen = true" 
+        class="flex items-center gap-1 py-1.5 px-2 sm:py-2 sm:px-4 bg-gray-100 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer"
+      >
+        <span class="icon-[ri--chat-3-line] w-4 h-4 sm:w-5 sm:h-5"></span>
+        <span class="hidden md:inline">Komentar</span>
+        <!-- Badge Jumlah Komentar Disqus -->
+        <span class="disqus-comment-count bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-white text-[10px] sm:text-xs px-1.5 py-0.5 rounded-md ml-0.5" data-disqus-identifier="{{ .File.UniqueID }}">0</span>
+      </button>
+
+      <!-- Tombol Share -->
+      <button
+        @click="shareOpen = true"
+        class="flex items-center justify-center p-2 sm:py-2 sm:px-4 bg-gray-100 hover:bg-green-50 dark:bg-gray-700 dark:hover:bg-green-900/30 text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer"
+        aria-label="Bagikan"
+      >
+        <span class="icon-[ri--share-line] w-4 h-4 sm:w-5 sm:h-5"></span>
+      </button>
+
+      <!-- View Count -->
+      <div class="flex items-center gap-1 py-1.5 px-2 sm:py-2 sm:px-3 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 text-gray-600 dark:text-gray-400 text-xs font-medium">
+        <span class="icon-[ri--eye-2-line] w-4 h-4 sm:w-5 sm:h-5 text-gray-400"></span>
+        <span class="post-view font-bold text-gray-900 dark:text-white" data-id='{{ .RelPermalink }}'>    
+          <span class='view-load post-views-count-placeholder'>0</span>
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Panel Offcanvas Komentar (Bawah) -->
+  <div
+    x-show="commentOpen"
+    class="fixed inset-0 z-50 overflow-hidden"
+    style="display: none;"
+  >
+    <!-- Backdrop -->
+    <div 
+      x-show="commentOpen" 
+      x-transition:enter="transition-opacity ease-out duration-300"
+      x-transition:enter-start="opacity-0"
+      x-transition:enter-end="opacity-100"
+      x-transition:leave="transition-opacity ease-in duration-200"
+      x-transition:leave-start="opacity-100"
+      x-transition:leave-end="opacity-0"
+      @click="commentOpen = false"
+      class="absolute inset-0 bg-black/50 backdrop-blur-xs"
+    ></div>
+
+    <!-- Konten Offcanvas -->
+    <div 
+      x-show="commentOpen"
+      x-transition:enter="transition-transform ease-out duration-300"
+      x-transition:enter-start="translate-y-full"
+      x-transition:enter-end="translate-y-0"
+      x-transition:leave="transition-transform ease-in duration-300"
+      x-transition:leave-start="translate-y-0"
+      x-transition:leave-end="translate-y-full"
+      class="absolute bottom-0 left-0 right-0 md:w-3/4 md:mx-auto lg:w-2/3 h-[85vh] bg-white dark:bg-gray-900 rounded-t-3xl shadow-2xl flex flex-col"
+    >
+      <!-- Header Offcanvas -->
+      <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-800 rounded-t-3xl bg-white dark:bg-gray-900 z-10">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <span class="icon-[ri--chat-3-line] w-5 h-5 text-blue-500"></span>
+          Diskusi Komentar
+        </h3>
+        <button @click="commentOpen = false" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer">
+          <span class="icon-[ri--close-line] w-6 h-6"></span>
+        </button>
+      </div>
+
+      <!-- Body / Tempat Disqus -->
+      <div 
+        class="flex-1 overflow-y-auto p-6 bg-white dark:bg-gray-950 text-left relative"
+        x-data="{ disqusReady: false }"
+        x-init="$watch('commentOpen', value => {
+          if (value && !commentLoaded) {
+            commentLoaded = true;
+            window.disqus_config = function () {
+              this.page.url = '{{ .Permalink }}';
+              this.page.identifier = '{{ .File.UniqueID }}';
+              this.page.title = '{{ .Title }}';
+            };
+            var d = document, s = d.createElement('script');
+            s.src = 'https://muhamad-irfan.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+
+            let checkInterval = setInterval(() => {
+              if (document.querySelector('#disqus_thread iframe')) {
+                disqusReady = true;
+                clearInterval(checkInterval);
+              }
+            }, 200);
+          }
+        })"
+      >
+        <!-- Loading Spinner -->
+        <div x-show="!disqusReady" class="flex justify-center items-center h-40">
+          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        </div>
+
+        <div id="disqus_wrapper">
+          <div id="disqus_thread"></div>
+        </div>
+
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel Offcanvas Share (Bawah) -->
+  <div
+    x-show="shareOpen"
+    class="fixed inset-0 z-50 overflow-hidden"
+    style="display: none;"
+  >
+    <!-- Backdrop -->
+    <div
+      x-show="shareOpen"
+      x-transition:enter="transition-opacity ease-out duration-300"
+      x-transition:enter-start="opacity-0"
+      x-transition:enter-end="opacity-100"
+      x-transition:leave="transition-opacity ease-in duration-200"
+      x-transition:leave-start="opacity-100"
+      x-transition:leave-end="opacity-0"
+      @click="shareOpen = false"
+      class="absolute inset-0 bg-black/50 backdrop-blur-xs"
+    ></div>
+
+    <!-- Konten Offcanvas -->
+    <div
+      x-show="shareOpen"
+      x-transition:enter="transition-transform ease-out duration-300"
+      x-transition:enter-start="translate-y-full"
+      x-transition:enter-end="translate-y-0"
+      x-transition:leave="transition-transform ease-in duration-300"
+      x-transition:leave-start="translate-y-0"
+      x-transition:leave-end="translate-y-full"
+      class="absolute bottom-0 left-0 right-0 md:w-3/4 md:mx-auto lg:w-2/3 h-[85vh] bg-white dark:bg-gray-900 rounded-t-3xl shadow-2xl flex flex-col"
+    >
+      <!-- Header Offcanvas -->
+      <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-800 rounded-t-3xl bg-white dark:bg-gray-900 z-10">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <span class="icon-[ri--share-line] w-5 h-5 text-green-500"></span>
+          Bagikan Artikel
+        </h3>
+        <button @click="shareOpen = false" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer">
+          <span class="icon-[ri--close-line] w-6 h-6"></span>
+        </button>
+      </div>
+
+      <!-- Body / Share Buttons JS -->
+      <div class="flex-1 overflow-y-auto p-6 bg-white dark:bg-gray-950 text-left">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {{ $shareURL := .Permalink }}
+          {{ $shareTitle := .Title }}
+
+          <!-- WhatsApp -->
+          <button @click="window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent('{{ $shareTitle }} - {{ $shareURL }}'), '_blank')" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors group cursor-pointer">
+            <span class="icon-[ri--whatsapp-fill] w-8 h-8 text-green-500 group-hover:text-green-600"></span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-200 mt-2">WhatsApp</span>
+          </button>
+
+          <!-- Telegram -->
+          <button @click="window.open('https://t.me/share/url?url=' + encodeURIComponent('{{ $shareURL }}') + '&text=' + encodeURIComponent('{{ $shareTitle }}'), '_blank')" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group cursor-pointer">
+            <span class="icon-[ri--telegram-fill] w-8 h-8 text-blue-500 group-hover:text-blue-600"></span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-200 mt-2">Telegram</span>
+          </button>
+
+          <!-- Facebook -->
+          <button @click="window.open('https://www.facebook.com/sharer.php?u=' + encodeURIComponent('{{ $shareURL }}') + '&quote=' + encodeURIComponent('{{ $shareTitle }}') + '&display=popup', '_blank')" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group cursor-pointer">
+            <span class="icon-[ri--facebook-fill] w-8 h-8 text-blue-600 group-hover:text-blue-700"></span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-200 mt-2">Facebook</span>
+          </button>
+
+          <!-- Twitter (X) -->
+          <button @click="window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent('{{ $shareURL }}') + '&text=' + encodeURIComponent('{{ $shareTitle }}'), '_blank')" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group cursor-pointer">
+            <span class="icon-[ri--twitter-x-fill] w-8 h-8 text-gray-700 dark:text-white group-hover:text-blue-400"></span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-200 mt-2">X (Twitter)</span>
+          </button>
+
+          <!-- LinkedIn -->
+          <button @click="window.open('https://www.linkedin.com/shareArticle?mini=true&url=' + encodeURIComponent('{{ $shareURL }}') + '&title=' + encodeURIComponent('{{ $shareTitle }}'), '_blank')" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group cursor-pointer">
+            <span class="icon-[ri--linkedin-fill] w-8 h-8 text-blue-700 group-hover:text-blue-800"></span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-200 mt-2">LinkedIn</span>
+          </button>
+
+          <!-- Email -->
+          <button @click="window.location.href = 'mailto:?subject=' + encodeURIComponent('{{ $shareTitle }}') + '&body=' + encodeURIComponent('{{ $shareURL }}')" class="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors group cursor-pointer">
+            <span class="icon-[ri--mail-fill] w-8 h-8 text-red-500 group-hover:text-red-600"></span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-200 mt-2">Email</span>
+          </button>
+
+          <!-- Copy Link -->
+          <button 
+            @click="
+              navigator.clipboard.writeText('{{ $shareURL }}');
+              copied = true;
+              setTimeout(() => copied = false, 2000);
+            "
+            class="flex flex-col items-center justify-center p-4 rounded-xl transition-all duration-300 group cursor-pointer"
+            :class="copied ? 'bg-green-100 dark:bg-green-900/40 text-green-600 scale-95' : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200'"
+          >
+            <span x-show="!copied" class="icon-[ri--link] w-8 h-8 text-gray-500 group-hover:text-gray-600"></span>
+            <span x-show="copied" style="display: none;" class="icon-[ri--checkbox-circle-fill] w-8 h-8 text-green-500 transition-transform duration-200 scale-110"></span>
+            <span class="text-sm font-medium mt-2" x-text="copied ? 'Tersalin!' : 'Salin Tautan'"></span>
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

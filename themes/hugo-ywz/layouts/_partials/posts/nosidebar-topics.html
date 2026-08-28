@@ -1,0 +1,86 @@
+<!-- Nosidebar Tabbed Widget: Topics & Keywords (Mediumish Editorial Style, No Rounded/Border Card) -->
+{{ $showSidebarTabbed := .Site.Params.showSidebarTabbed | default true }}
+{{ if $showSidebarTabbed }}
+
+    <!-- 1. Ambil & Filter Topics -->
+    {{ $validTopics := slice }}
+    {{ range .Site.Taxonomies.topics }}
+        {{ $filteredPages := where .Pages "Section" "posts" }}
+        {{ $filteredCount := len $filteredPages }}
+        {{ if gt $filteredCount 0 }}
+            {{ $validTopics = $validTopics | append (dict "Title" .Page.Title "Page" .Page "Count" $filteredCount) }}
+        {{ end }}
+    {{ end }}
+    {{ $sortedTopics := sort $validTopics "Count" "desc" }}
+
+    <!-- 2. Ambil & Filter Keywords -->
+    {{ $validKeywords := slice }}
+    {{ range .Site.Taxonomies.keywords }}
+        {{ $filteredPages := where .Pages "Section" "posts" }}
+        {{ $filteredCount := len $filteredPages }}
+        {{ if gt $filteredCount 0 }}
+            {{ $validKeywords = $validKeywords | append (dict "Title" .Page.Title "Page" .Page "Count" $filteredCount) }}
+        {{ end }}
+    {{ end }}
+    {{ $sortedKeywords := sort $validKeywords "Count" "desc" }}
+
+    {{ $defaultTab := "topics" }}
+    {{ if or (in .Permalink "/keywords/") (and (eq .Section "keywords") (eq .Kind "term")) }}
+        {{ $defaultTab = "keywords" }}
+    {{ end }}
+
+    {{ if or $sortedTopics $sortedKeywords }}
+    <div class="py-16 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-800" x-data="{ activeTab: '{{ $defaultTab }}' }">
+        <div class="max-w-5xl mx-auto px-4">
+            
+            <!-- Header Tabs ala Medium Editorial -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-100 dark:border-gray-700/60">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400/90 dark:text-gray-400 flex items-center gap-2">
+                    <span class="icon-[ri--price-tag-3-line] text-indigo-600 dark:text-indigo-400 w-4 h-4"></span>
+                    Eksplorasi Topik & Keywords
+                </h3>
+                
+                <!-- Tombol Switch Tab Minimalis -->
+                <div class="flex items-center gap-1 bg-gray-50 dark:bg-gray-900/60 p-1 rounded-lg border border-gray-100 dark:border-gray-800 self-start sm:self-auto">
+                    <button @click="activeTab = 'topics'" 
+                        :class="activeTab === 'topics' ? 'bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-400 shadow-2xs font-bold' : 'text-gray-400 dark:text-gray-500 font-medium hover:text-gray-900 dark:hover:text-white'"
+                        class="py-1 px-3 text-xs rounded-md transition-all duration-200">
+                        Topik
+                    </button>
+                    <button @click="activeTab = 'keywords'" 
+                        :class="activeTab === 'keywords' ? 'bg-white dark:bg-gray-800 text-emerald-600 dark:text-emerald-400 shadow-2xs font-bold' : 'text-gray-400 dark:text-gray-500 font-medium hover:text-gray-900 dark:hover:text-white'"
+                        class="py-1 px-3 text-xs rounded-md transition-all duration-200">
+                        Keywords
+                    </button>
+                </div>
+            </div>
+
+            <!-- Konten Tab 1: Topics (Gaya Medium Badge Rapi) -->
+            <div x-show="activeTab === 'topics'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+                <div class="flex flex-wrap gap-2.5">
+                    {{ range $sortedTopics }}
+                    {{ $isActive := eq .Page.Permalink $.Permalink }}
+                    <a href="{{ .Page.Permalink }}" class="px-3.5 py-1.5 text-xs font-medium rounded-md transition-all {{ if $isActive }}bg-indigo-600 text-white dark:bg-indigo-600 dark:text-white shadow-xs{{ else }}bg-gray-50 dark:bg-gray-700/60 text-gray-600 dark:text-gray-300 border border-gray-100 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-300{{ end }}">
+                        {{ .Title }} <span class="opacity-60 text-[10px] ml-1">({{ .Count }})</span>
+                    </a>
+                    <div></div>
+                    {{ end }}
+                </div>
+            </div>
+
+            <!-- Konten Tab 2: Keywords -->
+            <div x-show="activeTab === 'keywords'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" style="display: none;">
+                <div class="flex flex-wrap gap-2.5">
+                    {{ range $sortedKeywords }}
+                    {{ $isActive := eq .Page.Permalink $.Permalink }}
+                    <a href="{{ .Page.Permalink }}" class="px-3.5 py-1.5 text-xs font-medium rounded-md transition-all {{ if $isActive }}bg-emerald-600 text-white dark:bg-emerald-600 dark:text-white shadow-xs{{ else }}bg-gray-50 dark:bg-gray-700/60 text-gray-600 dark:text-gray-300 border border-gray-100 dark:border-gray-700 hover:border-emerald-300 dark:hover:border-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-300{{ end }}">
+                        #{{ .Title }} <span class="opacity-60 text-[10px] ml-1">({{ .Count }})</span>
+                    </a>
+                    {{ end }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {{ end }}
+{{ end }}

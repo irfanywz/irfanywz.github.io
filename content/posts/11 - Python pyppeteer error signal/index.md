@@ -3,7 +3,8 @@ title: "Python pyppeteer [Fix] ValueError: signal only works in main thread of t
 slug: python pyppeteer error signal
 date: 2025-06-28T19:10:27+07:00
 image: python-pyppeteer.avif
-topics: ["Kode"]
+topics: ["Teknologi"]
+keywords: ["Kode"]
 draft: false
 ---
 

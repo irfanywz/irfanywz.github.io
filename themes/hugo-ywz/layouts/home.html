@@ -21,11 +21,11 @@
 
                         {{ partial "home/featured-random.html" . }}
 
-                        {{ partial "home/topic-posts-static.html" (dict "topic" "Komputer" "title" "Kilas Teknologi" "limit" 4 "layout" "hero" "accent" "indigo") }}
+                        {{ partial "home/topic-posts-static.html" (dict "topic" "Teknologi" "title" "Kilas Teknologi" "limit" 4 "layout" "hero" "accent" "indigo") }}
 
-                        {{ partial "home/topic-posts-static.html" (dict "topic" "Kode" "title" "Tips Koding" "limit" 4 "layout" "grid" "accent" "amber") }}
+                        {{ partial "home/topic-posts-static.html" (dict "topic" "Konten Kreator" "title" "Konten Kreator" "limit" 4 "layout" "grid" "accent" "amber") }}
 
-                        {{ partial "home/topic-posts-static.html" (dict "topic" "Reverse" "title" "Seputar Keamanan Siber" "limit" 4 "layout" "list" "accent" "purple") }}
+                        {{ partial "home/topic-posts-static.html" (dict "topic" "Bisnis" "title" "Seputar Bisnis" "limit" 4 "layout" "list" "accent" "purple") }}
 
                         {{ partial "home/topic-posts-static.html" (dict "topic" "Game" "title" "Seputar Game" "limit" 4 "layout" "compact" "accent" "rose") }}
 
@@ -74,8 +74,8 @@
                         {{ partialCached "posts/sidebar-author.html" . }}                            
                     </div>                    
                     <div class="space-y-8 sticky top-8">
-                        {{ partialCached "posts/ads-sidebar.html" . }}                                       
-                        {{ partial "posts/random-post.html" . }}
+                        {{ partialCached "posts/sidebar-ads.html" . }}                                       
+                        {{ partial "posts/sidebar-random-post.html" . }}
                         {{ partial "posts/sidebar-topics.html" . }}   
                         {{ partialCached "posts/sidebar-logo.html" . }}                                     
                     </div>

@@ -3,7 +3,8 @@ title: "Cipher Pada Video Youtube"
 slug: cipher video youtube
 date: 2023-12-18T05:40:08+07:00
 image: cipher-youtube.avif
-topics: ["Reverse"]
+topics: ["Teknologi"]
+keywords: ["Reverse"]
 draft: false
 ---
 

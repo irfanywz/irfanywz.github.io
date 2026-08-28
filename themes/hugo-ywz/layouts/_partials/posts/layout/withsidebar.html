@@ -1,0 +1,132 @@
+<main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
+    
+    <!-- Breadcrumb Simple Bahasa Indonesia -->
+    <div class="container max-w-6xl mx-auto px-4 sm:px-6 pt-4 pb-2">
+        <nav class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+            <a href="/" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Beranda</a>
+            
+            {{ with .Params.topics }}
+                {{ $firstTopic := index . 0 }}
+                <span class="text-gray-300 dark:text-gray-700">/</span>
+                <a href="/topics/{{ $firstTopic | urlize }}/" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                    {{ $firstTopic }}
+                </a>
+            {{ end }}
+
+            <span class="text-gray-300 dark:text-gray-700">/</span>
+            <span class="text-gray-900 dark:text-white font-medium truncate max-w-[200px] md:max-w-none">{{ .Title }}</span>
+        </nav>
+    </div>
+
+    <div class="container max-w-6xl mx-auto px-4 sm:px-6 py-6 md:py-8">
+        <div class="flex flex-col md:flex-row gap-8 lg:gap-12">
+
+            <!-- Main Content: Posts -->
+            <div class="w-full md:w-2/3 lg:w-3/4">
+                <article class="bg-white dark:bg-gray-900">
+                    <div class="container max-w-6xl mx-auto">
+                        <div class="max-w-3xl">
+                            <header class="mb-6">
+                                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 leading-tight">
+                                    {{ .Title }}
+                                </h1>
+                                <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-500 dark:text-gray-400">
+                                    <div class="flex items-center gap-2">
+                                        <span class="icon-[ri--calendar-line] w-4 h-4"></span>
+                                        <span>{{ .Date | time.Format "2 January 2006" }}</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="icon-[ri--time-line] w-4 h-4"></span>
+                                        <span>{{ printf "%d min waktu baca" .ReadingTime }}</span>
+                                    </div>
+                                    {{ partial "posts/single-tts-reader.html" . }}
+                                </div>
+                            </header>
+                            
+                            <div class="my-6 border-b border-gray-200 dark:border-gray-700"></div>
+
+                            {{ if .Params.image }}
+                                {{ $resourceImg := .Resources.GetMatch .Params.image }}
+                                {{ $globalImg := resources.Get .Params.image }}
+                                {{ $imgUrl := "" }}{{ $imgW := "" }}{{ $imgH := "" }}
+                                {{ if $resourceImg }}
+                                    {{ $thumb := $resourceImg.Resize "1000x avif" }}
+                                    {{ $imgUrl = $thumb.RelPermalink }}{{ $imgW = $thumb.Width }}{{ $imgH = $thumb.Height }}
+                                {{ else if $globalImg }}
+                                    {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
+                                    {{ $imgUrl = $thumbGlobal.RelPermalink }}{{ $imgW = $thumbGlobal.Width }}{{ $imgH = $thumbGlobal.Height }}
+                                {{ else if (fileExists (printf "static/%s" .Params.image)) }}
+                                    {{ $imgUrl = .Params.image | relURL }}
+                                {{ else if (strings.HasPrefix .Params.image "http") }}
+                                    {{ $imgUrl = .Params.image }}
+                                {{ end }}
+
+                                <div x-data="{ points: [{ scale: 1.25, x: '20%', y: '20%' }, { scale: 1.20, x: '80%', y: '30%' }, { scale: 1.30, x: '50%', y: '80%' }, { scale: 1.15, x: '30%', y: '70%' }, { scale: 1.25, x: '70%', y: '20%' }], idx: 0, curr: { scale: 1.25, x: '20%', y: '20%' }, move() { this.idx = (this.idx + 1) % this.points.length; this.curr = this.points[this.idx]; } }"
+                                     x-init="move(); setInterval(() => move(), 8000);"
+                                     class="mb-6 w-full h-40 sm:h-52 md:h-60 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm relative">
+                                    {{ if $imgUrl }}
+                                        <img src="{{ $imgUrl }}" {{ if $imgW }}width="{{ $imgW }}" height="{{ $imgH }}"{{ end }} alt="{{ .Title }}" class="w-full h-full object-cover transition-all duration-[8000ms] ease-in-out" :style="`transform: scale(${curr.scale}); object-position: ${curr.x} ${curr.y};`" loading="lazy">
+                                    {{ end }}
+                                </div>
+                            {{ end }}
+
+                            <div class="prose prose-lg dark:prose-invert max-w-none">
+                                <div class="post-content-full">
+                                    {{ partial "posts/ads-single.html" . }}
+                                </div>
+
+                                {{ if or .Params.topics .Params.keywords }}
+                                <div class="mt-8 pt-6 not-prose flex flex-wrap items-center gap-2">
+                                    {{ if .Params.topics }}
+                                        {{ range .Params.topics }}
+                                        <a href="{{ printf "/topics/%s/" (. | urlize) | relURL }}" class="px-3 py-1 bg-indigo-50/70 dark:bg-indigo-950/40 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 rounded-lg text-xs font-medium transition-colors">
+                                            {{ . }}
+                                        </a>
+                                        {{ end }}
+                                    {{ end }}
+                                    {{ if .Params.keywords }}
+                                        {{ range .Params.keywords }}
+                                        <a href="{{ printf "/keywords/%s/" (. | urlize) | relURL }}" class="px-3 py-1 bg-gray-100 dark:bg-gray-800/80 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 rounded-lg text-xs font-medium transition-colors">
+                                            #{{ . }}
+                                        </a>
+                                        {{ end }}
+                                    {{ end }}
+                                </div>
+                                {{ end }}
+
+                                <div class="mt-6 pt-6 not-prose">
+                                    {{ partial "posts/single-interaction" . }}
+                                </div>
+                            </div>
+
+                            <footer class="mt-8">
+                                {{ if .Params.series }}
+                                    {{ partial "posts/single-series-post.html" . }}
+                                {{ else if .Params.series_links }}
+                                    {{ partial "posts/single-series-manual.html" . }}
+                                {{ else }}
+                                    {{ partial "posts/sidebar-related-post.html" . }}
+                                {{ end }}
+                                {{ partial "posts/single-nextprev.html" . }}
+                            </footer>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="w-full md:w-1/3 lg:w-1/4">
+                <div class="mb-8">
+                    {{ partialCached "posts/sidebar-author.html" . }}                            
+                </div>
+                <div class="space-y-8 sticky top-8">
+                    {{ partialCached "posts/sidebar-ads.html" . }}                            
+                    {{ partialCached "posts/sidebar-recent-post.html" . }}                            
+                    {{ partial "posts/sidebar-topics.html" . }}
+                    {{ partialCached "posts/sidebar-logo.html" . }}
+                </div>
+            </aside>
+
+        </div>
+    </div>
+</main>

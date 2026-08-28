@@ -1,0 +1,36 @@
+<!-- Nosidebar Partner & Sponsor Logo (Clean Center Strip, Icon & Logo Besar) -->
+{{ $showSidebarPartner := .Site.Params.showSidebarPartner | default true }}
+{{ if $showSidebarPartner }}
+<div class="py-10 my-8 text-center">
+    
+    <span class="text-xs font-bold uppercase tracking-widest text-gray-400/80 mb-6 block">Partner & Sponsor</span>
+    
+    <!-- Jejeran logo dan icon di tengah dengan ukuran lebih besar -->
+    <div class="flex items-center justify-center flex-wrap gap-8 sm:gap-14 px-4">
+        
+        {{ $remoteUrl := "https://id.seedbacklink.com/wp-content/uploads/2023/11/Badge-Seedbacklink_Artboard-1-webp-version.webp" }}
+        {{ $remoteRes := try (resources.GetRemote $remoteUrl) }}
+        
+        {{ if and $remoteRes.Value (not $remoteRes.Err) }}
+            {{ $img := $remoteRes.Value }}
+            {{ $processed := $img.Process "resize 400x avif" }}
+            
+            <a href="https://id.seedbacklink.com/" target="_blank" rel="noopener sponsored" class="inline-flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity">
+                <img decoding="async" title="seedbacklink" src="{{ $processed.RelPermalink }}" alt="seedbacklink" width="{{ $processed.Width }}" height="{{ $processed.Height }}" class="h-16 sm:h-16 w-auto object-contain">
+            </a>
+        {{ end }}
+
+        <!-- Slot Placeholder Kembali Pakai Icon dengan Ukuran Proporsional -->
+        <div class="opacity-30 hover:opacity-60 transition-opacity flex items-center justify-center">
+            <span class="icon-[ri--image-line] w-8 h-8 sm:w-10 sm:h-16 text-gray-400"></span>
+        </div>
+        <div class="opacity-30 hover:opacity-60 transition-opacity flex items-center justify-center">
+            <span class="icon-[ri--image-line] w-8 h-8 sm:w-10 sm:h-16 text-gray-400"></span>
+        </div>
+        <div class="opacity-30 hover:opacity-60 transition-opacity flex items-center justify-center">
+            <span class="icon-[ri--image-line] w-8 h-8 sm:w-10 sm:h-16 text-gray-400"></span>
+        </div>
+
+    </div>
+</div>
+{{ end }}
