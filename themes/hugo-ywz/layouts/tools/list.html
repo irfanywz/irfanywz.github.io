@@ -6,6 +6,7 @@
         x-data="{
             search: '',
             selectedCategory: 'all',
+            swiper: null,
             items: [
                 {{ range .Pages }}
                 {
@@ -21,19 +22,16 @@
                 },
                 {{ end }}
             ],
-            // Inisialisasi: baca parameter 'category' dari URL saat pertama kali load
             init() {
                 const urlParams = new URLSearchParams(window.location.search);
                 const catParam = urlParams.get('category');
                 if (catParam) {
-                    // Validasi apakah kategori tersebut ada di data items
                     const isValid = catParam === 'all' || this.categoryCounts.some(c => c.name.toLowerCase() === catParam.toLowerCase());
                     if (isValid) {
                         this.selectedCategory = catParam;
                     }
                 }
 
-                // Watch perubahan selectedCategory untuk update URL otomatis tanpa reload
                 this.$watch('selectedCategory', (value) => {
                     const url = new URL(window.location);
                     if (value === 'all') {
@@ -43,8 +41,19 @@
                     }
                     window.history.pushState({}, '', url);
                 });
+
+                // Inisialisasi Swiper JS untuk kategori
+                this.swiper = new Swiper(this.$refs.swiperContainer, {
+                    modules: window.SwiperModules,
+                    slidesPerView: 'auto',
+                    spaceBetween: 6,
+                    freeMode: true,
+                    grabCursor: true,
+                    mousewheel: {
+                        forceToAxis: true,
+                    },
+                });
             },
-            // Ambil daftar kategori unik beserta jumlah (count) alatnya
             get categoryCounts() {
                 const counts = {};
                 this.items.forEach(item => {
@@ -56,7 +65,6 @@
                 });
                 return Object.entries(counts).map(([name, count]) => ({ name, count }));
             },
-            // Filter daftar alat berdasarkan kata kunci pencarian & kategori aktif
             get filteredItems() {
                 const s = this.search.toLowerCase();
                 return this.items.filter(item => {
@@ -86,39 +94,49 @@
             </div>
         </div>
 
-        <!-- Filter Category Buttons dengan Count -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-6 mb-6 scrollbar-none">
-            <!-- Tombol Semua -->
-            <button @click="selectedCategory = 'all'"
-                :class="selectedCategory === 'all' 
-                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' 
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0 cursor-pointer">
-                <span>Semua</span>
-                <span class="px-2 py-0.5 text-xs rounded-full"
-                    :class="selectedCategory === 'all' 
-                        ? 'bg-white/20 text-white' 
-                        : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'"
-                    x-text="items.length">
-                </span>
-            </button>
+        <!-- Filter Category Swiper Container -->
+        <div class="relative group mb-6">
+            <div x-ref="swiperContainer" class="swiper overflow-hidden py-1 px-0.5">
+                <div class="swiper-wrapper items-center">
+                    
+                    <!-- Tombol Semua -->
+                    <div class="swiper-slide !w-auto">
+                        <button @click="selectedCategory = 'all'"
+                            :class="selectedCategory === 'all' 
+                                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/25' 
+                                : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0 cursor-pointer">
+                            <span>Semua</span>
+                            <span class="px-2 py-0.5 text-xs rounded-full"
+                                :class="selectedCategory === 'all' 
+                                    ? 'bg-white/20 text-white' 
+                                    : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'"
+                                x-text="items.length">
+                            </span>
+                        </button>
+                    </div>
 
-            <!-- Tombol Kategori Dinamis -->
-            <template x-for="cat in categoryCounts" :key="cat.name">
-                <button @click="selectedCategory = cat.name"
-                    :class="selectedCategory === cat.name 
-                        ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' 
-                        : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
-                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0 capitalize cursor-pointer">
-                    <span x-text="cat.name"></span>
-                    <span class="px-2 py-0.5 text-xs rounded-full"
-                        :class="selectedCategory === cat.name 
-                            ? 'bg-white/20 text-white' 
-                            : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'"
-                        x-text="cat.count">
-                    </span>
-                </button>
-            </template>
+                    <!-- Tombol Kategori Dinamis -->
+                    <template x-for="cat in categoryCounts" :key="cat.name">
+                        <div class="swiper-slide !w-auto">
+                            <button @click="selectedCategory = cat.name"
+                                :class="selectedCategory === cat.name 
+                                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/25' 
+                                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0 capitalize cursor-pointer">
+                                <span x-text="cat.name"></span>
+                                <span class="px-2 py-0.5 text-xs rounded-full"
+                                    :class="selectedCategory === cat.name 
+                                        ? 'bg-white/20 text-white' 
+                                        : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'"
+                                    x-text="cat.count">
+                                </span>
+                            </button>
+                        </div>
+                    </template>
+
+                </div>
+            </div>
         </div>
 
         <!-- Grid Items -->

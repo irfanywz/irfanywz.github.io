@@ -1,0 +1,370 @@
+{{ define "head" }}
+<!-- Menggunakan Swiper internal project -->
+{{ end }}
+
+{{ define "main" }}
+    {{ $alatPage := .Site.GetPage "animasi/alat" }}
+    {{ $naskahPage := .Site.GetPage "animasi/naskah" }}
+
+<main class="flex-grow bg-white dark:bg-gray-950 transition-colors duration-300"
+    x-data="{
+        activeTab: 'video',
+        selectedCategory: 'all',
+        
+        // YouTube Fetch State
+        videos: [],
+        loading: true,
+        error: false,
+        
+        async fetchVideos() {
+            const channelId = {{ .Params.youtube_channel_id | default "MASUKKAN_CHANNEL_ID_KAMU" | jsonify }};
+            const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+            
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (data.status === 'ok') {
+                    this.videos = data.items.map(item => {
+                        const videoId = item.guid.split(':')[2];
+                        return {
+                            title: item.title,
+                            description: item.description || '',
+                            link: item.link,
+                            videoId: videoId,
+                            thumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+                            pubDate: new Date(item.pubDate).toLocaleDateString('id-ID', {
+                                day: 'numeric', 
+                                month: 'short', 
+                                year: 'numeric'
+                            }),
+                            categories: ['General']
+                        };
+                    });
+                } else {
+                    this.error = true;
+                }
+            } catch (err) {
+                this.error = true;
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        alatItems: [
+            {{ if $alatPage }}
+                {{ range sort $alatPage.Pages "File.Path" "asc" }}
+                    {{ if .IsPage }}
+                    {
+                        id: {{ default .File.Path .File.UniqueID | jsonify }},
+                        title: {{ .Title | lower | jsonify }},
+                        description: {{ .Params.description | default .Summary | lower | jsonify }},
+                        permalink: {{ if .Params.link }}{{ .Params.link | jsonify }}{{ else }}{{ .RelPermalink | jsonify }}{{ end }},
+                        isExternal: {{ if .Params.link }}true{{ else }}false{{ end }},
+                        displayTitle: {{ .Title | jsonify }},
+                        displayDesc: {{ .Params.description | default .Summary | jsonify }},
+                        icon: {{ or .Params.icon "icon-[lucide--wrench]" | jsonify }},
+                        date: {{ .Date | time.Format "2 January 2006" | jsonify }},
+                        categories: {{ or .Params.categories (slice "General") | jsonify }}
+                    },
+                    {{ end }}
+                {{ end }}
+            {{ end }}
+        ],
+
+        naskahItems: [
+            {{ if $naskahPage }}
+                {{ range sort $naskahPage.Pages "File.Path" "asc" }}
+                    {{ if .IsPage }}
+                    {
+                        id: {{ default .File.Path .File.UniqueID | jsonify }},
+                        title: {{ .Title | lower | jsonify }},
+                        description: {{ .Params.description | default .Summary | lower | jsonify }},
+                        permalink: {{ if .Params.link }}{{ .Params.link | jsonify }}{{ else }}{{ .RelPermalink | jsonify }}{{ end }},
+                        isExternal: {{ if .Params.link }}true{{ else }}false{{ end }},
+                        displayTitle: {{ .Title | jsonify }},
+                        displayDesc: {{ .Params.description | default .Summary | jsonify }},
+                        date: {{ .Date | time.Format "2 January 2006" | jsonify }},
+                        categories: {{ or .Params.categories (slice "General") | jsonify }}
+                    },
+                    {{ end }}
+                {{ end }}
+            {{ end }}
+        ],
+
+        init() {
+            this.fetchVideos();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const tabParam = urlParams.get('tab');
+            if (tabParam === 'alat') {
+                this.activeTab = 'alat';
+            } else if (tabParam === 'naskah') {
+                this.activeTab = 'naskah';
+            }
+            const catParam = urlParams.get('category');
+            if (catParam) {
+                this.selectedCategory = catParam;
+            }
+
+            // Inisialisasi Swiper untuk Tab Navigasi Utama
+            this.$nextTick(() => {
+                new Swiper('.tabs-swiper', {
+                    slidesPerView: 'auto',
+                    spaceBetween: 24,
+                    freeMode: true,
+                    observer: true,
+                    observeParents: true,
+                });
+
+                new Swiper('.categories-swiper', {
+                    slidesPerView: 'auto',
+                    spaceBetween: 8,
+                    freeMode: true,
+                    observer: true,
+                    observeParents: true,
+                });
+            });
+
+            this.$watch('activeTab', (value) => {
+                const url = new URL(window.location);
+                if (value === 'video') {
+                    url.searchParams.delete('tab');
+                } else {
+                    url.searchParams.set('tab', value);
+                }
+                this.selectedCategory = 'all';
+                window.history.pushState({}, '', url);
+
+                this.$nextTick(() => {
+                    const catSwiperEl = document.querySelector('.categories-swiper');
+                    if (catSwiperEl && catSwiperEl.swiper) {
+                        catSwiperEl.swiper.update();
+                    }
+                });
+            });
+
+            this.$watch('selectedCategory', (value) => {
+                const url = new URL(window.location);
+                if (value === 'all') {
+                    url.searchParams.delete('category');
+                } else {
+                    url.searchParams.set('category', value);
+                }
+                window.history.pushState({}, '', url);
+            });
+        },
+
+        get currentItems() {
+            if (this.activeTab === 'video') return this.videos || [];
+            if (this.activeTab === 'alat') return this.alatItems || [];
+            return this.naskahItems || [];
+        },
+
+        get categoryCounts() {
+            if (this.activeTab === 'video') return [];
+            const counts = {};
+            this.currentItems.forEach(item => {
+                if (item && Array.isArray(item.categories)) {
+                    item.categories.forEach(c => {
+                        counts[c] = (counts[c] || 0) + 1;
+                    });
+                }
+            });
+            return Object.entries(counts).map(([name, count]) => ({ name, count }));
+        },
+
+        get filteredItems() {
+            if (this.activeTab === 'video') return this.videos || [];
+            let items = [];
+            if (this.activeTab === 'alat') {
+                items = this.alatItems || [];
+            } else if (this.activeTab === 'naskah') {
+                items = this.naskahItems || [];
+            }
+            return items.filter(item => {
+                if (!item) return false;
+                return this.selectedCategory === 'all' || 
+                    (Array.isArray(item.categories) && item.categories.includes(this.selectedCategory));
+            });
+        }
+    }">
+
+    <!-- Header Full Width Mengambil Data dari Front Matter _index.md -->
+    <section class="pt-6 w-full border-b border-gray-200 dark:border-gray-800">
+        <div class="container max-w-6xl mx-auto px-6 sm:px-10">
+            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+                {{ .Title }}
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-1.5 text-sm">
+                {{ .Description }}
+            </p>
+
+            <!-- Tombol Navigasi Tab -->
+            <div class="swiper tabs-swiper mt-6 w-full overflow-hidden">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide !w-auto">
+                        <button 
+                            @click="activeTab = 'video'"
+                            :class="activeTab === 'video' ? 'border-sky-500 text-sky-600 dark:text-sky-400 font-bold' : 'border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 font-medium'"
+                            class="pb-3 border-b-2 text-sm transition-colors focus:outline-none flex items-center gap-2 -mb-[1px] cursor-pointer">
+                            <span class="icon-[lucide--video] w-4 h-4"></span>
+                            {{ with .Params.tabs }}{{ .video | default "Video YouTube" }}{{ else }}Video YouTube{{ end }}
+                        </button>
+                    </div>
+                    <div class="swiper-slide !w-auto">
+                        <button 
+                            @click="activeTab = 'alat'"
+                            :class="activeTab === 'alat' ? 'border-sky-500 text-sky-600 dark:text-sky-400 font-bold' : 'border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 font-medium'"
+                            class="pb-3 border-b-2 text-sm transition-colors focus:outline-none flex items-center gap-2 -mb-[1px] cursor-pointer">
+                            <span class="icon-[lucide--wrench] w-4 h-4"></span>
+                            {{ with .Params.tabs }}{{ .alat | default "Alat Animasi" }}{{ else }}Alat Animasi{{ end }}
+                        </button>
+                    </div>
+                    <div class="swiper-slide !w-auto">
+                        <button 
+                            @click="activeTab = 'naskah'"
+                            :class="activeTab === 'naskah' ? 'border-sky-500 text-sky-600 dark:text-sky-400 font-bold' : 'border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 font-medium'"
+                            class="pb-3 border-b-2 text-sm transition-colors focus:outline-none flex items-center gap-2 -mb-[1px] cursor-pointer">
+                            <span class="icon-[lucide--file-text] w-4 h-4"></span>
+                            {{ with .Params.tabs }}{{ .naskah | default "Naskah Cerita" }}{{ else }}Naskah Cerita{{ end }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Section Full Width -->
+    <section class="py-6 container max-w-6xl mx-auto">
+        <div class="w-full px-6 sm:px-10 space-y-6">
+            
+            <!-- Kategori Filter Menggunakan Swiper.js -->
+            <div x-show="activeTab !== 'video'" class="swiper categories-swiper w-full overflow-hidden pb-1">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide !w-auto">
+                        <button @click="selectedCategory = 'all'"
+                            :class="selectedCategory === 'all' ? 'bg-sky-500 text-white font-medium shadow-xs' : 'bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800'"
+                            class="px-3.5 py-1.5 rounded-lg text-xs transition-colors cursor-pointer block">
+                            Semua (<span x-text="currentItems.length"></span>)
+                        </button>
+                    </div>
+                    <template x-for="cat in categoryCounts" :key="cat.name">
+                        <div class="swiper-slide !w-auto">
+                            <button @click="selectedCategory = cat.name"
+                                :class="selectedCategory === cat.name ? 'bg-sky-500 text-white font-medium shadow-xs' : 'bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800'"
+                                class="px-3.5 py-1.5 rounded-lg text-xs transition-colors capitalize cursor-pointer block">
+                                <span x-text="cat.name"></span> (<span x-text="cat.count"></span>)
+                            </button>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Content for Video Tab -->
+            <div x-show="activeTab === 'video'">
+                <template x-if="loading">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        <template x-for="i in 6">
+                            <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 animate-pulse h-64"></div>
+                        </template>
+                    </div>
+                </template>
+
+                <template x-if="error">
+                    <div class="text-center py-16" x-cloak>
+                        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-red-50 dark:bg-red-950/50 mb-3 text-red-500">
+                            <span class="icon-[lucide--alert-triangle] w-6 h-6"></span>
+                        </div>
+                        <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Gagal Memuat Video</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Terjadi kendala saat mengambil data dari YouTube RSS.</p>
+                    </div>
+                </template>
+
+                <template x-if="!loading && !error && videos.length > 0">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        <template x-for="video in videos" :key="video.videoId">
+                            <a :href="video.link" target="_blank" rel="noopener noreferrer"
+                               class="group bg-white dark:bg-gray-900 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 hover:border-sky-500/50 dark:hover:border-sky-500/50 transition-all shadow-xs flex flex-col justify-between">
+                                <div>
+                                    <div class="overflow-hidden aspect-video bg-gray-100 dark:bg-gray-800">
+                                        <img :src="video.thumbnail" :alt="video.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    </div>
+                                    <div class="p-4">
+                                        <h2 class="text-sm font-semibold text-gray-900 dark:text-white line-clamp-2 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors" x-text="video.title"></h2>
+                                    </div>
+                                </div>
+                                <div class="px-4 pb-4 pt-0">
+                                    <span class="text-xs text-gray-500 dark:text-gray-400" x-text="video.pubDate"></span>
+                                </div>
+                            </a>
+                        </template>
+                    </div>
+                </template>
+
+                <template x-if="!loading && !error && videos.length === 0">
+                    <div class="text-center py-16" x-cloak>
+                        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-900 mb-3 text-gray-400">
+                            <span class="icon-[lucide--video-off] w-6 h-6"></span>
+                        </div>
+                        <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Channel Belum Ada Video</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Belum ada video yang diunggah pada channel YouTube ini.</p>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Content for Alat Tab -->
+            <div x-show="activeTab === 'alat'" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <template x-for="item in filteredItems" :key="item.id || item.permalink">
+                    <a :href="item.permalink" :target="item.isExternal ? '_blank' : ''" :rel="item.isExternal ? 'noopener noreferrer nofollow' : ''"
+                       class="group flex items-center justify-between p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-sky-500/50 dark:hover:border-sky-500/50 transition-all shadow-xs">
+                        <div class="flex items-center gap-3.5 min-w-0 pr-2">
+                            <div class="w-12 h-12 rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0 font-bold text-sm group-hover:scale-105 transition-transform">
+                                <span :class="item.icon" class="w-6 h-6"></span>
+                            </div>
+                            <div class="min-w-0">
+                                <h2 class="text-sm sm:text-base font-semibold text-gray-900 dark:text-white truncate group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors" x-text="item.displayTitle"></h2>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5" x-text="item.displayDesc"></p>
+                            </div>
+                        </div>
+                    </a>
+                </template>
+            </div>
+
+            <!-- Content for Naskah Tab -->
+            <div x-show="activeTab === 'naskah'" class="divide-y divide-gray-200 dark:divide-gray-800 border-t border-b border-gray-200 dark:border-gray-800">
+                <template x-for="item in filteredItems" :key="item.id || item.permalink">
+                    <a :href="item.permalink" :target="item.isExternal ? '_blank' : ''" :rel="item.isExternal ? 'noopener noreferrer nofollow' : ''"
+                       class="group flex items-center justify-between py-3.5 px-2 hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors">
+                        <div class="flex items-center gap-3 min-w-0 pr-4">
+                            <div class="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                                <span class="icon-[lucide--file-text] w-4 h-4"></span>
+                            </div>
+                            <div class="min-w-0">
+                                <h2 class="text-sm sm:text-base font-medium text-gray-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors truncate" x-text="item.displayTitle"></h2>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5" x-text="item.displayDesc"></p>
+                            </div>
+                        </div>
+                        <div class="shrink-0 text-xs text-gray-400 dark:text-gray-500 font-mono" x-text="item.date"></div>
+                    </a>
+                </template>
+            </div>
+
+            <!-- Empty State -->
+            <div x-show="activeTab !== 'video' && filteredItems.length === 0" x-cloak class="text-center py-16">
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-900 mb-3 text-gray-400">
+                    <span class="icon-[lucide--search-x] w-6 h-6"></span>
+                </div>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Konten tidak ditemukan.</p>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+{{ end }}
+
+{{ define "footer" }}
+<!-- Menggunakan Swiper internal project -->
+{{ end }}

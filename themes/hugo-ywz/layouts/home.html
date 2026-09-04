@@ -2,9 +2,6 @@
 
 {{ define "main" }}
 
-    <!-- Navigasi Topik di Atas -->
-    {{ partial "baseof/nav-topics.html" . }}
-
     <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
         
         {{ $paginator := .Paginate (where .Site.RegularPages "Section" "in" (slice "posts")) }}

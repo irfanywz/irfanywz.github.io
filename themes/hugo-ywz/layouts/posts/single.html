@@ -1,9 +1,6 @@
 {{ define "head" }}{{ end }}
 
 {{ define "main" }}
-    <!-- Navigasi Topik di Atas -->
-    {{ partial "baseof/nav-topics.html" . }}
-
     <!-- Pilih layout berdasarkan front matter .Params.layout, default ke "nosidebar" atau "withsidebar" -->
     {{ $layout := .Params.layout | default "withsidebar" }}
     {{ partial (printf "posts/layout/%s.html" $layout) . }}

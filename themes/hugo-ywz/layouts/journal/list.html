@@ -9,12 +9,8 @@
         <!-- Container Full Width dengan Padding Luas -->
         <div class="w-full px-4 sm:px-6 lg:px-10 py-6 md:py-10">
             
-            <!-- ========================================== -->
-            <!-- SKELETON LOADING STATE                     -->
-            <!-- ========================================== -->
+            <!-- SKELETON LOADING STATE -->
             <div x-show="loading" class="animate-pulse flex flex-col lg:flex-row gap-8 items-start">
-                
-                <!-- Skeleton Sidebar Kiri -->
                 <aside class="w-full lg:w-72 xl:w-80 flex-shrink-0 space-y-6">
                     <div class="border-b border-gray-100 dark:border-gray-800 pb-6 space-y-3">
                         <div class="h-8 bg-gray-200 dark:bg-gray-800 rounded-lg w-2/3"></div>
@@ -27,23 +23,19 @@
                         <div class="h-9 bg-gray-100 dark:bg-gray-800/60 rounded-xl w-full"></div>
                     </div>
                 </aside>
-
-                <!-- Skeleton Konten Kanan -->
                 <div class="flex-grow w-full space-y-6">
                     <div class="h-16 bg-gray-200 dark:bg-gray-800 rounded-2xl w-full"></div>
-                    <div class="p-6 rounded-2xl bg-gray-50/50 dark:bg-gray-800/20 border border-gray-100 dark:border-gray-800 space-y-4">
+                    <div class="p-6 rounded-2xl bg-gray-50/50 dark:bg-gray-800/25 border border-gray-100 dark:border-gray-800 space-y-4">
                         <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-28 mb-3"></div>
                         <div class="h-12 bg-gray-200 dark:bg-gray-800 rounded-xl w-full"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Layout Utama Full Width (Muncul Setelah Loaded) -->
+            <!-- Layout Utama Full Width -->
             <div x-show="!loading" style="display: none;" class="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
                 
-                <!-- ========================================== -->
-                <!-- SIDEBAR KIRI (Sticky & Scrollable Mandiri) -->
-                <!-- ========================================== -->
+                <!-- SIDEBAR KIRI -->
                 <aside class="w-full lg:w-72 xl:w-80 flex-shrink-0 lg:sticky lg:top-24 space-y-6 bg-white dark:bg-gray-900 z-10">
                     
                     <!-- Title & Description -->
@@ -56,7 +48,6 @@
                             <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{{ .Description }}</p>
                         {{ end }}
 
-                        <!-- Stat Badge Ringkas -->
                         <div class="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 text-xs font-semibold border border-indigo-100 dark:border-indigo-900/60">
                             <span class="icon-[ri--book-read-line] w-4 h-4"></span>
                             <span>Total <strong x-text="journals.length"></strong> Catatan Jurnal</span>
@@ -74,85 +65,135 @@
                         </button>
                     </div>
 
-                    <!-- Filter Tahun -->
-                    <div class="space-y-2">
-                        <div class="flex items-center justify-between">
-                            <label class="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                                Filter Tahun
-                            </label>
-                            <span class="text-[10px] text-gray-400 lg:hidden font-medium">(Geser kesamping)</span>
+                    <!-- ========================================== -->
+                    <!-- FILTER TABS (Tab 1: Tahun | Tab 2: Kategori) -->
+                    <!-- ========================================== -->
+                    <div class="space-y-4" x-data="{ activeTab: 'year' }">
+                        
+                        <!-- Tombol Navigasi Tab -->
+                        <div class="flex p-1 bg-gray-100 dark:bg-gray-800 rounded-xl">
+                            <button @click="activeTab = 'year'"
+                                :class="activeTab === 'year' ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-xs' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'"
+                                class="flex-1 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                                <span class="icon-[ri--calendar-line] w-3.5 h-3.5"></span>
+                                <span>Tahun</span>
+                                <span class="w-1.5 h-1.5 rounded-full" :class="selectedYear !== '' ? 'bg-indigo-600' : 'bg-transparent'"></span>
+                            </button>
+                            <button @click="activeTab = 'category'"
+                                :class="activeTab === 'category' ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-xs' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'"
+                                class="flex-1 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                                <span class="icon-[ri--folder-line] w-3.5 h-3.5"></span>
+                                <span>Kategori</span>
+                                <span class="w-1.5 h-1.5 rounded-full" :class="selectedCategory !== '' ? 'bg-indigo-600' : 'bg-transparent'"></span>
+                            </button>
                         </div>
 
-                        <!-- ========================================== -->
-                        <!-- DESKTOP: List Kebawah dengan Scroll      -->
-                        <!-- ========================================== -->
-                        <div class="hidden lg:flex flex-col items-stretch gap-2 overflow-y-auto max-h-[calc(100vh-22rem)] scrollbar-none pb-0">
-                            
-                            <!-- Tombol Semua (Desktop) -->
-                            <button @click="selectedYear = ''"
-                                :class="selectedYear === '' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
-                                class="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-between gap-3 cursor-pointer">
-                                <span class="flex items-center gap-2">
-                                    <span class="icon-[ri--archive-drawer-line] w-4 h-4"></span>
-                                    <span>Semua Tahun</span>
-                                </span>
-                                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold"
-                                      :class="selectedYear === '' ? 'bg-indigo-500/40 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'"
-                                      x-text="journals.length"></span>
-                            </button>
+                        <!-- KONTEN TAB 1: FILTER TAHUN -->
+                        <div x-show="activeTab === 'year'" class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                    Pilih Tahun
+                                </label>
+                                <span class="text-[10px] text-gray-400 lg:hidden font-medium">(Geser kesamping)</span>
+                            </div>
 
-                            <!-- Loop Tahun (Desktop) -->
-                            <template x-for="(year, index) in availableYears" :key="'year-desk-' + index">
-                                <button @click="selectedYear = year"
-                                    :class="selectedYear === year ? 'bg-indigo-600 text-white shadow-xs' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                            <!-- DESKTOP: List Kebawah -->
+                            <div class="hidden lg:flex flex-col items-stretch gap-2 overflow-y-auto max-h-[calc(100vh-26rem)] scrollbar-none pb-0">
+                                <button @click="selectedYear = ''"
+                                    :class="selectedYear === '' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
                                     class="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-between gap-3 cursor-pointer">
                                     <span class="flex items-center gap-2">
-                                        <span class="icon-[ri--calendar-line] w-4 h-4"></span>
-                                        <span x-text="year"></span>
+                                        <span class="icon-[ri--archive-drawer-line] w-4 h-4"></span>
+                                        <span>Semua Tahun</span>
                                     </span>
                                     <span class="px-2 py-0.5 rounded-md text-[10px] font-bold"
-                                          x-text="countByYear(year)"
-                                          :class="selectedYear === year ? 'bg-indigo-500/40 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'"></span>
+                                          :class="selectedYear === '' ? 'bg-indigo-500/40 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'"
+                                          x-text="journals.length"></span>
                                 </button>
-                            </template>
-                        </div>
 
-                        <!-- ========================================== -->
-                        <!-- MOBILE: Swiper JS Horizontal Slider        -->
-                        <!-- ========================================== -->
-                        <div class="block lg:hidden" x-data="yearSwiper()" x-init="initSwiper()">
-                            <div x-ref="container" class="swiper overflow-hidden py-1 px-0.5">
-                                <div class="swiper-wrapper items-center">
-                                    
-                                    <!-- Tombol Semua (Mobile Swiper Slide) -->
-                                    <div class="swiper-slide !w-auto">
-                                        <button @click="selectedYear = ''"
-                                            :class="selectedYear === '' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
-                                            class="px-3.5 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer">
-                                            <span class="icon-[ri--archive-drawer-line] w-3.5 h-3.5"></span>
-                                            <span>Semua</span>
-                                            <span class="px-1.5 py-0.5 rounded text-[10px] font-bold"
-                                                  :class="selectedYear === '' ? 'bg-indigo-500/40 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'"
-                                                  x-text="journals.length"></span>
-                                        </button>
-                                    </div>
+                                <template x-for="(year, index) in availableYears" :key="'year-desk-' + index">
+                                    <button @click="selectedYear = year"
+                                        :class="selectedYear === year ? 'bg-indigo-600 text-white shadow-xs' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                                        class="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-between gap-3 cursor-pointer">
+                                        <span class="flex items-center gap-2">
+                                            <span class="icon-[ri--calendar-line] w-4 h-4"></span>
+                                            <span x-text="year"></span>
+                                        </span>
+                                        <span class="px-2 py-0.5 rounded-md text-[10px] font-bold"
+                                              x-text="countByYear(year)"
+                                              :class="selectedYear === year ? 'bg-indigo-500/40 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'"></span>
+                                    </button>
+                                </template>
+                            </div>
 
-                                    <!-- Loop Tahun (Mobile Swiper Slide) -->
-                                    <template x-for="(year, index) in availableYears" :key="'year-mob-' + index">
+                            <!-- MOBILE: Swiper JS Slider -->
+                            <div class="block lg:hidden" x-data="yearSwiper()" x-init="initSwiper()">
+                                <div x-ref="container" class="swiper overflow-hidden py-1 px-0.5">
+                                    <div class="swiper-wrapper items-center">
                                         <div class="swiper-slide !w-auto">
-                                            <button @click="selectedYear = year"
-                                                :class="selectedYear === year ? 'bg-indigo-600 text-white shadow-xs' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                                            <button @click="selectedYear = ''"
+                                                :class="selectedYear === '' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
                                                 class="px-3.5 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer">
-                                                <span class="icon-[ri--calendar-line] w-3.5 h-3.5"></span>
-                                                <span x-text="year"></span>
+                                                <span class="icon-[ri--archive-drawer-line] w-3.5 h-3.5"></span>
+                                                <span>Semua</span>
                                                 <span class="px-1.5 py-0.5 rounded text-[10px] font-bold"
-                                                      x-text="countByYear(year)"
-                                                      :class="selectedYear === year ? 'bg-indigo-500/40 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'"></span>
+                                                      :class="selectedYear === '' ? 'bg-indigo-500/40 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'"
+                                                      x-text="journals.length"></span>
                                             </button>
                                         </div>
-                                    </template>
-
+                                        <template x-for="(year, index) in availableYears" :key="'year-mob-' + index">
+                                            <div class="swiper-slide !w-auto">
+                                                <button @click="selectedYear = year"
+                                                    :class="selectedYear === year ? 'bg-indigo-600 text-white shadow-xs' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                                                    class="px-3.5 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer">
+                                                    <span class="icon-[ri--calendar-line] w-3.5 h-3.5"></span>
+                                                    <span x-text="year"></span>
+                                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-bold"
+                                                          x-text="countByYear(year)"
+                                                          :class="selectedYear === year ? 'bg-indigo-500/40 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'"></span>
+                                                </button>
+                                            </div>
+                                        </template>
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- KONTEN TAB 2: FILTER KATEGORI -->
+                        <div x-show="activeTab === 'category'" class="space-y-2" style="display: none;">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                    Pilih Kategori
+                                </label>
+                            </div>
+
+                            <!-- List Kategori Kebawah -->
+                            <div class="flex flex-col items-stretch gap-2 overflow-y-auto max-h-[calc(100vh-26rem)] scrollbar-none pb-0">
+                                <button @click="selectedCategory = ''"
+                                    :class="selectedCategory === '' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                                    class="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-between gap-3 cursor-pointer">
+                                    <span class="flex items-center gap-2">
+                                        <span class="icon-[ri--archive-drawer-line] w-4 h-4"></span>
+                                        <span>Semua Kategori</span>
+                                    </span>
+                                    <span class="px-2 py-0.5 rounded-md text-[10px] font-bold"
+                                          :class="selectedCategory === '' ? 'bg-indigo-500/40 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'"
+                                          x-text="journals.length"></span>
+                                </button>
+
+                                <template x-for="(cat, index) in availableCategories" :key="'cat-desk-' + index">
+                                    <button @click="selectedCategory = cat"
+                                        :class="selectedCategory === cat ? 'bg-indigo-600 text-white shadow-xs' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                                        class="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-between gap-3 cursor-pointer">
+                                        <span class="flex items-center gap-2 truncate">
+                                            <span class="icon-[ri--folder-line] w-4 h-4 flex-shrink-0"></span>
+                                            <span class="truncate" x-text="cat"></span>
+                                        </span>
+                                        <span class="px-2 py-0.5 rounded-md text-[10px] font-bold flex-shrink-0"
+                                              x-text="countByCategory(cat)"
+                                              :class="selectedCategory === cat ? 'bg-indigo-500/40 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'"></span>
+                                    </button>
+                                </template>
                             </div>
                         </div>
 
@@ -160,12 +201,10 @@
 
                 </aside>
 
-                <!-- ========================================== -->
-                <!-- STREAM KONTEN UTAMA (Kanan Full Width)     -->
-                <!-- ========================================== -->
+                <!-- STREAM KONTEN UTAMA -->
                 <div class="flex-grow w-full min-w-0 space-y-6">
                     
-                    <!-- Header Banner Quote (Tombol Saja, Tanpa Tulisan Teks) -->
+                    <!-- Header Banner Quote -->
                     <div class="bg-gradient-to-r from-indigo-50/80 via-white to-purple-50/50 dark:from-gray-800/40 dark:via-gray-800/70 dark:to-gray-800/40 border border-indigo-100/80 dark:border-gray-700/80 rounded-2xl p-4 sm:p-5 shadow-2xs relative flex items-center justify-between gap-4">
                         <div class="flex items-start gap-3.5 min-w-0">
                             <div class="w-9 h-9 rounded-xl bg-indigo-600/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -176,21 +215,21 @@
                                 <p class="text-[11px] font-semibold text-gray-400 dark:text-gray-500 mt-1" x-text="currentQuote.author ? `- ${currentQuote.author}` : ''"></p>
                             </div>
                         </div>
-                        
-                        <!-- Tombol Buka Offcanvas (Hanya Ikon, Sesuai Request Ytta) -->
                         <button @click="quoteModalOpen = true" class="flex-shrink-0 w-10 h-10 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center transition-all shadow-sm cursor-pointer" title="Lihat Semua Kutipan">
                             <span class="icon-[ri--book-open-line] w-5 h-5"></span>
                         </button>
                     </div>
 
                     <!-- Indikator Filter Aktif -->
-                    <template x-if="search.length > 0 || selectedYear !== ''">
+                    <template x-if="search.length > 0 || selectedYear !== '' || selectedCategory !== ''">
                         <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/40 px-4 py-2.5 rounded-xl border border-gray-200/60 dark:border-gray-700/60">
-                            <span>Menampilkan hasil filter untuk: 
+                            <span class="flex flex-wrap gap-1 items-center">
+                                <span>Menampilkan hasil filter untuk:</span>
+                                <strong class="text-indigo-600 dark:text-indigo-400" x-text="selectedCategory ? 'Kategori [' + selectedCategory + ']' : ''"></strong>
                                 <strong class="text-indigo-600 dark:text-indigo-400" x-text="selectedYear ? 'Tahun ' + selectedYear : ''"></strong>
-                                <strong class="text-indigo-600 dark:text-indigo-400" x-text="search ? ' &quot;' + search + '&quot;' : ''"></strong>
+                                <strong class="text-indigo-600 dark:text-indigo-400" x-text="search ? '&quot;' + search + '&quot;' : ''"></strong>
                             </span>
-                            <button @click="selectedYear = ''; search = ''" class="text-xs text-red-500 hover:underline flex items-center gap-1 font-semibold cursor-pointer">
+                            <button @click="selectedYear = ''; search = ''; selectedCategory = ''" class="text-xs text-red-500 hover:underline flex items-center gap-1 font-semibold cursor-pointer flex-shrink-0">
                                 <span class="icon-[ri--refresh-line] w-3.5 h-3.5"></span>
                                 Reset
                             </button>
@@ -202,7 +241,7 @@
                         <div class="text-center py-16 px-4 bg-gray-50 dark:bg-gray-800/40 rounded-2xl border border-dashed border-gray-200 dark:border-gray-700/80">
                             <span class="icon-[ri--file-search-line] w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-3 block"></span>
                             <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">Tidak ada jurnal yang cocok</p>
-                            <p class="text-xs text-gray-400 mt-1">Coba gunakan kata kunci lain atau pilih tahun yang berbeda.</p>
+                            <p class="text-xs text-gray-400 mt-1">Coba gunakan kata kunci lain atau ubah filter kategori/tahun.</p>
                         </div>
                     </template>
 
@@ -210,37 +249,30 @@
                     <div class="flex flex-col gap-6">
                         <template x-for="(monthGroup, mgIndex) in filteredGroupedJournals" :key="'month-group-' + mgIndex">
                             <div class="bg-gray-50/60 dark:bg-gray-800/30 p-4 sm:p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-2xs">
-                                
-                                <!-- Header Bulan -->
                                 <h3 class="text-xs md:text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-4 pb-2 border-b border-gray-200/80 dark:border-gray-700/80 flex items-center justify-between" 
                                     x-text="monthGroup.month">
                                 </h3>
 
-                                <!-- Item List -->
                                 <div class="divide-y divide-gray-100 dark:divide-gray-800/80">
                                     <template x-for="(item, itemIndex) in monthGroup.items" :key="'journal-item-' + itemIndex">
                                         <a :href="item.permalink" 
                                            class="group flex items-center gap-4 py-3 px-3 rounded-xl hover:bg-white dark:hover:bg-gray-800 transition-all hover:shadow-xs">
                                             
-                                            <!-- Tanggal & Hari -->
                                             <div class="flex-shrink-0 text-center font-mono w-10 py-1.5 rounded-lg bg-white dark:bg-gray-800 border border-gray-200/60 dark:border-gray-700/60 shadow-2xs">
                                                 <span class="block text-base sm:text-lg font-black text-gray-900 dark:text-white leading-none" x-text="item.day"></span>
                                                 <span class="block text-[9px] text-gray-400 uppercase font-bold mt-0.5" x-text="item.dayName"></span>
                                             </div>
 
-                                            <!-- Judul -->
                                             <div class="flex-grow min-w-0">
                                                 <h2 class="text-sm sm:text-base font-semibold md:font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2 md:line-clamp-1 leading-snug" 
                                                     x-text="item.title">
                                                 </h2>
                                             </div>
 
-                                            <!-- Badge Draft -->
                                             <template x-if="item.draft">
                                                 <span class="flex-shrink-0 px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-600 dark:bg-red-900/40 dark:text-red-400 border border-red-200 dark:border-red-800">DRAFT</span>
                                             </template>
 
-                                            <!-- Panah Indikator -->
                                             <div class="flex-shrink-0 text-gray-300 dark:text-gray-600 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:translate-x-1 transition-all">
                                                 <span class="icon-[ri--arrow-right-s-line] w-5 h-5"></span>
                                             </div>
@@ -260,7 +292,6 @@
         <!-- OFFCANVAS PANEL: SEMUA QUOTES PER KATEGORI -->
         <!-- ========================================== -->
         <div x-show="quoteModalOpen" class="fixed inset-0 z-50 overflow-hidden" style="display: none;">
-            <!-- Backdrop -->
             <div x-show="quoteModalOpen"
                  x-transition:enter="transition-opacity ease-out duration-300"
                  x-transition:enter-start="opacity-0"
@@ -271,7 +302,6 @@
                  @click="quoteModalOpen = false"
                  class="absolute inset-0 bg-black/50 backdrop-blur-xs"></div>
 
-            <!-- Konten Offcanvas (Dari Bawah) -->
             <div x-show="quoteModalOpen"
                  x-transition:enter="transition-transform ease-out duration-300"
                  x-transition:enter-start="translate-y-full"
@@ -281,7 +311,6 @@
                  x-transition:leave-end="translate-y-full"
                  class="absolute bottom-0 left-0 right-0 md:w-3/4 md:mx-auto lg:w-2/3 h-[85vh] bg-white dark:bg-gray-900 rounded-t-3xl shadow-2xl flex flex-col">
                 
-                <!-- Header Offcanvas -->
                 <div class="p-5 border-b border-gray-200 dark:border-gray-800 rounded-t-3xl bg-white dark:bg-gray-900 z-10 space-y-4">
                     <div class="flex items-center justify-between">
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
@@ -293,9 +322,7 @@
                         </button>
                     </div>
 
-                    <!-- Search & Filter Kategori Bar -->
                     <div class="flex flex-col sm:flex-row gap-3">
-                        <!-- Search Box Quote -->
                         <div class="relative sm:w-72 flex-shrink-0">
                             <span class="icon-[ri--search-line] absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></span>
                             <input type="text" x-model="quoteSearch" placeholder="Cari isi kutipan / penulis..." 
@@ -306,42 +333,34 @@
                             </button>
                         </div>
 
-                        <!-- Swiper JS Slider untuk Kategori Quote -->
                         <div class="flex-grow min-w-0 overflow-hidden" x-data="categorySwiper()" x-init="initSwiper()">
                             <div x-ref="catContainer" class="swiper py-0.5">
                                 <div class="swiper-wrapper items-center">
-                                    
-                                    <!-- Tombol Semua (Slide Swiper) -->
                                     <div class="swiper-slide !w-auto">
-                                        <button @click="selectedCategory = ''"
-                                            :class="selectedCategory === '' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                                        <button @click="selectedCategoryQuote = ''"
+                                            :class="selectedCategoryQuote === '' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'"
                                             class="px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition cursor-pointer">
                                             Semua
                                         </button>
                                     </div>
-
-                                    <!-- Loop Kategori (Slide Swiper) -->
                                     <template x-for="(cat, catIndex) in quoteCategories" :key="'cat-slide-' + catIndex">
                                         <div class="swiper-slide !w-auto">
-                                            <button @click="selectedCategory = cat.slug"
-                                                :class="selectedCategory === cat.slug ? 'bg-indigo-600 text-white shadow-xs' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                                            <button @click="selectedCategoryQuote = cat.slug"
+                                                :class="selectedCategoryQuote === cat.slug ? 'bg-indigo-600 text-white shadow-xs' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'"
                                                 class="px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition capitalize cursor-pointer"
                                                 x-text="cat.category_title">
                                             </button>
                                         </div>
                                     </template>
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Body Offcanvas (List Quotes Per Kategori) -->
                 <div class="flex-1 overflow-y-auto p-5 sm:p-6 bg-gray-50/50 dark:bg-gray-950/50 space-y-6">
                     <template x-for="(categoryGroup, cgIndex) in filteredGroupedQuotes" :key="'cat-group-' + cgIndex">
                         <div class="bg-white dark:bg-gray-900 rounded-2xl p-4 sm:p-5 border border-gray-100 dark:border-gray-800 shadow-2xs space-y-4">
-                            <!-- Judul Kategori -->
                             <div class="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-2.5">
                                 <h4 class="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider flex items-center gap-2">
                                     <span class="icon-[ri--folder-line] w-4 h-4"></span>
@@ -351,7 +370,6 @@
                                       x-text="categoryGroup.quotes.length + ' Kutipan'"></span>
                             </div>
 
-                            <!-- List Item Quotes dalam Kategori -->
                             <div class="space-y-3">
                                 <template x-for="(q, qIndex) in categoryGroup.quotes" :key="'quote-item-' + cgIndex + '-' + qIndex">
                                     <div class="p-3.5 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800/80 hover:border-indigo-200 dark:hover:border-indigo-900/60 transition flex flex-col justify-between gap-2">
@@ -366,7 +384,6 @@
                         </div>
                     </template>
 
-                    <!-- Kosong jika pencarian tidak ditemukan -->
                     <template x-if="filteredGroupedQuotes.length === 0">
                         <div class="text-center py-12">
                             <span class="icon-[ri--file-search-line] w-10 h-10 mx-auto text-gray-300 dark:text-gray-600 mb-2 block"></span>
@@ -393,9 +410,7 @@
                         spaceBetween: 6,
                         freeMode: true,
                         grabCursor: true,
-                        mousewheel: {
-                            forceToAxis: true,
-                        },
+                        mousewheel: { forceToAxis: true },
                     });
                 });
             }
@@ -413,9 +428,7 @@
                         spaceBetween: 6,
                         freeMode: true,
                         grabCursor: true,
-                        mousewheel: {
-                            forceToAxis: true,
-                        },
+                        mousewheel: { forceToAxis: true },
                     });
                 });
             }
@@ -430,19 +443,21 @@
             loading: true,
             search: '',
             selectedYear: '',
-            
-            // State untuk Offcanvas Quotes
+            selectedCategory: '', // State untuk filter kategori jurnal
+
             quoteModalOpen: false,
             quoteSearch: '',
-            selectedCategory: '',
+            selectedCategoryQuote: '',
 
             async initData() {
                 const urlParams = new URLSearchParams(window.location.search);
                 this.search = urlParams.get('q') || '';
                 this.selectedYear = urlParams.get('year') || '';
+                this.selectedCategory = urlParams.get('category') || '';
 
                 this.$watch('search', () => this.updateURL());
                 this.$watch('selectedYear', () => this.updateURL());
+                this.$watch('selectedCategory', () => this.updateURL());
 
                 try {
                     await new Promise(resolve => setTimeout(resolve, 600));
@@ -481,6 +496,9 @@
             updateURL() {
                 const params = new URLSearchParams();
 
+                if (this.selectedCategory) {
+                    params.set('category', this.selectedCategory);
+                }
                 if (this.selectedYear) {
                     params.set('year', this.selectedYear);
                 }
@@ -496,6 +514,12 @@
                 window.history.replaceState({}, '', newURL);
             },
 
+            get availableCategories() {
+                if (!this.journals) return [];
+                let cats = this.journals.flatMap(j => j.categories || []);
+                return [...new Set(cats)].sort();
+            },
+
             get availableYears() {
                 if (!this.journals) return [];
                 let years = this.journals.map(j => j.year);
@@ -507,12 +531,18 @@
                 return this.journals.filter(j => j.year === year).length;
             },
 
+            countByCategory(cat) {
+                if (!this.journals) return 0;
+                return this.journals.filter(j => j.categories && j.categories.includes(cat)).length;
+            },
+
             get filteredGroupedJournals() {
                 if (!this.journals) return [];
                 let filtered = this.journals.filter(j => {
+                    let matchesCategory = this.selectedCategory === '' || (j.categories && j.categories.includes(this.selectedCategory));
                     let matchesYear = this.selectedYear === '' || String(j.year) === String(this.selectedYear);
                     let matchesSearch = this.search === '' || j.title.toLowerCase().includes(this.search.toLowerCase());
-                    return matchesYear && matchesSearch;
+                    return matchesCategory && matchesYear && matchesSearch;
                 });
 
                 let groups = {};
@@ -536,7 +566,7 @@
                 if (!this.quoteCategories) return result;
 
                 this.quoteCategories.forEach(cat => {
-                    if (this.selectedCategory !== '' && cat.slug !== this.selectedCategory) {
+                    if (this.selectedCategoryQuote !== '' && cat.slug !== this.selectedCategoryQuote) {
                         return;
                     }
 

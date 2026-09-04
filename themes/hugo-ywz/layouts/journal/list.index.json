@@ -12,6 +12,7 @@
     "day" (.Date.Format "02") 
     "dayName" (lower (slicestr (i18n .Date.Weekday) 0 3)) 
     "draft" .Draft 
+    "categories" (.Params.journal_category | default slice)
   -}}
   {{- $data = $data | append $item -}}
 {{- end -}}

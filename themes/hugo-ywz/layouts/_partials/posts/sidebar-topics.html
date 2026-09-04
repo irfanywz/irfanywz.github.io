@@ -34,7 +34,7 @@
 
     {{ if or $sortedTopics $sortedKeywords }}
     <!-- Gunakan variabel $defaultTab ke dalam x-data -->
-    <div class="hidden sm:block bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700" x-data="{ activeTab: '{{ $defaultTab }}' }">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700" x-data="{ activeTab: '{{ $defaultTab }}' }">
         
         <!-- Header Tabs -->
         <div class="flex items-center p-1 bg-gray-100 dark:bg-gray-900/60 rounded-xl mb-4 border border-gray-200/60 dark:border-gray-800">
@@ -49,7 +49,7 @@
             <button @click="activeTab = 'keywords'" 
                 :class="activeTab === 'keywords' ? 'bg-white dark:bg-gray-800 text-emerald-600 dark:text-emerald-400 shadow-xs font-bold' : 'text-gray-500 dark:text-gray-400 font-medium hover:text-gray-900 dark:hover:text-white'"
                 class="flex-1 py-1.5 px-3 text-xs rounded-lg transition-all duration-200 text-center">
-                Keywords
+                Kata Kunci
             </button>
         </div>
 

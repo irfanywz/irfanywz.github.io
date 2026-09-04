@@ -144,6 +144,15 @@ weight = 60
   # group = "dropdown"
 
 [[menu.footer]]
+name = "Animasi"
+url = "/animasi/"
+pre = "icon-[ri--movie-line]"
+weight = 55
+[menu.footer.params]
+  color = "text-rose-500"
+  # group = "dropdown"
+
+[[menu.footer]]
 name = "Koleksi"
 url = "/collection/"
 pre = "icon-[ri--stack-line]"

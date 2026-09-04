@@ -3,6 +3,7 @@
         x-data="{ 
             search: '',
             activeFilter: new URLSearchParams(window.location.search).get('filter') || 'all',
+            swiper: null,
             items: [
                 {{ range .Pages }}
                 {
@@ -12,6 +13,19 @@
                 },
                 {{ end }}
             ],
+            init() {
+                // Inisialisasi Swiper JS untuk horizontal filter
+                this.swiper = new Swiper(this.$refs.swiperContainer, {
+                    modules: window.SwiperModules,
+                    slidesPerView: 'auto',
+                    spaceBetween: 8,
+                    freeMode: true,
+                    grabCursor: true,
+                    mousewheel: {
+                        forceToAxis: true,
+                    },
+                });
+            },
             updateFilter(filter) {
                 this.activeFilter = filter;
                 const url = new URL(window.location);
@@ -65,39 +79,49 @@
                 </div>
             </div>
 
-            <!-- Horizontal Filter Buttons -->
-            <div class="flex items-center gap-2 overflow-x-auto pb-6 mb-6 scrollbar-none">
-                <!-- Tombol Semua -->
-                <button @click="updateFilter('all')"
-                    :class="activeFilter === 'all' 
-                        ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' 
-                        : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
-                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0">
-                    <span>Semua</span>
-                    <span class="px-2 py-0.5 text-xs rounded-full"
-                        :class="activeFilter === 'all' 
-                            ? 'bg-white/20 text-white' 
-                            : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'"
-                        x-text="items.length">
-                    </span>
-                </button>
+            <!-- Horizontal Filter Buttons with Swiper -->
+            <div class="relative group mb-6">
+                <div x-ref="swiperContainer" class="swiper overflow-hidden py-1 px-0.5">
+                    <div class="swiper-wrapper items-center">
+                        
+                        <!-- Tombol Semua -->
+                        <div class="swiper-slide !w-auto">
+                            <button @click="updateFilter('all')"
+                                :class="activeFilter === 'all' 
+                                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' 
+                                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0 cursor-pointer">
+                                <span>Semua</span>
+                                <span class="px-2 py-0.5 text-xs rounded-full"
+                                    :class="activeFilter === 'all' 
+                                        ? 'bg-white/20 text-white' 
+                                        : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'"
+                                    x-text="items.length">
+                                </span>
+                            </button>
+                        </div>
 
-                <!-- Tombol Kategori Dinamis berdasarkan Layout -->
-                <template x-for="cat in filterCounts" :key="cat.name">
-                    <button @click="updateFilter(cat.name)"
-                        :class="activeFilter === cat.name 
-                            ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' 
-                            : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
-                        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0 capitalize">
-                        <span x-text="cat.name"></span>
-                        <span class="px-2 py-0.5 text-xs rounded-full"
-                            :class="activeFilter === cat.name 
-                                ? 'bg-white/20 text-white' 
-                                : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'"
-                            x-text="cat.count">
-                        </span>
-                    </button>
-                </template>
+                        <!-- Tombol Kategori Dinamis berdasarkan Layout -->
+                        <template x-for="cat in filterCounts" :key="cat.name">
+                            <div class="swiper-slide !w-auto">
+                                <button @click="updateFilter(cat.name)"
+                                    :class="activeFilter === cat.name 
+                                        ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' 
+                                        : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0 capitalize cursor-pointer">
+                                    <span x-text="cat.name"></span>
+                                    <span class="px-2 py-0.5 text-xs rounded-full"
+                                        :class="activeFilter === cat.name 
+                                            ? 'bg-white/20 text-white' 
+                                            : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'"
+                                        x-text="cat.count">
+                                    </span>
+                                </button>
+                            </div>
+                        </template>
+
+                    </div>
+                </div>
             </div>
 
             <!-- Grid Items -->
