@@ -16,6 +16,10 @@ categories:
 <i class="icon-[ri--user-shared-line] text-indigo-600 dark:text-indigo-400"></i> Character Pose Prompt Builder
 </h3>
 <div class="flex items-center gap-2">
+<!-- Tombol Prompt Pose dari Gambar (Diletakkan di sebelah tombol Prompt Pose) -->
+<button @click="showImagePoseBaseModal = true" class="text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 px-3 py-1.5 rounded-xl transition font-medium cursor-pointer flex items-center gap-1.5">
+<i class="icon-[ri--image-line]"></i> Ekstrasi Style
+</button>
 <!-- Tombol View Base Prompt Deskripsi Pose -->
 <button @click="showDescBaseModal = true" class="text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 px-3 py-1.5 rounded-xl transition font-medium cursor-pointer flex items-center gap-1.5">
 <i class="icon-[ri--file-text-line]"></i> Prompt Pose
@@ -157,6 +161,33 @@ x-text="catName">
 </div>
 </div>
 
+<!-- Modal Viewer & Editor Base Prompt Pose dari Gambar -->
+<div x-show="showImagePoseBaseModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4" @click.self="showImagePoseBaseModal = false">
+<div class="bg-white dark:bg-gray-800 w-full max-w-xl rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col max-h-[85vh]">
+<!-- Modal Header -->
+<div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+<h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2">
+<i class="icon-[ri--image-line] text-indigo-600 dark:text-indigo-400"></i> Prompt Pose dari Gambar
+</h3>
+<button @click="showImagePoseBaseModal = false" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer text-lg">
+<i class="icon-[ri--close-line]"></i>
+</button>
+</div>
+<!-- Modal Body -->
+<div class="p-5 overflow-y-auto space-y-4">
+<!-- Live Preview Base Prompt Pose dari Gambar -->
+<pre class="text-xs text-indigo-200/90 font-mono leading-relaxed whitespace-pre-wrap" x-text="imagePoseBasePrompt"></pre>
+</div>
+<!-- Modal Footer with Copy Button -->
+<div class="px-5 py-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700 flex justify-end">
+<button @click="copyText(imagePoseBasePrompt, 'imageDescCopied')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-4 py-2 rounded-xl transition font-medium cursor-pointer flex items-center gap-1.5 shadow-sm">
+<i class="icon-[ri--file-copy-line]"></i>
+<span x-text="imageDescCopied ? 'Base Prompt Disalin!' : 'Salin Prompt'"></span>
+</button>
+</div>
+</div>
+</div>
+
 </div>
 
 <script>
@@ -167,8 +198,10 @@ function characterPoseApp() {
         activeImage: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231f2937"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%2393c5fd" font-size="12" font-family="sans-serif">Pose</text></svg>',
         copied: false,
         descCopied: false,
+        imageDescCopied: false,
         showModal: false,
         showDescBaseModal: false,
+        showImagePoseBaseModal: false,
         activeCategory: 'All',
         categorySwiper: null,
 
@@ -256,6 +289,29 @@ Rules:
 * Keep it **short and directly usable for image generation**
 
 **Output ONE sentence only.**`;
+        },
+
+        get imagePoseBasePrompt() {
+            return `Create ONE short visual description of the character pose using image reference
+
+If a reference image is provided, use it as the PRIMARY POSE REFERENCE. Carefully observe the character's visible body position and translate only the important pose traits into a concise description.
+Write exactly ONE natural sentence, similar to:
+“Running energetically forward with arms swinging and a dynamic leaning posture.”
+RULES:
+- Preserve the character's clearly visible action and posture from the reference.
+- Prioritize distinctive visible pose traits: action, body position, limb angles, leaning posture, and gesture.
+- Mention body build only when visually relevant to the pose.
+- Do not invent physical traits or poses that are not visible or reasonably supported.
+- Do not describe the character's identity, face, hair, clothing, background, camera angle, or art style unless specifically requested.
+- Do not copy the reference character's identity if the task is to create a new pose; use the reference only for pose visual guidance.
+- Keep the appearance believable and suitable for a stylized cartoon world.
+- Avoid generic descriptions.
+- Avoid exaggerated or unusual physical features unless clearly present in the reference.
+- Avoid backstory, biography, personality explanation, or unnecessary details.
+- Keep the sentence short and directly usable as an image-generation prompt.
+- Use simple, natural English.
+- Do not use bullet points or multiple sentences.
+- OUTPUT EXACTLY ONE SENTENCE.`;
         },
 
         get fullPrompt() {

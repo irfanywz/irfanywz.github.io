@@ -6,6 +6,7 @@ date: 2011-12-07T09:08:30+07:00
 image: hello-world.avif
 topics: ["Teknologi"]
 keywords: ["Kode"]
+premium: true
 draft: false
 ---
 
