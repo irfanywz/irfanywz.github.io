@@ -1,13 +1,15 @@
-{{ define "head" }}{{ end }}
+{{ define "head" }}
+{{ end }}
 
 {{ define "main" }}
-    <!-- Pilih layout berdasarkan front matter .Params.layout, default ke "nosidebar" atau "withsidebar" -->
     {{ $layout := .Params.layout | default "withsidebar" }}
     {{ partial (printf "posts/layout/%s.html" $layout) . }}
-
 {{ end }}
 
 {{ define "footer" }}
+    {{ if and (isset .Params "premium") .Params.premium }}
+        {{ partial "components/swg-js.html" . }}
+    {{ end }}
     {{ partial "components/disqus-count-js.html" . }}
     {{ partial "components/view-count-js.html" . }}
 {{ end }}

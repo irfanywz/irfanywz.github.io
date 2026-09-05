@@ -16,6 +16,8 @@ consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
+{{< paywall enc="5adedb74e094d31212c01680c35b82551b01028d71bcf739698f41e6c7ebb42ecab85d7e9ae5248255bcb9a5528abeefU2FsdGVkX19dfMgbVhhsInp3s/TL8qMmWjYtckzKgI8wEUxLh4ImR5JBfrkwkhdDHWHHDY/4tWHqHIAAuI3S0qlVVuh9bmNVh+HVFxCHYK0=" key="irfanywz" salt="688bfbf3c6c926f7bb36857ebc266739" >}}
+
 {{% references %}}
   {{% ref-item "https://irfanywz.github.io" "Dokumentasi Resmi Hugo" %}}
   {{% ref-item "https://irfanywz.github.io" "Panduan Styling Tailwind CSS" %}}

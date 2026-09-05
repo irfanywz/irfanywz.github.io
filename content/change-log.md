@@ -4,6 +4,15 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.6.0"
+    date: "5 September 2026"
+    changes:
+      - tag: "Fitur Baru"
+        description: "Menambahkan halaman animasi yang berfungsi untuk kebutuhan pembuatan animasi."
+      - tag: "Fitur Baru"
+        description: "Menambahkan fitur paywall menggunakan Google Reader Revenue Manager."
+      - tag: "Pembaruan"
+        description: "Memperbarui tampilan list-post untuk jenis konten premium agar terdapat label premium."
   - version: "2.5.1"
     date: "26 Agustus 2026"
     changes:

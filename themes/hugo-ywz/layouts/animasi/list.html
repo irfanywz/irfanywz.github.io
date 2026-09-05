@@ -3,7 +3,7 @@
 {{ end }}
 
 {{ define "main" }}
-    {{ $alatPage := .Site.GetPage "animasi/alat" }}
+    {{ $promptPage := .Site.GetPage "animasi/prompt" }}
     {{ $naskahPage := .Site.GetPage "animasi/naskah" }}
 
 <main class="flex-grow bg-white dark:bg-gray-950 transition-colors duration-300"
@@ -52,9 +52,9 @@
             }
         },
 
-        alatItems: [
-            {{ if $alatPage }}
-                {{ range sort $alatPage.Pages "File.Path" "asc" }}
+        promptItems: [
+            {{ if $promptPage }}
+                {{ range sort $promptPage.Pages "File.Path" "asc" }}
                     {{ if .IsPage }}
                     {
                         id: {{ default .File.Path .File.UniqueID | jsonify }},
@@ -64,7 +64,7 @@
                         isExternal: {{ if .Params.link }}true{{ else }}false{{ end }},
                         displayTitle: {{ .Title | jsonify }},
                         displayDesc: {{ .Params.description | default .Summary | jsonify }},
-                        icon: {{ or .Params.icon "icon-[lucide--wrench]" | jsonify }},
+                        icon: {{ or .Params.icon "icon-[ri--robot-2-line]" | jsonify }},
                         date: {{ .Date | time.Format "2 January 2006" | jsonify }},
                         categories: {{ or .Params.categories (slice "General") | jsonify }}
                     },
@@ -98,8 +98,8 @@
 
             const urlParams = new URLSearchParams(window.location.search);
             const tabParam = urlParams.get('tab');
-            if (tabParam === 'alat') {
-                this.activeTab = 'alat';
+            if (tabParam === 'prompt') {
+                this.activeTab = 'prompt';
             } else if (tabParam === 'naskah') {
                 this.activeTab = 'naskah';
             }
@@ -158,7 +158,7 @@
 
         get currentItems() {
             if (this.activeTab === 'video') return this.videos || [];
-            if (this.activeTab === 'alat') return this.alatItems || [];
+            if (this.activeTab === 'prompt') return this.promptItems || [];
             return this.naskahItems || [];
         },
 
@@ -178,8 +178,8 @@
         get filteredItems() {
             if (this.activeTab === 'video') return this.videos || [];
             let items = [];
-            if (this.activeTab === 'alat') {
-                items = this.alatItems || [];
+            if (this.activeTab === 'prompt') {
+                items = this.promptItems || [];
             } else if (this.activeTab === 'naskah') {
                 items = this.naskahItems || [];
             }
@@ -215,11 +215,11 @@
                     </div>
                     <div class="swiper-slide !w-auto">
                         <button 
-                            @click="activeTab = 'alat'"
-                            :class="activeTab === 'alat' ? 'border-sky-500 text-sky-600 dark:text-sky-400 font-bold' : 'border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 font-medium'"
+                            @click="activeTab = 'prompt'"
+                            :class="activeTab === 'prompt' ? 'border-sky-500 text-sky-600 dark:text-sky-400 font-bold' : 'border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 font-medium'"
                             class="pb-3 border-b-2 text-sm transition-colors focus:outline-none flex items-center gap-2 -mb-[1px] cursor-pointer">
-                            <span class="icon-[lucide--wrench] w-4 h-4"></span>
-                            {{ with .Params.tabs }}{{ .alat | default "Alat Animasi" }}{{ else }}Alat Animasi{{ end }}
+                            <span class="icon-[ri--robot-2-line] w-4 h-4"></span>
+                            {{ with .Params.tabs }}{{ .prompt | default "Prompt" }}{{ else }}Prompt{{ end }}
                         </button>
                     </div>
                     <div class="swiper-slide !w-auto">
@@ -315,7 +315,7 @@
             </div>
 
             <!-- Content for Alat Tab -->
-            <div x-show="activeTab === 'alat'" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div x-show="activeTab === 'prompt'" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <template x-for="item in filteredItems" :key="item.id || item.permalink">
                     <a :href="item.permalink" :target="item.isExternal ? '_blank' : ''" :rel="item.isExternal ? 'noopener noreferrer nofollow' : ''"
                        class="group flex items-center justify-between p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-sky-500/50 dark:hover:border-sky-500/50 transition-all shadow-xs">

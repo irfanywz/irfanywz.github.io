@@ -9,6 +9,7 @@ keywords: ["Keputusan", "Komunikasi"]
 # series: ""
 showAds: false
 adPositions: []
+premium: true
 draft: true
 ---
 
@@ -34,3 +35,4 @@ Sinis: Sikap memandang rendah, mengejek, atau tidak percaya bahwa orang lain pun
 Fatalis: Pasrah pada nasib. Percaya bahwa semua hal buruk sudah ditakdirkan dan tidak ada yang bisa diubah, jadi ya pasrah aja.
 
 Mana di antara kata-kata ini yang kira-kira paling sering kamu denger tapi belum sempet nyari artinya?
+

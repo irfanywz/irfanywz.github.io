@@ -5,6 +5,6 @@ description: "karya animasi, alat pendukung, dan naskah cerita."
 youtube_channel_id: "UCbxmyC58x53ZmcBixPoutjw"
 tabs:
   video: "Video"
-  alat: "Alat"
+  prompt: "Prompt"
   naskah: "Naskah"
 ---
