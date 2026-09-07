@@ -326,7 +326,7 @@ Keep ONLY the SAME VISUAL ART STYLE, DRAWING LANGUAGE, AND DESIGN APPROACH of th
 - animation-friendly construction
 
 DESIGN:
-Create the object in a clear FRONT 3/4 VIEW, facing slightly to the right when applicable.
+Create the object in a clear side scroll view
 
 Show the complete object clearly:
 - full object visible

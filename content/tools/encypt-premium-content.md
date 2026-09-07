@@ -1,5 +1,5 @@
 ---
-title: "Enkripsi Konten"
+title: "Enkripsi Premium Konten"
 date: 2025-10-07T00:00:00+07:00
 description: "Alat sederhana untuk mengenkripsi konten dan menghasilkan format shortcode paywall"
 icon: "icon-[ri--key-fill]"
