@@ -34,7 +34,7 @@
         <span class="icon-[ri--chat-3-line] w-4 h-4 sm:w-5 sm:h-5"></span>
         <span class="hidden md:inline">Komentar</span>
         <!-- Badge Jumlah Komentar Disqus -->
-        <span class="disqus-comment-count bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-white text-[10px] sm:text-xs px-1.5 py-0.5 rounded-md ml-0.5" data-disqus-identifier="{{ .File.UniqueID }}">0</span>
+        <span class="disqus-comment-count bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-white text-[10px] sm:text-xs px-1.5 py-0.5 rounded-md ml-0.5" data-disqus-identifier="{{ .RelPermalink }}">0</span>
       </button>
 
       <!-- Tombol Share -->
@@ -107,7 +107,7 @@
             commentLoaded = true;
             window.disqus_config = function () {
               this.page.url = '{{ .Permalink }}';
-              this.page.identifier = '{{ .File.UniqueID }}';
+              this.page.identifier = '{{ .RelPermalink }}';
               this.page.title = '{{ .Title }}';
             };
             var d = document, s = d.createElement('script');
