@@ -4,6 +4,15 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.7.0"
+    date: "10 September 2026"
+    changes:
+      - tag: "Fitur Baru"
+        description: "Menambahkan layout affiliate untuk halaman single post"
+      - tag: "Fitur Baru"
+        description: "Membuat shortcode produk untuk affiliate"
+      - tag: "Perbaikan"
+        description: "Memperbaiki script view count dan icon reaction"
   - version: "2.6.0"
     date: "5 September 2026"
     changes:

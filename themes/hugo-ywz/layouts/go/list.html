@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mengarahkan...</title>
+    <meta name="robots" content="noindex, follow">
+    {{ partial "google_analytics.html" . }}
+
+    <script>
+        async function handleRedirect() {
+            const params = new URLSearchParams(window.location.search);
+            const productKey = params.get('p');
+            const storeName = params.get('s');
+
+            if (!productKey || !storeName) {
+                document.getElementById('status').innerText = "Parameter link tidak lengkap.";
+                return;
+            }
+
+            try {
+                // Fetch data affiliate untuk mendapatkan URL tujuan
+                const response = await fetch('/affiliates.json');
+                const affiliateData = await response.json();
+
+                if (affiliateData[productKey] && affiliateData[productKey][storeName]) {
+                    const targetUrl = affiliateData[productKey][storeName];
+
+                    // --- KIRIM EVENT KE GOOGLE ANALYTICS (GA4) ---
+                    if (typeof gtag === 'function') {
+                        gtag('event', 'affiliate_click', {
+                            'product_name': productKey,
+                            'store_name': storeName
+                        });
+                    }
+
+                    // --- (Opsional) Simpan log lokal di browser pengunjung ---
+                    const clickLogs = JSON.parse(localStorage.getItem('aff_clicks') || '[]');
+                    clickLogs.push({ product: productKey, store: storeName, time: new Date().toISOString() });
+                    localStorage.setItem('aff_clicks', JSON.stringify(clickLogs));
+
+                    // --- EKSEKUSI REDIRECT ---
+                    // Beri jeda sangat singkat (misal 150ms) agar sinyal gtag sempat terkirim sebelum halaman berpindah
+                    setTimeout(() => {
+                        window.location.replace(targetUrl);
+                    }, 150);
+
+                } else {
+                    document.getElementById('status').innerText = "Produk atau toko tidak ditemukan.";
+                }
+            } catch (error) {
+                document.getElementById('status').innerText = "Gagal memuat data affiliate.";
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', handleRedirect);
+    </script>
+</head>
+<body style="background: #111; color: #fff; font-family: sans-serif; text-align: center; padding-top: 20vh;">
+    <p id="status">Mengarahkan ulang ke produk...</p>
+</body>
+</html>

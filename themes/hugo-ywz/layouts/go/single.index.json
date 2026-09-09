@@ -1,0 +1,11 @@
+{{- $affData := dict -}}
+{{- range $key, $val := hugo.Data.aff -}}
+  {{- $item := dict 
+    "name" $val.name
+    "shopee" $val.shopee
+    "tiktok" $val.tiktok
+  -}}
+  {{- $affData = merge $affData (dict $key $item) -}}
+{{- end -}}
+
+{{- $affData | jsonify -}}

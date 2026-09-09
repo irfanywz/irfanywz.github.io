@@ -5,4 +5,5 @@ Situs personal yang dibuat menggunakan hugo
 
 ## Todo
 
-halaman single post untuk tampilan jenis konten affiliate ?
+contoh produk
+testimoni

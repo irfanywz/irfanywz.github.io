@@ -43,6 +43,23 @@ prompts:
       In the top right corner, a diagonal [dark] ribbon banner features the bold text 'YWZ' in [white]. High-quality digital art, vector style. 
     # =====================================================
 
+  - title: Favicon Logo
+    prompt: |
+      create image, A dynamic [imagemaster] app favicon icon. focus with icon no text
+
+      The core visual is a sharp
+
+      background canvas is white 
+
+  - title: Favicon Logo Base on Reference
+    prompt: |
+      create image bas on reference, A dynamic [life] app favicon icon. focus with icon no text
+
+      The core visual is a sharp
+
+      background canvas is white 
+
+
   - title: Example
     prompt: Exmple
     notes: Example        

@@ -17,7 +17,7 @@
 
 {{ end }}
 
-{{ $noIndex := .Scratch.Get "noIndex" }}
+{{ $noIndex := or (.Scratch.Get "noIndex") (eq .Params.noindex true) }}
 {{ if $noIndex }}
 	<meta name="robots" content="noindex" />
 	<meta name="googlebot" content="noindex" />
@@ -25,6 +25,7 @@
 	<meta name="robots" content="index, follow" />
 	<meta name="googlebot" content="index, follow" />
 {{ end }}
+
 
 <link rel="canonical" href="{{ .Permalink }}" itemprop="url" />
 <link rel="sitemap" type="application/xml" title="Sitemap" href='{{ "sitemap.xml" | absURL }}' />

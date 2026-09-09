@@ -237,6 +237,11 @@ weight = 40
 label = "Indonesian"
 locale = "id"
 
+[privacy]
+  [privacy.googleAnalytics]
+    disable = false
+    respectDoNotTrack = false
+
 [services]
   [services.googleAnalytics]
     id = 'G-VVGW3VPZZG'

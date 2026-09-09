@@ -1,1 +1,17 @@
-<script type="module" src="{{ $.Site.BaseURL }}js/view-count.js"></script>
+{{- $jsOpts := dict
+    "minify" (not hugo.IsDevelopment)
+    "sourceMap" (cond hugo.IsDevelopment "external" "")
+    "targetPath" "js/view-count.min.js"
+}}
+
+{{- with resources.Get "js/view-count.js" }}
+    {{- with . | js.Build $jsOpts }}
+        {{- if hugo.IsDevelopment }}
+            <script type="module" defer src="{{ .RelPermalink }}"></script>
+        {{- else }}
+            {{- with . | fingerprint }}
+                <script type="module" defer src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
+            {{- end }}
+        {{- end }}
+    {{- end }}
+{{- end }}

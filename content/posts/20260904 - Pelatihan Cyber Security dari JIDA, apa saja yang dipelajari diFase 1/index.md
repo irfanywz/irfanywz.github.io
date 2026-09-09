@@ -1,5 +1,5 @@
 ---
-title: Pelatihan Cyber Security dari JIDA, apa saja yang dipelajari diFase 1
+title: Pelatihan Cyber Security dari JIDA, apa saja yang dipelajari difase 1
 slug: pelatihan-cyber-security-jida-fase-1
 description: "kemanan digital bukan hanya tugas seseorang melainkan tugas setiap orang, agar aman dalam menggunakan internet memahami dasar kemanan digital bisa menghindari kejahatan yang tidak di-inginkan"
 date: 2026-09-04T19:00:00+07:00

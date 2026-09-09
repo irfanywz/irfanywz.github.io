@@ -1,0 +1,32 @@
+<!-- Author Box (Horizontal Layout untuk No-Sidebar) -->
+<div class="my-10 p-6 sm:p-8 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-200/80 dark:border-gray-700/80 flex flex-col sm:flex-row items-center sm:items-start gap-5 sm:gap-6 text-center sm:text-left transition-colors">
+    
+    <!-- Avatar dengan Indikator Online -->
+    <div class="relative flex-shrink-0">
+        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl sm:rounded-full border-4 border-white dark:border-gray-700 shadow-md overflow-hidden">
+            <img 
+                src="/{{ .Site.Params.Avatar | safeURL }}" 
+                alt="{{ .Site.Params.author }}" 
+                class="w-full h-full object-cover"
+            >
+        </div>
+        <span class="absolute bottom-1 right-1 w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-gray-700 rounded-full animate-pulse"></span>
+    </div>
+
+    <!-- Informasi Author & Deskripsi -->
+    <div class="flex-grow flex flex-col justify-center">
+        <h4 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-1">
+            Penulis
+        </h4>
+        <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+            {{ .Site.Params.description }}
+        </p>
+        <div>
+            <a href="{{ "/about/" | relURL }}" class="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-indigo-50 dark:bg-indigo-950/50 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 rounded-xl text-xs sm:text-sm font-semibold transition-all">
+                <span>Selengkapnya</span>
+                <span class="icon-[ri--arrow-right-line] w-4 h-4"></span>
+            </a>
+        </div>
+    </div>
+
+</div>

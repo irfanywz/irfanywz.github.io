@@ -1,6 +1,7 @@
 {{ if .Page.TableOfContents }}
+{{ $defaultShow := .Get "show" | default "false" }}
 <div x-data="{ 
-    show: false, 
+    show: {{ $defaultShow }}, 
     mobileOpen: false,
     init() {
         // Otomatis salin isi TOC jika modal mobile dibuka
