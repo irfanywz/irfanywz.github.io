@@ -207,99 +207,153 @@ function topShirtApp() {
         activeCategory: 'All',
         categorySwiper: null,
 
-        topDatabase: {
-            "Wanita": [
-                {
-                    title: "Summer Floral Dress Top",
-                    description: "Lightweight summer floral pattern sleeveless top with sweetheart neckline.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23ec4899"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Floral</text></svg>'
-                },
-                {
-                    title: "Knitted Cardigan Set",
-                    description: "Cozy pastel knitted cardigan buttoned up over a simple inner top.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23f43f5e"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Cardigan</text></svg>'
-                },
-                {
-                    title: "Chic Blazer",
-                    description: "Professional chic tailored blazer jacket over a minimalist blouse.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23be185d"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Blazer</text></svg>'
-                }
-            ],
-            "Pria": [
-                {
-                    title: "Formal Suit Jacket",
-                    description: "Classic tailored business suit jacket over a crisp dress shirt with a necktie.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231e3a8a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Suit</text></svg>'
-                },
-                {
-                    title: "Jas Formal",
-                    description: "Elegant formal tuxedo suit jacket with vest over a formal dress shirt.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23172554"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Formal</text></svg>'
-                },
-                {
-                    title: "Bomber Jacket Style",
-                    description: "Classic ribbed collar bomber jacket worn over a basic t-shirt.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%232563eb"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Bomber</text></svg>'
-                }
-            ],
-            "Universal": [
-                {
-                    title: "Simple Casual Tee",
-                    description: "Simple solid-colored casual t-shirt with short sleeves.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230d9488"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Tee</text></svg>'
-                },
-                {
-                    title: "Hoodie Streetwear",
-                    description: "Comfortable oversized pullover hoodie with front pocket and drawstrings.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230f766e"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Hoodie</text></svg>'
-                },
-                {
-                    title: "Sporty Tracksuit Jacket",
-                    description: "Athletic sporty zipped track jacket with contrasting stripe accents.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%2314b8a6"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Track</text></svg>'
-                },
-                {
-                    title: "Seragam Sekolah SMA",
-                    description: "Indonesian senior high school uniform white short-sleeve shirt with school emblem and tie.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%234f46e5"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">SMA</text></svg>'
-                },
-                {
-                    title: "Seragam Pemadam Kebakaran",
-                    description: "Heavy-duty firefighter protective turnout gear jacket with high-visibility reflective stripes.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23c2410c"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Damkar</text></svg>'
-                },
-                {
-                    title: "Seragam Polisi",
-                    description: "Official law enforcement tactical uniform shirt with badge and chest pockets.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231e293b"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Polisi</text></svg>'
-                },
-                {
-                    title: "Jas Lab Dokter",
-                    description: "Clean white medical doctor laboratory coat over professional inner shirt with stethoscope.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23475569"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Dokter</text></svg>'
-                },
-                {
-                    title: "Pakaian Pilot",
-                    description: "Commercial airline captain pilot uniform shirt with shoulder epaulets and black tie.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230f172a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Pilot</text></svg>'
-                },
-                {
-                    title: "Pakaian Chef / Koki",
-                    description: "Traditional double-breasted white chef jacket with cloth knot buttons.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23334155"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Chef</text></svg>'
-                },
-                {
-                    title: "Kostum Astronot",
-                    description: "Detailed space exploration astronaut flight suit upper body with chest control panel.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%2364748b"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Astronot</text></svg>'
-                },
-                {
-                    title: "Pakaian Militer / Tentara",
-                    description: "Camouflage military tactical combat uniform shirt.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23365314"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Militer</text></svg>'
-                }
-            ]
+topDatabase: {
+    "Wanita": [
+        {
+            title: "Summer Floral Dress Top",
+            description: "Lightweight summer floral pattern sleeveless top with sweetheart neckline.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23ec4899"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Floral</text></svg>'
         },
+        {
+            title: "Knitted Cardigan Set",
+            description: "Cozy pastel knitted cardigan buttoned up over a simple inner top.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23f43f5e"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Cardigan</text></svg>'
+        },
+        {
+            title: "Chic Blazer",
+            description: "Professional chic tailored blazer jacket over a minimalist blouse.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23be185d"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Blazer</text></svg>'
+        }
+    ],
+    "Pria": [
+        {
+            title: "Formal Suit Jacket",
+            description: "Classic tailored business suit jacket over a crisp dress shirt with a necktie.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231e3a8a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Suit</text></svg>'
+        },
+        {
+            title: "Jas Formal",
+            description: "Elegant formal tuxedo suit jacket with vest over a formal dress shirt.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23172554"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Formal</text></svg>'
+        },
+        {
+            title: "Bomber Jacket Style",
+            description: "Classic ribbed collar bomber jacket worn over a basic t-shirt.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%232563eb"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Bomber</text></svg>'
+        }
+    ],
+    "Universal": [
+        {
+            title: "Simple Casual Tee",
+            description: "Simple solid-colored casual t-shirt with short sleeves.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230d9488"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Tee</text></svg>'
+        },
+        {
+            title: "Hoodie Streetwear",
+            description: "Comfortable oversized pullover hoodie with front pocket and drawstrings.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230f766e"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Hoodie</text></svg>'
+        },
+        {
+            title: "Sporty Tracksuit Jacket",
+            description: "Athletic sporty zipped track jacket with contrasting stripe accents.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%2314b8a6"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Track</text></svg>'
+        },
+        {
+            title: "Seragam Sekolah SMA",
+            description: "Indonesian senior high school uniform white short-sleeve shirt with school emblem and tie.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%234f46e5"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">SMA</text></svg>'
+        },
+        {
+            title: "Seragam Pemadam Kebakaran",
+            description: "Heavy-duty firefighter protective turnout gear jacket with high-visibility reflective stripes.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23c2410c"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Damkar</text></svg>'
+        },
+        {
+            title: "Seragam Polisi",
+            description: "Official law enforcement tactical uniform shirt with badge and chest pockets.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231e293b"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Polisi</text></svg>'
+        },
+        {
+            title: "Jas Lab Dokter",
+            description: "Clean white medical doctor laboratory coat over professional inner shirt with stethoscope.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23475569"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Dokter</text></svg>'
+        },
+        {
+            title: "Pakaian Pilot",
+            description: "Commercial airline captain pilot uniform shirt with shoulder epaulets and black tie.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230f172a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Pilot</text></svg>'
+        },
+        {
+            title: "Pakaian Chef / Koki",
+            description: "Traditional double-breasted white chef jacket with cloth knot buttons.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23334155"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Chef</text></svg>'
+        },
+        {
+            title: "Kostum Astronot",
+            description: "Detailed space exploration astronaut flight suit upper body with chest control panel.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%2364748b"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Astronot</text></svg>'
+        },
+        {
+            title: "Pakaian Militer / Tentara",
+            description: "Camouflage military tactical combat uniform shirt.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23365314"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Militer</text></svg>'
+        }
+    ],
+
+    // --- KATEGORI BARU: T-SHIRT TYPE (PATTERN & DESIGN) ---
+    "T-Shirt Type": [
+        {
+            title: "Graphic Print T-Shirt",
+            description: "Faded black graphic t-shirt with a large vintage motorcycle illustration.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23374151"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Graphic</text></svg>'
+        },
+        {
+            title: "Typography Text Print Tee",
+            description: "Vintage thrifted graphic t-shirt with bold “Cosmic Journey 1973” typography.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%234b5563"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Typo</text></svg>'
+        },
+        {
+            title: "Logo Design Shirt",
+            description: "Dark green polo shirt with a small embroidered company logo on the chest.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23065f46"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Logo</text></svg>'
+        },
+        {
+            title: "Illustration Art Tee",
+            description: "Black graphic t-shirt with a bold eagle and flame illustration.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23991b1b"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Illust</text></svg>'
+        },
+        {
+            title: "Vintage / Retro Design Tee",
+            description: "Thrifted black t-shirt with a distressed 1980s-style racing graphic.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%237c2d12"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Vintage</text></svg>'
+        },
+        {
+            title: "Band / Music Design Tee",
+            description: "Faded black band t-shirt with a distressed heavy-metal graphic.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%2318181b"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Band</text></svg>'
+        },
+        {
+            title: "Motorcycle / Automotive Tee",
+            description: "Faded gray biker t-shirt with a motorcycle club emblem and distressed lettering.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23111827"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Motor</text></svg>'
+        },
+        {
+            title: "Skull / Dark Design Tee",
+            description: "Worn black biker t-shirt with a bold skull-and-flame graphic and distressed lettering.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231f2937"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Skull</text></svg>'
+        },
+        {
+            title: "Pattern / Pola Berulang Shirt",
+            description: "Loose-fitting red-and-black plaid button-up shirt with a classic checked pattern.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%239f1239"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Pattern</text></svg>'
+        },
+        {
+            title: "Distressed / Worn Design Tee",
+            description: "Worn gray t-shirt with a cracked retro graphic.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23475569"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Worn</text></svg>'
+        }
+    ]
+},
 
         get filteredDatabase() {
             if (this.activeCategory === 'All') {

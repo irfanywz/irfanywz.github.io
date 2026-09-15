@@ -4,7 +4,7 @@ description: "Landing page cepat, modern, rapi, dan siap pakai menggunakan Hugo 
 shop_type: "service"
 date: 2026-09-07
 draft: false
-available: true
+available: false
 icon: "icon-[ri--layout-masonry-line]"
 image: "landing-page-service.avif"
 

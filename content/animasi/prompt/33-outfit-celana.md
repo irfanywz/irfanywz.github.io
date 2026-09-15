@@ -207,59 +207,88 @@ function bottomPantsApp() {
         activeCategory: 'All',
         categorySwiper: null,
 
-        bottomDatabase: {
-            "Wanita": [
-                {
-                    title: "Flared Skirt",
-                    description: "High-waisted A-line flared skirt with a simple pattern.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23db2777"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Flared</text></svg>'
-                },
-                {
-                    title: "Pleated Skirt",
-                    description: "Chic knee-length pleated skirt.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23ec4899"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Pleated</text></svg>'
-                },
-                 {
-                    title: "Fitted High-Waist Trousers",
-                    description: "Elegant fitted high-waisted trousers suitable for professional look.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23be185d"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Trousers</text></svg>'
-                }
-            ],
-            "Pria": [
-                {
-                    title: "Distressed Slim-Fit Jeans",
-                    description: "Dark blue distressed slim-fit denim jeans.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231e3a8a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Jeans</text></svg>'
-                },
-                {
-                    title: "Formal Trousers",
-                    description: "Classic straight-cut formal dress trousers.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23172554"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Formal</text></svg>'
-                }
-            ],
-            "Universal": [
-                {
-                    title: "Cargo Pants",
-                    description: "Practical loose-fit cargo pants with multiple pockets.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230d9488"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Cargo</text></svg>'
-                },
-                {
-                    title: "Chino Pants",
-                    description: "Comfortable straight-leg cotton chino pants.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230f766e"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Chino</text></svg>'
-                },
-                {
-                    title: "Casual Shorts",
-                    description: "Simple knee-length casual cotton shorts.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%2314b8a6"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Shorts</text></svg>'
-                },
-                {
-                    title: "Sarong / Kain Lilit",
-                    description: "Traditional wrapped sarong fabric worn as a lower garment.",
-                    image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230369a1"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Sarong</text></svg>'
-                }
-            ]
+bottomDatabase: {
+    "Wanita": [
+        {
+            title: "Flared Skirt",
+            description: "High-waisted A-line flared skirt with a simple pattern.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23db2777"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Flared</text></svg>'
         },
+        {
+            title: "Pleated Skirt",
+            description: "Chic knee-length pleated skirt.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23ec4899"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Pleated</text></svg>'
+        },
+        {
+            title: "Fitted High-Waist Trousers",
+            description: "Elegant fitted high-waisted trousers suitable for professional look.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23be185d"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Trousers</text></svg>'
+        }
+    ],
+    "Pria": [
+        {
+            title: "Distressed Slim-Fit Jeans",
+            description: "Dark blue distressed slim-fit denim jeans.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231e3a8a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Jeans</text></svg>'
+        },
+        {
+            title: "Formal Trousers",
+            description: "Classic straight-cut formal dress trousers.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23172554"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Formal</text></svg>'
+        }
+    ],
+    "Universal": [
+        {
+            title: "Cargo Pants",
+            description: "Practical loose-fit cargo pants with multiple pockets.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230d9488"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Cargo</text></svg>'
+        },
+        {
+            title: "Chino Pants",
+            description: "Comfortable straight-leg cotton chino pants.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230f766e"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Chino</text></svg>'
+        },
+        {
+            title: "Casual Shorts",
+            description: "Simple knee-length casual cotton shorts.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%2314b8a6"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Shorts</text></svg>'
+        },
+        {
+            title: "Sarong / Kain Lilit",
+            description: "Traditional wrapped sarong fabric worn as a lower garment.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230369a1"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Sarong</text></svg>'
+        }
+    ],
+
+    // --- KATEGORI BARU: PANTS TYPE (DESIGN & PATTERN KHUSUS CELANA) ---
+    "Pants Type": [
+        {
+            title: "Ripped & Distressed Denim Jeans",
+            description: "Worn-out blue denim jeans with heavy distressed details and ripped knees.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231e40af"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Ripped</text></svg>'
+        },
+        {
+            title: "Washed Vintage Cargo Pants",
+            description: "Faded olive-green utility cargo pants with multiple baggy pockets and straps.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%233f6212"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Cargo</text></svg>'
+        },
+        {
+            title: "Plaid Pattern Trousers",
+            description: "Slim-fit stylish trousers featuring a sharp red-and-black checkered pattern.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23881337"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Plaid</text></svg>'
+        },
+        {
+            title: "Vintage Washed Chinos",
+            description: "Relaxed-fit cotton chinos with a sun-faded vintage washed texture.",
+            image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%2378350f"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Chinos</text></svg>'
+        },
+        {
+            title: "Camouflage Tactical Pants",
+            description: "Military-style jungle camouflage print tactical combat trousers.",
+            image: 'data:image/svg+xml;svg;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%2314532d"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Camo</text></svg>'
+        }
+    ]
+},
 
         get filteredDatabase() {
             if (this.activeCategory === 'All') {

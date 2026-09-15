@@ -3,7 +3,7 @@ title: "Content Placement & Guest Post di irfanywz.web.id"
 price: 50000
 display_price: "Mulai Rp 50.000"
 description: "Titip artikel, review, atau backlink di irfanywz.web.id. Cocok untuk backlink awal, portofolio, atau nambah portofolio link website baru."
-available: true
+available: false
 shop_type: "service"
 
 

@@ -4,7 +4,7 @@ description: "Layanan penulisan artikel SEO, blog post, dan copywriting profesio
 shop_type: "service"
 date: 2026-08-26
 draft: false
-available: true
+available: false
 icon: "icon-[ri--article-line]"
 image: "content-writer.avif"
 

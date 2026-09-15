@@ -4,7 +4,7 @@ description: "Pembuatan blog rapi, siap pakai, dan mudah dikelola untuk pemula, 
 shop_type: "service"
 date: 2026-08-26
 draft: false
-available: true
+available: false
 icon: "icon-[ri--global-line]"
 image: "blog-service.avif"
 
