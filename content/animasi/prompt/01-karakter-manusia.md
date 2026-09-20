@@ -355,29 +355,104 @@ ${note}`;
 
         get dynamicDescBasePrompt() {
             let target = this.descInput ? this.descInput.trim() : 'COWOK GAUL HOODIE ORANGE';
-            return `Create **ONE short visual description** for the human character based on:
+            return `Create 8 DIFFERENT visual descriptions for human characters based on:
 
 [${target}]
 
-Write it as **one concise sentence**, similar to:
+Each description must represent a UNIQUE character variant.
+
+Write each variant as ONE concise sentence, similar to:
 
 “A young cheerful guy with short messy dark hair, wearing a casual orange hoodie and blue jeans.”
 
+VARIATION REQUIREMENTS:
+
+Each character must be clearly different from the others through a natural combination of:
+
+* age
+* gender
+* face shape
+* hairstyle
+* hair type
+* skin tone
+* body shape
+* clothing style
+* clothing colors
+* distinctive facial features
+
+Do NOT simply change the clothing color.
+
+Each variant must have a noticeably different overall visual identity.
+
+Make the characters feel like different real people rather than the same character with minor modifications.
+
+Avoid repeating the same:
+* face structure
+* hairstyle
+* body shape
+* outfit combination
+* clothing color combination
+* distinctive facial features
+* overall silhouette
+
+FOOTWEAR LOCK — ALWAYS BAREFOOT:
+
+* Every character must ALWAYS be barefoot
+* Both feet must be completely uncovered
+* No shoes
+* No sandals
+* No slippers
+* No socks
+* No footwear of any kind
+* Bare feet must have simple, natural cartoon anatomy
+* Footwear must NEVER be used as a character variation
+
 Rules:
 
-* Focus **ONLY on the character's physical appearance and clothing**
+* Focus ONLY on the character's physical appearance and clothing
 * Clearly identify the character's general look and attire
-* Describe the character's face, hairstyle, body shape, outfit, and distinctive physical features
+* Describe the face, hairstyle, body shape, outfit, and distinctive physical features
 * Keep anatomy appropriate to a stylized human cartoon character
 * Mention only the most visually important characteristics
-* Give the character a distinctive and memorable appearance
-* Keep the appearance visually coherent and believable within a cartoon world
-* **DO NOT mention location, environment, background, setting, atmosphere, scene, lighting, weather, time, or events**
-* **DO NOT describe actions, poses, movements, backstory, lore, or story**
-* Avoid overly detailed descriptions
-* Keep it **short and directly usable for image generation**
+* Give every character a distinctive and memorable appearance
+* Keep every character visually coherent and believable within the same cartoon world
+* Keep descriptions short and directly usable for image generation
+* Every character is assumed to be barefoot
 
-**Output ONE sentence only.**`;
+DO NOT mention:
+
+* location
+* environment
+* background
+* setting
+* atmosphere
+* lighting
+* weather
+* time
+* events
+* actions
+* poses
+* movements
+* backstory
+* lore
+* story
+
+OUTPUT FORMAT:
+
+1. [One concise character description]
+2. [One concise character description]
+3. [One concise character description]
+4. [One concise character description]
+5. [One concise character description]
+6. [One concise character description]
+7. [One concise character description]
+8. [One concise character description]
+
+Each variant must be ONE sentence only.
+
+Do not add explanations.
+Do not add headings.
+Do not repeat descriptions.`;
         },
 
         get fullPrompt() {

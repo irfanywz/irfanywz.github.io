@@ -347,20 +347,52 @@ function characterOutfitApp() {
 
         get dynamicOutfitBasePrompt() {
             let target = this.outfitInputNote ? this.outfitInputNote.trim() : 'CASUAL DENIM JACKET, PLAIN WHITE T-SHIRT, DARK CARGO PANTS, AND SNEAKERS';
-            return `Create **ONE short visual description** for the character's new outfit based on:
+            return `Create **MULTIPLE different short visual descriptions** for the character's outfit based on:
 
 [${target}]
 
-Write it as **one concise sentence**, describing the clothing items, upper and lower garments, and footwear clearly.
+Generate **10 unique outfit variants** that naturally fit the given clothing requirement.
 
-Rules:
-* Focus **ONLY on the clothing and footwear pieces**
-* Clearly describe fabric style, fit, and colors
-* **DO NOT modify character identity, head shape, hair, or facial features**
-* **DO NOT mention location, environment, background, setting, or lighting**
-* Keep it **short and directly usable for image generation**
+Each variant must create a **clearly different outfit combination** while keeping the requested clothing category and required clothing pieces consistent.
 
-**Output ONE sentence only.**`;
+For each variant, describe:
+
+* Upper garment
+* Lower garment
+* Footwear
+* Headwear or accessories if specifically requested
+* Basic fabric/material appearance
+* Fit or cut of the clothing
+* Main clothing colors
+
+**IMPORTANT:**
+
+* Every variant must be visually different from the others
+* Do not make the variants different only by changing colors
+* Vary clothing cuts, fits, sleeve styles, lengths, patterns, and simple design details when appropriate
+* Keep the outfit simple, natural, and suitable for everyday Indonesian characters
+* Keep all specifically requested clothing items present in every variant
+* **DO NOT modify the character's identity, body shape, head shape, hair, face, facial features, skin tone, or proportions**
+* **DO NOT mention pose, action, body movement, location, environment, background, setting, atmosphere, or lighting**
+* Focus **ONLY on clothing, footwear, headwear, and requested accessories**
+* Do not add unnecessary accessories that were not requested
+* Keep each description short and directly usable for image generation
+
+**OUTPUT FORMAT:**
+
+1. [Short outfit description]
+2. [Short outfit description]
+3. [Short outfit description]
+4. [Short outfit description]
+5. [Short outfit description]
+6. [Short outfit description]
+7. [Short outfit description]
+8. [Short outfit description]
+9. [Short outfit description]
+10. [Short outfit description]
+
+**Each variant must be ONE concise sentence only.**
+`;
         },
 
         get extractOutfitPrompt() {

@@ -314,34 +314,127 @@ RULES:
 
             return `Use the attached image as the **STRICT STYLE REFERENCE ONLY**.
 
-Create a horizontal Indonesian animation background based on: [${styleDesc}].
+Create a new horizontal Indonesian animation background based on:
 
-Use the reference only for its visual language — illustration style, line quality, shading method, rendering feel, and overall artistic character.
+[${styleDesc}]
 
-Do NOT copy or reproduce the reference image.
+Use the reference ONLY for its overall visual language, rendering quality, line quality, shading approach, texture treatment, and artistic feel.
+
+**DO NOT copy or reproduce the reference image.**
+
 Do NOT copy its composition, layout, architecture, perspective, proportions, objects, furniture, shapes, colors arrangement, or specific visual elements.
 
-Create a new environment with its own design, layout, shapes, and composition, while maintaining a visually consistent art style with the reference.
+Create a completely new environment with its own layout, architecture, objects, shapes, and composition while maintaining a consistent visual style with the reference.
 
-Build the scene as a clear 4-layer sidescroller environment:
+### VISUAL STYLE
 
-Bottom layer:
-The ground, road, floor, or foreground surface appropriate to the background.
+Create a **semi-realistic 2D illustrated animation background**, not a flat cartoon.
 
-Middle layer:
-The main surrounding area, objects, vegetation, fences, walls, or secondary elements appropriate to the background.
+The environment should have:
 
-Background layer:
-The main buildings, structures, scenery, or dominant environment appropriate to the background.
+* detailed but controlled hand-drawn linework
+* natural material textures
+* believable surface variation
+* subtle shading and lighting
+* dimensional buildings and objects
+* realistic-looking wood, bamboo, concrete, tile, soil, metal, glass, and vegetation
+* natural imperfections and wear
+* convincing depth and spatial separation
+* subtle ambient shadows
+* realistic proportions
+* clean but visually rich rendering
 
-Top layer:
-Sky, distant atmosphere, clouds, trees, rooftops, or other upper environmental elements appropriate to the background.
+Avoid an overly simplified cartoon appearance.
 
-All four layers must visually belong to the same location and connect naturally from foreground to background.
+Do NOT use extremely flat colors, overly rounded shapes, childish proportions, exaggerated outlines, toy-like objects, excessive cel shading, or overly clean vector-like surfaces.
 
-Wide horizontal composition, front view, eye-level camera, large empty foreground space for character animation, clear depth separation between layers.
+The result should feel like a **semi-realistic illustrated environment designed for 2D animation**.
 
-semi-realistic 2D illustration, hand-drawn linework, detailed but animation-friendly, no characters, no people, no animals, no text, no logos.`;
+### ENVIRONMENT STRUCTURE
+
+Build the environment with clear visual depth:
+
+**Foreground:**
+Ground, road, floor, or nearby environmental surfaces.
+
+**Middle ground:**
+Fences, vegetation, walls, furniture, vehicles, small structures, and other environmental elements.
+
+**Background:**
+Main houses, buildings, roads, structures, and dominant scenery.
+
+**Upper environment:**
+Sky, distant trees, rooftops, clouds, poles, wires, and other elements extending into the upper frame.
+
+All environmental layers must naturally belong to the same location and connect with believable depth.
+
+### COMPOSITION
+
+Wide horizontal 16:9 composition.
+
+Front-facing eye-level camera unless another viewpoint is specifically requested.
+
+Maintain a large readable area where characters can be placed and animated.
+
+Keep the environment visually balanced without making the scene excessively empty or excessively detailed.
+
+Create clear separation between foreground, middle ground, and background.
+
+### MATERIAL AND ENVIRONMENT DETAIL
+
+Use realistic visual cues appropriate to the described environment.
+
+Show subtle differences between materials through texture, shading, surface variation, and wear.
+
+Examples:
+
+* bamboo should have visible natural texture and irregularity
+* wood should show subtle grain and weathering
+* concrete should have slight surface variation
+* tiled roofs should have individual tile definition
+* soil and roads should have natural texture
+* vegetation should have recognizable leaf and plant structure
+* metal should have appropriate subtle reflections and surface wear
+
+Keep these details controlled and animation-friendly.
+
+### TEXT AND SIGNAGE
+
+If the described environment contains signs, shop names, banners, labels, advertisements, house numbers, or other visible writing, render the text **clearly and legibly**.
+
+Use simple readable lettering with correct letter shapes and spacing.
+
+Do NOT generate random scribbles, blurred pseudo-text, distorted characters, or unreadable writing.
+
+Text should remain secondary to the environment and naturally fit the scene.
+
+If no text is described or naturally required, do not add unnecessary text.
+
+### INDONESIAN ENVIRONMENT
+
+When appropriate, use believable Indonesian architectural and environmental characteristics.
+
+Use natural local details rather than exaggerated stereotypical decorations.
+
+The environment should feel like a believable everyday Indonesian location.
+
+### EXCLUSIONS
+
+No characters.
+No people.
+No animals.
+No vehicle.
+
+Do not add unrelated objects.
+
+Do not overdecorate the environment.
+
+Do not turn the scene into anime, children's cartoon, 3D render, photorealistic photography, or a completely flat vector illustration.
+
+The final result should look like a **semi-realistic hand-drawn 2D animation background with believable materials, depth, lighting, and environmental detail**.
+
+Output ONLY the background.
+`;
         },
 
         copyText(text, targetKey) {

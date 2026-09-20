@@ -275,20 +275,47 @@ function characterPoseApp() {
 
         get dynamicPoseBasePrompt() {
             let target = this.poseInputNote ? this.poseInputNote.trim() : 'BERLARI CEPAT';
-            return `Create **ONE short visual description** for the character pose based on:
+            return `Create **MULTIPLE different short visual descriptions** for character poses based on:
 
 [${target}]
 
-Write it as **one concise sentence**, describing the action, body position, limb movement, and overall posture clearly.
+Generate **10 unique pose variants** that naturally fit the given category.
 
-Rules:
-* Focus **ONLY on the character's pose, action, and physical movement**
-* Clearly describe arm positions, leg placement, body leaning, and overall posture
-* **DO NOT modify the character's appearance, face, hair, or clothing design**
+Each variant must show a **clearly different body movement or gesture**, such as different arm positions, hand gestures, pointing, touching the body, leaning, turning, or shifting weight.
+
+For each variant, describe:
+
+* Arm and hand position
+* Leg and foot placement
+* Body direction or slight leaning
+* Overall posture and physical action
+
+**IMPORTANT:**
+
+* Every variant must be physically different from the others
+* Avoid repeating the same arm, hand, leg, or body position
+* Keep the poses simple, natural, and suitable for 2D animation
+* Focus **ONLY** on pose, action, gesture, and physical movement
+* **DO NOT modify the character's appearance, face, hair, body design, proportions, or clothing**
 * **DO NOT mention location, environment, background, setting, atmosphere, or lighting**
-* Keep it **short and directly usable for image generation**
+* Keep each description short and directly usable for image generation
+* Do not create exaggerated or complicated movements unless they naturally fit the category
 
-**Output ONE sentence only.**`;
+**OUTPUT FORMAT:**
+
+1. [Short pose description]
+2. [Short pose description]
+3. [Short pose description]
+4. [Short pose description]
+5. [Short pose description]
+6. [Short pose description]
+7. [Short pose description]
+8. [Short pose description]
+9. [Short pose description]
+10. [Short pose description]
+
+**Each variant must be ONE concise sentence only.**
+`;
         },
 
         get imagePoseBasePrompt() {

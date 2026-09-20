@@ -320,24 +320,29 @@ Use the attached character image as the **STRICT CHARACTER REFERENCE**.
 
 Create a clean character emotion expression sheet for the exact same character.
 
-Create exactly 4 natural emotional expressions arranged in a clean grid:
+Create exactly 5 natural facial expressions arranged in a clean grid:
 
 * **NEUTRAL** — calm, relaxed, emotionally flat expression
 * **SAD** — naturally sad expression with subtle emotional facial features
 * **ANGRY** — naturally angry expression with clear but not exaggerated emotion
 * **HAPPY** — naturally happy and cheerful expression
+* **CLOSED EYES** — both eyes naturally closed, with relaxed eyelids and a simple neutral facial expression
 
 **SHEET CONFIGURATION:**
 [${styleDesc}]
 
 IMPORTANT:
 
-Each emotion must look natural, clear, and suitable for 2D character animation.
+Each expression must look natural, clear, and suitable for 2D character animation.
 
 Change only the facial expression, including the eyebrows, eyes, and mouth when necessary.
 
+For **CLOSED EYES**, completely close both eyes using simple natural eyelid lines.
+Do not turn the closed eyes into sleeping, crying, smiling, or exaggerated expressions.
+Keep the mouth and eyebrows neutral unless necessary.
+
 Do not exaggerate the expressions.
-Keep all emotions natural and proportional to the character's original face.
+Keep all expressions natural and proportional to the character's original face.
 
 **CHARACTER LOCK — DO NOT CHANGE:**
 
@@ -354,7 +359,7 @@ Keep all emotions natural and proportional to the character's original face.
 * exact same camera angle
 * exact same art style
 
-Keep the character consistent across all 4 expressions.
+Keep the character consistent across all 5 expressions.
 
 Visual style:
 
@@ -376,8 +381,8 @@ No extra characters.
 No props.
 No exaggerated expressions.
 
-Create EXACTLY 4 emotional expressions:
-NEUTRAL, SAD, ANGRY, and HAPPY.`;
+Create EXACTLY 5 emotional expressions:
+NEUTRAL, SAD, ANGRY, HAPPY, and CLOSED EYES.`;
         },
 
         copyText(text, targetKey) {

@@ -322,42 +322,91 @@ RULES:
         get fullPrompt() {
             let styleDesc = this.interiorStyle ? this.interiorStyle.trim() : 'Cozy traditional Indonesian living room with bamboo walls, wooden bench (bale-bale), ceramic jar, and woven mat.';
 
-            return `Use the attached image as a STRICT STYLE REFERENCE ONLY.
+            return `Use the attached image as a **STRICT STYLE REFERENCE ONLY**.
 
-Create a completely original horizontal 2D animation background based on: [${styleDesc}].
+Create a completely original horizontal 2D animation background based on:
+
+[${styleDesc}]
 
 Use the reference image ONLY to understand the general visual language:
-line quality, rendering technique,  level of detail, and illustration feel.
+line quality, rendering technique, level of detail, shading approach, texture treatment, and overall illustration feel.
 
-DO NOT copy or closely reproduce the reference image.
+**DO NOT copy or closely reproduce the reference image.**
+
 DO NOT reuse its layout, architecture, furniture, objects, shapes, proportions, composition, or specific visual elements.
+
 Create a fresh and original environment with a clearly different design and arrangement.
+
+### ENVIRONMENT STRUCTURE
 
 Build the environment as four clear visual layers:
 
-Bottom layer:
+**Bottom layer:**
 Floor and lower foreground area.
 
-Middle layer:
-Furniture, objects, and elements occupying the character's main environment.
+**Middle layer:**
+Furniture, objects, and environmental elements occupying the character's main acting area.
 
-Background layer:
-Main walls, doors, windows, structures, and dominant environment.
+**Background layer:**
+Main walls, doors, windows, structures, and dominant environmental elements.
 
-Top layer:
+**Top layer:**
 Ceiling and upper environmental elements.
+
+All layers must connect naturally and belong to the same environment.
+
+### COMPOSITION
 
 Maintain a wide horizontal sidescroller composition with a large usable floor area for characters.
 
-Front-facing, eye-level view, shallow depth separation, minimal perspective, no strong vanishing point, no cinematic camera angle.
+Use a front-facing, eye-level view with shallow depth separation and minimal perspective.
+
+Avoid strong vanishing points, extreme perspective distortion, cinematic camera angles, or dramatic depth.
+
+Maintain natural spatial depth so the environment still feels dimensional rather than completely flat.
+
+### ENVIRONMENT INTERPRETATION
 
 The description determines the environment, architecture, furniture, objects, condition, materials, decoration, lifestyle, and atmosphere.
 
-Interpret naturally and creatively. Invent an original arrangement and visual design rather than reproducing the reference.
+Interpret the description naturally and creatively.
 
-Semi-realistic 2D illustration, hand-drawn linework, detailed environment, clean shapes, animation-friendly.
+Invent an original arrangement and visual design rather than reproducing the reference.
 
-No characters, no people, no animals, no text, no logos.`;
+### VISUAL RENDERING
+
+Create a **semi-realistic 2D illustration** with:
+
+* hand-drawn linework
+* believable environmental proportions
+* natural material textures
+* subtle surface variation
+* soft dimensional shading
+* believable lighting
+* realistic-looking wood, bamboo, ceramic, fabric, concrete, tile, and other materials when appropriate
+* controlled environmental detail
+* clear readable shapes
+* consistent depth
+* animation-friendly rendering
+
+Avoid an overly flat cartoon appearance.
+
+Avoid childish proportions, toy-like objects, excessive exaggeration, overly simplified surfaces, plastic-looking materials, and completely flat colors.
+
+Keep the result visually detailed enough to feel believable while remaining clean and practical for 2D animation.
+
+### STYLE CONSISTENCY
+
+Maintain the reference's overall illustration character while allowing the new environment to have its own architecture, objects, composition, and design.
+
+The final result should feel like a **semi-realistic hand-drawn 2D animation background**, not a photorealistic image, 3D render, anime scene, or flat vector cartoon.
+
+No characters, no people, no animals.
+
+No unnecessary text or logos.
+
+Output ONLY the background.
+`;
         },
 
         copyText(text, targetKey) {
