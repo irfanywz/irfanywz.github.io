@@ -9,12 +9,38 @@
 {{ end }}
 </title>
 
+<!-- Deskripsi & Author -->
+{{ $description := "" }}
 {{ if .IsHome }}
-	<meta name="description" content="{{ .Site.Params.description }}" />
+	{{ $description = .Site.Params.description }}
 	<meta name="author" content="{{ .Site.Params.author }}" />
-	<meta name="keywords" content="{{ .Site.Params.keywords }}" />
-{{ else }}
+{{ else if .Description }}
+	{{ $description = .Description }}
+{{ else if .Summary }}
+	{{ $description = .Summary | plainify | truncate 160 }}
+{{ end }}
+<meta name="description" content="{{ $description }}" />
 
+<!-- Keywords Dinamis (Mendukung .Params.keywords, .Params.topics, atau default situs) -->
+{{ $keywords := "" }}
+{{ if .Params.keywords }}
+    <!-- Jika keywords berupa slice/array, gabungkan dengan koma -->
+    {{ if reflect.IsSlice .Params.keywords }}
+        {{ $keywords = delimit .Params.keywords ", " }}
+    {{ else }}
+        {{ $keywords = .Params.keywords }}
+    {{ end }}
+{{ else if .Params.topics }}
+    <!-- Jika pakai topics, gabungkan dengan koma -->
+    {{ if reflect.IsSlice .Params.topics }}
+        {{ $keywords = delimit .Params.topics ", " }}
+    {{ else }}
+        {{ $keywords = .Params.topics }}
+    {{ end }}
+{{ end }}
+
+{{ if $keywords }}
+    <meta name="keywords" content="{{ $keywords }}" />
 {{ end }}
 
 {{ $noIndex := or (.Scratch.Get "noIndex") (eq .Params.noindex true) }}
@@ -26,6 +52,13 @@
 	<meta name="googlebot" content="index, follow" />
 {{ end }}
 
+<!-- Kontrol DNS Prefetch secara global (opsional) -->
+<meta http-equiv="x-dns-prefetch-control" content="on">
+
+<!-- DNS Prefetch untuk layanan Google & Firebase -->
+<link rel="dns-prefetch" href="//www.gstatic.com">
+<link rel="dns-prefetch" href="//fonts.gstatic.com">
+<link rel="dns-prefetch" href="//blogger.googleusercontent.com">
 
 <link rel="canonical" href="{{ .Permalink }}" itemprop="url" />
 <link rel="sitemap" type="application/xml" title="Sitemap" href='{{ "sitemap.xml" | absURL }}' />

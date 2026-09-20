@@ -25,7 +25,7 @@ support:
 supporters:
   - nama: "Anonim"
     nominal: "100***"
-    pesan: "Dukungan dikit buat ngopi malam. semangat!"
+    pesan: "Terimakasih aplikasinya. bermanfaat"
     link: ""
 
 # Pengaturan Konten Tab Portofolio

@@ -20,4 +20,4 @@ video yang berisi seperti kumpulan gambar yang dibuat hidup layaknya mata yang b
 
 tidak lebih dan tidak pernah bertambah...
 
-namun semua itu bisa membantu mempermudah pekerjaan, bahkan hanya dengan mengklik tombol saja sudah bisa terhubung kemana-mana, misalnya memindahkan uang dari awalnya milik si a jadi milik si b 😂
+namun semua itu bisa membantu mempermudah pekerjaan, bahkan hanya dengan mengklik tombol saja sudah bisa terhubung kemana-mana, misalnya memindahkan uang dari awalnya milik si a jadi milik si b 🤑

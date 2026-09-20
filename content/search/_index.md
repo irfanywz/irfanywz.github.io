@@ -1,4 +1,4 @@
 ---
 title: "Pencarian"
-description: "Cari artikel yang kamu inginkan."
+description: "Cari artikel dengan mudah, masukan kata kunci."
 ---

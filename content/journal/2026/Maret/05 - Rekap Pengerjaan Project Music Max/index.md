@@ -4,6 +4,7 @@ slug: Rekap Pengerjaan Project Music Max
 date: 2026-03-05T05:00:35+07:00
 weather: Cerah
 location: Bogor, Indonesia
+journal_category: ["Pemrograman"]
 draft: false
 ---
 

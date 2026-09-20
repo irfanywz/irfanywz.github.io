@@ -12,10 +12,6 @@ adPositions: []
 draft: false
 ---
 
-{{< alert title="Pemberitahuan" type="warning" >}}
-Tulisan ini belum sepenuhnya selesai.
-{{< /alert >}}
-
 20 agustus 2026 yang lalu saya mengikuti pelatihan shopee affiliate pemula
 
 saya mengikuti pelatihan ini lewat situs [skillhub](https://skillhub.kemnaker.go.id/) kemnaker yang daftarnya sudah dari jauh-jauh hari

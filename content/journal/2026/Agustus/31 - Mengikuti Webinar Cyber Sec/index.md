@@ -4,7 +4,7 @@ slug: Mengikuti webinar cyber sec
 date: 2026-08-31T21:00:35+07:00
 weather: Cerah
 location: Bogor, Indonesia
-journal_category: ["Teknologi"]
+journal_category: ["Pelatihan"]
 draft: false
 ---
 

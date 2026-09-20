@@ -4,7 +4,7 @@ slug: Webinar cyber sec ke 2
 date: 2026-09-02T21:00:35+07:00
 weather: Cerah
 location: Bogor, Indonesia
-journal_category: ["Teknologi"]
+journal_category: ["Pelatihan"]
 draft: false
 ---
 

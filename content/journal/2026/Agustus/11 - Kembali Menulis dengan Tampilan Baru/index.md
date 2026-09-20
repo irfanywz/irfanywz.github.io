@@ -4,7 +4,7 @@ slug: Kembali Menulis dengan Tampilan Baru
 date: 2026-08-11T18:30:35+07:00
 weather: Cerah
 location: Bogor, Indonesia
-journal_category: ["Menulis"]
+journal_category: ["Refleksi"]
 draft: false
 ---
 
