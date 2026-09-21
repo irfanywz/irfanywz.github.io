@@ -18,7 +18,7 @@ dimana seseorang melakukan perlindungan mencakup ruang lingkup digital, diantara
 
 awalnya saya merasa bingung, apa yang dilakukan dari pekerjaan cyber security ini. 
 
-kalau programmer kan jelas dia melakukan kode, kalau desainer dia mendesain gambar. tapi kalau cyber security dia ngapain ya ?
+kalau programmer kan jelas dia melakukan kode, kalau desainer dia menggambar. tapi kalau cyber security dia ngapain ya ?
 
 disinilah saya mulai penasaran dari tugas yang dilakukan cyber security, hingga saya tertarik dengan pelatihan ini
 

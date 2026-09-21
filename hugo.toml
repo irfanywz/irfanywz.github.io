@@ -114,16 +114,16 @@ pre = "icon-[ri--newspaper-line]"
 weight = 20
 [menu.footer.params]
   color = "text-amber-500"
-  # group = "dropdown"
+  group = "dropdown"
 
-# [[menu.footer]]
-# name = "Musik"
-# url = "/music-playlist/"
-# pre = "icon-[ri--music-2-line]"
-# weight = 42
-# [menu.footer.params]
-#   color = "text-violet-500"
-  # group = "dropdown"
+[[menu.footer]]
+name = "Playlist"
+url = "/music-playlist/"
+pre = "icon-[ri--music-2-line]"
+weight = 42
+[menu.footer.params]
+  color = "text-violet-500"
+  group = "dropdown"
 
 [[menu.footer]]
 name = "Kosa Kata"

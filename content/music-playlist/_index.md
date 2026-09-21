@@ -1,4 +1,4 @@
 ---
 title: "Musik Playlist"
-description: "Kumpulan musik menemani hari"
+description: "Kumpulan musik untuk menemani aktivitas"
 ---

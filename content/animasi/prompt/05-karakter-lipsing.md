@@ -193,7 +193,7 @@ x-text="catName">
 <script>
 function characterLipSyncApp() {
     return {
-        mouthStyle: 'Standard clean 6-pose animation lip-sync grid sheet with IDLE, A, I, U, E, O shapes.',
+        mouthStyle: 'Standard clean 6-pose animation lip-sync grid sheet with IDLE, A, I, U, E, O shapes. Output Just Head',
         mouthInputNote: 'STANDARD CLEAN 6-POSE ANIMATION LIP-SYNC GRID SHEET',
         activeImage: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231f2937"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%2393c5fd" font-size="12" font-family="sans-serif">LipSync</text></svg>',
         copied: false,
