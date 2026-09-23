@@ -4,7 +4,7 @@
 
     const loadScriptsAndDecrypt = async () => {
         try {
-            // 1. Muat library CryptoJS
+            // 1. Muat library CryptoJS jika belum ada
             if (typeof CryptoJS === "undefined") {
                 await new Promise((resolve, reject) => {
                     const s = document.createElement("script");
@@ -33,28 +33,28 @@
 
             if (!secretKey || !salt) return;
 
-            // Fungsi inject konten + badge verifikasi
-            const injectAndExecuteScripts = (container, htmlString, licenseInfo) => {
-                let finalContent = htmlString;
-                if (licenseInfo) {
-                    const licenseBadgeHTML = `
-                        <div class="mt-8 p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 text-sm text-gray-700 dark:text-gray-300 shadow-xl transition-colors">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
-                                    ✨ Akses Premium Terbuka
-                                </span>
-                                <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/50">Google Verified</span>
+            // 2. Fungsi suntik konten + card terima kasih yang bersih
+            const injectAndExecuteScripts = (container, htmlString) => {
+                const thankYouCardHTML = `
+                    <div class="mt-8 p-6 rounded-3xl bg-gradient-to-br from-blue-50/50 to-indigo-50/50 dark:from-blue-950/20 dark:to-indigo-950/20 border border-blue-100 dark:border-blue-900/40 text-sm text-gray-700 dark:text-gray-300 shadow-xl transition-colors">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-blue-600/30">
+                                <span class="icon-[lucide--sparkles]"></span>
                             </div>
-                            <div class="space-y-1.5 text-xs text-gray-600 dark:text-gray-400">
-                                <div>Metode Akses: <strong class="text-gray-900 dark:text-white font-medium">${licenseInfo.productName}</strong></div>
-                                <div>Status: <strong class="text-gray-900 dark:text-white font-medium">Aktif Otomatis via Google</strong></div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white">Terima Kasih Telah Berlangganan!</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Akses premium terverifikasi otomatis oleh Google.</p>
                             </div>
                         </div>
-                    `;
-                    finalContent = htmlString + licenseBadgeHTML;
-                }
-                container.innerHTML = finalContent;
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-3 leading-relaxed">
+                            Nikmati akses penuh ke seluruh konten eksklusif, tutorial mendalam, dan update artikel terbaru langsung di sini.
+                        </p>
+                    </div>
+                `;
 
+                container.innerHTML = htmlString + thankYouCardHTML;
+
+                // Eksekusi ulang script di dalam konten yang di-inject
                 container.querySelectorAll("script").forEach((oldScript) => {
                     const newScript = document.createElement("script");
                     Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
@@ -63,17 +63,17 @@
                 });
             };
 
-            const runDecrypt = (rawKey, licenseInfo = null) => {
+            const runDecrypt = (rawKey) => {
                 var r = hashFormatDecrypt(rawKey, salt);
                 var n = decrypt(r, ciphertext);
                 if (n) {
-                    injectAndExecuteScripts(targetEl, n, licenseInfo);
+                    injectAndExecuteScripts(targetEl, n);
                     return true;
                 }
                 return false;
             };
 
-            // 2. Muat script swg.js utama (seperti gaya referensi)
+            // 3. Muat script swg.js utama
             await new Promise((resolve, reject) => {
                 if (window.SWG) return resolve();
                 const s = document.createElement("script");
@@ -84,49 +84,52 @@
                 document.head.appendChild(s);
             });
 
-            // 3. Eksekusi antrean SWG murni tanpa auto-popup
+            // 4. Inisialisasi Google SWG & Cek Entitlements
             (self.SWG = self.SWG || []).push(async (subscriptions) => {
                 try {
-                    // Cek entitlements secara senyap di background
-                    const entitlements = await subscriptions.getEntitlements();
-                    const isEntitled = entitlements && 
-                                       typeof entitlements.enablesThisWithCacheableEntitlements === "function" && 
-                                       entitlements.enablesThisWithCacheableEntitlements();
+                    const checkEntitlementsAndUnlock = async () => {
+                        const entitlements = await subscriptions.getEntitlements();
+                        const isEntitled = entitlements && 
+                                           typeof entitlements.enablesThisWithCacheableEntitlements === "function" && 
+                                           entitlements.enablesThisWithCacheableEntitlements();
 
-                    if (isEntitled) {
-                        console.log("Akses langganan terdeteksi aktif.");
-                        runDecrypt(secretKey, { productName: "Google Reader Revenue Manager" });
-                        try {
-                            if (typeof subscriptions.dismissSwgUI === "function") {
-                                subscriptions.dismissSwgUI();
-                            }
-                        } catch (e) {}
-                        return;
-                    }
+                        if (isEntitled) {
+                            runDecrypt(secretKey);
+                            try {
+                                if (typeof subscriptions.dismissSwgUI === "function") {
+                                    subscriptions.dismissSwgUI();
+                                }
+                            } catch (e) {}
+                            return true;
+                        }
+                        return false;
+                    };
 
-                    // Jika belum berlangganan, aktifkan tombol (TIDAK ADA AUTO-POPUP)
+                    // Cek akses otomatis di awal secara senyap
+                    const alreadyUnlocked = await checkEntitlementsAndUnlock();
+                    if (alreadyUnlocked) return;
+
+                    // Aktifkan tombol langganan (tanpa auto-popup)
                     const btnSubscribe = document.querySelector("#btn-subscribe");
                     if (btnSubscribe) {
                         btnSubscribe.removeAttribute("disabled");
-                        btnSubscribe.addEventListener("click", (e) => {
+                        btnSubscribe.addEventListener("click", async (e) => {
                             e.preventDefault();
-                            subscriptions.showOffers({ isClosable: true });
+                            try {
+                                if (typeof subscriptions.showOffers === "function") {
+                                    // Tampilkan dialog offer, tunggu sampai user selesai transaksi/tutup pop-up
+                                    await subscriptions.showOffers({ isClosable: true });
+                                    
+                                    // Begitu pop-up ditutup, langsung cek ulang tanpa perlu refresh!
+                                    await checkEntitlementsAndUnlock();
+                                }
+                            } catch (err) {
+                                console.error("Gagal memproses penawaran Google:", err);
+                            }
                         });
                     }
                 } catch (err) {
                     console.error("Gagal memeriksa entitlements SWG:", err);
-                } paslon: {
-                    // Fallback tombol tetap aktif kalau kena error API
-                    const btnSubscribe = document.querySelector("#btn-subscribe");
-                    if (btnSubscribe) {
-                        btnSubscribe.removeAttribute("disabled");
-                        btnSubscribe.addEventListener("click", (e) => {
-                            e.preventDefault();
-                            if (typeof subscriptions.showOffers === "function") {
-                                subscriptions.showOffers({ isClosable: true });
-                            }
-                        });
-                    }
                 }
             });
 
