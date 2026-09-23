@@ -1,4 +1,7 @@
 {{ define "head" }}
+    {{ if and (isset .Params "premium") .Params.premium }}
+        {{ partial "components/swg-metadata.html" . }}
+    {{ end }}
 {{ end }}
 
 {{ define "main" }}
