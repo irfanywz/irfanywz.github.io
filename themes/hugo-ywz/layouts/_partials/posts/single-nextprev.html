@@ -5,31 +5,63 @@
         {{ $pages := .CurrentSection.Pages.ByDate }}
         {{ with $pages.Prev . }}
             {{ $prev := . }}
-            <a href="{{ $prev.RelPermalink }}" class="flex items-center gap-4 p-4 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl hover:border-indigo-500 dark:hover:border-indigo-500 transition-all shadow-sm group">
+            <a href="{{ $prev.RelPermalink }}" title="{{ $prev.Title }}" class="flex items-center gap-4 p-4 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl hover:border-indigo-500 dark:hover:border-indigo-500 transition-all shadow-sm group">
                 
                 <!-- Thumbnail Gambar (Jika ada) -->
-                {{ if $prev.Params.image }}
-                    {{ $resourceImg := $prev.Resources.GetMatch $prev.Params.image }}
-                    {{ $globalImg := resources.Get $prev.Params.image }}
-                    <div class="w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
+                {{ $hasImage := false }}
+                <div class="w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 relative">
+                    {{ if $prev.Params.image }}
+                        {{ $imgPath := $prev.Params.image }}
+                        {{ $cleanPath := strings.TrimPrefix "/" $imgPath }}
+
+                        {{ $resourceImg := $prev.Resources.GetMatch $cleanPath }}
+                        {{ $globalImg := resources.Get $cleanPath }}
+
                         {{ if $resourceImg }}
-                            {{ $thumb := $resourceImg.Resize "1000x avif" }}
-                            <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ $hasImage = true }}
+                            {{ if eq $resourceImg.MediaType.SubType "svg" }}
+                                <img src="{{ $resourceImg.RelPermalink }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ else }}
+                                {{ $thumb := $resourceImg.Resize "1000x avif" }}
+                                <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ end }}
+
                         {{ else if $globalImg }}
-                            {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
-                            <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
-                        {{ else if (fileExists (printf "static/%s" $prev.Params.image)) }}
-                            <img src="{{ $prev.Params.image | relURL }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
-                        {{ else if (strings.HasPrefix $prev.Params.image "http") }}
-                            <img src="{{ $prev.Params.image }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
-                        {{ else }}
-                            <div class="w-full h-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-[8px] text-gray-500">No Image</div>
+                            {{ $hasImage = true }}
+                            {{ if eq $globalImg.MediaType.SubType "svg" }}
+                                <img src="{{ $globalImg.RelPermalink }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ else }}
+                                {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
+                                <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ end }}
+
+                        {{ else if (fileExists (printf "static/%s" $cleanPath)) }}
+                            {{ $hasImage = true }}
+                            <img src="{{ $imgPath | relURL }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+
+                        {{ else if (strings.HasPrefix $imgPath "http") }}
+                            {{ $hasImage = true }}
+                            <img src="{{ $imgPath }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                         {{ end }}
-                    </div>
-                {{ end }}
+                    {{ end }}
+
+                    <!-- Fallback Placeholder -->
+                    {{ if not $hasImage }}
+                        <div class="w-full h-full bg-gradient-to-br from-indigo-50/50 via-gray-100 to-indigo-100/30 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950/30 flex items-center justify-center text-indigo-500/70 dark:text-indigo-400/50 group-hover:scale-105 transition-transform duration-300">
+                            <span class="icon-[ri--article-line] w-6 h-6"></span>
+                        </div>
+                    {{ end }}
+
+                    <!-- Badge Premium di Thumbnail -->
+                    {{ if $prev.Params.premium }}
+                        <span class="absolute top-1 right-1 w-5 h-5 bg-white/90 dark:bg-gray-900/80 backdrop-blur-md border border-amber-500/30 text-amber-600 dark:text-amber-400 rounded-full shadow-sm flex items-center justify-center z-10 transition-transform duration-300 group-hover:scale-105" title="Konten Premium">
+                            <span class="icon-[lucide--crown] w-2.5 h-2.5"></span>
+                        </span>
+                    {{ end }}
+                </div>
 
                 <!-- Panah & Judul -->
-                <div class="flex-grow">
+                <div class="flex-grow min-w-0">
                     <span class="inline-flex items-center gap-1 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1">
                         <span class="icon-[ri--arrow-left-s-line] w-4 h-4"></span> Sebelumnya
                     </span>
@@ -48,10 +80,10 @@
     <div class="flex justify-end">
         {{ with $pages.Next . }}
             {{ $next := . }}
-            <a href="{{ $next.RelPermalink }}" class="flex items-center justify-end gap-4 p-4 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl hover:border-indigo-500 dark:hover:border-indigo-500 transition-all shadow-sm group text-right">
+            <a href="{{ $next.RelPermalink }}" title="{{ $next.Title }}" class="flex items-center justify-end gap-4 p-4 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl hover:border-indigo-500 dark:hover:border-indigo-500 transition-all shadow-sm group text-right">
                 
                 <!-- Judul & Panah -->
-                <div class="flex-grow">
+                <div class="flex-grow min-w-0">
                     <span class="inline-flex items-center justify-end gap-1 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1">
                         Selanjutnya <span class="icon-[ri--arrow-right-s-line] w-4 h-4"></span>
                     </span>
@@ -61,25 +93,57 @@
                 </div>
 
                 <!-- Thumbnail Gambar (Jika ada) -->
-                {{ if $next.Params.image }}
-                    {{ $resourceImg := $next.Resources.GetMatch $next.Params.image }}
-                    {{ $globalImg := resources.Get $next.Params.image }}
-                    <div class="w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 order-last">
-                        {{ if $resourceImg }}
-                            {{ $thumb := $resourceImg.Resize "1000x avif" }}
-                            <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
-                        {{ else if $globalImg }}
-                            {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
-                            <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
-                        {{ else if (fileExists (printf "static/%s" $next.Params.image)) }}
-                            <img src="{{ $next.Params.image | relURL }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
-                        {{ else if (strings.HasPrefix $next.Params.image "http") }}
-                            <img src="{{ $next.Params.image }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
-                        {{ else }}
-                            <div class="w-full h-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-[8px] text-gray-500">No Image</div>
+                {{ $hasImageNext := false }}
+                <div class="w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 order-last relative">
+                    {{ if $next.Params.image }}
+                        {{ $imgPathNext := $next.Params.image }}
+                        {{ $cleanPathNext := strings.TrimPrefix "/" $imgPathNext }}
+
+                        {{ $resourceImgNext := $next.Resources.GetMatch $cleanPathNext }}
+                        {{ $globalImgNext := resources.Get $cleanPathNext }}
+
+                        {{ if $resourceImgNext }}
+                            {{ $hasImageNext = true }}
+                            {{ if eq $resourceImgNext.MediaType.SubType "svg" }}
+                                <img src="{{ $resourceImgNext.RelPermalink }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ else }}
+                                {{ $thumbNext := $resourceImgNext.Resize "1000x avif" }}
+                                <img src="{{ $thumbNext.RelPermalink }}" width="{{ $thumbNext.Width }}" height="{{ $thumbNext.Height }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ end }}
+
+                        {{ else if $globalImgNext }}
+                            {{ $hasImageNext = true }}
+                            {{ if eq $globalImgNext.MediaType.SubType "svg" }}
+                                <img src="{{ $globalImgNext.RelPermalink }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ else }}
+                                {{ $thumbGlobalNext := $globalImgNext.Resize "1000x avif" }}
+                                <img src="{{ $thumbGlobalNext.RelPermalink }}" width="{{ $thumbGlobalNext.Width }}" height="{{ $thumbGlobalNext.Height }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ end }}
+
+                        {{ else if (fileExists (printf "static/%s" $cleanPathNext)) }}
+                            {{ $hasImageNext = true }}
+                            <img src="{{ $imgPathNext | relURL }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+
+                        {{ else if (strings.HasPrefix $imgPathNext "http") }}
+                            {{ $hasImageNext = true }}
+                            <img src="{{ $imgPathNext }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                         {{ end }}
-                    </div>
-                {{ end }}
+                    {{ end }}
+
+                    <!-- Fallback Placeholder -->
+                    {{ if not $hasImageNext }}
+                        <div class="w-full h-full bg-gradient-to-br from-indigo-50/50 via-gray-100 to-indigo-100/30 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950/30 flex items-center justify-center text-indigo-500/70 dark:text-indigo-400/50 group-hover:scale-105 transition-transform duration-300">
+                            <span class="icon-[ri--article-line] w-6 h-6"></span>
+                        </div>
+                    {{ end }}
+
+                    <!-- Badge Premium di Thumbnail -->
+                    {{ if $next.Params.premium }}
+                        <span class="absolute top-1 right-1 w-5 h-5 bg-white/90 dark:bg-gray-900/80 backdrop-blur-md border border-amber-500/30 text-amber-600 dark:text-amber-400 rounded-full shadow-sm flex items-center justify-center z-10 transition-transform duration-300 group-hover:scale-105" title="Konten Premium">
+                            <span class="icon-[lucide--crown] w-2.5 h-2.5"></span>
+                        </span>
+                    {{ end }}
+                </div>
 
             </a>
         {{ end }}

@@ -11,7 +11,7 @@
             <!-- Search Header -->
             <div class="text-center mb-12">
                 <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-3">
-                    <span class="icon-[ri--search-line] w-10 h-10 text-indigo-600 dark:text-indigo-400"></span>
+                    <span class="icon-[lucide--search] w-10 h-10 text-indigo-600 dark:text-indigo-400"></span>
                     {{ .Title }}
                 </h1>
                 <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">{{ .Description }}</p>
@@ -21,7 +21,7 @@
             <div class="mb-8">
                 <div class="relative max-w-2xl mx-auto group">
                     <div class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 dark:group-focus-within:text-indigo-400 transition-colors pointer-events-none">
-                        <span class="icon-[ri--search-line] w-6 h-6"></span>
+                        <span class="icon-[lucide--search] w-6 h-6"></span>
                     </div>
                     <input 
                         type="text" 
@@ -31,9 +31,7 @@
                         autocomplete="off"
                     >
                     <button id="clearSearch" class="hidden absolute right-4 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-gray-700" aria-label="Hapus pencarian">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                        </svg>
+                        <span class="icon-[lucide--x] w-5 h-5"></span>
                     </button>
                 </div>
             </div>
@@ -55,7 +53,7 @@
             <div id="noResults" class="hidden text-center py-20">
                 <div class="max-w-md mx-auto">
                     <div class="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600">
-                        <span class="icon-[ri--search-line] w-full h-full"></span>
+                        <span class="icon-[lucide--search-x] w-full h-full"></span>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Hasil tidak ditemukan</h3>
                     <p class="text-gray-500 dark:text-gray-400">Coba sesuaikan kata kunci pencarian Anda atau telusuri kategori kami</p>
@@ -66,7 +64,7 @@
             <div id="initialState" class="text-center py-20">
                 <div class="max-w-md mx-auto">
                     <div class="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600">
-                        <span class="icon-[ri--search-line] w-full h-full"></span>
+                        <span class="icon-[lucide--search] w-full h-full"></span>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Mulai Pencarian</h3>
                     <p class="text-gray-500 dark:text-gray-400">Masukkan kata kunci untuk menemukan konten yang relevan</p>
@@ -100,19 +98,26 @@
                     if (queryFromUrl) {
                         searchInput.value = queryFromUrl;
                         toggleClearButton(queryFromUrl);
-                        performSearch(queryFromUrl);
+                        performSearch(queryFromUrl, false);
                     }
                 })
                 .catch(error => {
                     console.error('Error loading search index:', error);
                 });
             
-            function performSearch(query) {
-                if (!query.trim()) {
+            function performSearch(query, updateHistory = true) {
+                const trimmedQuery = query.trim();
+                
+                if (updateHistory) {
+                    const newUrl = trimmedQuery ? `${window.location.pathname}?q=${encodeURIComponent(trimmedQuery)}` : window.location.pathname;
+                    window.history.replaceState({}, '', newUrl);
+                }
+
+                if (!trimmedQuery) {
                     searchResults.classList.add('hidden');
                     noResults.classList.add('hidden');
                     initialState.classList.remove('hidden');
-                    resultCount.textContent = '0 results';
+                    resultCount.textContent = '0 hasil';
                     searchTime.textContent = '';
                     return;
                 }
@@ -123,22 +128,23 @@
                 let results = searchData.filter(item => {
                     const topicsStr = Array.isArray(item.topics) ? item.topics.join(' ') : (item.topics || '');
                     const tagsStr = Array.isArray(item.tags) ? item.tags.join(' ') : (item.tags || '');
-                    const targetText = `${item.title || ''} ${topicsStr} ${tagsStr}`.toLowerCase();
-                    return targetText.includes(query.toLowerCase());
+                    const contentStr = item.content || item.summary || '';
+                    const targetText = `${item.title || ''} ${topicsStr} ${tagsStr} ${contentStr}`.toLowerCase();
+                    return targetText.includes(trimmedQuery.toLowerCase());
                 });
                 
                 const uniqueResults = Array.from(new Map(results.map(item => [item.permalink, item])).values());
                 const endTime = performance.now();
                 const searchDuration = (endTime - startTime).toFixed(2);
                 
-                displayResults(uniqueResults, query, searchDuration);
+                displayResults(uniqueResults, trimmedQuery, searchDuration);
             }
             
             function displayResults(results, query, duration) {
                 if (results.length === 0) {
                     searchResults.classList.add('hidden');
                     noResults.classList.remove('hidden');
-                    resultCount.textContent = '0 results';
+                    resultCount.textContent = '0 hasil';
                     searchTime.textContent = `${duration}ms`;
                     return;
                 }
@@ -151,6 +157,26 @@
                 results.forEach(item => {
                     const titleHighlighted = highlightText(item.title || '', query);
                     
+                    // Render Gambar Thumbnail dengan Icon Mahkota (Badge Melayang di Gambar)
+                    let imageHTML = '';
+                    if (item.image) {
+                        let crownBadgeHTML = '';
+                        if (item.premium || item.isPremium) {
+                            crownBadgeHTML = `
+                                <div class="absolute top-2 right-2 bg-amber-500/90 dark:bg-amber-600/90 text-white p-1.5 rounded-full shadow-md backdrop-blur-sm flex items-center justify-center">
+                                    <span class="icon-[lucide--crown] w-4 h-4"></span>
+                                </div>
+                            `;
+                        }
+
+                        imageHTML = `
+                            <div class="w-full sm:w-36 h-28 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 relative">
+                                <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                ${crownBadgeHTML}
+                            </div>
+                        `;
+                    }
+                    
                     // Render Topics / Tags
                     let tagsHTML = '';
                     const rawTags = item.topics || item.tags;
@@ -161,27 +187,13 @@
                         ).join('');
                     }
 
-                    // Render Gambar Thumbnail
-                    let imageHTML = '';
-                    if (item.image) {
-                        imageHTML = `
-                            <div class="w-full sm:w-36 h-28 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
-                                <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
-                            </div>
-                        `;
-                    }
-
                     // Render Reading Time
                     let readingTimeHTML = '';
                     if (item.readingTime) {
                         readingTimeHTML = `
-                            <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-2">
-                                <span class="flex items-center gap-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    ${item.readingTime} menit baca
-                                </span>
+                            <div class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 mb-2">
+                                <span class="icon-[lucide--clock] w-3.5 h-3.5"></span>
+                                ${item.readingTime} menit baca
                             </div>
                         `;
                     }
@@ -205,9 +217,7 @@
                                     </div>
                                     <span class="inline-flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 group-hover:translate-x-1 transition-transform pointer-events-none">
                                         Baca
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                        </svg>
+                                        <span class="icon-[lucide--arrow-right] w-3.5 h-3.5"></span>
                                     </span>
                                 </div>
                             </div>
@@ -216,7 +226,7 @@
                 });
                 
                 document.getElementById('searchResultsContainer').innerHTML = resultsHTML;
-                resultCount.textContent = `${results.length} ${results.length === 1 ? 'result' : 'results'}`;
+                resultCount.textContent = `${results.length} ${results.length === 1 ? 'hasil' : 'hasil'}`;
                 searchTime.textContent = `${duration}ms`;
             }
 
@@ -230,7 +240,8 @@
             
             function highlightText(text, query) {
                 if (!query) return text;
-                const regex = new RegExp(query, 'gi');
+                const escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                const regex = new RegExp(escapedQuery, 'gi');
                 return text.replace(regex, match => `<span class="bg-yellow-200 dark:bg-yellow-900/50 text-gray-900 dark:text-white px-0.5 rounded">${match}</span>`);
             }
             

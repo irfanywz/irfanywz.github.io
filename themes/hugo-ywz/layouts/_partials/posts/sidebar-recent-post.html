@@ -13,10 +13,10 @@
         {{ $currentPage := . }}
 
         <li>
-            <a href="{{ $currentPage.RelPermalink }}" class="flex items-center gap-3 group" title="{{ $currentPage.Title }}">
+            <a href="{{ $currentPage.RelPermalink }}" class="flex items-center gap-3 group relative" title="{{ $currentPage.Title }}">
 
                 <!-- Container Thumbnail -->
-                <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
+                <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 relative">
                     
                     {{ $hasImage := false }}
 
@@ -62,9 +62,16 @@
                         </div>
                     {{ end }}
 
+                    <!-- Badge Premium di Thumbnail (Clean & Elegant) -->
+                    {{ if $currentPage.Params.premium }}
+                        <span class="absolute top-1 right-1 w-5 h-5 bg-white/90 dark:bg-gray-900/80 backdrop-blur-md border border-amber-500/30 text-amber-600 dark:text-amber-400 rounded-full shadow-sm flex items-center justify-center z-10 transition-transform duration-300 group-hover:scale-105" title="Konten Premium">
+                            <span class="icon-[lucide--crown] w-2.5 h-2.5"></span>
+                        </span>
+                    {{ end }}
+
                 </div>
 
-                <!-- Judul Saja (Maksimal 2 baris) -->
+                <!-- Judul Saja (Maksimal 2-3 baris) -->
                 <div class="flex-grow min-w-0">
                     <h4 class="text-gray-700 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 font-medium line-clamp-3 transition-colors text-xs sm:text-sm leading-snug">
                         {{ $currentPage.Title }}

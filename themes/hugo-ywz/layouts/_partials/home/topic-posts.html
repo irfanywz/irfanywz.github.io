@@ -1,4 +1,4 @@
-{{ $topic := .topic | default "Kode" }}
+{{ $topic := .topic | default "Teknologi" }}
 {{ $title := .title | default "Artikel Terkait" }}
 {{ $limit := .limit | default 4 }}
 {{ $layout := .layout | default "grid" }}
@@ -118,6 +118,14 @@
                             <img :src="posts[0].image" :alt="posts[0].title" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-500">
                         </template>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                        
+                        <!-- Badge Premium Transparan (Hero Utama) -->
+                        <template x-if="posts[0].premium">
+                            <span class="absolute top-4 right-4 w-7 h-7 bg-white/90 dark:bg-gray-900/80 backdrop-blur-md border border-amber-500/30 text-amber-600 dark:text-amber-400 rounded-full shadow-sm flex items-center justify-center z-20" title="Konten Premium">
+                                <span class="icon-[lucide--crown] w-3.5 h-3.5"></span>
+                            </span>
+                        </template>
+
                         <div class="relative z-10">
                             <span class="inline-block px-2.5 py-1 mb-2.5 text-xs font-bold tracking-wide uppercase text-white rounded-md" style="background-color: var(--theme-color);" x-text="(posts[0].readingTime || '1') + ' mnt baca'"></span>
                             <h3 class="text-lg sm:text-2xl font-bold leading-snug group-hover:opacity-90 transition-opacity" x-text="posts[0].title"></h3>
@@ -127,9 +135,16 @@
                     <div class="flex flex-col justify-between gap-3">
                         <template x-for="(post, index) in posts.slice(1)" :key="widgetId + '-hero-' + (post.permalink || index)">
                             <a :href="post.permalink" class="group/sub flex items-center gap-3.5 p-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700/60 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all flex-1">
-                                <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-900">
+                                <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-900 relative">
                                     <template x-if="post.image">
                                         <img :src="post.image" :alt="post.title" class="w-full h-full object-cover group-hover/sub:scale-105 transition-transform">
+                                    </template>
+                                    
+                                    <!-- Badge Premium Transparan (Hero Sub) -->
+                                    <template x-if="post.premium">
+                                        <span class="absolute top-1 right-1 w-5 h-5 bg-white/90 dark:bg-gray-900/80 backdrop-blur-md border border-amber-500/30 text-amber-600 dark:text-amber-400 rounded-full shadow-sm flex items-center justify-center z-20" title="Konten Premium">
+                                            <span class="icon-[lucide--crown] w-2.5 h-2.5"></span>
+                                        </span>
                                     </template>
                                 </div>
                                 <div class="flex-1 min-w-0">
@@ -153,9 +168,16 @@
                                 </div>
                                 <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors leading-snug" x-text="post.title"></h3>
                             </div>
-                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-900">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-900 relative">
                                 <template x-if="post.image">
                                     <img :src="post.image" :alt="post.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                                </template>
+
+                                <!-- Badge Premium Transparan (List) -->
+                                <template x-if="post.premium">
+                                    <span class="absolute top-1 right-1 w-5 h-5 bg-white/90 dark:bg-gray-900/80 backdrop-blur-md border border-amber-500/30 text-amber-600 dark:text-amber-400 rounded-full shadow-sm flex items-center justify-center z-20" title="Konten Premium">
+                                        <span class="icon-[lucide--crown] w-2.5 h-2.5"></span>
+                                    </span>
                                 </template>
                             </div>
                         </a>
@@ -166,8 +188,16 @@
             {{ else if eq $layout "compact" }}
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                     <template x-for="(post, index) in posts" :key="widgetId + '-compact-' + (post.permalink || index)">
-                        <a :href="post.permalink" class="group p-3.5 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700/60 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all flex flex-col justify-between">
-                            <h3 class="text-xs sm:text-sm font-bold text-gray-800 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 leading-snug mb-3" x-text="post.title"></h3>
+                        <a :href="post.permalink" class="group p-3.5 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700/60 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all flex flex-col justify-between relative">
+                            
+                            <!-- Badge Premium Transparan (Compact) -->
+                            <template x-if="post.premium">
+                                <span class="absolute top-2 right-2 w-5 h-5 bg-white/90 dark:bg-gray-900/80 backdrop-blur-md border border-amber-500/30 text-amber-600 dark:text-amber-400 rounded-full shadow-sm flex items-center justify-center z-20" title="Konten Premium">
+                                    <span class="icon-[lucide--crown] w-2.5 h-2.5"></span>
+                                </span>
+                            </template>
+
+                            <h3 class="text-xs sm:text-sm font-bold text-gray-800 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 leading-snug mb-3 pr-4" x-text="post.title"></h3>
                             <div class="text-xs text-gray-400 flex items-center gap-1">
                                 <span class="icon-[ri--article-line] w-3.5 h-3.5"></span>
                                 <span x-text="(post.readingTime || '1') + ' mnt'"></span>
@@ -185,6 +215,13 @@
                                 <div class="w-full aspect-[16/9] rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900 mb-3 relative">
                                     <template x-if="post.image">
                                         <img :src="post.image" :alt="post.title" class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" loading="lazy">
+                                    </template>
+
+                                    <!-- Badge Premium Transparan (Grid Standard) -->
+                                    <template x-if="post.premium">
+                                        <span class="absolute top-1.5 right-1.5 w-5 h-5 bg-white/90 dark:bg-gray-900/80 backdrop-blur-md border border-amber-500/30 text-amber-600 dark:text-amber-400 rounded-full shadow-sm flex items-center justify-center z-20" title="Konten Premium">
+                                            <span class="icon-[lucide--crown] w-2.5 h-2.5"></span>
+                                        </span>
                                     </template>
                                 </div>
                                 <div class="text-xs sm:text-sm text-gray-400 dark:text-gray-500 font-normal mb-1.5 flex items-center gap-1">

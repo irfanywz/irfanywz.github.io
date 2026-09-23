@@ -16,31 +16,42 @@
                     {{ if eq $item $ }} pointer-events-none opacity-80 {{ end }}" title="{{ $item.Title }}">
                     
                     <!-- Container Thumbnail -->
-                    <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700">
+                    <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 relative">
                         
                         {{ $hasImage := false }}
 
                         {{ if $item.Params.image }}
-                            {{ $resourceImg := $item.Resources.GetMatch $item.Params.image }}
-                            {{ $globalImg := resources.Get $item.Params.image }}
+                            {{ $imgPath := $item.Params.image }}
+                            {{ $cleanPath := strings.TrimPrefix "/" $imgPath }}
+
+                            {{ $resourceImg := $item.Resources.GetMatch $cleanPath }}
+                            {{ $globalImg := resources.Get $cleanPath }}
 
                             {{ if $resourceImg }}
-                                {{ $thumb := $resourceImg.Resize "1000x avif" }}
-                                <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                                 {{ $hasImage = true }}
+                                {{ if eq $resourceImg.MediaType.SubType "svg" }}
+                                    <img src="{{ $resourceImg.RelPermalink }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                {{ else }}
+                                    {{ $thumb := $resourceImg.Resize "1000x avif" }}
+                                    <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                {{ end }}
 
                             {{ else if $globalImg }}
-                                {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
-                                <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                                 {{ $hasImage = true }}
+                                {{ if eq $globalImg.MediaType.SubType "svg" }}
+                                    <img src="{{ $globalImg.RelPermalink }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                {{ else }}
+                                    {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
+                                    <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                {{ end }}
 
-                            {{ else if (fileExists (printf "static/%s" $item.Params.image)) }}
-                                <img src="{{ $item.Params.image | relURL }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ else if (fileExists (printf "static/%s" $cleanPath)) }}
                                 {{ $hasImage = true }}
+                                <img src="{{ $imgPath | relURL }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
 
-                            {{ else if (strings.HasPrefix $item.Params.image "http") }}
-                                <img src="{{ $item.Params.image }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            {{ else if (strings.HasPrefix $imgPath "http") }}
                                 {{ $hasImage = true }}
+                                <img src="{{ $imgPath }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             {{ end }}
                         {{ end }}
 
@@ -49,6 +60,13 @@
                             <div class="w-full h-full bg-gradient-to-br from-indigo-50/50 via-gray-100 to-indigo-100/30 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950/30 flex flex-col items-center justify-center text-indigo-500/70 dark:text-indigo-400/50 group-hover:scale-105 transition-transform duration-300">
                                 <span class="icon-[ri--article-line] w-6 h-6"></span>
                             </div>
+                        {{ end }}
+
+                        <!-- Badge Premium di Thumbnail -->
+                        {{ if $item.Params.premium }}
+                            <span class="absolute top-1 right-1 w-5 h-5 bg-white/90 dark:bg-gray-900/80 backdrop-blur-md border border-amber-500/30 text-amber-600 dark:text-amber-400 rounded-full shadow-sm flex items-center justify-center z-10 transition-transform duration-300 group-hover:scale-105" title="Konten Premium">
+                                <span class="icon-[lucide--crown] w-2.5 h-2.5"></span>
+                            </span>
                         {{ end }}
 
                     </div>

@@ -4,6 +4,15 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.7.2"
+    date: "23 September 2026"
+    changes:
+      - tag: "Perbaikan"
+        description: "Perbaikan penerapan SWG (Subscriber with Google) Google Reader Revenue Manager"
+      - tag: "Pembaruan"
+        description: "Perbaikan tampilan semua card posts dan penambahan badge pada premium post"
+      - tag: "Pembaruan"
+        description: "Pembaruan dokumen ketentuan layanan"
   - version: "2.7.1"
     date: "22 September 2026"
     changes:

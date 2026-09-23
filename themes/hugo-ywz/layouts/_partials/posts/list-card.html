@@ -36,10 +36,10 @@
             </span>
         {{ end }}
 
-        <!-- Badge Premium di Thumbnail (Mobile) -->
+        <!-- Badge Premium di Thumbnail -->
         {{ if .Params.premium }}
-            <span class="sm:hidden absolute top-2 right-2 bg-amber-500/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm flex items-center gap-1 z-10">
-                <span class="icon-[lucide--lock] text-xs"></span>
+            <span class="absolute top-2 right-2 w-7 h-7 bg-white/90 dark:bg-gray-900/80 backdrop-blur-md border border-amber-500/30 text-amber-600 dark:text-amber-400 rounded-full shadow-sm flex items-center justify-center z-10 transition-transform duration-300 group-hover:scale-105" title="Konten Premium">
+                <span class="icon-[lucide--crown] w-3.5 h-3.5"></span>
             </span>
         {{ end }}
     </a>
@@ -59,17 +59,9 @@
                     {{ printf "%d mnt baca" .ReadingTime }}
                 </span>
             </div>
-
-            <!-- Badge Premium (Desktop) -->
-            {{ if .Params.premium }}
-                <span class="hidden sm:inline-flex items-center gap-1 bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wide">
-                    <span class="icon-[lucide--lock] text-xs"></span>
-                    <span>PREMIUM</span>
-                </span>
-            {{ end }}
         </div>
 
-        <!-- Judul Artikel Utuh (Tanpa line-clamp) -->
+        <!-- Judul Artikel Utuh -->
         <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors leading-snug">
             <a href="{{ .RelPermalink }}" class="before:absolute before:inset-0">
                 {{ .Title }}

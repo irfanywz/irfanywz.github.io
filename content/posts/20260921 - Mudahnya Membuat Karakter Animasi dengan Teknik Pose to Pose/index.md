@@ -5,10 +5,11 @@ description: "karakter animasi dengan teknik pose-to-pose adalah pilihan yang pa
 date: 2026-09-21T16:00:00+07:00
 image: pose-to-pose-karakter.avif
 topics: ["Konten Kreator"]
-keywords: ["Animasi"]
+keywords: ["Animasi", "Premium"]
 series: "Belajar Animasi"
 showAds: false
 adPositions: []
+# layout: "nosidebar"
 premium: true
 draft: false
 ---
@@ -120,4 +121,8 @@ yang terpenting itu jalan ceritanya, kalau cerita menarik animasi bisa dimaafkan
 
 kelebihan cara ini adalah ketika 1 pose sudah ada lalu ada pose yang sama maka tinggal digunakan ulang
 
-{{< paywall enc="56422567057ab9ff1a5883536f9941a51a5f0e8666954440acac1020d95abf8cb9dd06de56f045ca5192a9713fd0c537U2FsdGVkX1+0uPXJMv0o4H0Ica4E3AxGHuYA1lVZODE=" auth="4574f104150b048a003096759509d4b9:eweweawawa" >}}
+...
+
+bagi yang ingin mendownload asset animasi diatas saya sudah sediakan linknya dibawah ini
+
+{{< paywall enc="a136a1b3b246a0c67579bd5aab99e1508be20b77630e1b42062336c9c695ac685eb427632e870e005c8c29c6661f7aa3U2FsdGVkX1/Jp+roYFeY2KE6uL1K48o5JqNOp9TwVezPggbBY/V2TA8JiNr4hwRsWgKNLTkBbnJkFVcqORdIqdlghiegXRAJOzIOoSZP6uLcNmQM4+E52mDvEosGhEL5RYIRNYPdAi/pVuSoK0SWS4sYRwG6DJayevWgu69ONLe3k71+Y6B+xwPVLxnd5IQlR8dFXfWALKGWXM9827lDJL4EYhJ8Os+QVBMaXhnlZ8OzPpqrNm2pqftyZySnEwWQ0A5E1cmkPbkKXgDgeuWKEw==" auth="f928ffeb44092b7912e8d72369092b1b:mejoktsettsetkuyahahay" >}}

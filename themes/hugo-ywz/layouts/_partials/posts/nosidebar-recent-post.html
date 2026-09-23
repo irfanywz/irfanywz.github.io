@@ -20,7 +20,7 @@
             {{ $currentPage := . }}
 
             <!-- Kartu Artikel: Flex Row di HP, Flex Col di Tablet/Desktop -->
-            <a href="{{ $currentPage.RelPermalink }}" class="group flex flex-row sm:flex-col bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200/80 dark:border-gray-700/80 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-md transition-all" title="{{ $currentPage.Title }}">
+            <a href="{{ $currentPage.RelPermalink }}" class="group flex flex-row sm:flex-col bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200/80 dark:border-gray-700/80 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-md transition-all relative" title="{{ $currentPage.Title }}">
 
                 <!-- Container Thumbnail (Lebar fix di HP agar rapi jadi list, full di atas saat grid) -->
                 <div class="w-32 sm:w-full h-auto sm:h-44 shrink-0 overflow-hidden bg-gray-100 dark:bg-gray-700 relative">
@@ -39,7 +39,7 @@
                             {{ if eq $resourceImg.MediaType.SubType "svg" }}
                                 <img src="{{ $resourceImg.RelPermalink }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             {{ else }}
-                                {{ $thumb := $resourceImg.Resize "800x avif" }}
+                                {{ $thumb := $resourceImg.Resize "1000x avif" }}
                                 <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             {{ end }}
 
@@ -48,7 +48,7 @@
                             {{ if eq $globalImg.MediaType.SubType "svg" }}
                                 <img src="{{ $globalImg.RelPermalink }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             {{ else }}
-                                {{ $thumbGlobal := $globalImg.Resize "800x avif" }}
+                                {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
                                 <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $currentPage.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             {{ end }}
 
@@ -69,14 +69,23 @@
                         </div>
                     {{ end }}
 
+                    <!-- Badge Premium di Thumbnail (Clean & Elegant) -->
+                    {{ if $currentPage.Params.premium }}
+                        <span class="absolute top-2 right-2 w-7 h-7 bg-white/90 dark:bg-gray-900/80 backdrop-blur-md border border-amber-500/30 text-amber-600 dark:text-amber-400 rounded-full shadow-sm flex items-center justify-center z-10 transition-transform duration-300 group-hover:scale-105" title="Konten Premium">
+                            <span class="icon-[lucide--crown] w-3.5 h-3.5"></span>
+                        </span>
+                    {{ end }}
+
                 </div>
 
                 <!-- Konten Teks -->
                 <div class="p-3.5 sm:p-5 flex flex-col justify-between flex-grow">
                     <div>
-                        <div class="flex items-center gap-1.5 text-[11px] sm:text-xs font-medium text-indigo-600 dark:text-indigo-400 mb-1 sm:mb-2">
-                            <span class="icon-[ri--time-line] w-3.5 h-3.5"></span>
-                            <span>{{ printf "%d min waktu baca" $currentPage.ReadingTime }}</span>
+                        <div class="flex items-center justify-between gap-1.5 text-[11px] sm:text-xs font-medium text-indigo-600 dark:text-indigo-400 mb-1 sm:mb-2">
+                            <span class="flex items-center gap-1">
+                                <span class="icon-[ri--time-line] w-3.5 h-3.5"></span>
+                                <span>{{ printf "%d min waktu baca" $currentPage.ReadingTime }}</span>
+                            </span>
                         </div>
                         <h4 class="text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 font-bold line-clamp-2 transition-colors text-xs sm:text-base leading-snug">
                             {{ $currentPage.Title }}

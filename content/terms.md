@@ -37,10 +37,12 @@ Jika Anda melakukan pembelian produk digital atau pemesanan layanan di situs ini
 * **Perubahan Harga:** Kami berhak mengubah harga produk atau layanan kapan saja tanpa pemberitahuan sebelumnya, namun perubahan tersebut tidak akan berdampak pada transaksi yang sudah selesai.
 
 ### 6. Ketentuan Layanan Anggota (Member & Akses Premium)
-Bagi pengguna yang mendaftar sebagai anggota, berlangganan, atau mengakses konten eksklusif/uji coba melalui integrasi sistem member (seperti Google Sign-In atau sistem otorisasi pembaca), ketentuan berikut berlaku:
-* **Akun Pengguna:** Anda bertanggung jawab penuh untuk menjaga kerahasiaan kredensial akun Anda dan atas semua aktivitas yang terjadi di dalam akun tersebut.
-* **Akses Konten Eksklusif:** Hak akses berlangganan atau uji coba bersifat pribadi, non-transfer, dan hanya dapat digunakan sesuai perangkat atau sesi yang sah. Dilarang membagikan detail akses akun kepada pihak lain.
-* **Penghentian Akses Member:** Kami berhak mencabut atau menangguhkan status keanggotaan dan akses konten premium secara sepihak jika ditemukan indikasi penyalahgunaan, pembagian akun secara ilegal, atau pelanggaran terhadap ketentuan situs.
+Bagi pengguna yang mendaftar sebagai anggota atau berlangganan untuk mengakses konten eksklusif, ketentuan berikut berlaku:
+* **Akun Pengguna:** Anda bertanggung jawab penuh atas kerahasiaan akun dan seluruh aktivitas di dalamnya.
+* **Pembayaran & Berlangganan:** Seluruh transaksi, pembelian, dan pengelolaan langganan diproses secara resmi dan aman melalui layanan **Subscribe with Google (SwG)**. Segala ketentuan terkait penagihan, pembaruan otomatis, atau pembatalan mengikuti kebijakan resmi dari ekosistem akun Google Anda.
+* **Akses Konten Eksklusif:** Akses bersifat pribadi, non-transfer, dan hanya untuk perangkat yang sah. Dilarang membagikan kredensial akun kepada pihak lain. Untuk melihat daftar lengkap materi eksklusif yang tersedia, Anda bisa langsung mengecek halaman [Konten Premium](/keywords/premium/).
+* **Penggunaan Aset & File:** Seluruh aset, file, *source code*, aplikasi, atau materi digital yang disediakan di dalam konten eksklusif hanya boleh digunakan untuk keperluan pribadi (*personal use*). Dilarang keras memperjualbelikan, mendistribusikan ulang, atau mengklaim ulang materi tersebut kepada pihak lain.
+* **Penghentian Akses:** Kami berhak mencabut status keanggotaan jika ditemukan pelanggaran atau penyalahgunaan akun.
 
 ### 7. Batasan Tanggung Jawab
 Semua materi, informasi, dan perangkat lunak di situs ini disediakan "sebagaimana adanya" tanpa jaminan apa pun, baik tersurat maupun tersirat. **irfanywz** tidak bertanggung jawab atas segala kerugian langsung, tidak langsung, atau insidental yang timbul dari penggunaan atau ketidakmampuan menggunakan layanan dan konten di situs ini.
@@ -52,5 +54,5 @@ Kami berhak untuk menangguhkan atau menghentikan akses Anda ke situs ini sewaktu
 Kami dapat memperbarui Ketentuan Layanan ini dari waktu ke waktu. Setiap perubahan akan langsung berlaku setelah dipublikasikan di halaman ini dengan tanggal pembaruan yang baru. Dengan tetap menggunakan situs ini setelah perubahan tersebut, Anda dianggap menyetujui ketentuan yang telah direvisi.
 
 <div class="mt-12 p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center text-sm text-gray-500 dark:text-gray-400">
-<p class="m-0"><strong>Diperbarui pada:</strong> 5 September 2026</p>
+<p class="m-0"><strong>Diperbarui pada:</strong> 23 September 2026</p>
 </div>

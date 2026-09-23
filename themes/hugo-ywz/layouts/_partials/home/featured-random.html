@@ -97,6 +97,12 @@
                             </div>
                         </template>
 
+                        <!-- Badge Premium Transparan -->
+                        <template x-if="posts[currentIndex].premium">
+                            <span class="absolute top-1.5 right-1.5 w-5 h-5 bg-white/90 dark:bg-gray-900/80 backdrop-blur-md border border-amber-500/30 text-amber-600 dark:text-amber-400 rounded-full shadow-sm flex items-center justify-center z-20" title="Konten Premium">
+                                <span class="icon-[lucide--crown] w-2.5 h-2.5"></span>
+                            </span>
+                        </template>
                     </div>
 
                     <!-- Konten Teks -->
@@ -110,15 +116,15 @@
                                         Rekomendasi
                                     </span>
 
-                                    <!-- Tag Asli -->
-                                    <template x-if="posts[currentIndex].tags">
-                                        <template x-for="tag in (Array.isArray(posts[currentIndex].tags) ? posts[currentIndex].tags : posts[currentIndex].tags.split(',').map(t => t.trim())).slice(0, 1)">
-                                            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-900" x-text="tag"></span>
+                                    <!-- Topics dari JSON -->
+                                    <template x-if="posts[currentIndex].topics && posts[currentIndex].topics.length > 0">
+                                        <template x-for="topic in posts[currentIndex].topics.slice(0, 1)">
+                                            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-900" x-text="topic"></span>
                                         </template>
                                     </template>
                                 </div>
 
-                                <!-- Waktu Baca menggantikan Tanggal -->
+                                <!-- Waktu Baca -->
                                 <span class="text-[11px] text-gray-400 dark:text-gray-500 flex items-center gap-1 font-normal whitespace-nowrap">
                                     <span class="icon-[ri--time-line] w-3 h-3"></span>
                                     <span x-text="(posts[currentIndex].readingTime || '1') + ' mnt baca'"></span>

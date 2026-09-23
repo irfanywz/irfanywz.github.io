@@ -25,6 +25,7 @@
       "section" .Section
       "image" $img
       "topics" (.Params.topics | default (slice))
+      "premium" (.Params.premium | default false)
     -}}
     {{- $index = $index | append $item -}}
   {{- end -}}

@@ -6,18 +6,18 @@
     {{ if .Params.image }}
         {{ $res := .Resources.GetMatch .Params.image }}
         {{ if $res }}
-            {{ $thumb = $res.Resize "400x avif" }}
+            {{ $thumb = $res.Resize "1000x avif" }}
         {{ else }}
             {{ $globalRes := resources.Get .Params.image }}
             {{ if $globalRes }}
-                {{ $thumb = $globalRes.Resize "400x avif" }}
+                {{ $thumb = $globalRes.Resize "1000x avif" }}
             {{ else }}
                 {{ $image = .Params.image | relURL }}
             {{ end }}
         {{ end }}
     {{ end }}
 
-    <!-- Thumbnail (Diubah jadi ukuran kotak vertikal/persegi untuk model list) -->
+    <!-- Thumbnail -->
     <a href="{{ .RelPermalink }}" class="block w-24 h-24 sm:w-32 sm:h-24 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900 flex-shrink-0 relative">
         {{ if $thumb }}
             <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ .Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
@@ -29,10 +29,10 @@
             </div>
         {{ end }}
 
-        <!-- Badge Premium di Thumbnail (Mobile / List View) -->
+        <!-- Badge Premium di Thumbnail (Clean & Elegant) -->
         {{ if .Params.premium }}
-            <span class="absolute top-1.5 right-1.5 bg-amber-500/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm flex items-center gap-1 z-10">
-                <span class="icon-[lucide--lock] text-xs"></span>
+            <span class="absolute top-1.5 right-1.5 w-6 h-6 bg-white/90 dark:bg-gray-900/80 backdrop-blur-md border border-amber-500/30 text-amber-600 dark:text-amber-400 rounded-full shadow-sm flex items-center justify-center z-10 transition-transform duration-300 group-hover:scale-105" title="Konten Premium">
+                <span class="icon-[lucide--crown] text-[10px]"></span>
             </span>
         {{ end }}
     </a>
@@ -52,14 +52,6 @@
                     {{ printf "%d mnt baca" .ReadingTime }}
                 </span>
             </div>
-
-            <!-- Badge Premium (Desktop / List View) -->
-            {{ if .Params.premium }}
-                <span class="hidden sm:inline-flex items-center gap-1 bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wide">
-                    <span class="icon-[lucide--lock] text-xs"></span>
-                    <span>PREMIUM</span>
-                </span>
-            {{ end }}
         </div>
 
         <!-- Judul Artikel -->
