@@ -6,6 +6,16 @@ description: "Titip artikel, review, atau backlink di irfanywz.web.id. Cocok unt
 available: false
 shop_type: "service"
 
+product_examples:
+  - title: "Tulisan Content Placement"
+    description: "contoh tulisan dengan tema teknologi"
+    image: jasa-content-placement.avif
+    url: "https://google.com"
+
+testimonials:
+  - name: "Rian Pratama"
+    role: "UMKM Kuliner"
+    comment: "Pengerjaan cepat dan hasilnya rapi banget! Penjualan produk langsung meningkat setelah pakai landing page ini."
 
 image: jasa-content-placement.avif
 draft: false

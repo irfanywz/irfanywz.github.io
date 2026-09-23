@@ -11,7 +11,7 @@ playlist:
   - title: HINGGA SEMUA MENGHILANG
     artist: THREESIXTY
     youtubeId: LCcpGIyS7tM
-  - title: Nadaku Terhenti
-    artist: THREESIXTY
-    youtubeId: MDriU5kwSmA
+  # - title: Nadaku Terhenti
+  #   artist: THREESIXTY
+  #   youtubeId: MDriU5kwSmA
 ---

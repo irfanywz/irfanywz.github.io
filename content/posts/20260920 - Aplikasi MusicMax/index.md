@@ -6,11 +6,11 @@ date: 2026-09-20T16:00:00+07:00
 image: music-max.avif
 topics: ["Teknologi"]
 keywords: ["Aplikasi"]
-# series: ""
-series_name: "Portofolio"
-series_links:
-  - "promise-ety"  
-  - "music-max"
+series: "Portofolio Aplikasi"
+# series_name: "Portofolio"
+# series_links:
+#   - "promise-ety"  
+#   - "music-max"
 showAds: false
 adPositions: []
 layout: "nosidebar"

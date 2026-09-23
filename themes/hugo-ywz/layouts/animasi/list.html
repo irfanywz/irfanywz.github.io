@@ -332,21 +332,27 @@
                 </template>
             </div>
 
-            <!-- Content for Naskah Tab -->
+<!-- Content for Naskah Tab -->
             <div x-show="activeTab === 'naskah'" class="divide-y divide-gray-200 dark:divide-gray-800 border-t border-b border-gray-200 dark:border-gray-800">
                 <template x-for="item in filteredItems" :key="item.id || item.permalink">
                     <a :href="item.permalink" :target="item.isExternal ? '_blank' : ''" :rel="item.isExternal ? 'noopener noreferrer nofollow' : ''"
-                       class="group flex items-center justify-between py-3.5 px-2 hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors">
-                        <div class="flex items-center gap-3 min-w-0 pr-4">
-                            <div class="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                       class="group flex flex-col md:flex-row md:items-center md:justify-between py-3.5 px-3 md:px-4 hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors gap-2 md:gap-4">
+                        
+                        <!-- Bagian Kiri: Icon, Judul, & Deskripsi -->
+                        <div class="flex items-start md:items-center gap-3 min-w-0 flex-1">
+                            <div class="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform mt-0.5 md:mt-0">
                                 <span class="icon-[lucide--file-text] w-4 h-4"></span>
                             </div>
-                            <div class="min-w-0">
-                                <h2 class="text-sm sm:text-base font-medium text-gray-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors truncate" x-text="item.displayTitle"></h2>
+                            <div class="min-w-0 flex-1">
+                                <h2 class="text-sm sm:text-base font-medium text-gray-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors break-words md:truncate" x-text="item.displayTitle"></h2>
                                 <p class="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5" x-text="item.displayDesc"></p>
                             </div>
                         </div>
-                        <div class="shrink-0 text-xs text-gray-400 dark:text-gray-500 font-mono" x-text="item.date"></div>
+
+                        <!-- Bagian Tanggal: Di bawah pada HP, rapi di sebelah kanan pada layar Desktop (md:) -->
+                        <div class="shrink-0 text-xs text-gray-400 dark:text-gray-500 font-mono pl-11 md:pl-0 md:text-right">
+                            <span x-text="item.date"></span>
+                        </div>
                     </a>
                 </template>
             </div>

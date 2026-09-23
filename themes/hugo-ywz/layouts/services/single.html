@@ -152,6 +152,64 @@
                 </div>
                 {{ end }}
 
+                <!-- SECTION: Contoh Produk / Portofolio (List / Stacked Layout Fleksibel) -->
+                {{ with .Params.product_examples }}
+                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 md:p-8">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6 border-b border-gray-100 dark:border-gray-700 pb-3">Contoh Produk / Portofolio</h2>
+                    <div class="space-y-4">
+                        {{ range . }}
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 md:p-5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl transition-all duration-200 hover:border-indigo-300 dark:hover:border-indigo-700">
+                            
+                            <!-- Bagian Kiri: Thumbnail Image (Opsional) & Teks -->
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full">
+                                {{ if .image }}
+                                <div class="w-full sm:w-28 sm:h-20 flex-shrink-0 aspect-video sm:aspect-auto rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                                    <img src="{{ .image }}" alt="{{ .title }}" class="w-full h-full object-cover">
+                                </div>
+                                {{ end }}
+                                <div class="space-y-1 w-full">
+                                    <h3 class="font-bold text-gray-900 dark:text-white text-base leading-tight">{{ .title }}</h3>
+                                    {{ if .description }}
+                                    <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{{ .description }}</p>
+                                    {{ end }}
+                                </div>
+                            </div>
+
+                            <!-- Bagian Kanan: Tautan Aksi (Opsional) -->
+                            {{ if .url }}
+                            <div class="w-full sm:w-auto flex-shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-200/60 dark:border-gray-800 flex justify-end">
+                                <a href="{{ .url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-indigo-50 dark:bg-indigo-950/50 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 text-xs font-bold rounded-lg transition-colors w-full sm:w-auto">
+                                    <span>Lihat</span>
+                                    <span class="icon-[ri--external-link-line]"></span>
+                                </a>
+                            </div>
+                            {{ end }}
+                        </div>
+                        {{ end }}
+                    </div>
+                </div>
+                {{ end }}
+
+                <!-- SECTION: Testimoni Klien -->
+                {{ with .Params.testimonials }}
+                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 md:p-8">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6 border-b border-gray-100 dark:border-gray-700 pb-3">Testimoni Klien</h2>
+                    <div class="space-y-4">
+                        {{ range . }}
+                        <div class="p-5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-gray-900 dark:text-white text-sm">{{ .name }}</span>
+                                {{ if .role }}
+                                <span class="text-xs text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-100 dark:border-indigo-900/50 px-2.5 py-0.5 rounded-full font-medium">{{ .role }}</span>
+                                {{ end }}
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 italic leading-relaxed">"{{ .comment }}"</p>
+                        </div>
+                        {{ end }}
+                    </div>
+                </div>
+                {{ end }}
+
                 <!-- Demo Video -->
                 {{ with .Params.demo_video_id }}
                 <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 md:p-8">
@@ -247,7 +305,7 @@
                         </div>
                     </div>
 
-                    <!-- Section Baru: Jenis Pembayaran yang Disupport (Mengambil dari _index.md) -->
+                    <!-- Metode Pembayaran -->
                     {{ with .CurrentSection.Params.payments }}
                     <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5">
                         <h3 class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Metode Pembayaran</h3>

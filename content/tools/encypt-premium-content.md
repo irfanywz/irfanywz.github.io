@@ -79,10 +79,18 @@ categories:
             a = encrypt(e, o);
 
         const y = CryptoJS.HmacSHA256(a, CryptoJS.SHA256(o).toString()).toString() + a;
+        
+        // --- PROSES PENGKABURAN (GABUNG & REVERSE) ---
+        // 1. Gabungkan key dan salt dengan pemisah titik dua (:)
+        const combinedAuth = `${n}:${s}`;
+        // 2. Balikkan string-nya (reverse) agar tidak mudah dibaca secara langsung
+        const obfuscatedAuth = combinedAuth.split("").reverse().join("");
+
         const openTag = "{{" + "<";
         const closeTag = ">" + "}}";
         
-        const d = `${openTag} paywall enc=${JSON.stringify(y)} key=${JSON.stringify(n)} salt=${JSON.stringify(s)} ${closeTag}`;
+        // Menghasilkan format shortcode dengan atribut 'auth' tersembunyi
+        const d = `${openTag} paywall enc=${JSON.stringify(y)} auth=${JSON.stringify(obfuscatedAuth)} ${closeTag}`;
         
         document.getElementById("resultEncrypt").textContent = d;
         var i = document.getElementById("copyStatus");

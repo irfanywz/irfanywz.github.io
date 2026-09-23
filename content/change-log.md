@@ -4,6 +4,15 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.7.1"
+    date: "22 September 2026"
+    changes:
+      - tag: "Perbaikan"
+        description: "Perbaikan fitur paywall dengan menambahkan validasi license key"
+      - tag: "Perbaikan"
+        description: "Perbaikan tampilan responsive pada halaman naskah animasi"
+      - tag: "Fitur Baru"
+        description: "Penambahan section testimoni dan contoh produk pada halaman layanan"
   - version: "2.7.0"
     date: "10 September 2026"
     changes:

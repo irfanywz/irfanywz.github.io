@@ -6,11 +6,11 @@ date: 2026-08-24T16:00:00+07:00
 image: promise-ety.avif
 topics: ["Teknologi"]
 keywords: ["Aplikasi"]
-# series: ""
-series_name: "Portofolio"
-series_links:
-  - "promise-ety"  
-  - "music-max"
+series: "Portofolio Aplikasi"
+# series_name: "Portofolio"
+# series_links:
+#   - "promise-ety"  
+#   - "music-max"
 showAds: false
 adPositions: []
 layout: "nosidebar"

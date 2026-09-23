@@ -9,6 +9,7 @@ keywords: ["Animasi"]
 series: "Belajar Animasi"
 showAds: false
 adPositions: []
+premium: true
 draft: false
 ---
 
@@ -118,3 +119,5 @@ cukup sediain 1 karakter namun banyak pose saja, jadi animasinya cukup dimulut s
 yang terpenting itu jalan ceritanya, kalau cerita menarik animasi bisa dimaafkan...
 
 kelebihan cara ini adalah ketika 1 pose sudah ada lalu ada pose yang sama maka tinggal digunakan ulang
+
+{{< paywall enc="56422567057ab9ff1a5883536f9941a51a5f0e8666954440acac1020d95abf8cb9dd06de56f045ca5192a9713fd0c537U2FsdGVkX1+0uPXJMv0o4H0Ica4E3AxGHuYA1lVZODE=" auth="4574f104150b048a003096759509d4b9:eweweawawa" >}}

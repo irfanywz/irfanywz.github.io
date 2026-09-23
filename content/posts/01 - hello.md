@@ -17,7 +17,7 @@ consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-{{< paywall enc="5adedb74e094d31212c01680c35b82551b01028d71bcf739698f41e6c7ebb42ecab85d7e9ae5248255bcb9a5528abeefU2FsdGVkX19dfMgbVhhsInp3s/TL8qMmWjYtckzKgI8wEUxLh4ImR5JBfrkwkhdDHWHHDY/4tWHqHIAAuI3S0qlVVuh9bmNVh+HVFxCHYK0=" key="irfanywz" salt="688bfbf3c6c926f7bb36857ebc266739" >}}
+{{< paywall enc="c64cc94a9f2b4e9cb0aaedc4a29d29cd1aae9916792b25da5721c204eaff17359b0fe7a067ee4474b49cddfba2a4f39dU2FsdGVkX1+26mwvbIK2HTJidBbkALBPuHpSGhiqYYw=" auth="a3387303046d6fbba5af6e3b26d8d7b6:zwynafri" >}}
 
 {{% references %}}
   {{% ref-item "https://irfanywz.github.io" "Dokumentasi Resmi Hugo" %}}
