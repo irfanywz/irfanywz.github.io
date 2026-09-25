@@ -37,19 +37,21 @@
             </button>
             
             <div class="text-center">
+                <!-- Ikon Timer / Jam di Bagian Atas -->
                 <div class="w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span class="icon-[ri--cup-line] w-8 h-8"></span>
+                    <span class="icon-[ri--timer-line] w-8 h-8"></span>
                 </div>
                 
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Traktir Kopi ☕</h3>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Suka dengan konten ini ?</h3>
                 <p class="text-gray-600 dark:text-gray-300 mb-6 text-sm">
-                    Suka dengan konten ini? Boleh banget kalau mau traktir secangkir kopi buat apresiasi
+                     Boleh banget kalau mau scan-scan QRnya biar lebih semangat
                 </p>
                 
                 <div class="flex flex-col gap-3">
+                    <!-- Tombol Support dengan Ikon Hati -->
                     <a href="{{ "about/#support" | relURL }}" target="_blank" class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-sm">
-                        <span class="icon-[ri--cup-line]"></span>
-                        Traktir Kopi
+                        <span class="icon-[ri--heart-3-line]"></span>
+                        Support {{ .Site.Params.title }}
                     </a>
                     
                     <div class="relative py-2">
@@ -57,12 +59,24 @@
                             <div class="w-full border-t border-gray-200 dark:border-gray-700"></div>
                         </div>
                         <div class="relative flex justify-center">
-                            <span class="bg-white dark:bg-gray-800 px-2 text-xs text-gray-500">Tautan siap dalam <span x-text="timeLeft" class="font-bold text-indigo-600 dark:text-indigo-400"></span>s</span>
+                            <span class="bg-white dark:bg-gray-800 px-2 text-xs text-gray-500">
+                                <template x-if="timeLeft > 0">
+                                    <span>Tautan siap dalam <span x-text="timeLeft" class="font-bold text-indigo-600 dark:text-indigo-400"></span>s</span>
+                                </template>
+                                <template x-if="timeLeft <= 0">
+                                    <span class="text-green-600 dark:text-green-400 font-semibold">Tautan siap digunakan!</span>
+                                </template>
+                            </span>
                         </div>
                     </div>
 
-                    <div x-show="timeLeft <= 0" style="display: none;">
-                        <a :href="downloadLink" target="_blank" class="w-full py-3 px-4 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-sm">
+                    <!-- Tombol Lanjutkan Akses (Selalu Tampil, Disabled saat Countdown) -->
+                    <div>
+                        <a :href="timeLeft <= 0 ? downloadLink : '#'"
+                           @click="if(timeLeft > 0) $event.preventDefault()"
+                           :disabled="timeLeft > 0"
+                           :class="timeLeft > 0 ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed opacity-75' : 'bg-green-600 hover:bg-green-700 text-white cursor-pointer'"
+                           class="w-full py-3 px-4 rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-sm" target="_blank">
                             <span class="icon-[heroicons--arrow-down-tray]"></span>
                             Lanjutkan Akses
                         </a>

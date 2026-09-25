@@ -16,11 +16,15 @@ saya mengetahui program ini pas lagi ngunjungin blog yang memasang fitur ini
 
 dia melakukan monetisasi konten dengan cara memberi paywall atau penghalang agar konten tidak terbaca secara utuh
 
-sayapun mengide untuk mencobanya juga dan ternyata lumayan mudah juga
+sayapun mengide untuk mencobanya juga dan ternyata lumayan mudah
 
-sempat curiga kenapa lama sekali diterimanya karena pengaturan pembayaran belum di-isi
+sempat curiga kenapa lama sekali diterimanya, mungkin karena pengaturan pembayaran belum di-isi
 
-setelah mengisi pengaturan pembayaran, satu hari setelahnya langsung diterima
+bergegaslah saya melengkapi data pembayaran dengan menggunakan akun jenius yang masih aktif 
+
+walaupun saldonya udah 0 semoga bisa.
+
+setelah mengisi data pembayaran, satu hari setelahnya langsung diterima
 
 seberpengaruh itu ternyata....
 
@@ -32,7 +36,7 @@ mulai dari merombak fitur paywall sampai memberi badge premium disetiap konten p
 
 perjuangan tidak berhenti disini...
 
-semoga web ini terus jalan dan menjadi sumber penghasilan...
+semoga web ini terus jalan dan bisa terus dibayar domainnya wakakaka...
 
 ...
 

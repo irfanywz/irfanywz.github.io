@@ -61,7 +61,7 @@
                             <button @click="activeTab = 'support'" 
                                 :class="activeTab === 'support' ? 'bg-indigo-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-gray-800 text-slate-700 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-gray-700'"
                                 class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all">
-                                <span class="icon-[ri--cup-line] w-4 h-4 text-red-400"></span>
+                                <span class="icon-[ri--heart-3-line] w-4 h-4 text-red-400"></span>
                                 <span>{{ with .Params.tabs }}{{ .tab_support }}{{ else }}Support{{ end }}</span>
                             </button>
 
@@ -107,7 +107,7 @@
                          style="display: none;">
                         <div class="max-w-xl mx-auto text-center">
                             <div class="inline-flex p-3 bg-red-50 dark:bg-red-950/40 text-red-500 rounded-2xl mb-4">
-                                <span class="icon-[ri--cup-line] w-8 h-8"></span>
+                                <span class="icon-[ri--heart-3-line] w-8 h-8"></span>
                             </div>
                             <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">
                                 {{ with .Params.support }}{{ .title }}{{ end }}
