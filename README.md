@@ -5,4 +5,6 @@ Situs personal yang dibuat menggunakan hugo
 
 ## Todo
 
+- lightbox
+
 halaman baru lagi, music > isinya cara bikin konten musik

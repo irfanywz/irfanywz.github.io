@@ -1,62 +1,50 @@
 /**
- * Standalone Wind Effect Script
- * Leaves blowing across the screen + fast wind streaks.
- * Style follows snow.js / hallowen.js conventions.
+ * Stardew Valley Fall Weather Effect (Wind & Leaves)
+ * Lightweight & Cozy Autumn Ambience
  */
 
 (function() {
     "use strict";
 
-    // --- Configuration (Adjust these values) ---
     const config = {
-        MAX_LEAVES: 10,               // Number of leaves on screen (more is heavier on CPU)
-        LEAF_EMOJIS: ['🍃', '🍂', '🌾'],
-        MIN_LEAF_SIZE_PX: 12,
-        MAX_LEAF_SIZE_PX: 26,
-        MAX_STREAKS: 6,               // Number of wind streak lines
-        MIN_STREAK_WIDTH_PX: 80,
-        MAX_STREAK_WIDTH_PX: 220,
-        WIND_SPEED: 2.5,              // Leaf base horizontal speed (higher = stronger wind)
-        STREAK_SPEED: 14,             // Streak speed (should be faster than leaves)
-        VERTICAL_WOBBLE: 18,          // Max vertical sine wobble amplitude in pixels
-        LEAF_OPACITY: 0.55,
-        STREAK_OPACITY_MAX: 0.35,
+        LEAF_COUNT: 1,
+        LEAF_EMOJIS: ['🍂', '🍁', '🍃'],
+        MIN_SIZE: 14,
+        MAX_SIZE: 24,
+        WIND_SPEED_X: 3.5,     // Kecepatan dorong angin ke kanan
+        FALL_SPEED_Y: 1.2,     // Kecepatan jatuh vertikal
+        STREAK_COUNT: 5,       // Jumlah garis angin cepat ala Stardew
     };
 
-    // --- Variables ---
-    const leaves = [];
+    const items = [];
     const streaks = [];
-    let animationFrameId = null;
 
-    // --- Helper Functions ---
     const random = (min, max) => Math.random() * (max - min) + min;
     const randomInt = (max) => Math.floor(Math.random() * max);
 
-    // Account for potential scrollbar width
-    const getViewportWidth = () => window.innerWidth - 15;
-    const getViewportHeight = () => window.innerHeight;
-
-    function injectBaseStyles() {
+    // --- Inject CSS Khusus ---
+    function injectStyles() {
+        if (document.getElementById('stardew-fall-style')) return;
         const style = document.createElement('style');
+        style.id = 'stardew-fall-style';
         style.textContent = `
-            .wind-leaf {
+            .sdv-leaf {
                 position: fixed;
                 top: 0;
                 left: 0;
-                opacity: ${config.LEAF_OPACITY};
+                opacity: 0.8;
                 pointer-events: none;
                 user-select: none;
                 z-index: 9999;
                 will-change: transform;
             }
-            .wind-streak {
+            .sdv-streak {
                 position: fixed;
                 top: 0;
                 left: 0;
-                height: 2px;
+                height: 1.5px;
                 border-radius: 999px;
-                background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.45) 50%, rgba(255,255,255,0) 100%);
-                filter: blur(1px);
+                background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0) 100%);
                 pointer-events: none;
                 z-index: 9998;
                 will-change: transform;
@@ -65,16 +53,11 @@
         document.head.appendChild(style);
     }
 
-    /**
-     * Creates a leaf element with randomized physics.
-     * `initial` = true scatters it across the screen (first load),
-     * otherwise it enters from the left edge.
-     */
-    function createLeaf(initial) {
-        const size = random(config.MIN_LEAF_SIZE_PX, config.MAX_LEAF_SIZE_PX);
-
+    // --- Buat Objek Daun Terbang Miring ---
+    function createLeaf(isInitial = false) {
+        const size = random(config.MIN_SIZE, config.MAX_SIZE);
         const el = document.createElement('span');
-        el.className = 'wind-leaf';
+        el.className = 'sdv-leaf';
         el.textContent = config.LEAF_EMOJIS[randomInt(config.LEAF_EMOJIS.length)];
         el.style.fontSize = `${size}px`;
         document.body.appendChild(el);
@@ -82,96 +65,87 @@
         return {
             el: el,
             size: size,
-            posx: initial ? random(-size, getViewportWidth()) : -size * 2,
-            posy: random(-40, getViewportHeight()),
+            x: isInitial ? random(0, window.innerWidth) : random(-100, -20),
+            y: isInitial ? random(0, window.innerHeight) : random(-50, 0),
+            speedX: config.WIND_SPEED_X * random(0.8, 1.4),
+            speedY: config.FALL_SPEED_Y * random(0.7, 1.3),
             rotation: random(0, 360),
-            spin: random(0.5, 3) * (Math.random() > 0.5 ? 1 : -1), // deg/frame, either direction
-            crds: random(0, Math.PI * 2),
-            wob_speed: random(0.01, 0.04),
-            speed: config.WIND_SPEED * random(0.7, 1.4),
+            spin: random(1, 3) * (Math.random() > 0.5 ? 1 : -1),
+            waveAngle: random(0, Math.PI * 2),
+            waveSpeed: random(0.02, 0.05),
         };
     }
 
-    function createStreak(initial) {
-        const width = random(config.MIN_STREAK_WIDTH_PX, config.MAX_STREAK_WIDTH_PX);
-
+    // --- Buat Garis Angin Cepat (Wind Gust Streaks) ---
+    function createStreak(isInitial = false) {
+        const width = random(100, 250);
         const el = document.createElement('div');
-        el.className = 'wind-streak';
+        el.className = 'sdv-streak';
         el.style.width = `${width}px`;
-        el.style.opacity = random(0.15, config.STREAK_OPACITY_MAX).toFixed(2);
         document.body.appendChild(el);
 
         return {
             el: el,
             width: width,
-            posx: initial ? random(-width, getViewportWidth()) : -width,
-            posy: random(0, getViewportHeight()),
-            crds: random(0, Math.PI * 2),
-            wob_speed: random(0.02, 0.05),
-            wobble_amp: random(4, 14),
-            speed: config.STREAK_SPEED * random(0.8, 1.5),
+            x: isInitial ? random(0, window.innerWidth) : -width,
+            y: random(0, window.innerHeight),
+            speed: config.WIND_SPEED_X * random(3.5, 5.5), // Jauh lebih cepat dari daun
+            opacity: random(0.1, 0.3),
         };
     }
 
-    /**
-     * Animation loop using requestAnimationFrame.
-     */
-    function moveWindItems() {
-        const vw = getViewportWidth();
-        const vh = getViewportHeight();
+    // --- Loop Animasi Utama ---
+    function animateWeather() {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
 
-        for (const leaf of leaves) {
-            leaf.crds += leaf.wob_speed;
-            leaf.posx += leaf.speed;
+        // Update Daun
+        for (const leaf of items) {
+            leaf.waveAngle += leaf.waveSpeed;
+            // Angin meniup ke kanan sambil daunnya berayun naik-turun tipis
+            leaf.x += leaf.speedX + Math.sin(leaf.waveAngle) * 0.8;
+            leaf.y += leaf.speedY + Math.cos(leaf.waveAngle) * 0.5;
             leaf.rotation += leaf.spin;
 
-            const newY = leaf.posy + Math.sin(leaf.crds) * config.VERTICAL_WOBBLE;
+            leaf.el.style.transform = `translate3d(${leaf.x}px, ${leaf.y}px, 0) rotate(${leaf.rotation}deg)`;
 
-            leaf.el.style.transform =
-                `translate(${leaf.posx}px, ${newY}px) rotate(${leaf.rotation}deg)`;
-
-            // Reset once fully off-screen to the right (or wobbled out of bounds)
-            if (leaf.posx > vw + leaf.size || newY < -80 || newY > vh + 80) {
-                leaf.posx = -leaf.size * 2;
-                leaf.posy = random(-40, vh);
+            // Kalau keluar layar (kanan atau bawah), reset ke kiri/atas
+            if (leaf.x > vw + 50 || leaf.y > vh + 50) {
+                leaf.x = random(-100, -20);
+                leaf.y = random(-50, 0);
             }
         }
 
+        // Update Garis Angin
         for (const s of streaks) {
-            s.crds += s.wob_speed;
-            s.posx += s.speed;
+            s.x += s.speed;
+            s.el.style.transform = `translate3d(${s.x}px, ${s.y}px, 0)`;
+            s.el.style.opacity = s.opacity;
 
-            const newY = s.posy + Math.sin(s.crds) * s.wobble_amp;
-            const stretch = 1 + Math.sin(s.crds * 3) * 0.15; // subtle gust pulse
-
-            s.el.style.transform = `translate(${s.posx}px, ${newY}px) scaleX(${stretch})`;
-
-            if (s.posx > vw + s.width) {
-                s.posx = -s.width;
-                s.posy = random(0, vh);
-                s.el.style.opacity = random(0.15, config.STREAK_OPACITY_MAX).toFixed(2);
+            if (s.x > vw + s.width) {
+                s.x = -s.width;
+                s.y = random(0, vh);
             }
         }
 
-        animationFrameId = requestAnimationFrame(moveWindItems);
+        requestAnimationFrame(animateWeather);
     }
 
-    // --- Initialization ---
-
-    function initialize() {
-        // Respect users who prefer reduced motion
-        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            return;
+    // --- Inisialisasi ---
+    function init() {
+        injectStyles();
+        for (let i = 0; i < config.LEAF_COUNT; i++) {
+            items.push(createLeaf(true));
         }
-        if (document.body) {
-            injectBaseStyles();
-            for (let i = 0; i < config.MAX_LEAVES; i++) leaves.push(createLeaf(true));
-            for (let i = 0; i < config.MAX_STREAKS; i++) streaks.push(createStreak(true));
-            moveWindItems();
-        } else {
-            document.addEventListener('DOMContentLoaded', initialize);
+        for (let i = 0; i < config.STREAK_COUNT; i++) {
+            streaks.push(createStreak(true));
         }
+        animateWeather();
     }
 
-    initialize();
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
 })();

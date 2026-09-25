@@ -1,15 +1,17 @@
+// assets/js/nav-widget.js
+
 function updateNavClock() {
     const timeEl = document.getElementById('nav-time');
     const dateEl = document.getElementById('nav-date');
     const greetEl = document.getElementById('nav-greeting');
     
+    if (!timeEl || !dateEl || !greetEl) return;
+    
     const now = new Date();
     const hours = now.getHours();
 
-    // Format waktu Indonesia 24 jam
     timeEl.innerText = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false }).replace(/\./g, ':');
     
-    // Format tanggal Indonesia
     dateEl.innerText = now.toLocaleDateString('id-ID', { 
         weekday: 'short', 
         day: 'numeric', 
@@ -17,7 +19,6 @@ function updateNavClock() {
         year: 'numeric' 
     });
 
-    // Greeting berdasarkan waktu
     let greeting = "HALO";
     if (hours >= 5 && hours < 11) greeting = "PAGI";
     else if (hours >= 11 && hours < 15) greeting = "SIANG";
@@ -32,15 +33,14 @@ async function updateWeather() {
     const tempEl = document.getElementById('weather-temp');
     const iconEl = document.getElementById('weather-icon');
 
-    // 1. Cek data di LocalStorage
+    if (!weatherContainer || !tempEl || !iconEl) return;
+
     const cachedWeather = localStorage.getItem('weatherData');
-    const cacheExpiry = 30 * 60 * 1000; // 30 menit dalam milidetik
+    const cacheExpiry = 30 * 60 * 1000; 
     const now = new Date().getTime();
 
     if (cachedWeather) {
         const { data, timestamp } = JSON.parse(cachedWeather);
-        
-        // Jika data belum kadaluwarsa (kurang dari 30 menit), gunakan cache
         if (now - timestamp < cacheExpiry) {
             console.log("Menggunakan data cuaca dari cache");
             displayWeather(data, tempEl, iconEl, weatherContainer);
@@ -49,7 +49,6 @@ async function updateWeather() {
     }
 
     try {
-        console.log("Mengambil data cuaca baru dari API...");
         const lat = -6.455069401623014; 
         const lon = 106.85066008971673;
 
@@ -57,7 +56,6 @@ async function updateWeather() {
         const data = await response.json();
         const weather = data.current_weather;
 
-        // 2. Simpan hasil ke LocalStorage dengan timestamp
         localStorage.setItem('weatherData', JSON.stringify({
             data: weather,
             timestamp: now
@@ -69,7 +67,6 @@ async function updateWeather() {
     }
 }
 
-// Fungsi pembantu untuk update UI agar kode tidak duplikat
 function displayWeather(weather, tempEl, iconEl, container) {
     const code = weather.weathercode;
     let icon = "☀️"; 
@@ -84,16 +81,20 @@ function displayWeather(weather, tempEl, iconEl, container) {
     container.classList.remove('hidden');
 }
 
+// Inisialisasi menggunakan Defer.dom saat elemen widget navigasi / jam / cuaca masuk ke view atau diinteraksi
 document.addEventListener('DOMContentLoaded', function() {
-    // Jalankan jam setiap menit
-    setInterval(updateNavClock, 60000);
-    updateNavClock();
-    
-    // Jalankan cuaca (Initial load & setiap 30 menit)
-    updateWeather();
-    setInterval(updateWeather, 1800000);
-    
-    // Integrasi dengan Alpine.js untuk memastikan waktu update saat menu dibuka
+    // Jalankan jam & cuaca pas elemen #nav-time atau #nav-weather masuk viewport pakai Defer.dom
+    Defer.dom('#nav-time, #nav-weather', 0, 'widget-triggered', function(node) {
+        updateNavClock();
+        updateWeather();
+
+        // Interval per menit untuk jam dan per 30 menit untuk cuaca setelah elemen aktif
+        setInterval(updateNavClock, 60000);
+        setInterval(updateWeather, 1800000);
+    }, { rootMargin: '200px' });
+
+
+    // Integrasi dengan Alpine.js
     document.addEventListener('alpine:init', () => {
         Alpine.effect(() => {
             if (Alpine.store('nav') && Alpine.store('nav').isOpen) {
