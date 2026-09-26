@@ -31,17 +31,17 @@
 
                                 {{ if $resourceImg }}
                                     {{ $thumb := $resourceImg.Resize "1000x avif" }}
-                                    <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                    <img data-src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $item.Title }}" class="lazyload w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                                     {{ $hasImage = true }}
                                 {{ else if $globalImg }}
                                     {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
-                                    <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                    <img data-src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $item.Title }}" class="lazyload w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                                     {{ $hasImage = true }}
                                 {{ else if (fileExists (printf "static/%s" $item.Params.image)) }}
-                                    <img src="{{ $item.Params.image | relURL }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                    <img data-src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" src="{{ $item.Params.image | relURL }}" alt="{{ $item.Title }}" class="lazyload w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                                     {{ $hasImage = true }}
                                 {{ else if (strings.HasPrefix $item.Params.image "http") }}
-                                    <img src="{{ $item.Params.image }}" alt="{{ $item.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                    <img data-src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" src="{{ $item.Params.image }}" alt="{{ $item.Title }}" class="lazyload w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                                     {{ $hasImage = true }}
                                 {{ end }}
                             {{ end }}

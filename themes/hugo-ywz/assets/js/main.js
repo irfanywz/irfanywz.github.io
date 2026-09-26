@@ -18,3 +18,10 @@ import './alpine-store.js'
 import './code.js'
 
 Alpine.start()
+
+Defer.dom('.lazyload', 0, 'loaded', function(node) {
+    if (node.dataset.src) {
+        node.src = node.dataset.src;
+        node.removeAttribute('data-src');
+    }
+}, { rootMargin: '200px' });

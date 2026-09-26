@@ -3,9 +3,9 @@
     <div class="relative inline-block mb-4">
         <div class="w-24 h-24 rounded-full border-4 border-white dark:border-gray-700 shadow-lg overflow-hidden group">
             <img 
-                src="/{{ .Site.Params.Avatar | safeURL }}" 
+                src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" data-src="/{{ .Site.Params.Avatar | safeURL }}" 
                 alt="{{ .Site.Title }}" 
-                class="w-full h-full object-cover"
+                class="lazyload w-full h-full object-cover"
             >
         </div>
         <span class="absolute bottom-1 right-1 w-4 h-4 bg-green-500 border-2 border-white dark:border-gray-700 rounded-full animate-pulse"></span>

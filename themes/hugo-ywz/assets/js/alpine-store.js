@@ -137,7 +137,7 @@ document.addEventListener('alpine:init', () => {
             window.googleTranslateElementInit = () => {
                 new google.translate.TranslateElement({
                     pageLanguage: 'id',
-                    includedLanguages: 'en',
+                    includedLanguages: 'id,en,zh-CN,ja,ru,ar,ko',
                     autoDisplay: false,
                     layout: google.translate.TranslateElement.InlineLayout.SIMPLE
                 }, 'google_translate_element');

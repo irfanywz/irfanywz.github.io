@@ -7,6 +7,6 @@
      data-alt="{{ $alt }}" 
      data-group="{{ $group }}"
      x-data @click="$store.lightbox.open('{{ $src }}', '{{ $alt }}', '', '{{ $group }}')">
-    <img src="{{ $src }}" alt="{{ $alt }}" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" style="margin:0">
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" data-src="{{ $src }}" alt="{{ $alt }}" class="lazyload w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" style="margin:0">
     <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
 </div>

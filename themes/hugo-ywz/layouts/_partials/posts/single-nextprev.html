@@ -20,28 +20,28 @@
                         {{ if $resourceImg }}
                             {{ $hasImage = true }}
                             {{ if eq $resourceImg.MediaType.SubType "svg" }}
-                                <img src="{{ $resourceImg.RelPermalink }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" data-src="{{ $resourceImg.RelPermalink }}" alt="{{ $prev.Title }}" class="lazyload w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             {{ else }}
                                 {{ $thumb := $resourceImg.Resize "1000x avif" }}
-                                <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" data-src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ $prev.Title }}" class="lazyload w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             {{ end }}
 
                         {{ else if $globalImg }}
                             {{ $hasImage = true }}
                             {{ if eq $globalImg.MediaType.SubType "svg" }}
-                                <img src="{{ $globalImg.RelPermalink }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" data-src="{{ $globalImg.RelPermalink }}" alt="{{ $prev.Title }}" class="lazyload w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             {{ else }}
                                 {{ $thumbGlobal := $globalImg.Resize "1000x avif" }}
-                                <img src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" data-src="{{ $thumbGlobal.RelPermalink }}" width="{{ $thumbGlobal.Width }}" height="{{ $thumbGlobal.Height }}" alt="{{ $prev.Title }}" class="lazyload w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             {{ end }}
 
                         {{ else if (fileExists (printf "static/%s" $cleanPath)) }}
                             {{ $hasImage = true }}
-                            <img src="{{ $imgPath | relURL }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" data-src="{{ $imgPath | relURL }}" alt="{{ $prev.Title }}" class="lazyload w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
 
                         {{ else if (strings.HasPrefix $imgPath "http") }}
                             {{ $hasImage = true }}
-                            <img src="{{ $imgPath }}" alt="{{ $prev.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" data-src="{{ $imgPath }}" alt="{{ $prev.Title }}" class="lazyload w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                         {{ end }}
                     {{ end }}
 
@@ -105,28 +105,28 @@
                         {{ if $resourceImgNext }}
                             {{ $hasImageNext = true }}
                             {{ if eq $resourceImgNext.MediaType.SubType "svg" }}
-                                <img src="{{ $resourceImgNext.RelPermalink }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" data-src="{{ $resourceImgNext.RelPermalink }}" alt="{{ $next.Title }}" class="lazyload w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             {{ else }}
                                 {{ $thumbNext := $resourceImgNext.Resize "1000x avif" }}
-                                <img src="{{ $thumbNext.RelPermalink }}" width="{{ $thumbNext.Width }}" height="{{ $thumbNext.Height }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" data-src="{{ $thumbNext.RelPermalink }}" width="{{ $thumbNext.Width }}" height="{{ $thumbNext.Height }}" alt="{{ $next.Title }}" class="lazyload w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             {{ end }}
 
                         {{ else if $globalImgNext }}
                             {{ $hasImageNext = true }}
                             {{ if eq $globalImgNext.MediaType.SubType "svg" }}
-                                <img src="{{ $globalImgNext.RelPermalink }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" data-src="{{ $globalImgNext.RelPermalink }}" alt="{{ $next.Title }}" class="lazyload w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             {{ else }}
                                 {{ $thumbGlobalNext := $globalImgNext.Resize "1000x avif" }}
-                                <img src="{{ $thumbGlobalNext.RelPermalink }}" width="{{ $thumbGlobalNext.Width }}" height="{{ $thumbGlobalNext.Height }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" data-src="{{ $thumbGlobalNext.RelPermalink }}" width="{{ $thumbGlobalNext.Width }}" height="{{ $thumbGlobalNext.Height }}" alt="{{ $next.Title }}" class="lazyload w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                             {{ end }}
 
                         {{ else if (fileExists (printf "static/%s" $cleanPathNext)) }}
                             {{ $hasImageNext = true }}
-                            <img src="{{ $imgPathNext | relURL }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" data-src="{{ $imgPathNext | relURL }}" alt="{{ $next.Title }}" class="lazyload w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
 
                         {{ else if (strings.HasPrefix $imgPathNext "http") }}
                             {{ $hasImageNext = true }}
-                            <img src="{{ $imgPathNext }}" alt="{{ $next.Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" data-src="{{ $imgPathNext }}" alt="{{ $next.Title }}" class="lazyload w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                         {{ end }}
                     {{ end }}
 

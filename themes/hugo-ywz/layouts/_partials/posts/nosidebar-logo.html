@@ -16,7 +16,7 @@
             {{ $processed := $img.Process "resize 400x avif" }}
             
             <a href="https://id.seedbacklink.com/" target="_blank" rel="noopener sponsored" class="inline-flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity">
-                <img decoding="async" title="seedbacklink" src="{{ $processed.RelPermalink }}" alt="seedbacklink" width="{{ $processed.Width }}" height="{{ $processed.Height }}" class="h-16 sm:h-16 w-auto object-contain">
+                <img decoding="async" title="seedbacklink" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" data-src="{{ $processed.RelPermalink }}" alt="seedbacklink" width="{{ $processed.Width }}" height="{{ $processed.Height }}" class="lazyload h-16 sm:h-16 w-auto object-contain">
             </a>
         {{ end }}
 

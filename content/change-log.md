@@ -4,6 +4,15 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.8.0"
+    date: "26 September 2026"
+    changes:
+      - tag: "Pembaruan"
+        description: "memakai defer js untuk meload javascript, gambar lazyload, banyak perubahan pada kode"      
+      - tag: "Perbaikan"
+        description: "25 - menerapkan js defer kesemua javascript"
+      - tag: "Perbaikan"
+        description: "26 - menerapkan js defer kesemua img"
   - version: "2.7.2"
     date: "23 September 2026"
     changes:

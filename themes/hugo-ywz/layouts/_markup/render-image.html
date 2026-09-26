@@ -4,7 +4,7 @@
 {{ $altText := .PlainText }}
 {{ $title := .Title }}
     
-<img src="{{ $destination }}" class="cursor-pointer"
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" data-src="{{ $destination }}" class="lazyload cursor-pointer"
    x-data 
    @click="$store.lightbox.open('{{ $destination }}', '{{ $title }}', '{{ $altText }}')"
    alt="{{ $altText }}" 

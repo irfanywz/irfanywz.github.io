@@ -20,9 +20,9 @@
     <!-- Thumbnail -->
     <a href="{{ .RelPermalink }}" class="block w-24 h-24 sm:w-full sm:h-auto sm:aspect-[16/9] rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900 sm:mb-3 flex-shrink-0 relative">
         {{ if $thumb }}
-            <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ .Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" data-src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="{{ .Title }}" class="lazyload w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
         {{ else if $image }}
-            <img src="{{ $image }}" alt="{{ .Title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" data-src="{{ $image }}" alt="{{ .Title }}" class="lazyload w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
         {{ else }}
             <div class="w-full h-full flex items-center justify-center text-gray-400 bg-gray-50 dark:bg-gray-800/50">
                 <span class="icon-[ri--image-line] w-7 h-7 sm:w-9 sm:h-9 opacity-40"></span>

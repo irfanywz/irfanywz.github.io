@@ -57,6 +57,16 @@ html {
   }
 }
 
+/* Pastikan gambar punya state awal transparan atau ada efek loading */
+.lazyload {
+    opacity: 0;
+}
+
+/* Pas udah ke-load sama Defer */
+.lazyload:not([data-src]) {
+    opacity: 1;
+}
+
 /* Mode Terang (Default) */
 #disqus_wrapper {
   background-color: #ffffff !important;

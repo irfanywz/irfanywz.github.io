@@ -55,6 +55,13 @@
                     // Update URL browser history tanpa reload
                     history.pushState(null, '', targetUrl);
 
+                    Defer.dom('.lazyload', 0, 'loaded', function(node) {
+                        if (node.dataset.src) {
+                            node.src = node.dataset.src;
+                            node.removeAttribute('data-src');
+                        }
+                    }, { rootMargin: '200px' });
+
                 } catch (error) {
                     console.error('Error loading more content:', error);
                 } finally {
