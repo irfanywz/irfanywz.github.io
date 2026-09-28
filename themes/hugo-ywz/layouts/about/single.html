@@ -5,16 +5,28 @@
 <main class="flex-grow bg-slate-50/60 dark:bg-gray-950 transition-colors duration-300" 
     x-data="{ 
         activeTab: 'kenalan',
+        scrollToSection() {
+            this.$nextTick(() => {
+                const el = document.getElementById('support-section');
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        },
         init() {
-            // Cek hash URL saat halaman dimuat
             const hash = window.location.hash.replace('#', '');
             if (['kenalan', 'support', 'portofolio'].includes(hash)) {
                 this.activeTab = hash;
+                if (hash === 'support') {
+                    this.scrollToSection();
+                }
             }
             
-            // Update hash di URL saat tab diklik
             this.$watch('activeTab', value => {
                 history.replaceState(null, null, '#' + value);
+                if (value === 'support') {
+                    this.scrollToSection();
+                }
             });
         }
     }">
@@ -24,7 +36,6 @@
 
         <div class="container max-w-4xl mx-auto px-4 relative z-10">
             
-            <!-- SINGLE UNIFIED CARD (HEADER + TAB CONTENT NYATU) -->
             <div class="bg-white dark:bg-gray-900 rounded-3xl border border-slate-200/80 dark:border-gray-800 shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden">
                 
                 <!-- 1. HERO HEADER AREA -->
@@ -49,7 +60,6 @@
                         <!-- Navigasi Tab -->
                         <div class="flex flex-wrap justify-center md:justify-start items-center gap-2 border-t border-slate-100 dark:border-gray-800 pt-4">
                             
-                            <!-- Tab Kenalan -->
                             <button @click="activeTab = 'kenalan'" 
                                 :class="activeTab === 'kenalan' ? 'bg-indigo-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-gray-800 text-slate-700 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-gray-700'"
                                 class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all">
@@ -57,7 +67,6 @@
                                 <span>{{ with .Params.tabs }}{{ .tab_kenalan }}{{ else }}Kenalan{{ end }}</span>
                             </button>
 
-                            <!-- Tab Support -->
                             <button @click="activeTab = 'support'" 
                                 :class="activeTab === 'support' ? 'bg-indigo-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-gray-800 text-slate-700 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-gray-700'"
                                 class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all">
@@ -65,7 +74,6 @@
                                 <span>{{ with .Params.tabs }}{{ .tab_support }}{{ else }}Support{{ end }}</span>
                             </button>
 
-                            <!-- Tab Portofolio -->
                             <button @click="activeTab = 'portofolio'" 
                                 :class="activeTab === 'portofolio' ? 'bg-indigo-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-gray-800 text-slate-700 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-gray-700'"
                                 class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all">
@@ -78,281 +86,12 @@
 
                 </div>
 
-                <!-- 2. AREA KONTEN TAB (NYATU DENGAN HEADER BORDER-T) -->
+                <!-- 2. AREA KONTEN TAB (PARTIALS) -->
                 <div class="border-t border-slate-100 dark:border-gray-800">
                     
-                    <!-- 1. TAB KENALAN -->
-                    <div x-show="activeTab === 'kenalan'" 
-                         class="p-6 sm:p-10" 
-                         style="display: none;">
-                        <div class="prose prose-slate dark:prose-invert max-w-none leading-relaxed">
-                            {{ .Content }}
-                        </div>
-                        
-                        <div class="mt-8 pt-6 border-t border-slate-100 dark:border-gray-800 flex items-center justify-between flex-wrap gap-4">
-                            <span class="text-sm text-slate-500 dark:text-gray-400">Ingin sekadar ngobrol?</span>
-                            {{ with .Site.GetPage "/contact.md" }}
-                                {{ $tele := .Params.telegram_link }}
-                                <a href="{{ $tele }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-all shadow-sm">
-                                    <span class="icon-[ri--telegram-line] w-4 h-4"></span>
-                                    <span>Sapa via Telegram</span>
-                                </a>
-                            {{ end }}
-                        </div>
-                    </div>
-
-                    <!-- 2. TAB SUPPORT -->
-                    <div x-show="activeTab === 'support'" 
-                         class="p-6 sm:p-10" 
-                         style="display: none;">
-                        <div class="max-w-xl mx-auto text-center">
-                            <div class="inline-flex p-3 bg-red-50 dark:bg-red-950/40 text-red-500 rounded-2xl mb-4">
-                                <span class="icon-[ri--heart-3-line] w-8 h-8"></span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">
-                                {{ with .Params.support }}{{ .title }}{{ end }}
-                            </h3>
-                            <p class="text-sm text-slate-600 dark:text-gray-400 mb-6">
-                                {{ with .Params.support }}{{ .description }}{{ end }}
-                            </p>
-
-                            <!-- Kotak QRIS -->
-                            <div class="p-4 bg-slate-50 dark:bg-gray-800/50 rounded-2xl border border-slate-200 dark:border-gray-700 inline-block shadow-inner mb-8">
-                                <img src="{{ with .Params.support }}{{ .qr_image }}{{ end }}" 
-                                     class="w-72 h-72 sm:w-80 sm:h-80 mx-auto rounded-xl object-contain bg-white p-2 cursor-pointer hover:opacity-90 transition-opacity"
-                                     x-data 
-                                     @click="$store.lightbox.open('{{ with .Params.support }}{{ .qr_image }}{{ end }}', 'QRIS', 'QRIS Support')"
-                                     alt="QRIS Donasi" 
-                                     title="Klik untuk memperbesar"
-                                     loading="lazy">
-                            </div>
-
-                            <p class="text-xs text-slate-400 dark:text-gray-500 mb-10">
-                                {{ with .Params.support }}{{ .footer_text }}{{ end }}
-                            </p>
-                        </div>
-
-                        <!-- LIST ORANG BAIK / SUPPORTERS DENGAN NOMINAL -->
-                        {{ with .Params.supporters }}
-                        <div class="mt-8 pt-8 border-t border-slate-200 dark:border-gray-800 text-left">
-                            <div class="flex items-center justify-between mb-4">
-                                <h4 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                    <span class="icon-[ri--heart-3-line] text-red-500"></span>
-                                    Terima Kasih Orang Baik ❤️
-                                </h4>
-                            </div>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                {{ range . }}
-                                <div class="bg-slate-50 dark:bg-gray-800/40 p-3.5 rounded-2xl border border-slate-200/80 dark:border-gray-700/60 flex items-start gap-3">
-                                    <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-sm flex-shrink-0">
-                                        {{ range (first 1 (split .nama "")) }}{{ . | upper }}{{ end }}
-                                    </div>
-                                    <div class="flex-grow min-w-0">
-                                        <div class="flex items-center justify-between gap-2">
-                                            <h5 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate">
-                                                {{ if .link }}
-                                                <a href="{{ .link }}" target="_blank" rel="noopener nofollow" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors inline-flex items-center gap-1">
-                                                    {{ .nama }}
-                                                    <span class="icon-[ri--external-link-line] w-3 h-3 text-slate-400"></span>
-                                                </a>
-                                                {{ else }}
-                                                    {{ .nama }}
-                                                {{ end }}
-                                            </h5>
-                                            {{ with .nominal }}
-                                            <span class="bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200/60 dark:border-emerald-800/50 text-[10px] font-semibold px-2 py-0.5 rounded-full shrink-0">
-                                                Rp {{ . }}
-                                            </span>
-                                            {{ end }}
-                                        </div>
-                                        {{ with .pesan }}
-                                        <p class="text-xs text-slate-600 dark:text-gray-400 mt-1 italic">
-                                            "{{ . }}"
-                                        </p>
-                                        {{ end }}
-                                    </div>
-                                </div>
-                                {{ end }}
-                            </div>
-                        </div>
-                        {{ end }}
-                    </div>
-
-                    <!-- 3. TAB PORTOFOLIO -->
-                    <div x-show="activeTab === 'portofolio'" 
-                         x-data="{ 
-                            selectedFilter: 'all',
-                            swiper: null,
-                            initSwiper() {
-                                if (!this.swiper) {
-                                    this.swiper = new Swiper(this.$refs.portfolioSwiper, {
-                                        modules: window.SwiperModules,
-                                        slidesPerView: 'auto',
-                                        spaceBetween: 6,
-                                        freeMode: true,
-                                        grabCursor: true,
-                                        mousewheel: {
-                                            forceToAxis: true,
-                                        },
-                                    });
-                                }
-                            }
-                         }" 
-                         x-init="$watch('activeTab', value => { if(value === 'portofolio') { $nextTick(() => { this.initSwiper() }) } })"
-                         class="p-6 sm:p-10" 
-                         style="display: none;">
-                        
-                        <!-- Header & Filter Portofolio -->
-                        <div class="mb-6 space-y-4">
-                            <div>
-                                <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                    <span class="icon-[ri--briefcase-line] text-cyan-500"></span>
-                                    {{ .Params.portofolio_title | default "Portofolio Unggulan" }}
-                                </h3>
-                                <p class="text-xs sm:text-sm text-slate-600 dark:text-gray-400 mt-1">
-                                    {{ .Params.portofolio_desc }}
-                                </p>
-                            </div>
-
-                            <!-- Filter Kategori Menggunakan Swiper.js -->
-                            <div class="bg-slate-100 dark:bg-gray-800/80 p-1.5 rounded-2xl border border-slate-200/60 dark:border-gray-700/50 relative"
-                                 x-data
-                                 x-init="$nextTick(() => { 
-                                    new Swiper($refs.portfolioSwiper, {
-                                        modules: window.SwiperModules,
-                                        slidesPerView: 'auto',
-                                        spaceBetween: 6,
-                                        freeMode: true,
-                                        grabCursor: true,
-                                        mousewheel: { forceToAxis: true },
-                                    });
-                                 })">
-                                
-                                <div x-ref="portfolioSwiper" class="swiper overflow-hidden">
-                                    <div class="swiper-wrapper items-center">
-                                        
-                                        <!-- Tombol Default "Semua" -->
-                                        <div class="swiper-slide !w-auto">
-                                            <button @click="selectedFilter = 'all'" 
-                                                    :class="selectedFilter === 'all' ? 'bg-white dark:bg-gray-900 text-cyan-600 dark:text-cyan-400 shadow-sm' : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'"
-                                                    class="px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all block">
-                                                Semua
-                                            </button>
-                                        </div>
-
-                                        <!-- Looping Kategori dari Front Matter about.md -->
-                                        {{ range .Params.portfolio_categories }}
-                                        <div class="swiper-slide !w-auto">
-                                            <button @click="selectedFilter = '{{ .id }}'" 
-                                                    :class="selectedFilter === '{{ .id }}' ? 'bg-white dark:bg-gray-900 text-cyan-600 dark:text-cyan-400 shadow-sm' : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'"
-                                                    class="px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5">
-                                                {{ if .icon }}
-                                                <span class="{{ .icon }}"></span>
-                                                {{ end }}
-                                                <span>{{ .label }}</span>
-                                            </button>
-                                        </div>
-                                        {{ end }}
-
-                                        <!-- Tombol Filter Arsip -->
-                                        <div class="swiper-slide !w-auto">
-                                            <button @click="selectedFilter = 'archived'" 
-                                                    :class="selectedFilter === 'archived' ? 'bg-amber-500 text-white shadow-sm' : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'"
-                                                    class="px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 border-l border-slate-200 dark:border-gray-700 pl-3">
-                                                <span class="icon-[ri--archive-line]"></span>
-                                                <span>Arsip Lama</span>
-                                            </button>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- List Vertikal Portofolio (Mengambil dari about.md) -->
-                        <div class="flex flex-col gap-3">
-                            {{ range sort .Params.portfolio_items "tahun" "desc" }}
-                            <a href="{{ .link | relURL }}" 
-                               x-show="
-                                    (selectedFilter === 'archived' && {{ if .archived }}true{{ else }}false{{ end }}) || 
-                                    (selectedFilter !== 'archived' && !{{ if .archived }}true{{ else }}false{{ end }} && (selectedFilter === 'all' || selectedFilter === '{{ .kategori }}'))
-                               "
-                               target="_blank" rel="noopener" 
-                               class="group flex flex-row items-center gap-3 sm:gap-4 bg-slate-50 dark:bg-gray-800/40 p-2.5 sm:p-4 rounded-2xl border border-slate-200/80 dark:border-gray-700/60 hover:border-cyan-500/50 dark:hover:border-cyan-500/40 hover:shadow-md transition-all duration-300">
-                                
-                                <!-- Thumbnail Kecil -->
-                                <figure class="relative w-24 h-20 sm:w-36 sm:h-24 flex-shrink-0 rounded-xl overflow-hidden bg-slate-200 dark:bg-gray-800">
-                                    {{ $imgResource := "" }}
-                                    {{ $imgUrl := "" }}
-                                    
-                                    {{ with .gambar }}
-                                        {{ if or (hasPrefix . "http://") (hasPrefix . "https://") }}
-                                            {{ $imgUrl = . }}
-                                        {{ else }}
-                                            {{ $imgResource = $.Page.Resources.GetMatch . }}
-                                        {{ end }}
-                                    {{ end }}
-
-                                    {{ if $imgUrl }}
-                                        <!-- Jika gambar berupa URL eksternal -->
-                                        <img src="{{ $imgUrl }}" 
-                                             alt="Preview {{ .nama }}" 
-                                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" 
-                                             loading="lazy">
-                                    {{ else if $imgResource }}
-                                        <!-- Jika gambar berupa asset lokal Hugo -->
-                                        <img src="{{ $imgResource.RelPermalink }}" 
-                                             alt="Preview {{ .nama }}" 
-                                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" 
-                                             loading="lazy">
-                                    {{ else }}
-                                        <!-- Fallback jika gambar kosong / tidak ketemu -->
-                                        <div class="w-full h-full bg-gradient-to-br from-indigo-50/50 via-gray-100 to-indigo-100/30 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950/30 flex flex-col items-center justify-center text-indigo-500/70 dark:text-indigo-400/50 group-hover:scale-105 transition-transform duration-300">
-                                            <span class="icon-[ri--article-line] w-6 h-6"></span>
-                                        </div>
-                                    {{ end }}
-                                </figure>
-                                
-                                <!-- Detail Konten -->
-                                <article class="flex-grow min-w-0">
-                                    <div class="flex items-start justify-between gap-2">
-                                        <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                                            <h4 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white group-hover:text-cyan-500 dark:group-hover:text-cyan-400 transition-colors truncate">
-                                                {{ .nama }}
-                                            </h4>
-                                            
-                                            {{ with .tahun }}
-                                            {{ $dateObj := time (printf "%s-01" .) }}
-                                            <span class="bg-slate-200 dark:bg-gray-700 text-slate-600 dark:text-gray-300 text-[10px] sm:text-[11px] font-medium px-1.5 py-0.5 rounded shrink-0">
-                                                {{ $dateObj | time.Format "Jan 2006" }}
-                                            </span>
-                                            {{ end }}
-                                        </div>
-                                        <span class="icon-[ri--arrow-right-up-line] w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 group-hover:text-cyan-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0"></span>
-                                    </div>
-
-                                    <p class="text-[11px] sm:text-sm text-slate-600 dark:text-gray-400 mt-0.5 sm:mt-1 line-clamp-2 leading-tight sm:leading-relaxed">
-                                        {{ .deskripsi }}
-                                    </p>
-
-                                    <!-- Tags / Tech Stack -->
-                                    {{ with .tags }}
-                                    <div class="flex flex-wrap gap-1 mt-2 sm:mt-3">
-                                        {{ range . }}
-                                        <span class="text-[9px] sm:text-[10px] font-medium px-1.5 py-0.5 rounded bg-slate-200/70 dark:bg-gray-700/60 text-slate-700 dark:text-gray-300">
-                                            {{ . }}
-                                        </span>
-                                        {{ end }}
-                                    </div>
-                                    {{ end }}
-                                </article>
-                            </a>
-                            {{ else }}
-                            <p class="text-sm text-slate-500 dark:text-gray-400 text-center py-8">Belum ada item portofolio yang ditampilkan.</p>
-                            {{ end }}
-                        </div>
-                    </div>
+                    {{ partial "about/tab-kenalan.html" . }}
+                    {{ partial "about/tab-support.html" . }}
+                    {{ partial "about/tab-portofolio.html" . }}
 
                 </div>
 

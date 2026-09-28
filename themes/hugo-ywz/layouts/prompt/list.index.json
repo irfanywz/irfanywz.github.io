@@ -1,0 +1,25 @@
+{
+  "section": {{ .Title | jsonify }},
+  "description": {{ .Description | jsonify }},
+  "categories": [
+    {{- $promptSection := .Site.GetPage "section" "prompt" -}}
+    {{- if $promptSection -}}
+      {{- $sections := $promptSection.Sections -}}
+      {{- range $index, $sec := $sections -}}
+      {
+        "category": {{ path.Base $sec.File.Dir | jsonify }},
+        "category_title": {{ $sec.Title | jsonify }},
+        "prompts": [
+          {{- range $pIndex, $page := $sec.RegularPages -}}
+          {
+            "title": {{ $page.Title | jsonify }},
+            "description": {{ $page.Description | jsonify }},
+            "json_url": {{ ($page.OutputFormats.Get "JSON").RelPermalink | jsonify }}
+          }{{ if lt (add $pIndex 1) (len $sec.RegularPages) }},{{ end }}
+          {{- end -}}
+        ]
+      }{{ if lt (add $index 1) (len $sections) }},{{ end }}
+      {{- end -}}
+    {{- end -}}
+  ]
+}

@@ -105,61 +105,125 @@ weight = 40
 # menu offcanvas
 # ======================
 
-# --- Menu yang Ingin Disembunyikan ke dalam Dropdown "Lainnya" ---
-
-[[menu.footer]]
-name = "Jurnal"
-url = "/journal/"
-pre = "icon-[ri--newspaper-line]"
-weight = 20
-[menu.footer.params]
-  color = "text-amber-500"
-  group = "dropdown"
-
-[[menu.footer]]
-name = "Playlist"
-url = "/music-playlist/"
-pre = "icon-[ri--music-2-line]"
-weight = 42
-[menu.footer.params]
-  color = "text-violet-500"
-  group = "dropdown"
-
-[[menu.footer]]
-name = "Kosa Kata"
-url = "/vocabulary/"
-pre = "icon-[ri--book-2-line]"
-weight = 85
-[menu.footer.params]
-  color = "text-emerald-500"
-  # group = "dropdown"
-
-[[menu.footer]]
-name = "Alat"
-url = "/tools/"
-pre = "icon-[ri--tools-line]"
-weight = 60
-[menu.footer.params]
-  color = "text-orange-500"
-  # group = "dropdown"
-
 [[menu.footer]]
 name = "Animasi"
 url = "/animasi/"
 pre = "icon-[ri--movie-line]"
-weight = 55
+weight = 10
 [menu.footer.params]
+  # group = "animasiz"
   color = "text-rose-500"
-  # group = "dropdown"
 
 [[menu.footer]]
-name = "Koleksi"
-url = "/collection/"
-pre = "icon-[ri--stack-line]"
+name = "Prompt"
+url = "/prompt/"
+pre = "icon-[ri--magic-line]"
+weight = 10
+[menu.footer.params]
+  color = "text-emerald-500"
+
+# [[menu.footer]]
+# name = "Musik"
+# url = "/musik/"
+# pre = "icon-[ri--music-2-line]"
+# weight = 20
+# [menu.footer.params]
+#   color = "text-emerald-500"
+
+# [[menu.footer]]
+# name = "Affiliate"
+# url = "/affiliate/"
+# pre = "icon-[ri--stack-line]"
+# weight = 30
+# [menu.footer.params]
+#   color = "text-blue-500"
+
+[[menu.footer]]
+name = "Alat"
+url = "/tools/"
+pre = "icon-[ri--wrench-line]"
 weight = 80
 [menu.footer.params]
+  color = "text-orange-500"
+
+# [[menu.footer]]
+# name = "Jurnal"
+# url = "/journal/"
+# pre = "icon-[ri--newspaper-line]"
+# weight = 100
+# [menu.footer.params]
+#   group = "personal"
+#   dropdown_title = "Personal" 
+#   dropdown_icon = "icon-[ri--user-heart-line]" 
+#   color = "text-amber-500"
+
+# [[menu.footer]]
+# name = "Playlist"
+# url = "/music-playlist/"
+# pre = "icon-[ri--music-2-line]"
+# weight = 101
+# [menu.footer.params]
+#   group = "personal"
+#   color = "text-violet-500"  
+
+
+# [[menu.footer]]
+# name = "Kosa Kata"
+# url = "/vocabulary/"
+# pre = "icon-[ri--book-2-line]"
+# weight = 85
+# [menu.footer.params]
+#   color = "text-emerald-500"
+
+# [[menu.footer]]
+# name = "Koleksi"
+# url = "/collection/"
+# pre = "icon-[ri--stack-line]"
+# weight = 80
+# [menu.footer.params]
+#   color = "text-blue-500"
+
+# menu offcanvas social
+# =======================
+# [[menu.social]]
+# name = "GitHub"
+# url = "https://github.com/usernamekamu"
+# pre = "icon-[ri--github-fill]"
+# weight = 1
+# [menu.social.params]
+#   color = "text-gray-900 dark:text-white"
+
+# [[menu.social]]
+# name = "Telegram"
+# url = "https://t.me/usernamekamu"
+# pre = "icon-[ri--telegram-fill]"
+# weight = 2
+# [menu.social.params]
+#   color = "text-sky-500"
+
+[[menu.social]]
+name = "Journal"
+url = "/journal"
+pre = "icon-[ri--newspaper-line]"
+weight = 3
+[menu.social.params]
   color = "text-blue-500"
-  # group = "dropdown"
+
+[[menu.social]]
+name = "Support"
+url = "/about/#support"
+pre = "icon-[ri--heart-3-line]"
+weight = 4
+[menu.social.params]
+  color = "text-rose-500"  
+
+# [[menu.social]]
+# name = "Email"
+# url = "mailto:email@kamu.com"
+# pre = "icon-[ri--mail-send-line]"
+# weight = 4
+# [menu.social.params]
+#   color = "text-amber-500"
 
 # menu bottom mobile
 # ======================

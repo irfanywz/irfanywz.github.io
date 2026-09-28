@@ -1,0 +1,154 @@
+<div x-show="activeTab === 'portofolio'" 
+     x-data="{ 
+        selectedFilter: 'all',
+        swiper: null,
+        initSwiper() {
+            if (!this.swiper) {
+                this.swiper = new Swiper(this.$refs.portfolioSwiper, {
+                    modules: window.SwiperModules,
+                    slidesPerView: 'auto',
+                    spaceBetween: 6,
+                    freeMode: true,
+                    grabCursor: true,
+                    mousewheel: {
+                        forceToAxis: true,
+                    },
+                });
+            }
+        }
+     }" 
+     x-init="$watch('activeTab', value => { if(value === 'portofolio') { $nextTick(() => { this.initSwiper() }) } })"
+     class="p-6 sm:p-10" 
+     style="display: none;">
+    
+    <!-- Header & Filter Portofolio -->
+    <div class="mb-6 space-y-4">
+        <div>
+            <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="icon-[ri--briefcase-line] text-cyan-500"></span>
+                {{ .Params.portofolio_title | default "Portofolio Unggulan" }}
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-gray-400 mt-1">
+                {{ .Params.portofolio_desc }}
+            </p>
+        </div>
+
+        <!-- Filter Kategori Menggunakan Swiper.js -->
+        <div class="bg-slate-100 dark:bg-gray-800/80 p-1.5 rounded-2xl border border-slate-200/60 dark:border-gray-700/50 relative"
+             x-data
+             x-init="$nextTick(() => { 
+                new Swiper($refs.portfolioSwiper, {
+                    modules: window.SwiperModules,
+                    slidesPerView: 'auto',
+                    spaceBetween: 6,
+                    freeMode: true,
+                    grabCursor: true,
+                    mousewheel: { forceToAxis: true },
+                });
+             })">
+            
+            <div x-ref="portfolioSwiper" class="swiper overflow-hidden">
+                <div class="swiper-wrapper items-center">
+                    
+                    <div class="swiper-slide !w-auto">
+                        <button @click="selectedFilter = 'all'" 
+                                :class="selectedFilter === 'all' ? 'bg-white dark:bg-gray-900 text-cyan-600 dark:text-cyan-400 shadow-sm' : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'"
+                                class="px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all block">
+                            Semua
+                        </button>
+                    </div>
+
+                    {{ range .Params.portfolio_categories }}
+                    <div class="swiper-slide !w-auto">
+                        <button @click="selectedFilter = '{{ .id }}'" 
+                                :class="selectedFilter === '{{ .id }}' ? 'bg-white dark:bg-gray-900 text-cyan-600 dark:text-cyan-400 shadow-sm' : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'"
+                                class="px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5">
+                            {{ if .icon }}<span class="{{ .icon }}"></span>{{ end }}
+                            <span>{{ .label }}</span>
+                        </button>
+                    </div>
+                    {{ end }}
+
+                    <div class="swiper-slide !w-auto">
+                        <button @click="selectedFilter = 'archived'" 
+                                :class="selectedFilter === 'archived' ? 'bg-amber-500 text-white shadow-sm' : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'"
+                                class="px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 border-l border-slate-200 dark:border-gray-700 pl-3">
+                            <span class="icon-[ri--archive-line]"></span>
+                            <span>Arsip Lama</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- List Vertikal Portofolio -->
+    <div class="flex flex-col gap-3">
+        {{ range sort .Params.portfolio_items "tahun" "desc" }}
+        <a href="{{ .link | relURL }}" 
+           x-show="
+                (selectedFilter === 'archived' && {{ if .archived }}true{{ else }}false{{ end }}) || 
+                (selectedFilter !== 'archived' && !{{ if .archived }}true{{ else }}false{{ end }} && (selectedFilter === 'all' || selectedFilter === '{{ .kategori }}'))
+           "
+           target="_blank" rel="noopener" 
+           class="group flex flex-row items-center gap-3 sm:gap-4 bg-slate-50 dark:bg-gray-800/40 p-2.5 sm:p-4 rounded-2xl border border-slate-200/80 dark:border-gray-700/60 hover:border-cyan-500/50 dark:hover:border-cyan-500/40 hover:shadow-md transition-all duration-300">
+            
+            <figure class="relative w-24 h-20 sm:w-36 sm:h-24 flex-shrink-0 rounded-xl overflow-hidden bg-slate-200 dark:bg-gray-800">
+                {{ $imgResource := "" }}
+                {{ $imgUrl := "" }}
+                {{ with .gambar }}
+                    {{ if or (hasPrefix . "http://") (hasPrefix . "https://") }}
+                        {{ $imgUrl = . }}
+                    {{ else }}
+                        {{ $imgResource = $.Page.Resources.GetMatch . }}
+                    {{ end }}
+                {{ end }}
+
+                {{ if $imgUrl }}
+                    <img src="{{ $imgUrl }}" alt="Preview {{ .nama }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" loading="lazy">
+                {{ else if $imgResource }}
+                    <img src="{{ $imgResource.RelPermalink }}" alt="Preview {{ .nama }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" loading="lazy">
+                {{ else }}
+                    <div class="w-full h-full bg-gradient-to-br from-indigo-50/50 via-gray-100 to-indigo-100/30 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950/30 flex flex-col items-center justify-center text-indigo-500/70 dark:text-indigo-400/50 group-hover:scale-105 transition-transform duration-300">
+                        <span class="icon-[ri--article-line] w-6 h-6"></span>
+                    </div>
+                {{ end }}
+            </figure>
+            
+            <article class="flex-grow min-w-0">
+                <div class="flex items-start justify-between gap-2">
+                    <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                        <h4 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white group-hover:text-cyan-500 dark:group-hover:text-cyan-400 transition-colors truncate">
+                            {{ .nama }}
+                        </h4>
+                        {{ with .tahun }}
+                        {{ $dateObj := time (printf "%s-01" .) }}
+                        <span class="bg-slate-200 dark:bg-gray-700 text-slate-600 dark:text-gray-300 text-[10px] sm:text-[11px] font-medium px-1.5 py-0.5 rounded shrink-0">
+                            {{ $dateObj | time.Format "Jan 2006" }}
+                        </span>
+                        {{ end }}
+                    </div>
+                    <span class="icon-[ri--arrow-right-up-line] w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 group-hover:text-cyan-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0"></span>
+                </div>
+
+                <p class="text-[11px] sm:text-sm text-slate-600 dark:text-gray-400 mt-0.5 sm:mt-1 line-clamp-2 leading-tight sm:leading-relaxed">
+                    {{ .deskripsi }}
+                </p>
+
+                {{ with .tags }}
+                <div class="flex flex-wrap gap-1 mt-2 sm:mt-3">
+                    {{ range . }}
+                    <span class="text-[9px] sm:text-[10px] font-medium px-1.5 py-0.5 rounded bg-slate-200/70 dark:bg-gray-700/60 text-slate-700 dark:text-gray-300">
+                        {{ . }}
+                    </span>
+                    {{ end }}
+                </div>
+                {{ end }}
+            </article>
+        </a>
+        {{ else }}
+        <p class="text-sm text-slate-500 dark:text-gray-400 text-center py-8">Belum ada item portofolio yang ditampilkan.</p>
+        {{ end }}
+    </div>
+</div>

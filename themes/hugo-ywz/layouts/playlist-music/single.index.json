@@ -1,0 +1,32 @@
+{
+  "section": {{ .Title | jsonify }},
+  "description": {{ .Description | jsonify }},
+  "categories": [
+    {{- $categories := .Params.categories -}}
+    {{- range $index, $cat := $categories -}}
+    {
+      "category_title": {{ $cat.category_title | jsonify }},
+      "slug": {{ $cat.slug | jsonify }},
+      "description": {{ $cat.description | jsonify }},
+      "playlist": [
+        {{- range $tIndex, $track := $cat.playlist -}}
+        {
+          "title": {{ $track.title | jsonify }},
+          "artist": {{ $track.artist | jsonify }},
+          "youtubeId": {{ $track.youtubeId | jsonify }},
+          "cover": {{- if $track.cover -}}
+                      {{- if (findRE "^https?://" $track.cover) -}}
+                        {{ $track.cover | jsonify }}
+                      {{- else -}}
+                        {{ (print $.RelPermalink $track.cover) | jsonify }}
+                      {{- end -}}
+                    {{- else -}}
+                      {{ (print "https://img.youtube.com/vi/" $track.youtubeId "/sddefault.jpg") | jsonify }}
+                    {{- end -}}
+        }{{ if lt (add $tIndex 1) (len $cat.playlist) }},{{ end }}
+        {{- end -}}
+      ]
+    }{{ if lt (add $index 1) (len $categories) }},{{ end }}
+    {{- end -}}
+  ]
+}

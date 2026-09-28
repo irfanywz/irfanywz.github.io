@@ -6,3 +6,8 @@ Situs personal yang dibuat menggunakan hugo
 ## Todo
 
 halaman baru lagi, music > isinya cara bikin konten musik
+
+
+28 - menghapus halaman kosa kata, koleksi, playlist musik
+28 - membuat widget playlist music sebagai gantinya
+29 - membuat halaman prompt
