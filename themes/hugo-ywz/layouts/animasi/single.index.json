@@ -1,0 +1,12 @@
+{
+  "title": {{ .Title | jsonify }},
+  "description": {{ .Description | jsonify }},
+  "image": {{ .Params.image | jsonify }},
+  "permalink": {{ .RelPermalink | jsonify }},
+  "content": {{ .Content | jsonify }},
+  "has_database": {{ .Params.has_database | default false | jsonify }},
+  "default_input": {{ .Params.default_input | jsonify }},
+  "image_prompt": {{ .Params.image_prompt | jsonify }},
+  "desc_prompt": {{ .Params.desc_prompt | jsonify }},
+  "database": {{ .Params.database | jsonify }}
+}

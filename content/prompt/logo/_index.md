@@ -1,3 +1,3 @@
 ---
-title: "Prompt Logo"
+title: "Logo"
 ---

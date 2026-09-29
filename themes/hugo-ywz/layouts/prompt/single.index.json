@@ -1,5 +1,7 @@
 {
   "title": {{ .Title | jsonify }},
+  "description": {{ .Description | jsonify }},
+  "image": {{ .Params.image | jsonify }},
   "permalink": {{ .RelPermalink | jsonify }},
   "content": {{ .Content | jsonify }}
 }

@@ -1,376 +1,776 @@
-{{ define "head" }}
-<!-- Menggunakan Swiper internal project -->
-{{ end }}
-
 {{ define "main" }}
-    {{ $promptPage := .Site.GetPage "animasi/prompt" }}
-    {{ $naskahPage := .Site.GetPage "animasi/naskah" }}
-
-<main class="flex-grow bg-white dark:bg-gray-950 transition-colors duration-300"
-    x-data="{
-        activeTab: 'video',
-        selectedCategory: 'all',
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6" x-data="promptApp()">
+    
+    <!-- Grid Utama 2 Kolom -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        // YouTube Fetch State
-        videos: [],
-        loading: true,
-        error: false,
-        
-        async fetchVideos() {
-            const channelId = {{ .Params.youtube_channel_id | default "MASUKKAN_CHANNEL_ID_KAMU" | jsonify }};
-            const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+        <!-- Kolom Kiri: Sidebar (Header, Search, & Tombol Trigger Kategori Mobile) -->
+        <div class="lg:col-span-3 space-y-4 lg:sticky lg:top-6">
             
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                
-                if (data.status === 'ok') {
-                    this.videos = data.items.map(item => {
-                        const videoId = item.guid.split(':')[2];
-                        return {
-                            title: item.title,
-                            description: item.description || '',
-                            link: item.link,
-                            videoId: videoId,
-                            thumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
-                            pubDate: new Date(item.pubDate).toLocaleDateString('id-ID', {
-                                day: 'numeric', 
-                                month: 'short', 
-                                year: 'numeric'
-                            }),
-                            categories: ['General']
-                        };
-                    });
-                } else {
-                    this.error = true;
-                }
-            } catch (err) {
-                this.error = true;
-            } finally {
-                this.loading = false;
-            }
-        },
-
-        promptItems: [
-            {{ if $promptPage }}
-                {{ range sort $promptPage.Pages "File.Path" "asc" }}
-                    {{ if .IsPage }}
-                    {
-                        id: {{ default .File.Path .File.UniqueID | jsonify }},
-                        title: {{ .Title | lower | jsonify }},
-                        description: {{ .Params.description | default .Summary | lower | jsonify }},
-                        permalink: {{ if .Params.link }}{{ .Params.link | jsonify }}{{ else }}{{ .RelPermalink | jsonify }}{{ end }},
-                        isExternal: {{ if .Params.link }}true{{ else }}false{{ end }},
-                        displayTitle: {{ .Title | jsonify }},
-                        displayDesc: {{ .Params.description | default .Summary | jsonify }},
-                        icon: {{ or .Params.icon "icon-[ri--robot-2-line]" | jsonify }},
-                        date: {{ .Date | time.Format "2 January 2006" | jsonify }},
-                        categories: {{ or .Params.categories (slice "General") | jsonify }}
-                    },
-                    {{ end }}
-                {{ end }}
-            {{ end }}
-        ],
-
-        naskahItems: [
-            {{ if $naskahPage }}
-                {{ range sort $naskahPage.Pages "File.Path" "asc" }}
-                    {{ if .IsPage }}
-                    {
-                        id: {{ default .File.Path .File.UniqueID | jsonify }},
-                        title: {{ .Title | lower | jsonify }},
-                        description: {{ .Params.description | default .Summary | lower | jsonify }},
-                        permalink: {{ if .Params.link }}{{ .Params.link | jsonify }}{{ else }}{{ .RelPermalink | jsonify }}{{ end }},
-                        isExternal: {{ if .Params.link }}true{{ else }}false{{ end }},
-                        displayTitle: {{ .Title | jsonify }},
-                        displayDesc: {{ .Params.description | default .Summary | jsonify }},
-                        date: {{ .Date | time.Format "2 January 2006" | jsonify }},
-                        categories: {{ or .Params.categories (slice "General") | jsonify }}
-                    },
-                    {{ end }}
-                {{ end }}
-            {{ end }}
-        ],
-
-        init() {
-            this.fetchVideos();
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const tabParam = urlParams.get('tab');
-            if (tabParam === 'prompt') {
-                this.activeTab = 'prompt';
-            } else if (tabParam === 'naskah') {
-                this.activeTab = 'naskah';
-            }
-            const catParam = urlParams.get('category');
-            if (catParam) {
-                this.selectedCategory = catParam;
-            }
-
-            // Inisialisasi Swiper untuk Tab Navigasi Utama
-            this.$nextTick(() => {
-                new Swiper('.tabs-swiper', {
-                    slidesPerView: 'auto',
-                    spaceBetween: 24,
-                    freeMode: true,
-                    observer: true,
-                    observeParents: true,
-                });
-
-                new Swiper('.categories-swiper', {
-                    slidesPerView: 'auto',
-                    spaceBetween: 8,
-                    freeMode: true,
-                    observer: true,
-                    observeParents: true,
-                });
-            });
-
-            this.$watch('activeTab', (value) => {
-                const url = new URL(window.location);
-                if (value === 'video') {
-                    url.searchParams.delete('tab');
-                } else {
-                    url.searchParams.set('tab', value);
-                }
-                this.selectedCategory = 'all';
-                window.history.pushState({}, '', url);
-
-                this.$nextTick(() => {
-                    const catSwiperEl = document.querySelector('.categories-swiper');
-                    if (catSwiperEl && catSwiperEl.swiper) {
-                        catSwiperEl.swiper.update();
-                    }
-                });
-            });
-
-            this.$watch('selectedCategory', (value) => {
-                const url = new URL(window.location);
-                if (value === 'all') {
-                    url.searchParams.delete('category');
-                } else {
-                    url.searchParams.set('category', value);
-                }
-                window.history.pushState({}, '', url);
-            });
-        },
-
-        get currentItems() {
-            if (this.activeTab === 'video') return this.videos || [];
-            if (this.activeTab === 'prompt') return this.promptItems || [];
-            return this.naskahItems || [];
-        },
-
-        get categoryCounts() {
-            if (this.activeTab === 'video') return [];
-            const counts = {};
-            this.currentItems.forEach(item => {
-                if (item && Array.isArray(item.categories)) {
-                    item.categories.forEach(c => {
-                        counts[c] = (counts[c] || 0) + 1;
-                    });
-                }
-            });
-            return Object.entries(counts).map(([name, count]) => ({ name, count }));
-        },
-
-        get filteredItems() {
-            if (this.activeTab === 'video') return this.videos || [];
-            let items = [];
-            if (this.activeTab === 'prompt') {
-                items = this.promptItems || [];
-            } else if (this.activeTab === 'naskah') {
-                items = this.naskahItems || [];
-            }
-            return items.filter(item => {
-                if (!item) return false;
-                return this.selectedCategory === 'all' || 
-                    (Array.isArray(item.categories) && item.categories.includes(this.selectedCategory));
-            });
-        }
-    }">
-
-    <!-- Header Full Width Mengambil Data dari Front Matter _index.md -->
-    <section class="pt-6 w-full border-b border-gray-200 dark:border-gray-800">
-        <div class="container max-w-6xl mx-auto px-6 sm:px-10">
-            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-                {{ .Title }}
-            </h1>
-            <p class="text-gray-600 dark:text-gray-400 mt-1.5 text-sm">
-                {{ .Description }}
-            </p>
-
-            <!-- Tombol Navigasi Tab -->
-            <div class="swiper tabs-swiper mt-6 w-full overflow-hidden">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide !w-auto">
-                        <button 
-                            @click="activeTab = 'video'"
-                            :class="activeTab === 'video' ? 'border-sky-500 text-sky-600 dark:text-sky-400 font-bold' : 'border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 font-medium'"
-                            class="pb-3 border-b-2 text-sm transition-colors focus:outline-none flex items-center gap-2 -mb-[1px] cursor-pointer">
-                            <span class="icon-[lucide--video] w-4 h-4"></span>
-                            {{ with .Params.tabs }}{{ .video | default "Video YouTube" }}{{ else }}Video YouTube{{ end }}
-                        </button>
-                    </div>
-                    <div class="swiper-slide !w-auto">
-                        <button 
-                            @click="activeTab = 'prompt'"
-                            :class="activeTab === 'prompt' ? 'border-sky-500 text-sky-600 dark:text-sky-400 font-bold' : 'border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 font-medium'"
-                            class="pb-3 border-b-2 text-sm transition-colors focus:outline-none flex items-center gap-2 -mb-[1px] cursor-pointer">
-                            <span class="icon-[ri--robot-2-line] w-4 h-4"></span>
-                            {{ with .Params.tabs }}{{ .prompt | default "Prompt" }}{{ else }}Prompt{{ end }}
-                        </button>
-                    </div>
-                    <div class="swiper-slide !w-auto">
-                        <button 
-                            @click="activeTab = 'naskah'"
-                            :class="activeTab === 'naskah' ? 'border-sky-500 text-sky-600 dark:text-sky-400 font-bold' : 'border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 font-medium'"
-                            class="pb-3 border-b-2 text-sm transition-colors focus:outline-none flex items-center gap-2 -mb-[1px] cursor-pointer">
-                            <span class="icon-[lucide--file-text] w-4 h-4"></span>
-                            {{ with .Params.tabs }}{{ .naskah | default "Naskah Cerita" }}{{ else }}Naskah Cerita{{ end }}
-                        </button>
+            <!-- Box Header & Deskripsi -->
+            <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-5 rounded-2xl shadow-xs space-y-3">
+                <div class="flex items-center justify-between">
+                    <h1 class="text-xl font-black text-gray-900 dark:text-white tracking-tight flex items-center gap-2">
+                        <span class="icon-[ri--terminal-box-line] text-indigo-600"></span>
+                        <span x-text="pageData.section || 'Kumpulan Prompt'"></span>
+                    </h1>
+                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-[11px] font-semibold text-gray-600 dark:text-gray-300">
+                        <span class="icon-[ri--database-2-line] text-indigo-600 dark:text-indigo-400"></span>
+                        <span x-text="allPromptsCount"></span>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
+                <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed" x-text="pageData.description || 'Pusat penyimpanan prompt AI terstruktur, mudah dicari, dan siap pakai.'"></p>
 
-    <!-- Main Content Section Full Width -->
-    <section class="py-6 container max-w-6xl mx-auto">
-        <div class="w-full px-6 sm:px-10 space-y-6">
-            
-            <!-- Kategori Filter Menggunakan Swiper.js -->
-            <div x-show="activeTab !== 'video'" class="swiper categories-swiper w-full overflow-hidden pb-1">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide !w-auto">
-                        <button @click="selectedCategory = 'all'"
-                            :class="selectedCategory === 'all' ? 'bg-sky-500 text-white font-medium shadow-xs' : 'bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800'"
-                            class="px-3.5 py-1.5 rounded-lg text-xs transition-colors cursor-pointer block">
-                            Semua (<span x-text="currentItems.length"></span>)
+                <!-- Global Search Input -->
+                <div class="relative w-full">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                        <span class="icon-[ri--search-line] text-sm"></span>
+                    </span>
+                    <input type="text" x-model="globalSearchQuery" placeholder="Cari prompt..." 
+                        class="w-full pl-10 pr-9 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+                    <button x-show="globalSearchQuery.length > 0" @click="globalSearchQuery = ''" style="display: none;"
+                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                        <span class="icon-[ri--close-circle-fill] text-sm"></span>
+                    </button>
+                </div>
+
+                <!-- Tombol Trigger Kategori khusus untuk Mobile -->
+                <div class="block lg:hidden pt-1">
+                    <button @click="categoryOpen = true" 
+                            class="w-full px-3 py-2.5 bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-800/60 text-indigo-600 dark:text-indigo-400 rounded-xl text-xs font-bold flex items-center justify-between transition shadow-xs cursor-pointer">
+                        <span class="flex items-center gap-2">
+                            <span class="icon-[ri--folder-3-line] text-sm"></span>
+                            <span x-text="selectedCategory === 'all' ? 'Pilih Kategori (Semua)' : `Kategori: ${currentCategoryTitle}`"></span>
+                        </span>
+                        <span class="icon-[ri--arrow-down-s-line] text-base"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Box Pilihan Kategori (Desktop) -->
+            <div class="hidden lg:block bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-3 rounded-2xl shadow-xs space-y-1">
+                <p class="text-[10px] font-bold uppercase tracking-wider text-gray-400 px-3 py-1">Pilih Kategori</p>
+                
+                <div class="space-y-0.5 max-h-[320px] overflow-y-auto pr-1">
+                    <button @click="selectedCategory = 'all'"
+                            class="w-full px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center justify-between group"
+                            :class="selectedCategory === 'all' ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-500/20' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'">
+                        <span class="flex items-center gap-2.5">
+                            <span class="icon-[ri--apps-2-line] w-3.5 h-3.5"></span>
+                            <span>Semua</span>
+                        </span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px]" :class="selectedCategory === 'all' ? 'bg-white/20 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-500'" x-text="allPromptsCount"></span>
+                    </button>
+
+                    <template x-for="cat in (pageData.categories || [])" :key="cat.category">
+                        <button @click="selectedCategory = cat.category"
+                                class="w-full px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center justify-between group"
+                                :class="selectedCategory === cat.category ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-500/20' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'">
+                            <span class="flex items-center gap-2.5 truncate">
+                                <span class="icon-[ri--folder-3-line] w-3.5 h-3.5 flex-shrink-0"></span>
+                                <span class="truncate" x-text="cat.category_title || cat.category"></span>
+                            </span>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] flex-shrink-0" :class="selectedCategory === cat.category ? 'bg-white/20 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-500'" x-text="cat.prompts.length"></span>
                         </button>
-                    </div>
-                    <template x-for="cat in categoryCounts" :key="cat.name">
-                        <div class="swiper-slide !w-auto">
-                            <button @click="selectedCategory = cat.name"
-                                :class="selectedCategory === cat.name ? 'bg-sky-500 text-white font-medium shadow-xs' : 'bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800'"
-                                class="px-3.5 py-1.5 rounded-lg text-xs transition-colors capitalize cursor-pointer block">
-                                <span x-text="cat.name"></span> (<span x-text="cat.count"></span>)
-                            </button>
-                        </div>
                     </template>
                 </div>
             </div>
 
-            <!-- Content for Video Tab -->
-            <div x-show="activeTab === 'video'">
-                <template x-if="loading">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                        <template x-for="i in 6">
-                            <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 animate-pulse h-64"></div>
-                        </template>
-                    </div>
-                </template>
+        </div>
 
-                <template x-if="error">
-                    <div class="text-center py-16" x-cloak>
-                        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-red-50 dark:bg-red-950/50 mb-3 text-red-500">
-                            <span class="icon-[lucide--alert-triangle] w-6 h-6"></span>
-                        </div>
-                        <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Gagal Memuat Video</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">Terjadi kendala saat mengambil data dari YouTube RSS.</p>
-                    </div>
-                </template>
-
-                <template x-if="!loading && !error && videos.length > 0">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                        <template x-for="video in videos" :key="video.videoId">
-                            <a :href="video.link" target="_blank" rel="noopener noreferrer"
-                               class="group bg-white dark:bg-gray-900 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 hover:border-sky-500/50 dark:hover:border-sky-500/50 transition-all shadow-xs flex flex-col justify-between">
-                                <div>
-                                    <div class="overflow-hidden aspect-video bg-gray-100 dark:bg-gray-800">
-                                        <img :src="video.thumbnail" :alt="video.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                                    </div>
-                                    <div class="p-4">
-                                        <h2 class="text-sm font-semibold text-gray-900 dark:text-white line-clamp-2 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors" x-text="video.title"></h2>
-                                    </div>
-                                </div>
-                                <div class="px-4 pb-4 pt-0">
-                                    <span class="text-xs text-gray-500 dark:text-gray-400" x-text="video.pubDate"></span>
-                                </div>
-                            </a>
-                        </template>
-                    </div>
-                </template>
-
-                <template x-if="!loading && !error && videos.length === 0">
-                    <div class="text-center py-16" x-cloak>
-                        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-900 mb-3 text-gray-400">
-                            <span class="icon-[lucide--video-off] w-6 h-6"></span>
-                        </div>
-                        <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Channel Belum Ada Video</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">Belum ada video yang diunggah pada channel YouTube ini.</p>
-                    </div>
-                </template>
+        <!-- Kolom Kanan: Daftar List Card Prompt -->
+        <div class="lg:col-span-9 space-y-3">
+            
+            <!-- Loading State Awal -->
+            <div x-show="isLoadingList" class="flex justify-center items-center py-24 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl">
+                <span class="icon-[ri--loader-4-line] animate-spin text-2xl text-indigo-600"></span>
             </div>
 
-            <!-- Content for Alat Tab -->
-            <div x-show="activeTab === 'prompt'" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <template x-for="item in filteredItems" :key="item.id || item.permalink">
-                    <a :href="item.permalink" :target="item.isExternal ? '_blank' : ''" :rel="item.isExternal ? 'noopener noreferrer nofollow' : ''"
-                       class="group flex items-center justify-between p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-sky-500/50 dark:hover:border-sky-500/50 transition-all shadow-xs">
-                        <div class="flex items-center gap-3.5 min-w-0 pr-2">
-                            <div class="w-12 h-12 rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0 font-bold text-sm group-hover:scale-105 transition-transform">
-                                <span :class="item.icon" class="w-6 h-6"></span>
-                            </div>
-                            <div class="min-w-0">
-                                <h2 class="text-sm sm:text-base font-semibold text-gray-900 dark:text-white truncate group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors" x-text="item.displayTitle"></h2>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5" x-text="item.displayDesc"></p>
-                            </div>
-                        </div>
-                    </a>
-                </template>
-            </div>
-
-<!-- Content for Naskah Tab -->
-            <div x-show="activeTab === 'naskah'" class="divide-y divide-gray-200 dark:divide-gray-800 border-t border-b border-gray-200 dark:border-gray-800">
-                <template x-for="item in filteredItems" :key="item.id || item.permalink">
-                    <a :href="item.permalink" :target="item.isExternal ? '_blank' : ''" :rel="item.isExternal ? 'noopener noreferrer nofollow' : ''"
-                       class="group flex flex-col md:flex-row md:items-center md:justify-between py-3.5 px-3 md:px-4 hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors gap-2 md:gap-4">
-                        
-                        <!-- Bagian Kiri: Icon, Judul, & Deskripsi -->
-                        <div class="flex items-start md:items-center gap-3 min-w-0 flex-1">
-                            <div class="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform mt-0.5 md:mt-0">
-                                <span class="icon-[lucide--file-text] w-4 h-4"></span>
-                            </div>
-                            <div class="min-w-0 flex-1">
-                                <h2 class="text-sm sm:text-base font-medium text-gray-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors break-words md:truncate" x-text="item.displayTitle"></h2>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5" x-text="item.displayDesc"></p>
-                            </div>
-                        </div>
-
-                        <!-- Bagian Tanggal: Di bawah pada HP, rapi di sebelah kanan pada layar Desktop (md:) -->
-                        <div class="shrink-0 text-xs text-gray-400 dark:text-gray-500 font-mono pl-11 md:pl-0 md:text-right">
-                            <span x-text="item.date"></span>
-                        </div>
-                    </a>
-                </template>
-            </div>
-
-            <!-- Empty State -->
-            <div x-show="activeTab !== 'video' && filteredItems.length === 0" x-cloak class="text-center py-16">
-                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-900 mb-3 text-gray-400">
-                    <span class="icon-[lucide--search-x] w-6 h-6"></span>
+            <!-- Konten Utama List -->
+            <div x-show="!isLoadingList" style="display: none;" class="space-y-3">
+                
+                <!-- Baris Informasi Aktif -->
+                <div class="flex items-center justify-between px-1 text-xs text-gray-500 dark:text-gray-400">
+                    <span x-text="globalSearchQuery ? `Pencarian: &quot;${globalSearchQuery}&quot;` : (selectedCategory === 'all' ? 'Semua Kategori Aktif' : `Kategori: ${currentCategoryTitle}`)"></span>
+                    <span class="font-bold text-gray-700 dark:text-gray-300" x-text="filteredPrompts.length + ' Ditemukan'"></span>
                 </div>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Konten tidak ditemukan.</p>
+
+                <!-- List Kartu Modern -->
+                <div class="space-y-2.5">
+                    <template x-for="prompt in filteredPrompts" :key="prompt.json_url">
+                        <div @click="openPromptDetail(prompt.json_url)" 
+                             class="group bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-3 sm:p-3.5 hover:border-indigo-500 dark:hover:border-indigo-500 transition-all shadow-xs hover:shadow-md cursor-pointer flex items-center justify-between gap-3">
+                            
+                            <div class="flex items-center gap-3 min-w-0 flex-grow">
+                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/50 flex-shrink-0 overflow-hidden flex items-center justify-center">
+                                    <template x-if="prompt.image">
+                                        <img :src="prompt.image" alt="Preview" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    </template>
+                                    <template x-if="!prompt.image">
+                                        <span class="icon-[ri--image-ai-fill] text-indigo-600 dark:text-indigo-400 text-xl"></span>
+                                    </template>
+                                </div>
+
+                                <div class="space-y-0.5 min-w-0 flex-grow">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400" x-text="prompt.categoryTitle"></span>
+                                    </div>
+                                    <h4 class="text-xs sm:text-sm font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate" x-text="prompt.title"></h4>
+                                    <p class="text-[11px] text-gray-500 dark:text-gray-400 line-clamp-1" x-text="prompt.description"></p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center flex-shrink-0 pl-1">
+                                <div class="w-8 h-8 rounded-lg bg-gray-50 dark:bg-gray-800 group-hover:bg-indigo-600 group-hover:text-white text-gray-400 flex items-center justify-center transition-all">
+                                    <span class="icon-[ri--arrow-right-s-line] text-base"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Empty State -->
+                <template x-if="filteredPrompts.length === 0">
+                    <div class="text-center py-16 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl">
+                        <span class="icon-[ri--search-eye-line] text-3xl text-gray-400 mb-1.5"></span>
+                        <p class="text-xs font-semibold text-gray-700 dark:text-gray-300">Prompt tidak ditemukan.</p>
+                        <p class="text-[11px] text-gray-400 mt-0.5">Coba kata kunci lain atau pilih kategori lain.</p>
+                    </div>
+                </template>
+
             </div>
 
         </div>
-    </section>
 
-</main>
-{{ end }}
+    </div>
 
-{{ define "footer" }}
-<!-- Menggunakan Swiper internal project -->
+    <!-- Offcanvas Kategori Mobile -->
+    <div x-show="categoryOpen" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center" style="display: none;">
+        <div x-show="categoryOpen" @click="categoryOpen = false" class="fixed inset-0 bg-black/60 backdrop-blur-xs"></div>
+        <div x-show="categoryOpen" class="relative w-full max-w-lg bg-white dark:bg-gray-900 rounded-t-3xl sm:rounded-2xl shadow-2xl p-5 z-10 border-t sm:border border-gray-200 dark:border-gray-800 max-h-[80vh] flex flex-col">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-gray-800 mb-3">
+                <h3 class="text-sm font-bold text-gray-900 dark:text-white">Pilih Kategori Prompt</h3>
+                <button @click="categoryOpen = false" class="text-gray-400 hover:text-gray-600 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
+                    <span class="icon-[ri--close-line] w-4 h-4"></span>
+                </button>
+            </div>
+            <div class="space-y-1 overflow-y-auto pr-1 flex-grow">
+                <button @click="selectedCategory = 'all'; categoryOpen = false;"
+                        class="w-full px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-between"
+                        :class="selectedCategory === 'all' ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-500/20' : 'text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800'">
+                    <span class="flex items-center gap-2.5">
+                        <span class="icon-[ri--apps-2-line] w-4 h-4"></span>
+                        <span>Semua</span>
+                    </span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px]" :class="selectedCategory === 'all' ? 'bg-white/20 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'" x-text="allPromptsCount"></span>
+                </button>
+                <template x-for="cat in (pageData.categories || [])" :key="cat.category">
+                    <button @click="selectedCategory = cat.category; categoryOpen = false;"
+                            class="w-full px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-between"
+                            :class="selectedCategory === cat.category ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-500/20' : 'text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800'">
+                        <span class="flex items-center gap-2.5 truncate">
+                            <span class="icon-[ri--folder-3-line] w-4 h-4 flex-shrink-0"></span>
+                            <span class="truncate" x-text="cat.category_title || cat.category"></span>
+                        </span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] flex-shrink-0" :class="selectedCategory === cat.category ? 'bg-white/20 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'" x-text="cat.prompts.length"></span>
+                    </button>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Detail Prompt -->
+    <div x-show="modalOpen" class="fixed inset-0 z-50 overflow-y-auto px-4 py-6 sm:p-0 flex items-center justify-center" style="display: none;">
+        <div x-show="modalOpen" @click="modalOpen = false" class="fixed inset-0 bg-black/60 backdrop-blur-xs"></div>
+
+        <div x-show="modalOpen"
+             class="relative w-full max-w-2xl bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-5 sm:p-6 z-10 border border-gray-200 dark:border-gray-800 my-auto">
+            
+            <div x-show="isLoadingDetail" class="flex flex-col items-center justify-center py-12">
+                <span class="icon-[ri--loader-4-line] animate-spin text-2xl text-indigo-600"></span>
+                <p class="text-xs text-gray-400 mt-2">Mengambil data prompt...</p>
+            </div>
+
+            <div x-show="!isLoadingDetail" style="display: none;" class="space-y-4">
+                <div class="flex items-start justify-between gap-3 mb-1">
+                    <div>
+                        <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white" x-text="activePrompt.title"></h3>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5" x-text="activePrompt.description"></p>
+                    </div>
+                    <button @click="modalOpen = false" class="text-gray-400 hover:text-gray-600 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer flex-shrink-0">
+                        <span class="icon-[ri--close-line] w-4 h-4"></span>
+                    </button>
+                </div>
+
+                <!-- KONDISI A: JIKA PROMPT PUNYA DATABASE BUILDER ANIMASI -->
+                <template x-if="activePrompt.has_database">
+                    <div class="space-y-4">
+                        <!-- Toolbar Atas: Tombol Description & Image Prompt Sub-modal -->
+                        <div class="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-gray-800">
+                            <span class="text-xs font-bold text-gray-700 dark:text-gray-300">Sub-Prompt Generator:</span>
+                            <div class="flex items-center gap-2">
+                                <button @click="openSubModal('desc')" class="text-xs bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-1.5 rounded-xl transition font-medium cursor-pointer flex items-center gap-1.5">
+                                    <span class="icon-[ri--file-text-line]"></span> Description
+                                </button>
+                                <button @click="openSubModal('image')" class="text-xs bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-1.5 rounded-xl transition font-medium cursor-pointer flex items-center gap-1.5">
+                                    <span class="icon-[ri--image-line]"></span> Image Prompt
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Input Deskripsi & Tombol Pilih Database di Sampingnya -->
+                        <div class="grid grid-cols-1 sm:grid-cols-[80px_1fr] gap-4 items-center bg-white dark:bg-gray-900 p-3.5 rounded-xl border border-gray-200 dark:border-gray-800">
+                            <div class="w-20 h-20 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex items-center justify-center mx-auto">
+                                <img :src="builderImage" alt="Preview" class="w-full h-full object-cover">
+                            </div>
+                            <div class="space-y-1">
+                                <div class="flex items-center justify-between">
+                                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Input Deskripsi Karakter</label>
+                                    <button @click="showDbPicker = true" class="text-[11px] text-indigo-600 dark:text-indigo-400 hover:underline font-semibold flex items-center gap-1 cursor-pointer">
+                                        <span class="icon-[ri--list-settings-line]"></span> Pilih dari Database
+                                    </button>
+                                </div>
+                                <input type="text" x-model="builderInput" placeholder="Masukkan deskripsi..." class="w-full bg-gray-50 dark:bg-gray-950 border border-gray-300 dark:border-gray-700 rounded-xl px-3 py-2 text-xs text-gray-800 dark:text-gray-200 focus:outline-none focus:border-indigo-500">
+                            </div>
+                        </div>
+
+                        <!-- Live Preview Master Prompt -->
+                        <div class="bg-gray-50 dark:bg-gray-950 p-4 rounded-xl border border-gray-200 dark:border-gray-800 text-xs font-mono text-gray-800 dark:text-gray-200 leading-relaxed max-h-52 overflow-y-auto shadow-inner whitespace-pre-wrap select-all"
+                             x-text="renderedMasterPrompt"></div>
+
+                        <div class="flex items-center justify-end">
+                            <button @click="copyMasterText(renderedMasterPrompt)" 
+                                    class="w-full sm:w-auto px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer">
+                                <span :class="copiedMaster ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'" class="w-3.5 h-3.5"></span>
+                                <span x-text="copiedMaster ? 'Master Prompt Berhasil Disalin!' : 'Salin Master Prompt'"></span>
+                            </button>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- KONDISI B: JIKA PROMPT BIASA -->
+                <template x-if="!activePrompt.has_database">
+                    <div class="space-y-4">
+                        <div class="bg-gray-50 dark:bg-gray-950 p-3.5 sm:p-4 rounded-xl border border-gray-200 dark:border-gray-800 text-xs sm:text-sm text-gray-800 dark:text-gray-200 leading-relaxed font-mono select-all overflow-x-auto max-h-52 overflow-y-auto shadow-inner"
+                             x-html="processedPromptContent"></div>
+
+                        <template x-if="detectedVariables.length > 0">
+                            <div class="p-3.5 bg-indigo-50/50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 rounded-xl space-y-2.5">
+                                <div class="flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                                    <span class="icon-[ri--input-field]"></span>
+                                    <span>Isi Variabel Prompt:</span>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                    <template x-for="varName in detectedVariables" :key="varName">
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1" x-text="varName"></label>
+                                            <input type="text" x-model="promptVariables[varName]" :placeholder="`Masukkan ${varName}...`"
+                                                   class="w-full px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+
+                        <div class="flex items-center justify-end">
+                            <button @click="copyPromptContent()" 
+                                    class="w-full sm:w-auto px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer">
+                                <span :class="copiedMaster ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'" class="w-3.5 h-3.5"></span>
+                                <span x-text="copiedMaster ? 'Prompt Berhasil Disalin!' : 'Salin Prompt Ini'"></span>
+                            </button>
+                        </div>
+                    </div>
+                </template>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Sub-Modal Picker Database Karakter -->
+    <div x-show="showDbPicker" class="fixed inset-0 z-60 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4" @click.self="showDbPicker = false" style="display: none;">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-2xl rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col max-h-[85vh]">
+            <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                <h4 class="text-xs font-bold text-gray-800 dark:text-gray-200">Pilih Karakter dari Database</h4>
+                <button @click="showDbPicker = false" class="text-gray-400 hover:text-gray-600 cursor-pointer">
+                    <span class="icon-[ri--close-line] text-lg"></span>
+                </button>
+            </div>
+            
+            <!-- Kotak Pencarian & Tombol Filter Kategori (Model Pill) -->
+            <div class="px-5 py-3 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 space-y-3">
+                <div class="relative w-full">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                        <span class="icon-[ri--search-line] text-xs"></span>
+                    </span>
+                    <input type="text" x-model="dbSearchQuery" placeholder="Cari nama atau deskripsi karakter..." 
+                        class="w-full pl-9 pr-8 py-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <button x-show="dbSearchQuery.length > 0" @click="dbSearchQuery = ''" style="display: none;"
+                        class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-gray-400 hover:text-gray-600">
+                        <span class="icon-[ri--close-circle-fill] text-xs"></span>
+                    </button>
+                </div>
+
+                <!-- Tombol Filter Kategori model Pill -->
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                    <button @click="selectedDbCategory = 'all'"
+                            class="px-4 py-1.5 rounded-full text-xs font-semibold transition-all whitespace-nowrap cursor-pointer shadow-xs"
+                            :class="selectedDbCategory === 'all' ? 'bg-indigo-600 text-white' : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-indigo-500'">
+                        Semua
+                    </button>
+                    <template x-for="(items, catName) in (activePrompt.database || {})" :key="catName">
+                        <button @click="selectedDbCategory = catName"
+                                class="px-4 py-1.5 rounded-full text-xs font-semibold transition-all whitespace-nowrap cursor-pointer border shadow-xs capitalize"
+                                :class="selectedDbCategory === catName ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-indigo-500'"
+                                x-text="catName">
+                        </button>
+                    </template>
+                </div>
+            </div>
+
+            <!-- List Grid Card Database dengan key index agar aman dari duplicate -->
+            <div class="p-5 overflow-y-auto flex-grow">
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <template x-for="(item, index) in flattenedDatabase" :key="index + '-' + (item.title || 'item')">
+                        <div @click="selectDbItem(item)" class="group border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 rounded-xl p-3 cursor-pointer bg-gray-50 dark:bg-gray-900/50 flex flex-col items-center text-center transition">
+                            <div class="w-full h-20 bg-gray-200 dark:bg-gray-800 rounded-lg mb-2 overflow-hidden flex items-center justify-center">
+                                <img :src="item.image" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                            </div>
+                            <span class="text-xs font-bold text-gray-800 dark:text-gray-200 mb-0.5 line-clamp-1" x-text="item.title"></span>
+                            <span class="text-[10px] text-gray-500 dark:text-gray-400 line-clamp-2" x-text="item.description"></span>
+                        </div>
+                    </template>
+                </div>
+                <template x-if="flattenedDatabase.length === 0">
+                    <p class="text-xs text-gray-400 text-center py-12">Karakter tidak ditemukan.</p>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sub-Modal untuk Description & Image Prompt (In-Place Variable Replacement) -->
+    <div x-show="showSubModal" class="fixed inset-0 z-60 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4" @click.self="showSubModal = false" style="display: none;">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-xl rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col max-h-[85vh]">
+            <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                <h4 class="text-xs font-bold text-gray-800 dark:text-gray-200 capitalize" x-text="subModalType === 'desc' ? 'Custom Description Generator' : 'Custom Image Prompt Generator'"></h4>
+                <button @click="showSubModal = false" class="text-gray-400 hover:text-gray-600 cursor-pointer">
+                    <span class="icon-[ri--close-line] text-lg"></span>
+                </button>
+            </div>
+            
+            <div class="p-5 overflow-y-auto space-y-4 flex-grow">
+                
+                <!-- JIKA SUB-MODAL TYPE: DESC -->
+                <div x-show="subModalType === 'desc'" class="space-y-4">
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Hasil Prompt (Live In-Place Render)</label>
+                        <div class="bg-gray-50 dark:bg-gray-950 p-4 rounded-xl border border-gray-200 dark:border-gray-800 text-xs font-mono text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap select-all shadow-inner max-h-52 overflow-y-auto"
+                             x-html="processedDescContent"></div>
+                    </div>
+
+                    <!-- Kotak Input Dinamis Parameter [XXX] untuk Description -->
+                    <template x-if="descParameters.length > 0">
+                        <div class="space-y-2">
+                            <label class="block text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Isi Parameter</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 p-3.5 bg-indigo-50/50 dark:bg-indigo-950/30 rounded-xl border border-indigo-100 dark:border-indigo-900/50">
+                                <template x-for="param in descParameters" :key="param">
+                                    <div>
+                                        <label class="block text-[10px] font-semibold text-gray-600 dark:text-gray-400 uppercase mb-1" x-text="param"></label>
+                                        <input type="text" x-model="dynamicInputs['desc_' + param]" :placeholder="'Masukkan ' + param + '...'"
+                                            class="w-full px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white outline-none focus:ring-1 focus:ring-indigo-500">
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- JIKA SUB-MODAL TYPE: IMAGE -->
+                <div x-show="subModalType === 'image'" class="space-y-4">
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Hasil Prompt (Live In-Place Render)</label>
+                        <div class="bg-gray-50 dark:bg-gray-950 p-4 rounded-xl border border-gray-200 dark:border-gray-800 text-xs font-mono text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap select-all shadow-inner max-h-52 overflow-y-auto"
+                             x-html="processedImageContent"></div>
+                    </div>
+
+                    <!-- Kotak Input Dinamis Parameter [XXX] untuk Image Prompt -->
+                    <template x-if="imageParameters.length > 0">
+                        <div class="space-y-2">
+                            <label class="block text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Isi Parameter Terdeteksi ([XXX])</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 p-3.5 bg-indigo-50/50 dark:bg-indigo-950/30 rounded-xl border border-indigo-100 dark:border-indigo-900/50">
+                                <template x-for="param in imageParameters" :key="param">
+                                    <div>
+                                        <label class="block text-[10px] font-semibold text-gray-600 dark:text-gray-400 uppercase mb-1" x-text="param"></label>
+                                        <input type="text" x-model="dynamicInputs['img_' + param]" :placeholder="'Masukkan ' + param + '...'"
+                                            class="w-full px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white outline-none focus:ring-1 focus:ring-indigo-500">
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+            </div>
+
+            <!-- Footer Tombol Salin -->
+            <div class="px-5 py-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700 flex justify-end">
+                <button @click="copySubText(subModalType === 'desc' ? rawDescContentClean : rawImageContentClean)" 
+                        class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+                    <span :class="copiedSub ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
+                    <span x-text="copiedSub ? 'Sub-Prompt Berhasil Disalin!' : 'Salin Sub-Prompt'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+document.addEventListener('alpine:init', () => {
+    Alpine.data('promptApp', () => ({
+        pageData: {},
+        isLoadingList: true,
+        selectedCategory: 'all',
+        globalSearchQuery: '',
+        categoryOpen: false,
+        
+        modalOpen: false,
+        isLoadingDetail: false,
+        activePrompt: {},
+
+        // State Builder Animasi
+        builderInput: '',
+        builderImage: '',
+        showDbPicker: false,
+        showSubModal: false,
+        subModalType: 'desc',
+        dbSearchQuery: '',
+        selectedDbCategory: 'all',
+
+        // State untuk item database aktif & input dinamis [XXX]
+        selectedItem: null,
+        dynamicInputs: {},
+
+        // Status copy terpisah
+        copiedMaster: false,
+        copiedSub: false,
+
+        promptVariables: {},
+
+        get allPrompts() {
+            if (!this.pageData.categories) return [];
+            let list = [];
+            this.pageData.categories.forEach(cat => {
+                if (cat.prompts) {
+                    cat.prompts.forEach(p => {
+                        list.push({
+                            ...p,
+                            categorySlug: cat.category,
+                            categoryTitle: cat.category_title || cat.category
+                        });
+                    });
+                }
+            });
+            return list;
+        },
+
+        get allPromptsCount() {
+            return this.allPrompts.length;
+        },
+
+        get currentCategoryTitle() {
+            if (!this.pageData.categories) return '';
+            let found = this.pageData.categories.find(c => c.category === this.selectedCategory);
+            return found ? (found.category_title || found.category) : '';
+        },
+
+        get filteredPrompts() {
+            let prompts = this.allPrompts;
+            if (this.selectedCategory !== 'all') {
+                prompts = prompts.filter(p => p.categorySlug === this.selectedCategory);
+            }
+            let q = (this.globalSearchQuery || '').toLowerCase().trim();
+            if (q) {
+                prompts = prompts.filter(p => 
+                    (p.title && p.title.toLowerCase().includes(q)) || 
+                    (p.description && p.description.toLowerCase().includes(q)) ||
+                    (p.categoryTitle && p.categoryTitle.toLowerCase().includes(q))
+                );
+            }
+            return prompts;
+        },
+
+        get flattenedDatabase() {
+            if (!this.activePrompt || !this.activePrompt.database) return [];
+            let q = (this.dbSearchQuery || '').toLowerCase().trim();
+            let activeCat = this.selectedDbCategory;
+
+            let list = [];
+            Object.keys(this.activePrompt.database).forEach(categoryName => {
+                if (activeCat !== 'all' && categoryName !== activeCat) return;
+
+                let items = this.activePrompt.database[categoryName];
+                if (Array.isArray(items)) {
+                    items.forEach(item => {
+                        if (!q || (item.title && item.title.toLowerCase().includes(q)) || (item.description && item.description.toLowerCase().includes(q))) {
+                            list.push(item);
+                        }
+                    });
+                }
+            });
+            return list;
+        },
+
+        async init() {
+            try {
+                let res = await fetch('./index.json');
+                if (res.ok) {
+                    this.pageData = await res.json();
+                }
+            } catch (e) {
+                console.error("Gagal memuat index prompt:", e);
+            } finally {
+                this.isLoadingList = false;
+            }
+        },
+
+        get renderedMasterPrompt() {
+            if (!this.activePrompt.content) return '';
+            let content = this.activePrompt.content;
+            
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = content;
+            let rawText = tempDiv.textContent || tempDiv.innerText || content;
+
+            let currentInput = this.builderInput || '';
+            return rawText
+                .replace(/\[\{humanInput\}\]/g, currentInput)
+                .replace(/\[humanInput\]/g, currentInput);
+        },
+
+        async openPromptDetail(jsonUrl) {
+            this.modalOpen = true;
+            this.isLoadingDetail = true;
+            this.copiedMaster = false;
+            this.copiedSub = false;
+            this.dbSearchQuery = '';
+            this.selectedDbCategory = 'all';
+            this.promptVariables = {};
+            this.selectedItem = null;
+            this.dynamicInputs = {};
+            
+            try {
+                let res = await fetch(jsonUrl);
+                if (res.ok) {
+                    this.activePrompt = await res.json();
+                    if (this.activePrompt.has_database) {
+                        this.builderInput = this.activePrompt.default_input || '';
+                        this.builderImage = this.activePrompt.image || '';
+                    }
+                }
+            } catch (e) {
+                console.error("Gagal memuat detail prompt:", e);
+            } finally {
+                this.isLoadingDetail = false;
+            }
+        },
+
+        selectDbItem(item) {
+            this.selectedItem = JSON.parse(JSON.stringify(item));
+            this.builderInput = item.description;
+            this.builderImage = item.image;
+            this.showDbPicker = false;
+            this.dynamicInputs = {}; 
+        },
+
+        openSubModal(type) {
+            this.subModalType = type;
+            this.showSubModal = true;
+            this.copiedSub = false;
+        },
+
+        get detectedVariables() {
+            if (!this.activePrompt.content) return [];
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = this.activePrompt.content;
+            const text = tempDiv.textContent || tempDiv.innerText || '';
+            const matches = text.match(/\[(.*?)\]/g);
+            if (!matches) return [];
+            const vars = matches.map(m => m.replace(/[\[\]]/g, '').trim());
+            return [...new Set(vars)];
+        },
+
+        get processedPromptContent() {
+            if (!this.activePrompt.content) return '';
+            let content = this.activePrompt.content;
+            this.detectedVariables.forEach(varName => {
+                const val = this.promptVariables[varName] || `[${varName}]`;
+                const regex = new RegExp(`\\[${varName}\\]`, 'g');
+                content = content.replace(regex, `<span class="text-indigo-600 dark:text-indigo-400 font-bold bg-indigo-50 dark:bg-indigo-950 px-1 rounded">${val}</span>`);
+            });
+            return content;
+        },
+
+        copyMasterText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                this.copiedMaster = true;
+                setTimeout(() => { this.copiedMaster = false; }, 2000);
+            });
+        },
+
+        copySubText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                this.copiedSub = true;
+                setTimeout(() => { this.copiedSub = false; }, 2000);
+            });
+        },
+
+        copyPromptContent() {
+            let textToCopy = '';
+            if (this.activePrompt.content) {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = this.activePrompt.content;
+                textToCopy = tempDiv.textContent || tempDiv.innerText || '';
+                this.detectedVariables.forEach(varName => {
+                    const userVal = this.promptVariables[varName] || `[${varName}]`;
+                    const regex = new RegExp(`\\[${varName}\\]`, 'g');
+                    textToCopy = textToCopy.replace(regex, userVal);
+                });
+            }
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                this.copiedMaster = true;
+                setTimeout(() => { this.copiedMaster = false; }, 2000);
+            });
+        },
+
+        // --- FITUR IN-PLACE REPLACEMENT UNTUK SUB-MODAL ---
+
+        get descParameters() {
+            let text = this.activePrompt.desc_prompt || '';
+            if (!text) return [];
+            let matches = text.match(/\[(.*?)\]/g);
+            if (!matches) return [];
+            const standardKeys = ['character', 'title', 'description', 'input'];
+            let params = matches.map(m => m.slice(1, -1).trim());
+            return [...new Set(params)].filter(p => !standardKeys.includes(p.toLowerCase()));
+        },
+
+        get processedDescContent() {
+            let text = this.activePrompt.desc_prompt || '';
+            if (!text) return 'Template desc_prompt belum diatur.';
+            
+            let replacements = {
+                'character': this.selectedItem?.title || this.builderInput || '',
+                'title': this.selectedItem?.title || '',
+                'description': this.selectedItem?.description || this.builderInput || '',
+                'input': this.builderInput || ''
+            };
+
+            Object.keys(replacements).forEach(key => {
+                let regex = new RegExp(`\\[${key}\\]`, 'gi');
+                text = text.replace(regex, replacements[key]);
+            });
+
+            this.descParameters.forEach(param => {
+                let val = this.dynamicInputs['desc_' + param] || `[${param}]`;
+                let regex = new RegExp(`\\[${param}\\]`, 'g');
+                let styledVal = `<span class="text-indigo-600 dark:text-indigo-400 font-bold bg-indigo-50 dark:bg-indigo-950 px-1 rounded">${val}</span>`;
+                text = text.replace(regex, styledVal);
+            });
+            return text;
+        },
+
+        get rawDescContentClean() {
+            let text = this.activePrompt.desc_prompt || '';
+            if (!text) return '';
+            
+            let replacements = {
+                'character': this.selectedItem?.title || this.builderInput || '',
+                'title': this.selectedItem?.title || '',
+                'description': this.selectedItem?.description || this.builderInput || '',
+                'input': this.builderInput || ''
+            };
+
+            Object.keys(replacements).forEach(key => {
+                let regex = new RegExp(`\\[${key}\\]`, 'gi');
+                text = text.replace(regex, replacements[key]);
+            });
+
+            this.descParameters.forEach(param => {
+                let val = this.dynamicInputs['desc_' + param] || `[${param}]`;
+                let regex = new RegExp(`\\[${param}\\]`, 'g');
+                text = text.replace(regex, val);
+            });
+            return text;
+        },
+
+        get imageParameters() {
+            // Gunakan template utama activePrompt.image_prompt sebagai kerangka, bukan item database
+            let text = this.activePrompt.image_prompt || '';
+            if (!text) return [];
+            let matches = text.match(/\[(.*?)\]/g);
+            if (!matches) return [];
+            const standardKeys = ['character', 'title', 'description', 'input', 'imageprompt'];
+            let params = matches.map(m => m.slice(1, -1).trim());
+            return [...new Set(params)].filter(p => !standardKeys.includes(p.toLowerCase()));
+        },
+
+        get processedImageContent() {
+            let text = this.activePrompt.image_prompt || '';
+            if (!text) return 'Template image_prompt belum diatur.';
+            
+            // Ambil imagePrompt khusus dari item database jika ada, jadikan nilai untuk placeholder [imagePrompt] atau [description]
+            let dbImagePrompt = this.selectedItem?.imagePrompt || this.selectedItem?.image_prompt || this.selectedItem?.description || this.builderInput || '';
+
+            let replacements = {
+                'character': this.selectedItem?.title || this.builderInput || '',
+                'title': this.selectedItem?.title || '',
+                'description': dbImagePrompt,
+                'imageprompt': dbImagePrompt,
+                'input': this.builderInput || ''
+            };
+
+            Object.keys(replacements).forEach(key => {
+                let regex = new RegExp(`\\[${key}\\]`, 'gi');
+                text = text.replace(regex, replacements[key]);
+            });
+
+            this.imageParameters.forEach(param => {
+                let val = this.dynamicInputs['img_' + param] || `[${param}]`;
+                let regex = new RegExp(`\\[${param}\\]`, 'g');
+                let styledVal = `<span class="text-indigo-600 dark:text-indigo-400 font-bold bg-indigo-50 dark:bg-indigo-950 px-1 rounded">${val}</span>`;
+                text = text.replace(regex, styledVal);
+            });
+            return text;
+        },
+
+        get rawImageContentClean() {
+            let text = this.activePrompt.image_prompt || '';
+            if (!text) return '';
+            
+            let dbImagePrompt = this.selectedItem?.imagePrompt || this.selectedItem?.image_prompt || this.selectedItem?.description || this.builderInput || '';
+
+            let replacements = {
+                'character': this.selectedItem?.title || this.builderInput || '',
+                'title': this.selectedItem?.title || '',
+                'description': dbImagePrompt,
+                'imageprompt': dbImagePrompt,
+                'input': this.builderInput || ''
+            };
+
+            Object.keys(replacements).forEach(key => {
+                let regex = new RegExp(`\\[${key}\\]`, 'gi');
+                text = text.replace(regex, replacements[key]);
+            });
+
+            this.imageParameters.forEach(param => {
+                let val = this.dynamicInputs['img_' + param] || `[${param}]`;
+                let regex = new RegExp(`\\[${param}\\]`, 'g');
+                text = text.replace(regex, val);
+            });
+            return text;
+        }
+    }));
+});
+</script>
 {{ end }}

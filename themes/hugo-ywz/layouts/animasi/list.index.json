@@ -2,7 +2,7 @@
   "section": {{ .Title | jsonify }},
   "description": {{ .Description | jsonify }},
   "categories": [
-    {{- $promptSection := .Site.GetPage "section" "prompt" -}}
+    {{- $promptSection := .Site.GetPage "section" "animasi" -}}
     {{- if $promptSection -}}
       {{- $sections := $promptSection.Sections -}}
       {{- range $index, $sec := $sections -}}

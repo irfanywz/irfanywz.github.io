@@ -1,3 +1,3 @@
 ---
-title: "Prompt Thumbnail"
+title: "Thumbnail"
 ---

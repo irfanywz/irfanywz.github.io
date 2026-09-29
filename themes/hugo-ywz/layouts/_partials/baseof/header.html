@@ -54,7 +54,7 @@
             {{ partial "baseof/translate.html" . }}
 
             <!-- Search -->
-            <a href="/search" class='p-2 text-xl transition-colors {{ if eq .Page.RelPermalink "/search/" }}text-indigo-600 dark:text-indigo-400{{ else }}text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400{{ end }}' aria-label="Search">
+            <a title="Pencarian" href="/search" class='p-2 text-xl transition-colors {{ if eq .Page.RelPermalink "/search/" }}text-indigo-600 dark:text-indigo-400{{ else }}text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400{{ end }}' aria-label="Search">
                 <i class="icon-[ri--search-line]"></i>
             </a>
         </div>

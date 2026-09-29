@@ -18,7 +18,7 @@ mengetahui saja memang bisa membuat pintar, namun ketika kita menggunakan penget
 
 nyatanya tidak begitu...
 
-Masalahnya, priotasnya sudah berubah, yang dulu waktunya dihabiskan untuk mengumpulkan pengatahuan namun ternyata apa yang diketahui tidak bisa membuatnya bertahan hidup hidup hanya dari pengetahuan
+Masalahnya, priotasnya sudah berubah, yang dulu waktunya dihabiskan untuk mengumpulkan pengatahuan namun ternyata apa yang diketahui tidak bisa membuatnya bertahan hidup hanya dari pengetahuan
 
 alhasil, pengetahuan itu menjadi dilupakan, dan memilih hal yang lebih pasti agar kebutuhan hidup terpenuhi...
 
