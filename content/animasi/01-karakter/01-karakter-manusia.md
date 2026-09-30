@@ -2,22 +2,21 @@
 title: "Karakter Manusia"
 slug: "karakter-manusia"
 description: "Prompt builder untuk merancang karakter manusia original baru"
-icon: "icon-[ri--user-line]"
 image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
 has_database: true
 default_input: "A young cheerful guy with short messy dark hair, wearing a casual orange hoodie and blue jeans."
 desc_prompt: |
-  Create 8 DIFFERENT visual descriptions for human characters based on:
+  Create **[JUMLAH_VARIANT] DIFFERENT visual descriptions** for human characters based on:
 
-  [KARAKTER_DESKRIPSI]
+  [DESKRIPSI_KARAKTER]
 
-  Each description must represent a UNIQUE character variant.
+  Each description must represent a **UNIQUE character variant**.
 
-  Write each variant as ONE concise sentence, similar to:
+  Write each variant as **ONE concise sentence**, similar to:
 
   “A young cheerful guy with short messy dark hair, wearing a casual orange hoodie and blue jeans.”
 
-  VARIATION REQUIREMENTS:
+  ### VARIATION REQUIREMENTS
 
   Each character must be clearly different from the others through a natural combination of:
 
@@ -39,6 +38,7 @@ desc_prompt: |
   Make the characters feel like different real people rather than the same character with minor modifications.
 
   Avoid repeating the same:
+
   * face structure
   * hairstyle
   * body shape
@@ -47,10 +47,11 @@ desc_prompt: |
   * distinctive facial features
   * overall silhouette
 
-  FOOTWEAR LOCK — ALWAYS BAREFOOT:
+  ### FOOTWEAR LOCK — ALWAYS BAREFOOT
 
-  * Every character must ALWAYS be barefoot
-  * Both feet must be completely uncovered
+  Every character must ALWAYS be barefoot.
+
+  * Both feet completely uncovered
   * No shoes
   * No sandals
   * No slippers
@@ -59,19 +60,19 @@ desc_prompt: |
   * Bare feet must have simple, natural cartoon anatomy
   * Footwear must NEVER be used as a character variation
 
-  Rules:
+  ### RULES
 
-  * Focus ONLY on the character's physical appearance and clothing
+  * Focus ONLY on physical appearance and clothing
   * Clearly identify the character's general look and attire
   * Describe the face, hairstyle, body shape, outfit, and distinctive physical features
   * Keep anatomy appropriate to a stylized human cartoon character
   * Mention only the most visually important characteristics
   * Give every character a distinctive and memorable appearance
-  * Keep every character visually coherent and believable within the same cartoon world
+  * Keep every character visually coherent within the same cartoon world
   * Keep descriptions short and directly usable for image generation
   * Every character is assumed to be barefoot
 
-  DO NOT mention:
+  ### DO NOT MENTION
 
   * location
   * environment
@@ -89,26 +90,40 @@ desc_prompt: |
   * lore
   * story
 
-  OUTPUT FORMAT:
+  ### OUTPUT REQUIREMENTS
+
+  Generate **EXACTLY [JUMLAH_VARIANT] variants**.
+
+  The number of descriptions MUST match **[JUMLAH_VARIANT] EXACTLY**.
+
+  For example:
+
+  * `[JUMLAH_VARIANT] = 5` → output exactly 5 descriptions
+  * `[JUMLAH_VARIANT] = 8` → output exactly 8 descriptions
+  * `[JUMLAH_VARIANT] = 10` → output exactly 10 descriptions
+  * `[JUMLAH_VARIANT] = 15` → output exactly 15 descriptions
+
+  Do NOT default to 8.
+  Do NOT generate fewer variants.
+  Do NOT generate more variants.
+
+  ### OUTPUT FORMAT
 
   1. [One concise character description]
   2. [One concise character description]
   3. [One concise character description]
-  4. [One concise character description]
-  5. [One concise character description]
-  6. [One concise character description]
-  7. [One concise character description]
-  8. [One concise character description]
+     ...
+     Continue numbering until exactly **[JUMLAH_VARIANT]** descriptions are completed.
 
-  Each variant must be ONE sentence only.
+  Each variant must be **ONE sentence only**.
 
   Do not add explanations.
   Do not add headings.
   Do not repeat descriptions.
+  Do not combine multiple variants into one sentence.
+
 image_prompt: |
   Create ONE short visual description of the character using image reference
-
-  [ADDITIONAL_CONTEXT]
 
   If a reference image is provided, use it as the PRIMARY VISUAL REFERENCE. Carefully observe the character's visible appearance and translate only the important visual traits into a concise description.
   Write exactly ONE natural sentence, similar to:
@@ -132,6 +147,8 @@ image_prompt: |
   - Use simple, natural English.
   - Do not use bullet points or multiple sentences.
   - OUTPUT EXACTLY ONE SENTENCE.
+
+  [ADDITIONAL_CONTEXT]  
 
 database:
   "Anak":
@@ -186,7 +203,11 @@ Use the attached image as the **STRICT STYLE REFERENCE ONLY**.
 
 Create a completely **NEW HUMAN CHARACTER** based on this description:
 
+<br>
+
 [{humanInput}]
+
+<br>
 
 The new character must have a unique face, hairstyle, body shape, silhouette, outfit, colors, and identity. Do not copy, recolor, or slightly modify the original character.
 

@@ -13,6 +13,4 @@ tunggu jangan pergi mahkotamu belum diambil king !, ambil mahkota. play suara sa
 29 - membuat halaman prompt
 30 - perbaikan halaman prompt
 30 - perbaikan halaman about portofolio cardnya yang kepotong
-
-
-
+30 - full 1 hari refactory prompt animasi keformat markdown saja biar lebih mudah untuk dikembangkan

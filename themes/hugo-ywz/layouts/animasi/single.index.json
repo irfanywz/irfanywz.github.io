@@ -8,5 +8,6 @@
   "default_input": {{ .Params.default_input | jsonify }},
   "image_prompt": {{ .Params.image_prompt | jsonify }},
   "desc_prompt": {{ .Params.desc_prompt | jsonify }},
-  "database": {{ .Params.database | jsonify }}
+  "database": {{ .Params.database | jsonify }},
+  "variables_config": {{ .Params.variables_config | jsonify }}
 }
