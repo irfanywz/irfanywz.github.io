@@ -1,0 +1,9 @@
+<div x-data="pageLoader()" 
+     @click.window="handleClick($event)"
+     class="fixed top-0 left-0 right-0 h-[3px] z-[9999] pointer-events-none">
+    
+    <div :style="`width: ${progress}%`" 
+         :class="loading ? 'opacity-100' : 'opacity-0 duration-300'"
+         class="h-full bg-indigo-600 dark:bg-indigo-400 transition-all duration-200 ease-out shadow-[0_0_10px_rgba(79,70,229,0.7)] dark:shadow-[0_0_12px_rgba(129,140,248,0.7)]">
+    </div>
+</div>

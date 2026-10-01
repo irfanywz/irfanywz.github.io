@@ -6,42 +6,23 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: true
 default_input: "Different angle of the traditional room showing the opposite wall with wooden cabinets and hanging decorations."
 desc_prompt: |
-  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for a different viewpoint or perspective of the same location based on:
+  Create [JUMLAH_VARIANT] DIFFERENT short visual descriptions for different viewpoints of the same location based on:
 
-  [{target}]
-
-  Each variant must describe a **clearly different camera viewpoint**, while preserving the same location, architecture, layout, and environmental identity.
-
-  Write each variant as **one concise descriptive sentence**, specifying the camera angle, facing direction, viewpoint, and the important furniture or architectural features visible from that perspective.
+  [DESKRIPSIKAN]
 
   Rules:
 
-  * Focus **ONLY on the viewpoint, camera angle, facing direction, and visible environmental features**
-  * Keep the location **exactly the same**
-  * Each variant must show a meaningfully different viewpoint, not merely a small camera shift
-  * Possible viewpoints include front view, reverse view, left-side view, right-side view, corner view, diagonal view, entrance-facing view, room-facing view, or other logical perspectives
-  * Clearly describe what becomes visible or changes in visibility from each viewpoint
-  * Ensure the architecture, furniture, structures, and spatial relationships remain logically connected to the same location
-  * Do NOT redesign, rearrange, replace, or add environmental elements simply because the viewpoint changes
-  * Keep perspective believable and consistent with the physical structure of the location
-  * Keep descriptions suitable for 2D animation background generation
+  * Each variant must represent a clearly different camera viewpoint, not merely a small camera shift.
+  * Focus ONLY on camera angle, facing direction, viewpoint, perspective, and visible environmental features.
+  * Vary the viewpoint meaningfully using front, reverse, left, right, corner, diagonal, entrance-facing, room-facing, or other logical perspectives.
+  * Clearly describe what becomes visible or changes in visibility from each viewpoint.
+  * Preserve the exact same architecture, layout, furniture, objects, proportions, spatial relationships, and environmental identity.
+  * Do not add, remove, rearrange, replace, or redesign any environmental elements.
+  * Keep the perspective physically believable and consistent with the original location.
+  * Keep each viewpoint suitable for 2D animation background generation.
+  * Keep each description concise and directly usable for asset generation pipelines.
 
-  ### LOCATION LOCK
-
-  The original location must remain unchanged.
-
-  Preserve:
-
-  * architecture
-  * room structure
-  * environmental layout
-  * furniture
-  * major objects
-  * proportions
-  * spatial relationships
-  * overall environment identity
-
-  **ONLY change the viewpoint and perspectiv**
+  Output exactly [JUMLAH_VARIANT] numbered variants, ONE sentence per variant, with no explanations or extra text.
 
 
 image_prompt: |
@@ -84,121 +65,77 @@ database:
 outputs:
   - JSON
 ---
-
 Use the attached image as the **STRICT ENVIRONMENT REFERENCE**.
 
-Create a NEW background showing a different side, area, or section of the **SAME LOCATION** based on:
-
-<br>
+Create a **NEW BACKGROUND showing a different area or section of the SAME LOCATION** based on:
 
 [{humanInput}]
 
-<br>
+### LOCATION LOCK
 
-The new background must remain visually and spatially consistent with the reference image.
+The new background must clearly belong to the **same location** as the reference.
 
-### CAMERA AND VIEWPOINT LOCK
+Preserve the location's:
 
-**Preserve the EXACT SAME CAMERA TYPE, VIEW DIRECTION, AND PROJECTION STYLE as the reference image.**
-
-If the reference is a **side-scroller / side-view background**, the new background MUST also be a **side-scroller / side-view background**.
-
-If the reference uses:
-
-* side view → keep side view
-* front-facing view → keep front-facing view
-* eye-level view → keep eye-level view
-* 3/4 view → keep 3/4 view
-* horizontal sidescroller framing → keep horizontal sidescroller framing
-
-**Do NOT change the camera style or perspective type.**
-
-The camera may reveal a different **area of the same location**, but it must do so from the **same visual viewpoint system** as the reference.
-
-Do NOT turn a side-scroller into:
-
-* front view
-* top-down view
-* isometric view
-* cinematic perspective
-* dramatic angle
-* close-up
-* extreme perspective
-
-The goal is:
-
-**SAME LOCATION + SAME CAMERA STYLE + DIFFERENT VISIBLE AREA**
-
-### ENVIRONMENT CONSISTENCY
-
-Preserve the identity of the same location, including:
-
-* architecture
-* building design
-* environmental layout
-* materials
-* colors
-* proportions
-* object design
-* vegetation
-* surrounding environment
+* architecture and structural design
+* materials and colors
+* proportions and visual identity
+* environmental style
 * distinctive structural features
-* overall visual identity
+* logical spatial relationships
 
-The new scene must logically connect to the reference.
+If the requested area is not visible in the reference, intelligently reconstruct it using the reference's architecture, materials, structure, and environmental clues.
 
-If the requested area is not directly visible in the reference, intelligently reconstruct it using the architecture, structure, materials, and environmental clues from the reference.
+Do NOT create an unrelated environment or redesign the location.
 
-Do NOT invent an unrelated environment.
+### CAMERA LOCK
 
-### VIEWPOINT CHANGE
+Preserve the **EXACT SAME CAMERA SYSTEM** as the reference:
 
-Show the area requested in [DESC] while maintaining the same camera orientation and visual perspective as the reference.
+* same view type
+* same camera height
+* same viewing direction
+* same projection/perspective
+* same framing style
+* same spatial scale
 
-Change **WHAT PART OF THE LOCATION IS VISIBLE**, not **HOW THE CAMERA TYPE WORKS**.
+If the reference is a side-scroller, the result MUST remain a side-scroller.
 
-The new view should feel like the camera has moved along or around the same location while maintaining the same sidescroller visual language.
+Do NOT switch to front view, top-down, isometric, cinematic perspective, dramatic angle, close-up, or extreme perspective.
+
+### AREA CHANGE
+
+Show the specific area requested in [humanInput].
+
+Change **WHAT PART OF THE LOCATION IS VISIBLE**, not how the camera system works.
+
+The result should feel like the camera has moved to another logical section of the same continuous location while maintaining the same visual viewpoint.
 
 ### VISUAL STYLE
 
-Maintain the reference's visual style:
+Match the reference's visual language:
 
-* simple 2D cartoon illustration
-* thick black outlines
+* simple 2D cartoon
+* thick natural black outlines
 * flat solid colors
 * clean simple shapes
-* minimal details
+* minimal detail
 * slightly handmade line quality
 * animation-friendly environment design
 
 ### COMPOSITION
 
-Create a clean, readable **wide 16:9 animation background**.
+* Wide 16:9 animation background.
+* Maintain the reference's general framing and spatial scale.
+* Keep sufficient usable space for characters.
+* Create a new composition; do NOT reproduce the original composition.
 
-Maintain the same general framing and spatial scale as the reference.
+### FINAL LOCK
 
-Keep sufficient open space for characters.
+No characters, people, animals, or unrelated environments.
 
-Do not recreate the exact original composition.
+Do NOT copy unrelated objects or rearrange the reference into a new composition.
 
-### EXCLUSIONS
-
-No characters.
-
-No people.
-
-No animals.
-
-Do not copy unrelated objects from the reference.
-
-Do not introduce a completely different building, neighborhood, or environment.
-
-Do not change the camera type.
-
-Do not change the projection style.
-
-Do not change from side-scroller to another perspective.
-
-The result must look like **another visible area of the SAME LOCATION**, viewed through the **SAME CAMERA STYLE** as the reference.
+The final image must feel like **ANOTHER AREA OF THE SAME LOCATION + SAME CAMERA SYSTEM + NEW VISIBLE COMPOSITION**.
 
 **Output ONLY the new background.**

@@ -6,73 +6,24 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: true
 default_input: "Character swinging a wooden sword downward with full anticipation, impact, and follow-through"
 desc_prompt: |
-  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for the character's animation action sequence based on:
+  Create [JUMLAH_VARIANT] DIFFERENT short visual descriptions for animation action sequences based on:
 
   [DESKRIPSIKAN]
 
-  Each variant must describe a **clearly different action sequence**, with a distinct movement flow, progression, and series of poses.
-
-  Write each variant as **ONE concise sentence**, describing the key movement stages, action flow, and pose dynamics clearly.
-
   Rules:
 
-  * Focus **ONLY on the action sequence, movement stages, poses, and physical dynamics**
-  * Each variant must contain a clear **beginning → movement → ending** flow
-  * Describe the important pose changes in chronological order
-  * Create natural, readable, and animation-friendly movement sequences
-  * Make each variant meaningfully different
-  * Do NOT make variants different only by changing the direction or speed of the same action
-  * Avoid repeating the same movement pattern or pose sequence
-  * Keep movements suitable for simple 2D character animation
+  * Each variant must represent a clearly different movement sequence, not merely a change in direction or speed.
+  * Focus ONLY on movement, pose changes, physical dynamics, and action flow.
+  * Describe the sequence chronologically as **beginning → movement → ending**.
+  * Include the relevant preparation, main action, reaction/follow-through, and final pose when appropriate.
+  * Vary the movement pattern, pose progression, and physical dynamics meaningfully between variants.
+  * Keep movements natural, readable, simple, and suitable for 2D character animation.
+  * Do NOT mention or modify the character, face, hair, body proportions, clothing, accessories, identity, or appearance.
+  * Do NOT mention the location, environment, background, lighting, weather, atmosphere, personality, backstory, or story.
+  * Mention objects or props only when directly required by [DESKRIPSIKAN].
+  * Keep each sequence concise and directly usable for animation or image generation.
 
-  **CHARACTER LOCK:**
-
-  * DO NOT modify or mention character identity
-  * DO NOT modify or mention face shape
-  * DO NOT modify or mention facial features
-  * DO NOT modify or mention hairstyle
-  * DO NOT modify or mention body proportions
-  * DO NOT modify or mention clothing
-  * DO NOT modify or mention accessories
-  * ONLY describe the character's movement and action sequence
-
-  **ACTION FLOW:**
-  Describe movement progressively, for example:
-
-  * starting pose
-  * preparation movement
-  * main action
-  * reaction or follow-through
-  * final pose
-
-  Only include stages that are relevant to [DESKRIPSIKAN].
-
-  **DO NOT mention:**
-
-  * location
-  * environment
-  * background
-  * setting
-  * atmosphere
-  * lighting
-  * weather
-  * time
-  * objects or props unless they are directly required by the action
-  * personality
-  * backstory
-  * story
-
-  Keep every description **short and directly usable for animation or image generation**.
-
-  **OUTPUT RULES:**
-
-  * Output EXACTLY **[JUMLAH_VARIANT] variants**
-  * Number each variant
-  * One sentence per variant
-  * Do not output fewer or more variants
-  * Do not default to any specific number
-  * Do not add explanations, headings, or commentary
-
+  Output exactly [JUMLAH_VARIANT] numbered variants, ONE sentence per variant, with no explanations or extra text.
 
 image_prompt: |
   Create ONE short visual description of the character's action sequence using image reference
@@ -95,7 +46,7 @@ image_prompt: |
   - Do not use bullet points or multiple sentences.
   - OUTPUT EXACTLY ONE SENTENCE.
   
-  {note}
+  [note]
 
 database:
   "Combat & Aksi":
@@ -116,135 +67,63 @@ database:
 outputs:
   - JSON
 ---
-
 Use the attached character image as the **STRICT CHARACTER REFERENCE**.
 
-Create a **CLEAN SPRITE SHEET** showing the same character performing this action:
+Create a **CLEAN SPRITE SHEET** of the same character performing:
 
-**ACTION DESCRIPTION:**
+[[{humanInput}]]
 
-<br>
+The character must remain the **EXACT SAME CHARACTER** in every pose.
 
-[{humanInput}]
+### CHARACTER LOCK
 
-<br>
+Preserve the same:
 
-The character must remain the **EXACT SAME CHARACTER** throughout the entire sprite sheet.
-
-**CHARACTER LOCK:**
-
-Keep the character consistent in every pose:
-
-* same face and identity
-* same hairstyle
-* same body proportions
-* same clothing
-* same colors
-* same skin tone
-* same accessories
-* same visual style
-* same linework
-* same overall character design
-
-Do not redesign, replace, or randomly change the character between poses.
-
-**ACTION SEQUENCE:**
-
-Break the action into a clear sequence of animation poses.
-
-Show the complete action from:
-
-* anticipation
-* preparation
-* main action
-* follow-through
-* final pose
-
-Each pose must show a meaningful stage of the movement.
-
-The poses should form a natural animation sequence when viewed in order.
-
-**PURE SPRITE SHEET LAYOUT:**
-
-Arrange multiple full-body character poses together on a single clean canvas.
-
-**IMPORTANT:**
-
-* NO border
-* NO boxes
-* NO panels
-* NO grid lines
-* NO frame outlines
-* NO separators
-* NO individual pose containers
-* NO shadow behind each pose
-* NO background objects
-* NO text
-* NO labels
-* NO arrows
-* NO numbering
-
-Each pose must exist directly on the same plain canvas with empty space between poses.
-
-The poses should be arranged in a clean and organized layout, but without any visible borders or containers.
-
-Each character pose must be completely visible and isolated from the others.
-
-Leave enough empty space around every pose so that each individual sprite can be easily cropped manually.
-
-Do not allow characters, weapons, hands, or other body parts to overlap with another pose.
-
-**CONSISTENCY:**
-
-Maintain consistent:
-
-* character scale
+* face and identity
+* hairstyle
 * body proportions
-* camera/view angle
-* perspective
-* line thickness
-* colors
-* clothing
-* prop size
+* clothing and colors
+* skin tone
+* accessories
+* linework and visual style
 
-All poses must look like they belong to the same animation sequence.
+Do NOT redesign, replace, or randomly alter the character.
 
-**PROP CONSISTENCY:**
+### ACTION SEQUENCE
 
-If the action uses an object or weapon, keep the exact same prop design throughout the sprite sheet.
+Break [{humanInput}] into a natural chronological sequence:
 
-The prop must maintain:
+**anticipation → preparation → main action → follow-through → final pose**
 
-* same shape
-* same proportions
-* same colors
-* same design
-* correct hand placement
+Each pose must represent a meaningful stage of movement with clear, readable silhouettes.
 
-The prop may rotate or change position naturally according to the action, but it must remain the same object.
+### SPRITE SHEET
 
-**ANIMATION STYLE:**
+Place multiple **full-body poses** directly on one plain clean canvas.
 
-Use simple 2D pose-to-pose cartoon animation.
+* No borders, boxes, panels, grids, separators, frame lines, text, labels, arrows, or numbering.
+* No shadows behind individual poses.
+* No background objects or unnecessary elements.
+* Keep every pose fully visible and clearly separated.
+* Leave enough empty space around each pose for easy manual cropping.
+* Do not allow poses or body parts to overlap.
 
-Prioritize:
+### CONSISTENCY
+
+Maintain consistent character scale, proportions, camera angle, perspective, line thickness, colors, clothing, and overall design.
+
+If a prop is required, keep the **same prop design, proportions, colors, and scale** throughout the sequence while allowing natural movement.
+
+### ANIMATION STYLE
+
+Use simple **2D pose-to-pose animation** with:
 
 * strong readable silhouettes
-* clear action poses
-* natural anticipation
-* clear main action
-* believable follow-through
-* animation-friendly construction
-* simple readable movement
+* clear pose changes
+* natural anticipation and follow-through
+* believable movement
+* simple animation-friendly construction
 
-Avoid motion blur, speed lines, visual effects, duplicate poses, extreme perspective, or unnecessary details.
+Avoid motion blur, speed lines, duplicate poses, extreme perspective, visual effects, and unnecessary detail.
 
-**FINAL OUTPUT:**
-
-Create a **PURE CLEAN SPRITE SHEET ONLY**.
-
-Multiple separate character poses on one plain background.
-
-No borders, no boxes, no panels, no grids, and no frame lines.
-
-The final image must look like a raw animation asset sheet, where every pose is placed directly on the canvas with enough empty space between them to be individually cropped and used as separate sprites.
+**Output ONLY the clean sprite sheet.**

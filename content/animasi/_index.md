@@ -1,6 +1,6 @@
 ---
 title: "Prompt Animasi"
-description: "Kumpulan Prompt Animasi mulai dari karakter, background, objek, dll untuk kebutuhan AI"
+description: "Kumpulan Prompt untuk Kebutuhan pembuat Animasi mulai dari karakter, background, objek, dll"
 outputs:
   - HTML
   - JSON

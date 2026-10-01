@@ -6,77 +6,24 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: true
 default_input: "Low angle shot looking up, showing towering height and dramatic vertical perspective of the environment."
 desc_prompt: |
-  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for changing the camera angle and viewpoint of an existing environment based on:
+  Create [JUMLAH_VARIANT] DIFFERENT short visual descriptions for changing the camera viewpoint of an existing environment based on:
 
-  [{target}]
-
-  Each variant must describe a **clearly different camera viewpoint or framing**, not merely a small camera movement or minor zoom adjustment.
-
-  Write each variant as **one concise descriptive sentence**, specifying the camera placement, viewing height, viewing direction, perspective, and framing clearly.
+  [DESKRIPSIKAN]
 
   Rules:
 
-  * Focus **ONLY on camera viewpoint, camera position, perspective, and framing**
-  * Clearly describe where the camera is positioned relative to the scene
-  * Clearly describe the viewing height and viewing direction
-  * Clearly describe the perspective type or amount of perspective distortion
-  * Describe how the framing changes from the original viewpoint
-  * Make each variant meaningfully different in **camera position, angle, height, orientation, perspective, or framing**
-  * Keep the requested camera change physically believable
-  * Do NOT mention or describe any specific physical objects
-  * Do NOT redesign, replace, rearrange, or modify the original environment
-  * Do NOT change the identity or structure of the original environment
+  * Each variant must represent a clearly different camera position, angle, height, orientation, perspective, or framing, not merely a small movement or zoom.
+  * Focus ONLY on camera placement, viewing height, viewing direction, perspective, and framing.
+  * Clearly describe where the camera is positioned, how it faces the scene, and how the framing differs.
+  * Use believable variations such as eye-level, low-angle, high-angle, straight-on, side, diagonal, corner, centered, off-center, closer, or wider views when appropriate.
+  * Vary the perspective from minimal to natural or moderate distortion, while keeping it physically believable.
+  * The original environment must remain completely unchanged.
+  * Do NOT mention specific objects or modify the architecture, layout, furniture, objects, vegetation, materials, colors, proportions, or environmental identity.
+  * Only the camera changes; it observes the exact same environment from a different viewpoint.
+  * Keep each description concise and suitable for 2D animation background generation.
 
-  ### CAMERA-ONLY LOCK
+  Output exactly [JUMLAH_VARIANT] numbered variants, ONE sentence per variant, with no explanations or extra text.
 
-  The environment remains **completely unchanged**.
-
-  Only the camera changes.
-
-  Do NOT change:
-
-  * architecture
-  * layout
-  * furniture
-  * objects
-  * vegetation
-  * materials
-  * colors
-  * proportions
-  * environmental identity
-
-  The camera simply observes the **same unchanged environment from a different viewpoint**.
-
-  ### VIEWPOINT
-
-  Possible variations may include:
-
-  * eye-level view
-  * low-angle view
-  * high-angle view
-  * straight-on view
-  * left-side angle
-  * right-side angle
-  * diagonal view
-  * corner view
-  * closer framing
-  * wider framing
-  * centered framing
-  * off-center framing
-
-  Only use viewpoints that make sense for [{target}].
-
-  ### PERSPECTIVE
-
-  Clearly distinguish between:
-
-  * minimal perspective distortion
-  * shallow perspective
-  * natural perspective
-  * moderate perspective
-  * stronger perspective
-
-  Do not create unrealistic or extreme distortion unless
 
 
 image_prompt: |
@@ -131,49 +78,99 @@ database:
 outputs:
   - JSON
 ---
+Use the attached image as the **STRICT ENVIRONMENT REFERENCE**.
 
-Use the attached image as the STRICT ENVIRONMENT REFERENCE.
+Recreate the **EXACT SAME ENVIRONMENT** from a different camera viewpoint based on:
 
-Recreate the SAME environment from a different camera viewpoint based on:
+[[{humanInput}]]
 
-<br>
+### ONLY CHANGE
 
-[{humanInput}]
+Change ONLY the **camera viewpoint** according to [[{humanInput}]]:
 
-<br>
+* camera position
+* viewing direction
+* viewing angle
+* camera height
+* visible surfaces
+* perspective
+* framing
 
-Preserve the original environment identity and all important environmental elements.
+The requested viewpoint must feel physically connected to the original scene, as if the camera moved to another position within the **same location**.
 
-Do NOT redesign the location or create a different environment.
+### ENVIRONMENT LOCK
 
-Keep consistent:
-- buildings
-- roads
-- furniture
-- trees
-- major objects
-- object proportions
-- environmental layout
-- architectural design
-- colors
-- visual style
-- linework
-- overall scene identity
+Preserve the original environment identity and physical structure:
 
-Adjust the visible surfaces and spatial relationships naturally according to the requested camera viewpoint.
+* buildings and architecture
+* roads, floors, and terrain
+* walls, doors, windows, and structures
+* furniture
+* trees and vegetation
+* major objects
+* object proportions
+* materials and colors
+* spatial relationships
+* overall environment identity
 
-Maintain a clean 2D cartoon animation style with:
-- thick black outlines
-- flat solid colors
-- clean simple shapes
-- minimal details
-- slightly handmade line quality
-- animation-friendly environment design
+Do NOT redesign, replace, remove, add, or randomly reposition environmental elements.
 
-Do not add characters, text, logos, new buildings, or unrelated objects.
+Objects that become hidden or partially visible because of the new viewpoint may naturally change visibility, but their physical placement must remain consistent.
 
-Do not randomly move or redesign existing environmental elements.
+### CAMERA RULE
 
-The result must look like the SAME location viewed from a different camera position.
+Adjust the scene naturally to match the requested viewpoint.
 
-Output a clean animation background with consistent environment design and the requested camera viewpoint.
+Reveal the correct sides, surfaces, depth, and spatial relationships that would realistically be visible from the new camera position.
+
+Do NOT treat the new viewpoint as a completely new composition or redesigned environment.
+
+### VISUAL STYLE LOCK
+
+Preserve the original:
+
+* 2D cartoon animation style
+* thick natural black outlines
+* flat solid colors
+* clean simple shapes
+* minimal details
+* slightly handmade line quality
+* animation-friendly design
+* original rendering and visual language
+
+### DO NOT CHANGE
+
+Do NOT change:
+
+* environment identity
+* architecture
+* object design
+* object proportions
+* materials
+* colors
+* physical layout
+* spatial relationships
+
+Do NOT add:
+
+* characters
+* people
+* animals
+* vehicles
+* text
+* logos
+* new buildings
+* unrelated objects
+
+### FINAL LOCK
+
+**SAME LOCATION**
+**SAME ENVIRONMENT**
+**SAME ARCHITECTURE**
+**SAME OBJECTS**
+**SAME SPATIAL RELATIONSHIPS**
+**DIFFERENT CAMERA VIEWPOINT ONLY**
+
+The result must look like the **SAME physical location viewed from the camera viewpoint specified in [[{humanInput}]]**, with the environment remaining visually and structurally consistent.
+
+**ONLY CHANGE THE CAMERA VIEWPOINT.**

@@ -6,71 +6,44 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: true
 default_input: "sharp fierce male face with narrow eyes and thick eyebrows"
 desc_prompt: |
-  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for the character's new face based on:
+  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for new facial designs based on:
 
   [DESKRIPSIKAN]
 
-  Each variant must describe a **clearly different facial design**, with noticeable differences in facial features, expression, and distinctive traits.
+  Each variant must describe a **clearly different face design**, with meaningful changes to facial features, proportions, expression, and distinctive facial traits.
 
-  Write each variant as **ONE concise sentence**, describing the facial features, expression, and unique facial traits clearly.
+  ### RULES
 
-  Rules:
+  * Focus ONLY on the face, facial features, expression, and visible facial marks.
+  * Describe the eyes, eyebrows, nose, mouth, and other relevant facial features.
+  * Vary the overall facial structure, feature shapes, proportions, and distinctive traits meaningfully.
+  * Use traits such as freckles, moles, scars, wrinkles, dimples, facial hair, or other visible marks only when relevant.
+  * Each variant must remain natural, believable, simple, readable, memorable, and suitable for 2D animation.
+  * Do NOT create differences based only on expression or a small facial mark.
+  * Avoid repeating the same eye, eyebrow, nose, mouth, facial proportions, or distinctive traits between variants.
+  * Keep the facial design consistent with [DESKRIPSIKAN].
 
-  * Focus **ONLY on the face, facial features, expression, and distinct facial marks**
-  * Clearly describe the eyes, eyebrows, nose, mouth, and other important facial features when relevant
-  * Describe distinctive traits such as freckles, moles, scars, wrinkles, dimples, facial hair, or other visible marks when relevant
-  * Create natural, believable, and animation-friendly facial designs
-  * Make each variant visually distinct
-  * Do NOT make variants different only by expression
-  * Do NOT make variants different only by adding a mole, scar, or other small mark
-  * Avoid repeating the same eye shape, eyebrow shape, nose structure, mouth shape, facial proportions, or distinctive traits
+  ### CHARACTER LOCK
 
-  **CHARACTER LOCK:**
+  ONLY change the facial design.
 
-  * DO NOT modify or mention head shape
-  * DO NOT modify or mention hairstyle or hair
-  * DO NOT modify or mention hair color
-  * DO NOT modify or mention body shape or proportions
-  * DO NOT modify or mention clothing
-  * DO NOT modify or mention accessories
-  * DO NOT modify or mention pose
-  * ONLY change the facial design
+  Do NOT mention or modify:
 
-  **FACE STYLE:**
+  * head shape
+  * hair or hairstyle
+  * hair color
+  * body shape or proportions
+  * clothing
+  * accessories
+  * pose
 
-  * Keep the face consistent with the provided target description
-  * Keep facial features simple, clean, readable, and suitable for 2D animation
-  * Maintain natural cartoon proportions
-  * Make the face distinctive and memorable without excessive detail
-  * Expression should support the target description without changing the underlying facial structure
+  ### EXCLUSIONS
 
-  **DO NOT mention:**
+  Do NOT mention location, environment, background, setting, atmosphere, lighting, weather, time, actions, personality, backstory, or story.
 
-  * location
-  * environment
-  * background
-  * setting
-  * atmosphere
-  * lighting
-  * weather
-  * time
-  * actions
-  * poses
-  * personality
-  * backstory
-  * story
+  ### OUTPUT
 
-  Keep every description **short and directly usable for image generation**.
-
-  **OUTPUT RULES:**
-
-  * Output EXACTLY **[JUMLAH_VARIANT] variants**
-  * Number each variant
-  * One sentence per variant
-  * Do not output fewer or more variants
-  * Do not default to any specific number
-  * Do not add explanations, headings, or commentary
-
+  Output exactly **[JUMLAH_VARIANT] numbered variants**, ONE concise sentence per variant, with no explanations, headings, or extra text.
 
 image_prompt: |
   Create ONE short visual description of the character's new face using image reference
@@ -121,130 +94,74 @@ database:
 outputs:
   - JSON
 ---
-
 Use the attached image as the **STRICT CHARACTER REFERENCE**.
 
-The character in the reference image intentionally has a blank, faceless head.
+The reference character intentionally has a **blank, faceless head**.
 
-Create a **NEW ORIGINAL FACE** based on the following description:
+Create a **NEW ORIGINAL FACE** based on:
 
-**FACE DESCRIPTION:**
+[[{humanInput}]]
 
-<br>
+### FACE DESIGN
 
-[{humanInput}]
-
-<br>
-
-Interpret the description creatively and translate it into a natural facial design.
-
-The described facial characteristics must be clearly visible and recognizable while remaining consistent with the character's existing design.
-
-**CHARACTER LOCK — DO NOT CHANGE**
-
-Keep everything from the original character exactly as provided:
-
-* same head shape
-* same hairstyle
-* same hair shape
-* same hair color
-* same skin tone
-* same body shape
-* same body proportions
-* same clothing
-* same accessories
-* same pose
-* same head position
-* same camera angle
-* same perspective
-* same composition
-* same art style
-* same line quality
-* same colors
-* same shading
-
-**ONLY CREATE THE NEW FACE.**
-
-**FACE DESIGN**
-
-Create a completely new and unique combination of:
+Create a natural, unique combination of:
 
 * eyes
 * eyebrows
 * nose
 * mouth
 * facial proportions
-* facial characteristics
-* scars
-* moles
-* wrinkles
-* facial marks
-* other characteristics explicitly described in [FACE DESCRIPTION]
+* distinctive facial traits
+* explicitly requested marks such as scars, moles, freckles, wrinkles, dimples, or facial hair
 
-The new face must feel like a naturally designed identity for this character.
+Make all described features clearly visible and recognizable.
+Do not copy or recreate any previous face, and do not use generic features that conflict with the description.
 
-Do not copy or recreate a previous face.
+### DESCRIPTION PRIORITY
 
-Do not use generic facial features if they conflict with the description.
+Treat **[{humanInput}] as the PRIMARY INSTRUCTION**.
 
-**DESCRIPTION PRIORITY**
-
-Treat [FACE DESCRIPTION] as the PRIMARY INSTRUCTION for the new face.
-
-If the description specifies a particular feature, make that feature clearly visible.
+If a specific feature is requested, make it clearly visible without exaggerating beyond the description.
 
 Examples:
 
-* "sharp fierce male face" → create a naturally intimidating facial expression and feature combination.
-* "narrow eyes" → use clearly narrow eye shapes.
-* "thick eyebrows" → create visibly thick eyebrows.
-* "mole on the left cheek" → place one visible mole on the left cheek.
-* "scar beside the right eye" → create a visible scar beside the right eye.
-* "large nose" → create a noticeably larger nose while maintaining the character's proportions.
+* “narrow eyes” → clearly narrow eye shapes
+* “thick eyebrows” → visibly thick eyebrows
+* “mole on the left cheek” → one visible mole on the left cheek
+* “scar beside the right eye” → visible scar beside the right eye
+* “large nose” → noticeably larger nose while remaining natural
 
-Do not exaggerate features beyond what the description reasonably implies.
+### CHARACTER LOCK
 
-**NATURAL INTEGRATION**
+**ONLY CREATE THE FACE.**
 
-Fit the new face naturally onto the existing head.
-
-Respect the existing:
+Keep everything outside the facial area **EXACTLY UNCHANGED**, including:
 
 * head shape
-* viewing angle
-* perspective
-* facial placement
-* character proportions
-
-Do not modify the head to accommodate the face.
-
-The facial features must use the same visual language as the character.
-
-**DO NOT ALTER**
-
-Do not change:
-
-* hairstyle
-* head shape
+* hair and hairstyle
+* hair color
 * skin tone
-* body
+* body and proportions
 * clothing
 * accessories
-* pose
-* proportions
-* camera angle
+* pose and head position
+* camera angle and perspective
 * composition
-* art style
+* art style, line quality, colors, and shading
 
-Do not add facial characteristics that are not requested unless they are necessary to make the face look naturally complete.
+Do NOT modify the head to accommodate the face.
 
-Do not recreate any previous face.
+### NATURAL INTEGRATION
 
-**FINAL RESULT**
+Fit the new facial features naturally onto the existing head while respecting its shape, viewing angle, perspective, proportions, and facial placement.
 
-Create the same faceless character with a completely new face based on [FACE DESCRIPTION].
+Match the existing character's visual language and rendering style.
 
-The face must have a distinct and recognizable identity while seamlessly matching the original character.
+Do not add unrequested facial characteristics unless necessary for a naturally complete face.
+
+### FINAL LOCK
+
+The result must be the **same original faceless character with only the face newly created** from [{humanInput}].
 
 Everything outside the facial area must remain unchanged.
 

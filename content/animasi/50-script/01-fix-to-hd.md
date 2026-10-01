@@ -41,112 +41,50 @@ database:
 outputs:
   - JSON
 ---
+Use the attached image as the **STRICT IMAGE REFERENCE**.
 
-Use the attached image as the STRICT IMAGE REFERENCE.
-Enhance and restore the image to a clean, sharp, high-definition version while preserving the original image exactly as much as possible.
+Enhance and restore the image to a **clean, sharp, high-definition version** while preserving the original image exactly.
 
-ADDITIONAL PROBLEMS TO FIX
+### PROBLEMS TO FIX
 
-<br>
+Fix ONLY the issues specified in:
 
 [{humanInput}]
 
-<br>
+Also correct blur, softness, pixelation, jagged edges, compression artifacts, noise, broken outlines, and unwanted visual artifacts when present.
 
-Improve the overall image quality by correcting:
-* blur
-* softness
-* low resolution
-* jagged or broken edges
-* blurry outlines
-* pixelation
-* compression artifacts
-* unwanted AI artifacts
-* inconsistent line quality
-* unclear small details
-* distorted or malformed details
-* noise
-* visual inconsistencies
+Recover existing details naturally. **Do not invent new details.**
 
-Recover and sharpen existing details naturally.
-Improve clarity and definition without inventing unnecessary new details.
+### CONTENT LOCK
 
-STRICT CONTENT LOCK
-Preserve the original:
-* subject
-* objects
-* elements
-* shapes
-* details
-* positions
-* proportions
-* composition
-* perspective
-* camera angle
-* pose
-* expression
-* clothing
-* hairstyle
-* colors
-* lighting
-* shadows
-* atmosphere
-* visual style
-* rendering style
+Preserve EXACTLY:
 
-Do NOT redesign the image.
-Do not add new objects.
-Do not remove existing objects.
-Do not change the subject's identity.
-Do not change shapes or proportions.
-Do not change the composition.
-Do not change the perspective.
-Do not change the camera angle.
-Do not change the pose.
-Do not change the colors.
-Do not change the lighting.
-Do not change the visual style.
+* subject and identity
+* objects and elements
+* shapes and proportions
+* positions and composition
+* perspective and camera angle
+* pose and expression
+* clothing and hairstyle
+* colors, lighting, shadows, and atmosphere
+* visual and rendering style
 
-DETAIL RESTORATION
-Restore existing details that are unclear because of blur or low resolution.
-Make edges clean and well-defined.
-Make outlines sharp and consistent.
-Preserve the original shapes instead of replacing them with newly generated shapes.
-Preserve small details instead of simplifying them.
-If an area is unclear, reconstruct it conservatively based on the surrounding original information.
-Do not hallucinate unnecessary details.
+Do NOT add, remove, redesign, replace, or rearrange anything.
 
-STYLE LOCK
-Maintain the exact visual language of the original image:
-* same linework
-* same outline thickness
-* same shapes
-* same color treatment
-* same texture
-* same shading
-* same rendering
-* same level of detail
+### RESTORATION
 
-The enhancement must look like a higher-quality version of the original image, not a newly generated image.
+Sharpen existing edges and details naturally. Keep original shapes and small details intact. If information is unclear, reconstruct it conservatively from the surrounding image.
 
-QUALITY TARGET
-Produce a clean, sharp, high-resolution result with:
-* crisp edges
-* clear details
-* clean outlines
-* reduced blur
-* reduced noise
-* reduced artifacts
-* consistent shapes
-* natural detail restoration
-* high visual clarity
+Avoid hallucinated details, excessive sharpening, halos, artificial textures, oversmoothing, or overprocessing.
 
-Do not over-sharpen.
-Do not create halos around edges.
-Do not create artificial textures.
-Do not make the image look overly processed.
+### STYLE LOCK
 
-FINAL RESULT
-The final image must remain visually identical to the original, except that its technical image quality has been improved.
-It should look as if the original image was created or captured in much higher resolution from the beginning.
-ENHANCE QUALITY ONLY. DO NOT REDESIGN THE IMAGE.
+Preserve the original linework, outlines, shapes, colors, shading, texture, rendering, and level of detail.
+
+The result must look like the **same original image in higher quality**, not a newly generated or redesigned image.
+
+### FINAL
+
+**SAME IMAGE + SAME CONTENT + SAME STYLE + IMPROVED QUALITY ONLY.**
+
+Output the enhanced image.

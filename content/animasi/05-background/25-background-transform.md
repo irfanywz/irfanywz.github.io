@@ -6,74 +6,23 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: true
 default_input: "Heavily neglected, walls covered in grime and cracks, overgrown vines and weeds covering everything."
 desc_prompt: |
-  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for transforming the condition and age of an existing environment based on:
+  Create [JUMLAH_VARIANT] DIFFERENT short visual descriptions for transforming the condition and age of an existing environment based on:
 
-  [{target}]
-
-  Each variant must describe a **clearly different condition, age, and maintenance state**, not merely change the amount of dirt or one small surface detail.
-
-  Write each variant as **one concise descriptive sentence**, specifying the overall state of repair, surface wear, cleanliness, aging, weathering, and vegetation growth clearly.
+  [DESKRIPSIKAN]
 
   Rules:
 
-  * Focus **ONLY on condition, age, wear, cleanliness, maintenance, and vegetation overgrowth**
-  * Describe visible surface conditions such as grime, dust, stains, cracks, peeling paint, discoloration, rust, erosion, weathering, moisture marks, or general deterioration when relevant
-  * Describe the level of vegetation growth or overgrowth when relevant
-  * Make each variant meaningfully different in **age, deterioration level, cleanliness, maintenance state, surface wear, or vegetation growth**
-  * Do NOT create variants that differ only by a slightly darker color or a small amount of additional dirt
-  * Keep the condition visually believable and consistent throughout the entire environment
-  * Match the requested condition in [{target}]
-  * Keep the transformation suitable for 2D animation
+  * Each variant must represent a clearly different condition, age, deterioration, or maintenance state, not merely more dirt or a darker color.
+  * Focus ONLY on condition, age, wear, cleanliness, maintenance, weathering, surface deterioration, and vegetation overgrowth.
+  * Vary the overall level of aging, damage, cleanliness, weathering, decay, maintenance, and vegetation growth meaningfully between variants.
+  * Keep the condition visually believable, consistent throughout the environment, and suitable for 2D animation.
+  * Preserve the original environment's composition, architecture, layout, proportions, perspective, camera, objects, and identity completely unchanged.
+  * Do not introduce, remove, rearrange, or identify specific objects, structures, furniture, props, or environmental elements.
+  * Describe only their visible condition, surface state, age, wear, cleanliness, deterioration, or vegetation growth.
+  * Match the requested condition in [DESKRIPSIKAN].
+  * Keep each description concise and directly usable for asset generation pipelines.
 
-  ### ENVIRONMENT LOCK
-
-  The original environment remains **completely unchanged in composition and structure**.
-
-  Do NOT change:
-
-  * layout
-  * architecture
-  * spatial arrangement
-  * proportions
-  * camera
-  * perspective
-  * objects
-  * furniture
-  * vegetation placement
-  * environmental identity
-
-  Only change the **visible condition and state of the existing environment**.
-
-  ### CONTENT LOCK
-
-  Do NOT mention or describe specific physical objects such as:
-
-  * buildings
-  * houses
-  * trees
-  * furniture
-  * vehicles
-  * roads
-  * walls
-  * floors
-  * roofs
-  * decorations
-  * props
-
-  Describe only their **condition, surface state, age, wear, cleanliness, or vegetation growth** without identifying the objects themselves.
-
-  Do NOT introduce new objects, structures, or environmental elements.
-
-  ### OUTPUT RULES
-
-  * Output exactly **[JUMLAH_VARIANT]** variants
-  * Number them sequentially
-  * One sentence per variant
-  * No explanations
-  * No headings
-  * No additional commentary
-  * Do not output fewer or more variants than requested
-
+  Output exactly [JUMLAH_VARIANT] numbered variants, ONE sentence per variant, with no explanations or extra text.
 
 image_prompt: |
   BACKGROUND CONDITION & AGE EXTRACTION ANALYSIS
@@ -127,86 +76,117 @@ database:
 outputs:
   - JSON
 ---
+Use the attached image as the **STRICT BACKGROUND REFERENCE**.
 
-Use the attached image as the STRICT BACKGROUND REFERENCE.
+Transform the **AGE AND PHYSICAL CONDITION** of the existing environment based on:
 
-Transform the condition and age of the existing environment based on:
+[[{humanInput}]]
 
-<br>
+### ONLY CHANGE
 
-[{humanInput}]
+Change ONLY the apparent:
 
-<br>
+* age
+* cleanliness
+* maintenance
+* wear
+* weathering
+* deterioration
+* physical condition
+* vegetation overgrowth
 
-Preserve the original environment and its identity.
+Apply these changes to the **existing environmental elements only**.
 
-Do NOT change the location, architecture, layout, perspective, camera angle, or major environmental elements.
+### ENVIRONMENT LOCK
 
-Keep consistent:
-- buildings
-- roads
-- walls
-- floors
-- trees
-- furniture
-- major objects
-- architectural structure
-- object positions
-- composition
-- perspective
-- proportions
-- camera angle
-- visual style
+Keep the exact same:
 
-ONLY change the apparent age, condition, cleanliness, maintenance, and physical state of the existing environment.
+* location and environment identity
+* buildings and architecture
+* roads, floors, and terrain
+* walls, doors, windows, and structures
+* furniture and major objects
+* trees and vegetation
+* object positions and spatial relationships
+* composition and layout
+* perspective
+* proportions
+* camera angle and framing
+* lighting and atmosphere
+* original colors unless naturally affected by aging or deterioration
 
-Apply the requested condition naturally through appropriate visual changes such as:
-- surface wear
-- faded colors
-- minor stains
-- weathering
-- aging materials
-- worn paint
-- slightly damaged surfaces
-- overgrown vegetation
-- accumulated dirt
-- signs of neglect
-- subtle deterioration
+Do NOT add, remove, replace, redesign, resize, move, or rearrange environmental elements.
 
-Keep the original structure recognizable.
+### CONDITION TRANSFORMATION
 
-Do NOT completely destroy, rebuild, replace, or redesign the environment unless specifically requested.
+Express [[{humanInput}]] naturally through visible changes such as:
 
-The transformation must remain believable and proportional to the requested condition.
+* faded or worn surfaces
+* peeling or aged paint
+* stains and accumulated dirt
+* scratches and surface wear
+* weathered materials
+* minor cracks or damage
+* rust or discoloration where physically appropriate
+* neglected surfaces
+* overgrown vegetation
+* general signs of aging or maintenance
 
-Maintain the original:
-- 2D cartoon art style
-- thick black outlines
-- flat solid colors
-- clean simple shapes
-- slightly handmade line quality
-- perspective
-- proportions
-- lighting
-- atmosphere
+Use changes that are **proportional to the requested condition**.
 
-Do not add characters, text, logos, or unrelated objects.
+A cleaner or newer condition should remove/reduce visible wear naturally; an older or neglected condition should increase believable wear and deterioration.
 
-Do not dramatically change the lighting, weather, or time of day unless specifically requested.
+### STRUCTURE LOCK
 
-STRICT REFERENCE LOCK:
-Same location.
-Same environment.
-Same architecture.
-Same major objects.
-Same object positions.
-Same composition.
-Same perspective.
-Same camera angle.
-Same visual style.
+The original environment must remain clearly recognizable.
 
-ONLY change the age and physical condition of the existing environment.
+Do NOT:
 
-The final result must look like the SAME location at a different stage of age or maintenance.
+* completely destroy the environment
+* rebuild or redesign structures
+* replace materials with different materials
+* invent new damage
+* turn minor deterioration into major destruction
+* change the physical layout
+
+Only modify the **visible condition of what already exists**.
+
+### VISUAL STYLE LOCK
+
+Preserve the original:
+
+* 2D cartoon animation style
+* thick natural black outlines
+* flat solid colors
+* clean simple shapes
+* slightly handmade line quality
+* original rendering style
+* original perspective and proportions
+* original lighting and atmosphere
+
+Do NOT change the art style or reinterpret the environment.
+
+### DO NOT ADD
+
+No characters, people, animals, vehicles, text, logos, buildings, furniture, props, or unrelated environmental elements.
+
+Do NOT dramatically change the weather, lighting, atmosphere, or time of day unless explicitly requested.
+
+### FINAL LOCK
+
+**SAME LOCATION**
+**SAME ENVIRONMENT**
+**SAME ARCHITECTURE**
+**SAME OBJECTS**
+**SAME OBJECT POSITIONS**
+**SAME COMPOSITION**
+**SAME PERSPECTIVE**
+**SAME CAMERA VIEW**
+**SAME ART STYLE**
+**ONLY AGE AND PHYSICAL CONDITION CHANGE**
+
+The final result must look like the **SAME LOCATION at a different stage of age, cleanliness, maintenance, or deterioration**.
+
+**ONLY CHANGE THE AGE AND PHYSICAL CONDITION.**
 
 Output a clean 2D animation background.

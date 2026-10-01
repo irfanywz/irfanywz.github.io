@@ -6,74 +6,24 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: true
 default_input: "Classic black baseball cap worn forward"
 desc_prompt: |
-  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for the character's new head accessory based on:
+  Create [JUMLAH_VARIANT] DIFFERENT short visual descriptions for new head accessories based on:
 
   [DESKRIPSIKAN]
 
-  Each variant must describe a **clearly different head accessory design**, with noticeable differences in item type, shape, size, fit, material, structure, and colors.
-
-  Write each variant as **ONE concise sentence**, describing the head accessory item, style, fit, material, shape, and colors clearly.
-
   Rules:
 
-  * Focus **ONLY on the head accessory**
-  * Clearly identify the accessory or hat type
-  * Describe its shape, size, fit, structure, and material when relevant
-  * Clearly describe its color and important visual details
-  * Create natural, believable, and animation-friendly accessory designs
-  * Make each variant visually distinct
-  * Do NOT make variants different only by changing color
-  * Do NOT make variants different only by changing a tiny decorative detail
-  * Avoid repeating the same accessory type, shape, fit, material, or overall silhouette
-  * The accessory must naturally fit on the character's head
+  * Each variant must represent a clearly different head accessory design, not merely a color or tiny detail change.
+  * Focus ONLY on the head accessory.
+  * Describe the accessory type, shape, size, fit, structure, material, and colors when relevant.
+  * Vary the accessory type, silhouette, size, construction, fit, and material meaningfully between variants.
+  * Avoid repeating the same overall accessory design.
+  * Keep each design simple, believable, recognizable, and suitable for modular 2D animation.
+  * Keep the accessory coherent with [DESKRIPSIKAN] and naturally fitted to the character's head.
+  * Do NOT mention or modify the character, face, facial features, hair, skin, body proportions, clothing, footwear, pose, expression, or movement.
+  * Do NOT mention the environment, background, setting, lighting, weather, atmosphere, time, actions, personality, or story.
+  * Avoid excessive details unless relevant to [DESKRIPSIKAN].
 
-  **CHARACTER LOCK:**
-
-  * DO NOT modify or mention character identity
-  * DO NOT modify or mention face shape
-  * DO NOT modify or mention facial features
-  * DO NOT modify or mention hairstyle or hair shape
-  * DO NOT modify or mention hair color
-  * DO NOT modify or mention skin tone
-  * DO NOT modify or mention body shape or proportions
-  * DO NOT modify or mention clothing
-  * DO NOT modify or mention pose or expression
-  * ONLY change the head accessory
-
-  **ACCESSORY STYLE:**
-
-  * Keep the accessory consistent with [DESKRIPSIKAN]
-  * Keep the design simple, clean, readable, and suitable for 2D cartoon animation
-  * Maintain natural scale and proportions relative to the character's head
-  * Make the accessory clearly recognizable
-  * Avoid excessive detail unless specifically requested
-
-  **DO NOT mention:**
-
-  * location
-  * environment
-  * background
-  * setting
-  * atmosphere
-  * lighting
-  * weather
-  * time
-  * actions
-  * poses
-  * personality
-  * backstory
-  * story
-
-  Keep every description **short and directly usable for image generation**.
-
-  **OUTPUT RULES:**
-
-  * Output EXACTLY **[JUMLAH_VARIANT] variants**
-  * Number each variant
-  * One sentence per variant
-  * Do not output fewer or more variants
-  * Do not default to any specific number
-  * Do not add explanations, headings, or commentary
+  Output exactly [JUMLAH_VARIANT] numbered variants, ONE sentence per variant, with no explanations or extra text.
 
 
 image_prompt: |
@@ -144,72 +94,58 @@ outputs:
   - JSON
 ---
 
-**HEAD ACCESSORY REPLACEMENT**
-
 Use the attached character image as the **STRICT CHARACTER REFERENCE**.
 
-Create the **EXACT SAME CHARACTER** with a new head accessory.
+Create the **EXACT SAME CHARACTER** with ONE new head accessory based on:
 
-**NEW HEAD ACCESSORY:**
+[[{humanInput}]]
 
-<br>
+### ONLY CHANGE
 
-[{humanInput}]
+Add **ONLY the requested head accessory**.
 
-<br>
+The accessory must:
 
-**CHARACTER LOCK — DO NOT CHANGE:**
+* accurately follow [[{humanInput}]]
+* fit the existing head naturally
+* maintain appropriate size, position, scale, and proportions
+* integrate naturally with the existing hairstyle
+* preserve visible hair unless naturally covered by the accessory
 
-* exact same face
-* exact same facial features
-* exact same face shape
-* exact same hairstyle
-* exact same hair shape
-* exact same hair color
-* exact same skin tone
-* exact same body shape
-* exact same body proportions
-* exact same age and identity
-* exact same outfit
-* exact same pose
-* exact same camera angle
-* exact same 3/4 front view facing slightly right
-* exact same art style
+### CHARACTER LOCK
 
-**ONLY ADD THE HEAD ACCESSORY.**
+Keep EVERYTHING ELSE EXACTLY UNCHANGED:
 
-The accessory must naturally fit the character's existing head shape and scale.
+* character identity and age
+* head and face shape
+* facial features
+* hairstyle, hair shape, and hair color
+* skin tone
+* body shape and proportions
+* outfit and footwear
+* pose and body position
+* 3/4 front view facing slightly right
+* camera angle and perspective
+* art style and line quality
 
-Preserve the character's original hairstyle and visible hair unless the accessory naturally covers part of it.
+Do NOT redesign, resize, recolor, reposition, or modify any locked element.
 
-Keep the same visual style:
+### VISUAL STYLE
+
+Match the original character:
 
 * simple 2D cartoon
-* thick black outlines
+* thick natural black outlines
 * flat solid colors
 * clean simple shapes
-* minimal details
+* minimal detail
 * slightly handmade line quality
 * animation-friendly design
 
-Do not change the face.
+### FINAL LOCK
 
-Do not change the hairstyle.
+Do NOT add additional accessories, props, extra characters, text, or unrelated elements.
 
-Do not change the body.
+The result must look like the **same original character with ONLY the requested head accessory added**.
 
-Do not change the outfit.
-
-Do not change the pose.
-
-Do not change the camera angle.
-
-Do not redesign the character.
-
-Do not add extra accessories.
-
-Do not add props.
-
-Do not add text.
-
-**The ONLY intended change is adding the head accessory.**
+**ONLY ADD THE HEAD ACCESSORY.**

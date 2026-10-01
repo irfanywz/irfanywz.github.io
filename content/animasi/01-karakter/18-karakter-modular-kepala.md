@@ -6,95 +6,48 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 outputs:
   - JSON
 ---
-
 Use the attached character image as the **STRICT CHARACTER REFERENCE**.
 
-Convert the character into a **clean modular character structure with separate HEAD and BODY components**.
-
-Preserve the original character exactly as much as possible.
-
-SETUP NOTES:
-
-<br>
-
-[NOTE]
-
-<br>
+Convert the character into a **clean modular 2D character structure with separate HEAD and BODY components**.
 
 ### MODULAR STRUCTURE
 
-Separate the character into two clearly defined independent parts:
+Separate the character into two independent parts:
 
-**1. HEAD**
-* entire head shape
-* face area
-* ears
-* hair
-* hairstyle
-* hair accessories attached to the head
+**HEAD:** head shape, face, ears, hair, hairstyle, and head-attached accessories.
 
-**2. BODY**
-* neck
-* torso
-* arms
-* hands
-* clothing
-* legs
-* feet
-* body accessories
+**BODY:** neck, torso, arms, hands, clothing, legs, feet, and body accessories.
 
-The **HEAD must be separated from the BODY** at the neck.
+Separate the **HEAD from the BODY at the neck** with a clean, natural connection suitable for independent movement, replacement, and rigging.
 
-Create a clean and natural separation line between the head and neck so the two parts can be independently moved, rotated, replaced, or rigged.
 
-### CHARACTER LOCK — DO NOT CHANGE
-* same character identity
-* same head shape
-* same hairstyle
-* same hair shape
-* same hair color
-* same skin tone
-* same body shape
-* same body proportions
-* same clothing
-* same accessories
-* same pose
-* same perspective
-* same camera angle
-* same composition
-* same art style
-* same line quality
-* same colors
-* same shading
+### CHARACTER LOCK
 
-**Do NOT redesign the character.**
+Preserve the original character exactly, including:
 
-### MODULAR REQUIREMENTS
-The head must function as a **standalone head asset**.
+* identity and appearance
+* head, hair, skin, and body proportions
+* clothing and accessories
+* pose, perspective, camera angle, and composition
+* colors, shading, linework, and art style
 
-The body must function as a **standalone body asset**.
+Do NOT redesign, distort, replace, or add anything.
 
-Keep the original proportions and alignment so the head can be placed back onto the body without changing its scale.
 
-The connection between the head and body must be clean and suitable for 2D animation rigging.
+### RIGGING REQUIREMENTS
 
-Do not create circular, ball-like, mannequin-style, or mechanical joints.
+* HEAD and BODY must function as independent assets.
+* Maintain original scale, alignment, proportions, and silhouette.
+* Keep the neck connection natural and easy to reconnect during animation.
+* Do NOT create circular, ball-like, mannequin, mechanical, collar, or ring-shaped joints.
+* Do NOT add artificial connectors, unnecessary outlines, or new elements.
+* Keep the original clothing, hairstyle, pose, and overall design unchanged.
 
-Do not add unnecessary outlines, connectors, collars, neck rings, or artificial joints.
-
-Do not distort the neck.
-
-Do not change the character's silhouette.
-
-Do not change the clothing design.
-
-Do not change the hairstyle.
-
-Do not change the pose.
-
-Do not add new elements.
 
 ### OUTPUT
-Create a clean **modular head-and-body character asset** designed for 2D animation.
 
-The final result must preserve the original character while making the **HEAD and BODY clearly separable and independently usable** for rigging, posing, and animation.
+Create a clean **modular HEAD + BODY character asset** for 2D animation rigging and posing.
+
+The final result must look like the **same original character**, simply separated into two independently usable components.
+
+Output ONLY the character asset.

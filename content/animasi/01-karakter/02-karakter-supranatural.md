@@ -6,119 +6,39 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: true
 default_input: "A unique supernatural character."
 desc_prompt: |
-  Create **[JUMLAH_VARIANT] DIFFERENT visual descriptions** for supernatural characters based on:
+  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for supernatural characters based on:
 
   [TARGET_KARAKTER]
 
-  Each description must represent a **UNIQUE supernatural character variant**.
+  Each variant must be a **clearly different individual design** of the same supernatural character concept, with a distinct physical identity and silhouette.
 
-  Write each variant as **ONE concise sentence**, similar to:
+  ### RULES
 
-  “A sinister female ghost with a slender body, pale reddish skin, long messy black hair, sharp dark eyes, and elongated fingers.”
+  * Focus ONLY on physical appearance and supernatural physical traits.
+  * Clearly identify the supernatural being.
+  * Vary meaningful combinations of supernatural form, body shape, proportions, age, gender, face, eyes, skin/surface, hair, clothing when relevant, distinctive features, and overall silhouette.
+  * Let the supernatural type strongly influence the physical design.
+  * Make the supernatural nature visually apparent through anatomy and physical features.
+  * Allow species-appropriate supernatural anatomy and unusual physical traits when relevant.
+  * Do NOT create differences through color alone or minor details.
+  * Avoid repeating the same body shape, face structure, hairstyle, eye design, clothing combination, supernatural traits, or silhouette.
+  * Make every variant distinctive, memorable, believable within the same supernatural cartoon world, and suitable for animation.
+  * Keep descriptions concise and directly usable for image generation.
 
-  ### VARIATION REQUIREMENTS
+  ### CONTENT LOCK
 
-  Each supernatural character must be clearly different from the others through a natural combination of:
+  Do NOT mention location, environment, background, setting, atmosphere, lighting, weather, time, events, actions, poses, movements, powers, abilities, backstory, lore, or story.
 
-  * supernatural form
-  * body shape
-  * body proportions
-  * face shape
-  * skin or surface appearance
-  * hairstyle or hair characteristics
-  * eye shape and appearance
-  * distinctive physical features
-  * age
-  * gender
-  * clothing when visually relevant
-  * unique supernatural characteristics
-  * overall silhouette
+  Do NOT add environmental elements such as houses, forests, graves, roads, trees, fire, fog, or darkness.
 
-  Do **NOT** simply change the color.
+  ### OUTPUT
 
-  Do **NOT** create the same supernatural character with only minor changes.
+  Output exactly **[JUMLAH_VARIANT] numbered variants**, matching the requested number exactly.
 
-  Each variant must have a noticeably different overall visual identity while still matching the same supernatural character concept.
+  Each variant must be **ONE concise sentence only**.
 
-  Avoid repeating the same:
+  Do NOT add headings, explanations, extra text, duplicate designs, or combine multiple variants into one sentence.
 
-  * body shape
-  * face structure
-  * hairstyle
-  * eye design
-  * distinctive features
-  * clothing combination
-  * supernatural traits
-  * overall silhouette
-
-  ### SUPERNATURAL DESIGN RULES
-
-  * Clearly identify the supernatural being
-  * Let the supernatural type strongly influence each design
-  * Let age and gender influence appearance when visually appropriate
-  * Personality may influence facial expression or visual impression, but do not explain the personality
-  * Make the supernatural nature come from the actual physical design
-  * Keep anatomy appropriate to the supernatural being
-  * Clothing only when visually important
-  * Allow creative variation in anatomy and physical features when appropriate to the supernatural type
-  * Make every variant distinctive and memorable
-  * Keep every variant visually coherent within the same supernatural cartoon world
-  * Keep descriptions short and directly usable for image generation
-
-  ### STRICT CONTENT LIMITS
-
-  Focus **ONLY on physical appearance**.
-
-  DO NOT mention:
-
-  * location
-  * environment
-  * background
-  * setting
-  * atmosphere
-  * lighting
-  * weather
-  * time
-  * events
-  * actions
-  * poses
-  * movements
-  * powers
-  * abilities
-  * backstory
-  * lore
-  * story
-
-  DO NOT add environmental elements such as:
-
-  * houses
-  * forests
-  * graves
-  * roads
-  * trees
-  * fire
-  * fog
-  * darkness
-
-  Avoid overly detailed descriptions.
-
-  ### OUTPUT FORMAT
-
-  1. [One concise supernatural character description]
-  2. [One concise supernatural character description]
-  3. [One concise supernatural character description]
-  4. [One concise supernatural character description]
-  5. [One concise supernatural character description]
-     ...continue until exactly **[JUMLAH_VARIANT]** variants are generated.
-
-  Each variant must be **ONE sentence only**.
-
-  Do not add explanations.
-  Do not add headings.
-  Do not repeat descriptions.
-  Do not combine multiple variants into one sentence.
-
-  Generate **exactly [JUMLAH_VARIANT] unique variants**.
 
 image_prompt: |
   Create ONE short visual description of the supernatural character using image reference
@@ -153,62 +73,64 @@ database:
 outputs:
   - JSON
 ---
-
 Use the attached image as the **STRICT STYLE REFERENCE ONLY**.
 
-Create a completely **NEW SUPERNATURAL CHARACTER** based on this description:
-
-
-<br>
+Create a **COMPLETELY NEW ORIGINAL SUPERNATURAL CHARACTER** based on:
 
 [{humanInput}]
 
-<br>
+The new character must have its own **supernatural form, body shape, proportions, silhouette, colors, facial features, distinctive traits, and identity**. Do NOT copy, recolor, or slightly modify the reference character.
 
-The new character must have a unique supernatural appearance, body shape, silhouette, facial features, colors, distinctive traits, and identity. Do not copy, recolor, or slightly modify the original character.
+### VISUAL STYLE
 
-Keep the **SAME VISUAL ART STYLE, DRAWING LANGUAGE, AND DESIGN APPROACH** of the reference:
-- simple 2D cartoon
-- thick black outlines
-- flat solid colors
-- clean simple shapes
-- minimal details
-- slightly handmade line quality
-- simple expressive facial features
-- animation-friendly design
-- same level of stylization and visual simplicity as the reference
+Match ONLY the reference's visual language and design approach:
 
-Do not redesign or reinterpret the art style. **Match the reference's overall visual appearance as closely as possible while creating a completely different character.**
+* simple 2D cartoon
+* thick natural black outlines
+* flat solid colors
+* clean simple shapes
+* minimal detail
+* slightly handmade line quality
+* simple expressive facial features
+* animation-friendly construction
+* consistent stylization and visual simplicity
 
-POSE:
-Create the character in a neutral **FRONT 3/4 VIEW**, facing slightly to the right.
+Do NOT copy any character-specific design elements from the reference.
 
-Show the character in a simple neutral pose appropriate to its form:
-- complete character clearly visible
-- relaxed neutral position
-- clear readable silhouette
-- natural-looking proportions for the creature
-- neutral facial expression
-- no action pose
-- no exaggerated movement
+### POSE & VIEW
 
-This image will be used as the **MASTER CHARACTER REFERENCE** for generating other poses later.
+Show the character in a neutral **FRONT 3/4 VIEW**, facing slightly right.
 
-Therefore, prioritize:
-- strong character identity
-- clear silhouette
-- consistent proportions
-- recognizable supernatural features
-- clear facial design
-- distinctive colors
-- simple readable shapes
-- animation-friendly construction
-- visual consistency with the reference style
+* Full character clearly visible and centered.
+* Relaxed neutral pose appropriate to its supernatural form.
+* Natural or creature-appropriate proportions.
+* Clear readable silhouette.
+* Neutral facial expression.
+* No action pose, dynamic movement, or exaggerated gesture.
 
-The supernatural nature must come from the **character's actual design**, not from adding random horror effects, excessive details, or complicated visual elements.
+### MASTER CHARACTER LOCK
 
-Do not add props, text, extra characters, dynamic movement, or complex background.
+Design the character as a **MASTER CHARACTER REFERENCE** for future poses and animation.
 
-The final character must look like a **completely original supernatural being**, while feeling as if it was designed and illustrated by the **same artist using the same visual style and design language as the reference**.
+Prioritize:
 
-Centered composition, clean simple background.
+* strong character identity
+* recognizable supernatural features
+* clear facial design
+* consistent proportions
+* distinctive silhouette
+* distinctive colors and markings
+* simple readable shapes
+* animation-friendly construction
+* consistent visual language with the reference
+
+The supernatural nature must come from the **actual character design**, not random horror effects, excessive details, or complicated elements.
+
+### FINAL RULES
+
+* Do NOT copy, recolor, or closely modify the reference character.
+* Do NOT add props, text, extra characters, complex effects, or unnecessary background elements.
+* Keep the background clean and simple.
+* Preserve the new character's design consistently for future pose variations.
+
+**Output ONLY the new supernatural character.**

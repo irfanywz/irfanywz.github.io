@@ -8,120 +8,45 @@ default_input: "short messy black hair"
 desc_prompt: |
   Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for hairstyles based on:
 
-  [DESKRIPSIKAN]
+  **[DESKRIPSIKAN]**
 
-  Each description must represent a **UNIQUE hairstyle variant**.
-
-  Write each variant as **ONE concise sentence**, clearly describing the hair length, haircut, texture, bangs, volume, and overall silhouette.
-
-  ### VARIATION REQUIREMENTS
-
-  Each hairstyle must be clearly different through a natural combination of:
-
-  * hair length
-  * haircut style
-  * hair texture
-  * hair volume
-  * bangs style
-  * hair shape
-  * side shape
-  * top shape
-  * back shape
-  * overall silhouette
-
-  Do NOT simply change the hair color.
-
-  Each variant must have a noticeably different overall hairstyle.
-
-  Avoid repeating the same:
-
-  * haircut
-  * hair length
-  * bangs
-  * texture
-  * volume
-  * overall silhouette
+  Each variant must represent a **clearly different hairstyle**, with meaningful differences in length, haircut, texture, volume, bangs, shape, and overall silhouette.
 
   ### RULES
 
-  * Focus ONLY on hairstyle and hair volume
-  * Clearly describe the haircut and overall hair shape
-  * Describe bangs when relevant
-  * Describe hair texture such as straight, wavy, curly, messy, thick, fine, or fluffy when relevant
-  * Keep the hairstyle visually coherent and believable
-  * Make every hairstyle distinctive and memorable
-  * Keep descriptions short and directly usable for image generation
+  * Focus ONLY on hairstyle, haircut, hair shape, texture, and volume.
+  * Clearly describe the overall silhouette and haircut.
+  * Vary hair length, texture, volume, bangs, top, sides, back, and overall shape meaningfully.
+  * Each variant must have a noticeably different hairstyle, not merely a color or minor detail change.
+  * Avoid repeating the same haircut, length, texture, bangs, volume, or silhouette.
+  * Keep hairstyles natural, believable, coherent, distinctive, and suitable for 2D animation.
+  * Describe bangs only when relevant.
+  * Keep each description concise and directly usable for image generation.
+  * Keep every hairstyle consistent with [DESKRIPSIKAN].
 
   ### CHARACTER LOCK
 
-  Do NOT modify or mention:
+  ONLY describe the hairstyle.
 
-  * face shape
-  * eyes
-  * eyebrows
-  * nose
-  * mouth
-  * facial features
+  Do NOT mention or modify:
+
+  * face or facial features
+  * head shape
   * skin tone
   * body
   * clothing
   * accessories
-  * pose
-  * expression
+  * pose or expression
 
-  ONLY describe the hairstyle.
+  ### EXCLUSIONS
 
-  ### DO NOT MENTION
+  Do NOT mention location, environment, background, setting, atmosphere, lighting, weather, time, actions, movement, personality, backstory, lore, or story.
 
-  * location
-  * environment
-  * background
-  * setting
-  * atmosphere
-  * lighting
-  * weather
-  * time
-  * actions
-  * poses
-  * movements
-  * personality
-  * backstory
-  * lore
-  * story
+  ### OUTPUT
 
-  ### OUTPUT REQUIREMENTS
+  Output exactly **[JUMLAH_VARIANT] numbered variants**, ONE concise sentence per variant.
 
-  Generate **EXACTLY [JUMLAH_VARIANT] variants**.
-
-  The number of descriptions MUST match **[JUMLAH_VARIANT] EXACTLY**.
-
-  For example:
-
-  * `[JUMLAH_VARIANT] = 5` → output exactly 5 hairstyles
-  * `[JUMLAH_VARIANT] = 8` → output exactly 8 hairstyles
-  * `[JUMLAH_VARIANT] = 10` → output exactly 10 hairstyles
-  * `[JUMLAH_VARIANT] = 15` → output exactly 15 hairstyles
-
-  Do NOT default to 10.
-  Do NOT generate fewer variants.
-  Do NOT generate more variants.
-
-  ### OUTPUT FORMAT
-
-  1. [One concise hairstyle description]
-  2. [One concise hairstyle description]
-  3. [One concise hairstyle description]
-     ...
-     Continue numbering until exactly **[JUMLAH_VARIANT]** descriptions are completed.
-
-  Each variant must be **ONE concise sentence only**.
-
-  Do not add explanations.
-  Do not add headings.
-  Do not repeat hairstyles.
-  Do not combine multiple hairstyles into one sentence.
-  ::
-
+  Do NOT default to any number, repeat hairstyles, combine multiple hairstyles into one variant, or add explanations, headings, or extra text.
 
 image_prompt: |
   Create ONE short visual description of the character's hairstyle using image reference
@@ -216,58 +141,53 @@ database:
 outputs:
   - JSON
 ---
-
-HAIR REPLACEMENT
-
 Use the attached character image as the **STRICT CHARACTER REFERENCE**.
 
-Create the **EXACT SAME CHARACTER** with a new hairstyle.
-
-**NEW HAIRSTYLE:**
-
-<br>
+Create the **EXACT SAME CHARACTER** with a new hairstyle based on:
 
 [{humanInput}]
 
-<br>
+### HAIR CHANGE
 
-**CHARACTER LOCK — DO NOT CHANGE:**
+Change **ONLY the hairstyle** according to [{humanInput}].
 
-* exact same face
-* exact same facial features
-* exact same face shape
-* exact same eyes
-* exact same eyebrows
-* exact same mouth
-* exact same skin tone
-* exact same body shape
-* exact same body proportions
-* exact same age and identity
-* exact same pose
-* exact same camera angle
-* exact same 3/4 front view facing slightly right
-* exact same art style
+Fit the new hairstyle naturally to the existing head shape while preserving the character's facial placement, proportions, and identity.
 
-**ONLY CHANGE THE HAIRSTYLE.**
+Do NOT change the head shape to accommodate the new hairstyle.
 
-The new hair must naturally fit the character's existing head shape and preserve the original hairline and overall character identity.
+### CHARACTER LOCK
 
-Keep the same visual style:
+Keep everything else **EXACTLY UNCHANGED**, including:
+
+* face shape and facial features
+* eyes, eyebrows, and mouth
+* skin tone
+* body shape and proportions
+* age and identity
+* clothing and accessories
+* pose
+* camera angle and perspective
+* 3/4 front view facing slightly right
+* art style and line quality
+
+Do NOT redesign, reposition, resize, or modify any locked element.
+
+Do NOT add hair accessories unless explicitly requested in [{humanInput}].
+
+### VISUAL STYLE
+
+Match the existing character's visual style:
 
 * simple 2D cartoon
-* thick black outlines
-* flat solid colors
 * clean simple shapes
-* minimal details
+* solid colors
+* natural black outlines
+* minimal detail
 * slightly handmade line quality
 * animation-friendly design
 
-Do not change the face.
-Do not change the head shape.
-Do not change the skin tone.
-Do not change the body.
-Do not change the pose.
-Do not change the camera angle.
-Do not add accessories unless specified.
+### FINAL LOCK
 
-**The ONLY intended change is the hairstyle.**
+The result must look like the **same original character**, with the **ONLY visible change being the new hairstyle** described in [{humanInput}].
+
+**ONLY CHANGE THE HAIRSTYLE.**

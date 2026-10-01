@@ -6,8 +6,8 @@ variables_config:
   topik:
     type: "text"
     label: "Topik Utama"
-    placeholder: "Contoh: Teknologi AI terbaru..."
-    default: "Sinte"
+    placeholder: ""
+    default: ""
   gaya:
     type: "datalist"
     label: "Gaya Bahasa / Tone"

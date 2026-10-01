@@ -4,20 +4,20 @@ slug: "background-object-remove"
 description: "Prompt builder untuk menghapus objek tertentu dari background animasi 2D dan merekonstruksi latar belakang di baliknya secara alami tanpa mengubah elemen atau gaya lainnya"
 image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
 has_database: false
-default_remove: "The fire hydrant on the right sidewalk"
+variables_config:
+  OBJEK_DIHILANGKAN:
+    type: "text"
+    label: "OBJEK_DIHILANGKAN"
+    placeholder: "Gelas"
+    default: "" 
 outputs:
   - JSON
 ---
-
 Use the attached image as the STRICT BACKGROUND REFERENCE.
 
 Remove ONLY the specified object or element:
 
-<br>
-
-**[removeObjectDesc]**
-
-<br>
+[OBJEK_DIHILANGKAN]
 
 Preserve the original background exactly as much as possible.
 

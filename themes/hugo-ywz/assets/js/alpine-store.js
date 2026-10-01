@@ -152,41 +152,140 @@ document.addEventListener('alpine:init', () => {
         }
     });
 
-    // Store untuk Exit Intent Popup
     Alpine.store('exitIntent', {
         isVisible: false,
         hasBeenTriggered: false,
         
         init() {
-            // Menambahkan event listener ke body dengan opsi { once: true }
-            // agar hanya terpicu sekali saat mouse meninggalkan halaman.
-            document.body.addEventListener('mouseleave', () => {
-                this.trigger();
-            }, { once: true });
+            // Cek apakah user pernah menekan "Jangan Tampilkan Lagi" sebelumnya
+            if (sessionStorage.getItem('exit_intent_shown_this_session')) {
+                this.hasBeenTriggered = true;
+                return;
+            }
+
+            const lastShown = localStorage.getItem('exit_intent_last_shown');
+            const oneDay = 24 * 60 * 60 * 1000; // 24 jam dalam milidetik
+
+            if (lastShown && (Date.now() - lastShown < oneDay)) {
+                this.hasBeenTriggered = true;
+                return;
+            }
+
+            // 1. Trigger Desktop: Mouse meninggalkan area halaman ke atas
+            document.addEventListener('mouseleave', (e) => {
+                if (e.clientY <= 0) {
+                    this.trigger();
+                }
+            });
+
+            // 2. Trigger Mobile: Deteksi saat user menekan tombol Back
+            window.addEventListener('popstate', () => {
+                if (!this.hasBeenTriggered) {
+                    history.pushState(null, '', window.location.href);
+                    this.trigger();
+                }
+            });
+
+            if (window.history.state === null) {
+                history.pushState(null, '', window.location.href);
+            }
         },
 
         trigger() {
             if (this.hasBeenTriggered) return;
 
-            const lastShown = localStorage.getItem('exit_intent_last_shown');
-            const hasBeenShownThisSession = sessionStorage.getItem('exit_intent_shown_this_session');
-            const oneDay = 24 * 60 * 60 * 1000; // 24 jam dalam milidetik
-
-            // Kondisi untuk menampilkan popup:
-            // 1. Belum pernah ditampilkan di sesi ini.
-            // 2. Belum pernah ditampilkan sama sekali ATAU sudah lebih dari 24 jam sejak terakhir ditampilkan.
-            if (!hasBeenShownThisSession && (!lastShown || (Date.now() - lastShown > oneDay))) {
-                this.isVisible = true;
-                this.hasBeenTriggered = true;
-                
-                // Set localStorage untuk menandai waktu terakhir popup muncul
-                localStorage.setItem('exit_intent_last_shown', Date.now());
-                // Set sessionStorage agar tidak muncul lagi di tab/sesi yang sama
-                sessionStorage.setItem('exit_intent_shown_this_session', 'true');
-            }
+            // Sekarang popup langsung muncul ketika di-trigger (tanpa langsung set storage otomatis)
+            this.isVisible = true;
+            this.hasBeenTriggered = true;
         },
+
         close() {
+            // Tutup biasa: Hanya menutup modal, localStorage/sessionStorage TIDAK di-set, 
+            // sehingga kalau nanti kursor naik lagi ke atas (atau pindah halaman lalu balik), popup bisa muncul lagi.
             this.isVisible = false;
+        },
+
+        dontShowAgain() {
+            // Tutup modal DAN set storage agar tidak muncul lagi dalam 24 jam / sesi ini
+            this.isVisible = false;
+            
+            localStorage.setItem('exit_intent_last_shown', Date.now());
+            sessionStorage.setItem('exit_intent_shown_this_session', 'true');
         }
     });
+
+    Alpine.data('pageLoader', () => ({
+        loading: false,
+        progress: 0,
+        timer: null,
+
+        init() {
+            // Reset total jika halaman kembali dari cache browser (Tombol Back/Forward)
+            window.addEventListener('pageshow', (event) => {
+                if (event.persisted) {
+                    this.forceStop();
+                } else {
+                    this.finish();
+                }
+            });
+        },
+
+        handleClick(e) {
+            const link = e.target.closest('a');
+            if (!link || !link.href) return;
+
+            const targetUrl = link.href;
+            const currentUrl = window.location.href;
+
+            // Validasi ketat link internal
+            const isInternal = targetUrl.startsWith(window.location.origin) && 
+                               !targetUrl.includes('#') && 
+                               targetUrl !== currentUrl &&
+                               link.getAttribute('target') !== '_blank' &&
+                               !link.hasAttribute('download');
+
+            if (isInternal) {
+                this.start();
+            }
+        },
+
+        start() {
+            // Kalau lagi proses, clear dulu biar gak numpuk
+            this.clearTimer();
+            this.loading = true;
+            this.progress = 15;
+            
+            // Simulasi progress naik perlahan tapi berhenti di 85% nunggu halaman beneran pindah
+            this.timer = setInterval(() => {
+                if (this.progress < 85) {
+                    this.progress += Math.floor(Math.random() * 15) + 5;
+                }
+            }, 100);
+        },
+
+        finish() {
+            if (!this.loading) return;
+            this.clearTimer();
+            this.progress = 100;
+            
+            // Tunggu animasi CSS selesai baru di-hide total
+            setTimeout(() => {
+                this.loading = false;
+                this.progress = 0;
+            }, 300);
+        },
+
+        forceStop() {
+            this.clearTimer();
+            this.loading = false;
+            this.progress = 0;
+        },
+
+        clearTimer() {
+            if (this.timer) {
+                clearInterval(this.timer);
+                this.timer = null;
+            }
+        }
+    }));   
 });

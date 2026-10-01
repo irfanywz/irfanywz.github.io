@@ -4,29 +4,32 @@ slug: "background-object-replace"
 description: "Prompt builder untuk mengganti objek tertentu di dalam background animasi 2D dengan objek baru tanpa mengubah lingkungan, perspektif, maupun gaya seni di sekitarnya"
 image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
 has_database: false
-default_target: "The wooden bench on the right"
-default_replacement: "A modern red vending machine"
+
+variables_config:
+  OBJEK_LAMA:
+    type: "text"
+    label: "OBJEK_LAMA"
+    placeholder: "Gelas"
+    default: ""  
+  OBJEK_BARU:
+    type: "text"
+    label: "OBJEK_BARU"
+    placeholder: "Piring"
+    default: ""
+
 outputs:
   - JSON
 ---
-
 Use the attached image as the STRICT BACKGROUND REFERENCE.
 
 Replace ONLY the specified existing object:
 
-<br>
+[OBJEK_LAMA]
 
-**[targetObject]**
-
-<br>
 
 with:
 
-<br>
-
-**[replacementObject]**
-
-<br>
+[OBJEK_BARU]
 
 Preserve the original background exactly as much as possible.
 

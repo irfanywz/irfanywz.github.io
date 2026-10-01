@@ -3,3 +3,4 @@ import './weather-time.js';
 import './ga-lazyload.js';
 import './google-lazyload.js';
 import './cursor.js';
+import './favicon-dot.js';

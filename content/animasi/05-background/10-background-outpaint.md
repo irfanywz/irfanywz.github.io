@@ -1,5 +1,5 @@
 ---
-title: "Background Outpainting & Expansion"
+title: "Background Outpainting"
 slug: "background-outpaint"
 description: "Prompt builder untuk memperluas area background animasi 2D yang ada (outpainting) ke berbagai arah (kiri, kanan, atas, bawah, panorama, atau sudut) dengan mempertahankan gaya dan perspektif asli"
 image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
@@ -54,16 +54,11 @@ database:
 outputs:
   - JSON
 ---
-
 Use the attached image as the STRICT BACKGROUND REFERENCE.
 
 Extend the existing background in the following direction:
 
-<br>
-
-**[{humanInput}]**
-
-<br>
+[{humanInput}]
 
 Extend the scene naturally based on the existing environment.
 

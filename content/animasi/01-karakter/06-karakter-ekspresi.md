@@ -8,7 +8,7 @@ default_input: "Standard clean 6-pose character emotion grid sheet."
 desc_prompt: |
   Create **ONE short visual description** for the character's emotion expression sheet based on:
 
-  [{target}]
+  [DESKRIPSIKAN]
 
   Write it as **one concise sentence**, describing the grid layout, expression count, and alignment style clearly.
 
@@ -54,78 +54,60 @@ outputs:
   - JSON
 ---
 
-EMOTION EXPRESSION SHEET
-
 Use the attached character image as the **STRICT CHARACTER REFERENCE**.
 
-Create a clean character emotion expression sheet for the exact same character.
+Create a clean **6-expression facial expression sheet** of the **EXACT SAME CHARACTER**, arranged in a consistent grid on a plain white background.
 
-Create exactly 6 natural facial expressions arranged in a clean grid:
+### EXPRESSIONS
 
-* **NEUTRAL** — calm, relaxed, emotionally flat expression
-* **CRYING** — emotional expression with tears and a crying mouth
-* **ANGRY** — naturally angry expression with clear but not exaggerated emotion
-* **SAD** — naturally sad expression with subtle emotional facial features
-* **CLOSED EYE** — both eyes naturally closed, with relaxed eyelids and a simple neutral facial expression
-* **CONFUSED** — puzzled or bewildered expression with asymmetric eyebrows and a slight questioning mouth
+Create exactly these 6 expressions:
 
-**SHEET CONFIGURATION:**
+1. **NEUTRAL** — calm, relaxed, emotionally flat.
+2. **CRYING** — visible tears with a natural crying mouth.
+3. **ANGRY** — clearly angry with controlled, natural emotion.
+4. **SAD** — subtle, naturally sad facial features.
+5. **CLOSED EYE** — both eyes completely closed with simple natural eyelid lines, neutral mouth and eyebrows.
+6. **CONFUSED** — puzzled expression with asymmetric eyebrows and a slightly questioning mouth.
 
-<br>
+### EXPRESSION RULES
 
-[{humanInput}]
+* Change ONLY the facial expression using the eyes, eyebrows, and mouth as needed.
+* Keep every expression natural, clear, proportional, and animation-friendly.
+* Do NOT exaggerate or distort the original facial proportions.
+* For CLOSED EYE, use simple closed eyelid lines; do NOT make it look sleepy, crying, smiling, or exaggerated.
+* Keep the underlying character and face structure consistent across all expressions.
 
-<br>
+### CHARACTER LOCK
 
-IMPORTANT:
+Keep everything else **EXACTLY UNCHANGED**:
 
-Each expression must look natural, clear, and suitable for 2D character animation.
+* character identity and age
+* head shape and face proportions
+* hairstyle and hair color
+* skin tone
+* body and proportions
+* outfit
+* 3/4 front view facing slightly right
+* camera angle and perspective
+* art style and line quality
 
-Change only the facial expression, including the eyebrows, eyes, and mouth when necessary.
+### VISUAL STYLE
 
-For **CLOSED EYE**, completely close both eyes using simple natural eyelid lines.
-Do not turn the closed eyes into sleeping, crying, smiling, or exaggerated expressions.
-Keep the mouth and eyebrows neutral unless necessary.
+Match the original character's simple 2D animation style:
 
-Do not exaggerate the expressions.
-Keep all expressions natural and proportional to the character's original face.
-
-**CHARACTER LOCK — DO NOT CHANGE:**
-
-* exact same character identity
-* exact same head shape
-* exact same face proportions
-* exact same hairstyle
-* exact same hair color
-* exact same skin tone
-* exact same age
-* exact same outfit
-* exact same body proportions
-* exact same 3/4 front view facing slightly right
-* exact same camera angle
-* exact same art style
-
-Keep the character consistent across all 6 expressions.
-
-Visual style:
-
-* simple 2D cartoon
-* thick black outlines
-* flat solid colors
-* clean simple shapes
-* minimal details
+* clean shapes
+* natural black outlines
+* solid colors
+* minimal detail
 * slightly handmade line quality
 * animation-friendly design
 
-White background.
-Clean grid layout.
-Consistent spacing.
+### SHEET LOCK
 
-No labels.
-No text.
-No extra characters.
-No props.
-No exaggerated expressions.
+* Exactly 6 expressions.
+* Clean, evenly spaced grid.
+* White background.
+* Consistent scale, framing, and alignment.
+* No labels, text, props, extra characters, or other elements.
 
-Create EXACTLY 6 emotional expressions:
-NEUTRAL, CRYING, ANGRY, SAD, CLOSED EYE, and CONFUSED.
+**ONLY THE FACIAL EXPRESSIONS MAY CHANGE.**

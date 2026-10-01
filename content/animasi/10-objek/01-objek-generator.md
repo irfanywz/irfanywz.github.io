@@ -1,5 +1,5 @@
 ---
-title: "Objek Generator"
+title: "Object Generator"
 slug: "objek-generator"
 description: "Prompt builder untuk merancang objek atau prop animasi 2D original yang bersih, proporsional, dan konsisten dengan gaya seni referensi"
 image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
@@ -8,13 +8,13 @@ default_input: "A vintage wooden toolbox filled with simple metal tools and a re
 desc_prompt: |
   Create [JUMLAH_VARIANT] DIFFERENT short visual descriptions for new 2D animation props based on:
 
-  [{target}]
+  [DESKRIPSIKAN]
 
   Rules:
 
   * Each variant must represent a clearly different prop design, not just a different color or minor detail.
   * Focus ONLY on the prop concept, structure, shape, proportions, and material identity.
-  * Keep each prop recognizable as the same general type described in [{target}], while allowing meaningful differences in design and construction.
+  * Keep each prop recognizable as the same general type described in [DESKRIPSIKAN], while allowing meaningful differences in design and construction.
   * Make each variant simple, practical, visually clear, and suitable for 2D animation asset generation.
   * Do not describe characters, scenery, backgrounds, actions, poses, or unrelated objects.
   * Keep each description concise and directly usable for asset generation pipelines.
@@ -39,60 +39,120 @@ database:
 outputs:
   - JSON
 ---
+Use the attached image as the **STRICT STYLE REFERENCE ONLY**.
 
-Use the attached image as the STRICT STYLE REFERENCE ONLY.
+Create a **COMPLETELY NEW ORIGINAL OBJECT / PROP** based on:
 
-Create a completely NEW OBJECT / PROP based on this description:
+[{humanInput}]
 
-<br>
+The new object must have its own **shape, structure, proportions, silhouette, materials, colors, functional parts, and visual identity**.
 
-**[{humanInput}]**
+Do NOT copy, recolor, remix, or slightly modify any object from the reference.
 
-<br>
+### STYLE REFERENCE
 
-The new object must have a unique shape, structure, proportions, silhouette, details, materials, colors, and identity. Do not copy, recolor, or slightly modify any object from the reference.
+Use the reference ONLY for its:
 
-Keep ONLY the SAME VISUAL ART STYLE, DRAWING LANGUAGE, AND DESIGN APPROACH of the reference:
-* simple 2D cartoon
-* thick black outlines
-* flat solid colors
-* clean simple shapes
-* minimal details
-* slightly handmade line quality
-* clear readable design
+* drawing language
+* line quality
+* rendering approach
+* visual simplicity
+* level of detail
+* overall 2D illustration feel
+
+The result should feel like a **real-world object simplified into hand-drawn 2D animation art**.
+
+Avoid an overly cartoonish interpretation. Keep the object **believable, practical, and physically recognizable**, while still matching the reference's simplified 2D visual language.
+
+### VISUAL STYLE
+
+* hand-drawn 2D animation
+* natural black outlines with slight line variation
+* solid base colors with subtle dimensional shading
+* believable real-world proportions
+* clean but slightly imperfect shapes
+* simple material definition
+* restrained detail
+* natural surface variation
+* clear readable forms
 * animation-friendly construction
 
-DESIGN:
-Create the object in a clear side scroll view.
+Avoid:
 
-Show the complete object clearly:
-* full object visible
-* clear overall shape
-* clear silhouette
+* flat vector-icon appearance
+* geometric vector shapes
+* perfectly uniform outlines
+* excessive simplification
+* childish/chibi proportions
+* exaggerated cartoon deformation
+* toy-like appearance
+* glossy CGI surfaces
+* 3D render appearance
+* anime style
+* photorealism
+* logo or graphic-design treatment
+
+### OBJECT DESIGN
+
+Create the object as a **standalone master animation prop**.
+
+Show:
+
+* complete object
+* full silhouette
 * natural proportions
-* readable construction
-* important functional parts clearly visible
-* simple clean details
-* no unnecessary complexity
+* clear structure
+* important functional parts
+* believable construction
+* recognizable materials
+* simple but meaningful surface details
 
-The object should be designed as a standalone animation prop, with a clear and recognizable shape that can easily be reused in different scenes and poses.
+Details should support the object's real-world construction rather than make it look overly decorative or cartoonish.
 
-This image will be used as the MASTER PROP REFERENCE for generating other views, variations, and uses later.
+### VIEW
 
-Therefore, prioritize:
-* clear object identity
-* consistent proportions
-* clear construction
-* recognizable shape
+Show the complete object in a **clear side-scroll / side-oriented view** suitable for 2D animation.
+
+Keep the viewpoint simple and readable, with minimal perspective distortion.
+
+Do not crop the object.
+
+### MASTER PROP PRIORITY
+
+Prioritize:
+
+* recognizable object identity
 * distinctive silhouette
-* readable functional parts
-* consistent colors and materials
-* simple visual details
-* animation-friendly shapes
-* strong visual consistency with the reference style
+* believable proportions
+* consistent construction
+* functional parts
+* material readability
+* consistent colors
+* reusable animation-friendly shapes
+* clean separation of major parts
 
-Do not add characters, text, labels, extra objects, dynamic movement, or complex background.
+This image will be used as the **MASTER PROP REFERENCE** for generating other views, variations, interactions, and uses later.
 
-The final object must look like a completely original prop, while feeling as if it was designed and illustrated by the same artist using the same visual style and design language as the reference.
+Therefore, make the design **clear, stable, and easy to reproduce consistently**.
 
-Centered composition, complete object visible, clean simple background.
+### COMPOSITION
+
+* centered object
+* complete object fully visible
+* clean simple background
+* sufficient empty space around the object
+* no dynamic movement
+* no dramatic perspective
+* no unnecessary background elements
+
+### DO NOT ADD
+
+No characters, people, animals, text, labels, logos, extra objects, effects, or unrelated elements.
+
+### FINAL RESULT
+
+A **completely original real-world prop translated into believable hand-drawn 2D animation art**, using the attached image only as a **STYLE REFERENCE**.
+
+It should look **simplified enough for animation, but realistic enough to feel like an actual physical object**.
+
+**OUTPUT ONLY THE NEW OBJECT / PROP.**

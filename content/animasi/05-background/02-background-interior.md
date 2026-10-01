@@ -6,62 +6,22 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: true
 default_input: "Cozy traditional Indonesian living room with bamboo walls and bale-bale"
 desc_prompt: |
-  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for an interior background based on:
+  Create [JUMLAH_VARIANT] DIFFERENT short visual descriptions for an interior background based on:
 
-  [{target}]
-
-  Each variant must describe a **clearly different interior setup**, with meaningful differences in room layout, furniture arrangement, major objects, and decorative elements.
-
-  Write each variant as **one concise sentence**, describing the interior from **foreground → middle ground → background → upper area**.
+  [DESKRIPSIKAN]
 
   Rules:
 
-  * Focus **ONLY on the interior room setup, furniture, environmental objects, and decorative elements**
-  * Clearly describe the room type and spatial arrangement
-  * Clearly describe important foreground, middle-ground, background, and upper-area elements
-  * Make each variant meaningfully different in **room layout, furniture arrangement, major furniture, architectural features, or decorative elements**
-  * Do NOT create variants that differ only by color, lighting, or one small decorative object
-  * Keep each interior coherent with [{target}]
-  * Use furniture and objects appropriate to the described room
-  * Keep the setup believable, readable, and suitable for 2D animation
-  * Do not force any specific cultural or regional style unless relevant to [{target}]
+  * Each variant must represent a clearly different interior setup, not merely a color change or minor decoration.
+  * Focus ONLY on room type, layout, furniture, architectural features, major objects, and decorative elements.
+  * Vary the room layout, furniture arrangement, major features, and decorative elements meaningfully.
+  * Describe each variant in this order: **Foreground → Middle ground → Background → Upper area**.
+  * Keep the setup coherent with [DESKRIPSIKAN] and use believable room-appropriate elements.
+  * Do NOT mention characters, people, animals, actions, poses, clothing, appearance, text, logos, dialogue, story, lighting, weather, camera movement, or unrelated environments.
+  * Keep each setup readable, believable, and suitable for 2D animation background generation.
+  * Keep each description concise and directly usable for asset generation pipelines.
 
-  **CHARACTER LOCK:**
-  Do NOT mention or modify:
-
-  * characters
-  * people
-  * animals
-  * character actions
-  * character poses
-  * clothing
-  * appearance
-
-  **CONTENT LOCK:**
-  Do NOT mention:
-
-  * text
-  * logos
-  * dialogue
-  * story
-  * backstory
-  * actions
-  * lighting
-  * camera movement
-  * weather
-  * unrelated environments
-
-  **OUTPUT RULES:**
-
-  * Output exactly **[JUMLAH_VARIANT]** variants
-  * Number them sequentially
-  * One sentence per variant
-  * Each sentence must follow: **Foreground → Middle ground → Background → Upper area**
-  * No explanations
-  * No headings
-  * No additional commentary
-  * Do not output fewer or more variants than requested
-
+  Output exactly [JUMLAH_VARIANT] numbered variants, ONE sentence per variant, following **Foreground → Middle ground → Background → Upper area**, with no explanations or extra text.
 
 image_prompt: |
   Create ONE short visual description of the interior animation background using image reference
@@ -103,92 +63,62 @@ database:
 outputs:
   - JSON
 ---
-
 Use the attached image as a **STRICT STYLE REFERENCE ONLY**.
 
-Create a completely original horizontal sidescroll view 2D animation background based on:
-
-<br>
+Create a completely original horizontal sidescroll **interior 2D animation background** based on:
 
 [{humanInput}]
 
-<br>
+Use the reference image ONLY to understand its general visual language: line quality, rendering technique, detail level, shading, texture, and illustration feel.
 
-Use the reference image ONLY to understand the general visual language:
-line quality, rendering technique, level of detail, shading approach, texture treatment, and overall illustration feel.
-
-**DO NOT copy or closely reproduce the reference image.**
-
-DO NOT reuse its layout, architecture, furniture, objects, shapes, proportions, composition, or specific visual elements.
-
-Create a fresh and original environment with a clearly different design and arrangement.
+**DO NOT copy or closely reproduce the reference.**
+Do NOT reuse its layout, architecture, furniture, objects, shapes, proportions, composition, or specific visual elements.
 
 ### ENVIRONMENT STRUCTURE
 
-Build the environment as four clear visual layers:
+Build the environment as four connected visual layers:
 
-**Bottom layer:**
-Floor and lower foreground area.
-
-**Middle layer:**
-Furniture, objects, and environmental elements occupying the character's main acting area.
-
-**Background layer:**
-Main walls, doors, windows, structures, and dominant environmental elements.
-
-**Top layer:**
-Ceiling and upper environmental elements.
-
-All layers must connect naturally and belong to the same environment.
+**Bottom:** floor and lower foreground area.
+**Middle:** furniture, objects, and main acting area.
+**Background:** walls, doors, windows, and major structures.
+**Top:** ceiling and upper environmental elements.
 
 ### COMPOSITION
 
-Maintain a wide horizontal sidescroller composition with a large usable floor area for characters.
-
-Use a front-facing, eye-level view with shallow depth separation and minimal perspective.
-
-Avoid strong vanishing points, extreme perspective distortion, cinematic camera angles, or dramatic depth.
-
-Maintain natural spatial depth so the environment still feels dimensional rather than completely flat.
+* Wide horizontal sidescroller composition with a large usable floor area for characters.
+* Front-facing, eye-level view with shallow depth and minimal perspective.
+* Avoid strong vanishing points, extreme perspective, cinematic angles, or dramatic depth.
+* Keep natural spatial depth so the environment feels dimensional, not completely flat.
 
 ### ENVIRONMENT INTERPRETATION
 
-The description determines the environment, architecture, furniture, objects, condition, materials, decoration, lifestyle, and atmosphere.
+Interpret [{humanInput}] naturally and creatively, including its architecture, furniture, objects, materials, condition, decoration, lifestyle, and atmosphere.
 
-Interpret the description naturally and creatively.
-
-Invent an original arrangement and visual design rather than reproducing the reference.
+Create a fresh arrangement and original design rather than reproducing the reference.
 
 ### VISUAL RENDERING
 
-Create a **semi-realistic 2D illustration** with:
+Create a **semi-realistic hand-drawn 2D illustration** with:
 
-* hand-drawn linework
-* believable environmental proportions
-* natural material textures
-* subtle surface variation
+* natural hand-drawn linework
+* believable proportions
+* realistic-looking material textures
+* subtle surface imperfections
 * soft dimensional shading
 * believable lighting
-* realistic-looking wood, bamboo, ceramic, fabric, concrete, tile, and other materials when appropriate
 * controlled environmental detail
 * clear readable shapes
 * consistent depth
 * animation-friendly rendering
 
-Avoid an overly flat cartoon appearance.
+The result should feel like a **real-world environment simplified into hand-drawn 2D animation art**, not a flat vector illustration, vector icon, logo, 3D render, CGI scene, anime scene, or photorealistic image.
 
-Avoid childish proportions, toy-like objects, excessive exaggeration, overly simplified surfaces, plastic-looking materials, and completely flat colors.
+Avoid clean geometric vector shapes, perfectly uniform outlines, flat fills, glossy digital surfaces, plastic-looking materials, childish proportions, toy-like objects, and overly simplified surfaces.
 
-Keep the result visually detailed enough to feel believable while remaining clean and practical for 2D animation.
+Keep the environment detailed enough to feel believable while remaining clean and practical for 2D animation.
 
-### STYLE CONSISTENCY
+### FINAL LOCK
 
-Maintain the reference's overall illustration character while allowing the new environment to have its own architecture, objects, composition, and design.
-
-The final result should feel like a **semi-realistic hand-drawn 2D animation background**, not a photorealistic image, 3D render, anime scene, or flat vector cartoon.
-
-No characters, no people, no animals.
-
-No unnecessary text or logos.
+No characters, people, animals, unnecessary text, or logos.
 
 Output ONLY the background.

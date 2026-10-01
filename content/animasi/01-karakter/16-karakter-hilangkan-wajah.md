@@ -3,92 +3,52 @@ title: "Karakter Hilangin Wajah"
 slug: "karakter-hilangin-wajah"
 description: "Menghilangkan wajah dari karakter"
 image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
+
+variables_config:
+  WAJAH:
+    type: "text"
+    label: "Hilangkan Wajah"
+    placeholder: ""
+    default: "Completely remove specified facial features and reconstruct the face naturally."
+
 outputs:
   - JSON
 ---
-
 Use the attached character image as the **STRICT CHARACTER REFERENCE**.
 
 Create the **EXACT SAME CHARACTER** with the specified facial features completely removed.
 
-<br>
+[WAJAH]
 
-**FACIAL FEATURES TO REMOVE:**
+Remove **ONLY** the specified facial features and naturally reconstruct the affected area using the existing skin tone and original head structure.
 
-[Completely remove specified facial features and reconstruct the face naturally.]
+### REMOVAL RULES
 
-<br>
+* Completely erase the specified facial features.
+* Do NOT replace them with new eyes, eyebrows, nose, mouth, eyelashes, facial marks, or other facial details.
+* Remove all remnants, lines, shadows, blur, artifacts, or distorted traces caused by the removed features.
+* Keep the reconstructed area clean, smooth, and naturally integrated with the existing face.
+* Preserve the original head shape and facial proportions exactly.
+* Do NOT add or redesign any facial features.
+* Do NOT modify any area outside the specified features.
 
-Remove ONLY the specified facial features and reconstruct the underlying face naturally.
+### CHARACTER LOCK
 
-### CHARACTER LOCK — DO NOT CHANGE
-* exact same hairstyle
-* exact same hair shape
-* exact same hair color
-* exact same head shape
-* exact same skin tone
-* exact same body shape
-* exact same body proportions
-* exact same age and identity
-* exact same clothing
-* exact same accessories
-* exact same pose
-* exact same hand positions
-* exact same camera angle
-* exact same perspective
-* exact same composition
-* exact same art style
-* exact same line quality
-* exact same colors
-* exact same shading
+Keep the entire character **EXACTLY UNCHANGED**, including:
 
-### FACE REMOVAL
-Completely remove the specified facial features.
+* head shape, hairstyle, hair shape, and hair color
+* skin tone, body shape, proportions, age, and identity
+* clothing and accessories
+* pose and hand positions
+* camera angle, perspective, and composition
+* art style, line quality, colors, and shading
 
-Do not replace them with new eyes, eyebrows, nose, mouth, ears, facial markings, or other facial details.
+Do NOT resize, reshape, redesign, or reposition the character.
 
-Do not leave:
-* remnants of eyes
-* remnants of eyebrows
-* nose lines
-* mouth lines
-* eyelashes
-* facial marks caused by the removed features
-* blurry traces
-* AI artifacts
-* distorted leftover shapes
+### FINAL LOCK
 
-Reconstruct the affected facial area using the character's existing skin tone and original face structure.
+The result must look **identical to the original character**, except for the specified facial features being completely removed.
 
-The face must look **clean, blank, and naturally integrated** with the original character.
-
-Preserve the original head shape and hairstyle exactly.
-
-Do not make the head larger or smaller.
-
-Do not change the character's identity or proportions.
-
-Do not redesign the character.
-
-Do not add any new facial details.
-
-Do not alter any area outside the specified facial features.
-
-### STRICT REFERENCE LOCK
-Same character.
-Same hairstyle.
-Same head shape.
-Same skin tone.
-Same body.
-Same clothing.
-Same proportions.
-Same pose.
-Same camera angle.
-Same perspective.
-Same art style.
+The final face must be **clean, blank, featureless, and free of all unwanted remnants**.
 
 **ONLY REMOVE THE SPECIFIED FACIAL FEATURES.**
-
-The final result must look identical to the original character, except that the specified facial features have been completely removed.
-
-Output a clean character with a **blank, featureless face** and no unwanted facial remnants.

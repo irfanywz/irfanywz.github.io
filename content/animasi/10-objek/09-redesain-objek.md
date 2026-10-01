@@ -29,16 +29,11 @@ database:
 outputs:
   - JSON
 ---
-
 Use the attached image as the STRICT OBJECT REFERENCE.
 
 Redesign the object into a completely NEW and UNIQUE visual version based on:
 
-<br>
-
-**[{humanInput}]**
-
-<br>
+[{humanInput}]
 
 Keep the object's core identity, function, and object type clearly recognizable.
 

@@ -6,149 +6,79 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: true
 default_input: "A young cheerful guy with short messy dark hair, wearing a casual orange hoodie and blue jeans."
 desc_prompt: |
-  Create **[JUMLAH_VARIANT] DIFFERENT visual descriptions** for human characters based on:
+  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for human characters based on:
 
   [DESKRIPSI_KARAKTER]
 
-  Each description must represent a **UNIQUE character variant**.
-
-  Write each variant as **ONE concise sentence**, similar to:
-
-  “A young cheerful guy with short messy dark hair, wearing a casual orange hoodie and blue jeans.”
-
-  ### VARIATION REQUIREMENTS
-
-  Each character must be clearly different from the others through a natural combination of:
-
-  * age
-  * gender
-  * face shape
-  * hairstyle
-  * hair type
-  * skin tone
-  * body shape
-  * clothing style
-  * clothing colors
-  * distinctive facial features
-
-  Do NOT simply change the clothing color.
-
-  Each variant must have a noticeably different overall visual identity.
-
-  Make the characters feel like different real people rather than the same character with minor modifications.
-
-  Avoid repeating the same:
-
-  * face structure
-  * hairstyle
-  * body shape
-  * outfit combination
-  * clothing color combination
-  * distinctive facial features
-  * overall silhouette
-
-  ### FOOTWEAR LOCK — ALWAYS BAREFOOT
-
-  Every character must ALWAYS be barefoot.
-
-  * Both feet completely uncovered
-  * No shoes
-  * No sandals
-  * No slippers
-  * No socks
-  * No footwear of any kind
-  * Bare feet must have simple, natural cartoon anatomy
-  * Footwear must NEVER be used as a character variation
+  Each variant must be a **clearly different individual character** with a distinct physical identity, outfit, and overall silhouette.
 
   ### RULES
 
-  * Focus ONLY on physical appearance and clothing
-  * Clearly identify the character's general look and attire
-  * Describe the face, hairstyle, body shape, outfit, and distinctive physical features
-  * Keep anatomy appropriate to a stylized human cartoon character
-  * Mention only the most visually important characteristics
-  * Give every character a distinctive and memorable appearance
-  * Keep every character visually coherent within the same cartoon world
-  * Keep descriptions short and directly usable for image generation
-  * Every character is assumed to be barefoot
+  * Focus ONLY on physical appearance and clothing.
+  * Vary meaningful combinations of age, gender, face shape, hairstyle, hair type, skin tone, body shape, clothing style, clothing colors, and distinctive facial features.
+  * Do NOT create differences through clothing color alone or minor details.
+  * Avoid repeating the same face structure, hairstyle, body shape, outfit combination, color combination, distinctive features, or overall silhouette.
+  * Keep anatomy natural and appropriate for a stylized human cartoon character.
+  * Make every character distinctive, memorable, believable, and coherent within the same cartoon world.
+  * Mention only the most visually important characteristics.
+  * Keep descriptions concise and directly usable for image generation.
 
-  ### DO NOT MENTION
+  ### BAREFOOT LOCK
 
-  * location
-  * environment
-  * background
-  * setting
-  * atmosphere
-  * lighting
-  * weather
-  * time
-  * events
-  * actions
-  * poses
-  * movements
-  * backstory
-  * lore
-  * story
+  Every character is **ALWAYS BAREFOOT**:
 
-  ### OUTPUT REQUIREMENTS
+  * Both feet fully uncovered.
+  * No shoes, sandals, slippers, socks, or any footwear.
+  * Use simple, natural cartoon bare feet.
+  * Footwear must NEVER be used as a variation.
 
-  Generate **EXACTLY [JUMLAH_VARIANT] variants**.
+  ### CHARACTER SCOPE
 
-  The number of descriptions MUST match **[JUMLAH_VARIANT] EXACTLY**.
+  Do NOT mention location, environment, background, setting, atmosphere, lighting, weather, time, events, actions, poses, movements, backstory, lore, or story.
 
-  For example:
+  ### OUTPUT
 
-  * `[JUMLAH_VARIANT] = 5` → output exactly 5 descriptions
-  * `[JUMLAH_VARIANT] = 8` → output exactly 8 descriptions
-  * `[JUMLAH_VARIANT] = 10` → output exactly 10 descriptions
-  * `[JUMLAH_VARIANT] = 15` → output exactly 15 descriptions
+  Output exactly **[JUMLAH_VARIANT] numbered variants**, matching the requested number exactly.
 
-  Do NOT default to 8.
-  Do NOT generate fewer variants.
-  Do NOT generate more variants.
+  Each variant must be **ONE concise sentence only**.
 
-  ### OUTPUT FORMAT
-
-  1. [One concise character description]
-  2. [One concise character description]
-  3. [One concise character description]
-     ...
-     Continue numbering until exactly **[JUMLAH_VARIANT]** descriptions are completed.
-
-  Each variant must be **ONE sentence only**.
-
-  Do not add explanations.
-  Do not add headings.
-  Do not repeat descriptions.
-  Do not combine multiple variants into one sentence.
+  Do NOT add headings, explanations, extra text, duplicate designs, or combine multiple variants into one sentence.
 
 image_prompt: |
-  Create ONE short visual description of the character using image reference
+  Create **ONE short visual description** of the character using the provided image as the **PRIMARY VISUAL REFERENCE**.
 
-  If a reference image is provided, use it as the PRIMARY VISUAL REFERENCE. Carefully observe the character's visible appearance and translate only the important visual traits into a concise description.
-  Write exactly ONE natural sentence, similar to:
-  “A 27-year-old Indonesian man with a sturdy stocky build, square face, short buzz-cut black hair, and a calm expression, wearing a dark gray polo shirt, cargo pants, and sandals.”
-  RULES:
-  - Preserve the character's clearly visible Indonesian/local appearance from the reference.
-  - Describe natural Indonesian/Southeast Asian facial features and appearance when visually supported.
-  - Prioritize distinctive visible traits: age, gender, skin tone, face shape, hairstyle, hair color, body build, and clothing.
-  - Mention body build only when visually relevant.
-  - Describe clothing based on what is actually visible or appropriate for the given occupation.
-  - If AGE, GENDER, OCCUPATION, or other details are provided, use them to refine the description.
-  - Do not invent physical traits that are not visible or reasonably supported.
-  - Do not describe the character's pose, background, camera angle, or art style unless specifically requested.
-  - Do not copy the reference character's identity if the task is to create a new character; use the reference only for visual guidance.
-  - Make the character clearly feel Indonesian/local, not generically Western.
-  - Keep the appearance believable and suitable for everyday Indonesian life.
-  - Avoid generic descriptions.
-  - Avoid exaggerated or unusual physical features unless clearly present in the reference.
-  - Avoid backstory, biography, personality explanation, or unnecessary details.
-  - Keep the sentence short and directly usable as an image-generation prompt.
-  - Use simple, natural English.
-  - Do not use bullet points or multiple sentences.
-  - OUTPUT EXACTLY ONE SENTENCE.
+  [ADDITIONAL_CONTEXT]
 
-  [ADDITIONAL_CONTEXT]  
+  ### RULES
+
+  * Describe ONLY the character's visible physical appearance and clothing.
+  * Prioritize: age, gender, Indonesian/local appearance, skin tone, face shape, hairstyle, hair color, body build, facial features, and **FULL OUTFIT**.
+  * Describe the outfit in this order: **upper clothing → lower clothing → footwear → relevant accessories**.
+  * **ALWAYS inspect and describe the lower body separately.** If pants, shorts, skirt, sarong, or another lower garment is visible, explicitly name it and describe its type, length, fit, and color when clear.
+  * Never describe only the upper clothing when the lower clothing is visible.
+  * Include footwear whenever visible; if the feet are clearly visible and barefoot, explicitly state **barefoot**.
+  * Preserve clearly visible Indonesian/Southeast Asian characteristics when supported by the reference.
+  * Use [ADDITIONAL_CONTEXT] to refine or clarify details when provided.
+  * Describe clothing based on what is actually visible. Do NOT invent clothing that is hidden or cropped out.
+  * If a body or clothing area is not visible, do NOT guess or fabricate its details.
+  * Keep the character believable, natural, and suitable for everyday Indonesian life.
+  * Avoid generic descriptions, exaggerated features, personality, backstory, biography, pose, background, camera angle, and art style.
+  * If creating a new character, use the reference only as visual guidance and do NOT copy its identity.
+  * Write in simple, natural English.
+
+  ### OUTFIT COMPLETENESS LOCK
+
+  The final sentence must include **every clearly visible clothing category**:
+  **upper garment + lower garment + footwear + relevant accessories**.
+
+  Never omit a clearly visible lower garment.
+
+  ### OUTPUT
+
+  Write **EXACTLY ONE concise sentence** describing the character.
+
+  Do NOT use bullet points, headings, explanations, or multiple sentences.
+
 
 database:
   "Anak":
@@ -198,57 +128,70 @@ database:
 outputs:
   - JSON
 ---
-
 Use the attached image as the **STRICT STYLE REFERENCE ONLY**.
 
-Create a completely **NEW HUMAN CHARACTER** based on this description:
-
-<br>
-
+Create a **COMPLETELY NEW ORIGINAL HUMAN CHARACTER** based on:
+  
 [{humanInput}]
 
-<br>
+The new character must have its own **face, hairstyle, body shape, proportions, silhouette, outfit, colors, and identity**. Do NOT copy, recolor, or slightly modify the reference character.
 
-The new character must have a unique face, hairstyle, body shape, silhouette, outfit, colors, and identity. Do not copy, recolor, or slightly modify the original character.
+### VISUAL STYLE
 
-Keep **ONLY the visual art style of the reference**:
-- simple 2D cartoon
-- thick black outlines
-- flat solid colors
-- clean simple shapes
-- minimal details
-- slightly handmade line quality
-- simple expressive facial features
-- animation-friendly design
+Match ONLY the reference's visual language:
 
-POSE:
-Create the character in a neutral **FRONT 3/4 VIEW**, facing slightly to the right.
+* simple 2D cartoon
+* thick natural black outlines
+* flat solid colors
+* clean simple shapes
+* minimal detail
+* slightly handmade line quality
+* simple expressive facial features
+* animation-friendly construction
+* consistent stylization and visual simplicity
 
-Show the character standing upright in a relaxed neutral pose:
-- full body visible from head to feet
-- arms hanging naturally at the sides
-- hands clearly visible
-- legs in a natural standing position
-- head upright
-- neutral facial expression
-- no action pose
-- no exaggerated body movement
+Do NOT copy any character-specific design elements from the reference.
 
-This image will be used as the **MASTER CHARACTER REFERENCE** for generating other poses later.
+### POSE & VIEW
 
-Therefore, prioritize:
-- clear character identity
-- consistent proportions
-- clear body construction
-- recognizable face
-- recognizable hairstyle
-- clean outfit design
-- clear silhouette
-- animation-friendly shapes
-- the eyes are rendered with a clear white sclera
+Show the character in a neutral **FRONT 3/4 VIEW**, facing slightly right.
 
-Do not add props, text, extra characters, dynamic movement, or complex background.
+* Full body visible from head to feet.
+* Standing upright in a relaxed neutral pose.
+* Arms naturally at the sides with hands clearly visible.
+* Legs in a natural standing position.
+* Head upright with a neutral expression.
+* Clear readable silhouette.
+* No action pose or exaggerated movement.
 
-The final character must look like a completely different person from the reference, while clearly belonging to the same cartoon animation style.
+### MASTER CHARACTER LOCK
 
-Full body, centered, clean simple background.
+Design the character as a **MASTER CHARACTER REFERENCE** for future poses and animation.
+
+Prioritize:
+
+* clear character identity
+* consistent body proportions
+* recognizable face and hairstyle
+* clear body construction
+* clean outfit design
+* distinctive silhouette
+* simple animation-friendly shapes
+* clearly visible white sclera
+
+### BAREFOOT LOCK
+
+The character is **ALWAYS BAREFOOT**:
+
+* Both feet fully uncovered.
+* No shoes, sandals, slippers, socks, or footwear.
+* Simple, natural cartoon bare feet.
+
+### FINAL RULES
+
+* Do NOT copy, recolor, or closely modify the reference character.
+* Do NOT add props, text, extra characters, dynamic movement, or unnecessary background elements.
+* Keep the background clean and simple.
+* Preserve the new character's design consistently for future pose variations.
+
+**Output ONLY the new human character.**

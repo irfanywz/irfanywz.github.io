@@ -6,27 +6,31 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: false
 default_object: "A vintage wooden bench"
 default_placement: "On the empty sidewalk on the right side of the street"
+
+variables_config:
+  OBJEK_DITAMBAHKAN:
+    type: "text"
+    label: "OBJEK_DITAMBAHKAN"
+    placeholder: "Lukisan Jokowi"
+    default: ""  
+  LOKASINYA:
+    type: "text"
+    label: "LOKASINYA"
+    placeholder: "Dinding"
+    default: ""
+
 outputs:
   - JSON
 ---
-
 Use the attached image as the STRICT BACKGROUND REFERENCE.
 
 Add ONLY the specified new object or element:
 
-<br>
-
-**[newObject]**
-
-<br>
+[OBJEK_DITAMBAHKAN]
 
 Place the new object naturally in the specified location:
 
-<br>
-
-**[placementLocation]**
-
-<br>
+[LOKASINYA]
 
 Preserve the original background exactly as much as possible.
 

@@ -6,57 +6,27 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: true
 default_input: "Traditional Indonesian village alley with bamboo fences and tropical trees"
 desc_prompt: |
-  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for a **2D animation sidescroller background** based on:
+  Create [JUMLAH_VARIANT] DIFFERENT short visual descriptions for a 2D animation sidescroller background based on:
 
-  [{target}]
+  [DESKRIPSIKAN]
 
-  Each variant must describe a **clearly different environmental setting**, not merely change a few props, colors, or decorative details.
+  Each variant must show a clearly different environment through its environment type, architecture, layout, major structures, or scenery — not just different colors, lighting, weather, or small props.
 
-  Write each variant as **one concise sentence**, describing the environment theme and its visual elements in a clear **foreground → middle ground → background → upper environment** order.
+  Write each variant as ONE concise sentence in this exact order:
+
+  **Foreground → Middle ground → Background → Upper environment**
 
   Rules:
 
-  * Focus **ONLY on the environment and setting**
-  * The description must work as a **pure background environment**, designed for 2D sidescroller animation
-  * Clearly describe the spatial arrangement and depth of the environment
-  * Make each variant meaningfully different in **environment type, architecture, layout, spatial arrangement, major structures, or scenery**
-  * Do NOT create variants that differ only by color, lighting, weather, or a few small props
-  * Include environmental elements that naturally belong to [{target}]
-  * Adapt the architecture, objects, vegetation, materials, and scenery to the specific setting described in [{target}]
-  * Do NOT force any specific culture, country, architectural style, or environmental element unless it is relevant to [{target}]
-  * Keep the environment believable, coherent, readable, and animation-friendly
-  * Avoid excessive clutter or unnecessary tiny details
+  * Focus ONLY on the environment and setting.
+  * Include only elements naturally appropriate to [DESKRIPSIKAN].
+  * Keep each environment believable, coherent, readable, and animation-friendly.
+  * Do not force any specific country, culture, architecture, or environmental elements unless relevant to [DESKRIPSIKAN].
+  * Avoid excessive clutter and unnecessary tiny details.
+  * All four layers must belong to the same location and form believable spatial depth.
+  * Keep the composition suitable for a horizontal 2D sidescroller with a clear foreground area for characters.
 
-  ### ENVIRONMENT STRUCTURE
-
-  Build every environment with a clear visual depth hierarchy in this exact order:
-
-  **Foreground:**
-  Ground, road, floor, pavement, terrain, or nearby environmental surfaces. Keep this area visually readable and suitable as the main space where characters can be placed.
-
-  **Middle ground:**
-  Fences, vegetation, walls, furniture, vehicles, small structures, objects, signs without readable text, and other environmental elements positioned between the foreground and main scenery.
-
-  **Background:**
-  Main houses, buildings, roads, structures, terrain, architecture, vegetation, or dominant scenery that establishes the location.
-
-  **Upper environment:**
-  Sky, distant trees, rooftops, mountains, clouds, poles, wires, hanging elements, ceilings, upper structures, or other environmental elements extending into the upper frame.
-
-  All four layers must naturally belong to the **same location**, align spatially, and connect with believable depth.
-
-  Do NOT randomly place unrelated objects between layers.
-
-  ### SIDE-SCROLLER COMPOSITION
-
-  The environment must read clearly as a **side-view horizontal 2D animation background**.
-
-  Prioritize:
-
-  * horizontal spatial layout
-  * clear foreground*
-  * sidescroll view
-
+  Output exactly [JUMLAH_VARIANT] numbered variants, ONE sentence per variant, with no explanations or extra text.
 
 image_prompt: |
   Create ONE short visual description of the Indonesian animation background using image reference
@@ -91,71 +61,60 @@ database:
 outputs:
   - JSON
 ---
-
 Use the attached image as the **STRICT STYLE REFERENCE ONLY**.
 
 Create a completely NEW **horizontal 2D sidescroller animation background** based on:
 
 [{humanInput}]
 
-Use the reference ONLY for its visual style, including line quality, rendering technique, shading, texture treatment, level of detail, and overall artistic feel.
+Use the reference ONLY for its general visual language: line quality, rendering technique, shading, texture, detail level, and artistic feel.
 
-**DO NOT copy the reference image's composition, architecture, objects, layout, colors, perspective, or specific visual elements.**
+**DO NOT copy or closely reproduce** its composition, architecture, objects, layout, colors, perspective, proportions, or specific visual elements.
 
 ### VISUAL STYLE
 
 Create a **semi-realistic hand-drawn 2D animation background** with:
 
-* clean detailed linework
-* believable materials and textures
-* subtle shading
-* natural proportions
-* clear shapes
-* convincing depth
-* controlled environmental detail
+* natural line variation
+* believable proportions
+* realistic-looking materials and textures
+* subtle dimensional shading
+* clear readable shapes
+* convincing but controlled depth
+* practical environmental detail
 * animation-friendly rendering
 
-Avoid flat childish cartoon styling, excessive outlines, overly simplified shapes, photorealism, 3D rendering, and anime styling.
+The result should feel like a **real-world environment simplified into hand-drawn 2D animation art**, not a flat vector illustration, vector icon, logo, 3D render, CGI scene, anime scene, or photorealistic image.
+
+Avoid perfectly geometric vector shapes, uniform outlines, flat fills, glossy digital surfaces, childish proportions, toy-like objects, and overly simplified surfaces.
 
 ### ENVIRONMENT STRUCTURE
 
-Build the environment in this exact visual order:
+Build the scene in this visual order:
 
 **Foreground:** ground, floor, road, terrain, or nearby surfaces.
-
-**Middle ground:** walls, fences, vegetation, furniture, vehicles, small structures, and environmental objects.
-
-**Background:** main buildings, houses, structures, roads, terrain, and dominant scenery.
-
+**Middle ground:** walls, fences, vegetation, furniture, vehicles, small structures, and environmental elements.
+**Background:** main buildings, houses, structures, terrain, roads, and dominant scenery.
 **Upper environment:** sky, distant scenery, rooftops, trees, clouds, poles, wires, ceilings, and upper structures.
 
-All layers must belong to the **same environment** and connect naturally with believable depth.
+All layers must belong to the same environment and connect naturally with believable depth.
 
 ### COMPOSITION
 
-Use a **wide horizontal 16:9 sidescroller composition** with an eye-level front-facing view unless [humanInput] clearly requires another viewpoint.
-
-Keep:
-
-* a large readable foreground area for characters
-* clear horizontal layout
-* clear separation between layers
-* consistent perspective
-* natural depth
-* balanced environmental detail
-
-The result must look like a **background for characters moving horizontally through the scene**, not a cinematic illustration.
+* Wide horizontal **16:9 sidescroller** composition.
+* Eye-level, front-facing view unless [{humanInput}] requires another viewpoint.
+* Large readable foreground area for characters.
+* Clear horizontal layout and layer separation.
+* Consistent perspective and natural depth.
+* Balanced environmental detail.
+* Designed as a background for characters moving horizontally, not a cinematic illustration.
 
 ### RULES
 
-Create the environment entirely from **[humanInput]**.
-
-Do not force any specific country, culture, architecture, objects, materials, or environmental style unless relevant to [humanInput].
-
-No characters, people, animals, logos, or unnecessary props.
-
-Do not add unrelated objects.
-
-If text or signage is specifically required by [humanInput], make it clean and readable.
+* Build the environment entirely from [{humanInput}].
+* Do not force any specific culture, architecture, materials, objects, or regional style unless relevant to [{humanInput}].
+* Do not add unrelated elements or unnecessary props.
+* No characters, people, animals, logos, or unnecessary text.
+* If text or signage is specifically requested, make it clean and readable.
 
 **Output ONLY the background.**

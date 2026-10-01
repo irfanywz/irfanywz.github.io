@@ -10,114 +10,36 @@ desc_prompt: |
 
   [NAMA_POSE]
 
-  Each description must represent a **UNIQUE pose variant** that naturally fits the given pose category.
+  Each variant must be a **clearly different overall pose** that naturally fits [NAMA_POSE], with meaningful changes in body position, silhouette, gesture, and weight distribution.
 
-  ### VARIATION REQUIREMENTS
+  ### RULES
 
-  Every variant must show a clearly different combination of:
-
-  * arm position
-  * hand gesture
-  * leg position
-  * foot placement
-  * body direction
-  * torso position
-  * weight distribution
-  * head direction when relevant
-  * leaning or body angle
-  * overall posture
-
-  Do NOT simply change one small body part.
-
-  Each variant must have a noticeably different overall pose and silhouette while still belonging to the same pose category.
-
-  Avoid repeating the same:
-
-  * arm position
-  * hand gesture
-  * leg position
-  * foot placement
-  * body direction
-  * leaning direction
-  * weight distribution
-  * overall silhouette
-
-  ### POSE RULES
-
-  * Focus ONLY on pose, action, gesture, and physical movement
-  * Keep poses simple and natural
-  * Make poses suitable for 2D animation
-  * Keep body movement physically believable
-  * Use clear and readable body positions
-  * Make each pose easy to reproduce from the description
-  * Keep movements appropriate to `[NAMA_POSE]`
-  * Use natural variations rather than random or exaggerated movements
+  * Focus ONLY on pose, body position, gesture, and physical movement.
+  * Vary the combination of arms, hands, legs, feet, torso, body direction, head direction, leaning, and weight distribution.
+  * Each variant must have a noticeably different silhouette and posture, not just one changed body part.
+  * Avoid repeating the same arm position, hand gesture, leg position, foot placement, leaning direction, or overall silhouette.
+  * Keep poses simple, natural, physically believable, readable, and suitable for 2D animation.
+  * Keep every pose appropriate to [NAMA_POSE].
+  * Do NOT create random, exaggerated, or physically unnatural movements.
 
   ### CHARACTER LOCK
 
-  Do NOT modify:
+  Do NOT modify the character's identity, face, facial features, hairstyle, hair color, body design, proportions, skin tone, clothing, or accessories.
 
-  * character identity
-  * face
-  * facial features
-  * hairstyle
-  * hair color
-  * body design
-  * body proportions
-  * skin tone
-  * clothing
-  * accessories
+  ONLY the pose, gesture, and body position may change.
 
-  Only the **pose, gesture, and body position** may change.
+  ### EXCLUSIONS
 
-  ### DO NOT MENTION
+  Do NOT mention the location, environment, background, setting, atmosphere, lighting, weather, time, character appearance, clothing, props, backstory, lore, or story.
 
-  * location
-  * environment
-  * background
-  * setting
-  * atmosphere
-  * lighting
-  * weather
-  * time
-  * character appearance
-  * clothing
-  * props
-  * backstory
-  * lore
-  * story
+  ### OUTPUT
 
-  ### OUTPUT REQUIREMENTS
-
-  Generate **EXACTLY [JUMLAH_VARIANT] variants**.
-
-  The number of descriptions MUST match **[JUMLAH_VARIANT] EXACTLY**.
-
-  For example:
-
-  * `[JUMLAH_VARIANT] = 5` → output exactly 5 poses
-  * `[JUMLAH_VARIANT] = 8` → output exactly 8 poses
-  * `[JUMLAH_VARIANT] = 10` → output exactly 10 poses
-  * `[JUMLAH_VARIANT] = 15` → output exactly 15 poses
-
-  Do NOT default to 10.
-  Do NOT generate fewer variants.
-  Do NOT generate more variants.
-
-  ### OUTPUT FORMAT
-
-  1. [One concise pose description]
-  2. [One concise pose description]
-  3. [One concise pose description]
-     ...
-     Continue numbering until exactly **[JUMLAH_VARIANT]** descriptions are completed.
+  Output exactly **[JUMLAH_VARIANT] numbered variants**, matching the requested number exactly.
 
   Each variant must be **ONE concise sentence only**.
 
-  Do not add explanations.
-  Do not add headings.
-  Do not repeat poses.
-  Do not combine multiple poses into one sentence.
+  Do NOT add headings, explanations, extra text, duplicate poses, or combined poses.
+
 
 
 image_prompt: |
@@ -144,27 +66,94 @@ image_prompt: |
   
   [note]
 
+
 database:
+  "Pose Dasar":
+    - title: "Berdiri Natural"
+      description: "Standing upright in a relaxed natural pose with arms hanging loosely at the sides and feet slightly apart."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231f2937"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%2393c5fd" font-size="12" font-family="sans-serif">Stand</text></svg>'
+    - title: "Berjalan Santai"
+      description: "Walking forward casually with one leg stepping ahead, arms swinging gently, and a relaxed upright posture."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231e3a8a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23bfdbfe" font-size="12" font-family="sans-serif">Walk</text></svg>'
+    - title: "Berlari Cepat"
+      description: "Running energetically forward with arms swinging and a dynamic leaning posture."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231f2937"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%2393c5fd" font-size="12" font-family="sans-serif">Run</text></svg>'
+    - title: "Duduk di Kursi"
+      description: "Sitting upright on a chair with both feet flat on the floor, hands resting on the lap, and a relaxed posture."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23374151"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23e5e7eb" font-size="12" font-family="sans-serif">Sit</text></svg>'
+    - title: "Duduk Bersila"
+      description: "Sitting cross-legged on the floor with hands resting on the knees and a straight relaxed back."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23065f46"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23d1fae5" font-size="12" font-family="sans-serif">Sit</text></svg>'
+    - title: "Jongkok Santai"
+      description: "Crouching down with knees bent deeply, both feet flat on the ground, and arms resting loosely on the thighs."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23b45309"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fde68a" font-size="12" font-family="sans-serif">Crouch</text></svg>'
+    - title: "Berbaring Telentang"
+      description: "Lying flat on the back with arms resting at the sides and legs extended straight out."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%234c1d95"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ddd6fe" font-size="12" font-family="sans-serif">Lie</text></svg>'
+    - title: "Tidur Miring"
+      description: "Lying on one side with knees slightly bent, one arm tucked under the head, and the other resting along the body."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230e7490"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23cffafe" font-size="12" font-family="sans-serif">Sleep</text></svg>'
+    - title: "Melompat"
+      description: "Jumping upward with both legs bent mid-air, arms raised slightly, and an energetic upward posture."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23991b1b"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fecaca" font-size="12" font-family="sans-serif">Jump</text></svg>'
+    - title: "Membungkuk"
+      description: "Bending forward at the waist with arms hanging down and head lowered in a submissive or tired posture."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%237c2d12"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fed7aa" font-size="12" font-family="sans-serif">Bend</text></svg>'
+    - title: "Berlutut"
+      description: "Kneeling on the ground with both knees down, sitting back on the heels, and hands resting on the thighs."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23a21caf"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fae8ff" font-size="12" font-family="sans-serif">Kneel</text></svg>'
+    - title: "Berdiri Menyandar"
+      description: "Standing with the back leaning against a surface, one leg crossed over the other, and arms folded or relaxed."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%2314532d"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23bbf7d0" font-size="12" font-family="sans-serif">Lean</text></svg>'
   "Example":
     - title: "Running Fast"
       description: "Running energetically forward with arms swinging and a dynamic leaning posture."
       image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231f2937"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%2393c5fd" font-size="12" font-family="sans-serif">Run</text></svg>'
+    - title: "Berdiri Natural"
+      description: "Standing upright in a relaxed natural pose with arms hanging loosely at the sides and feet slightly apart."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231f2937"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%2393c5fd" font-size="12" font-family="sans-serif">Stand</text></svg>'
+    - title: "Diikat ke Bangku"
+      description: "Sitting upright on a chair with hands bound together and torso tied tightly with rope."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23450a0a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fca5a5" font-size="12" font-family="sans-serif">Bound</text></svg>'
+    - title: "Megang Roko Sambil Rogoh Kantong"
+      description: "Standing casually with one hand in his pocket and a cigarette held in the OTHER hand."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23374151"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23e5e7eb" font-size="12" font-family="sans-serif">Smoke</text></svg>'
+    - title: "Nunjuk ke Kiri"
+      description: "Standing upright with one arm extended sideways and index finger pointing forward."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231e3a8a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23bfdbfe" font-size="12" font-family="sans-serif">Point</text></svg>'
+    - title: "Tangan Berbicara"
+      description: "The character stands upright with a slight forward lean, gesturing mid-air with one open hand while the other rests loosely at their side."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23065f46"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23d1fae5" font-size="12" font-family="sans-serif">Talk</text></svg>'
+    - title: "Tangan Melambai"
+      description: "One hand waves near the shoulder with fingers slightly spread while the other arm hangs loosely, standing with a relaxed open stance and a slight tilt of the upper body to one side."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230e7490"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23cffafe" font-size="12" font-family="sans-serif">Wave</text></svg>'
+    - title: "Tangan Garuk Kepala"
+      description: "Standing upright with one arm bent and hand placed on the back of the head."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23b45309"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fde68a" font-size="12" font-family="sans-serif">Scratch</text></svg>'
+    - title: "Megang HP Dua Tangan"
+      description: "Holding a smartphone in both hands with arms bent and looking down at the screen."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%234c1d95"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ddd6fe" font-size="12" font-family="sans-serif">Phone</text></svg>'
+    - title: "Megang HP Garuk Kepala"
+      description: "Holding a smartphone in one hand and placing the other hand on the head."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%237c2d12"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fed7aa" font-size="12" font-family="sans-serif">Phone+</text></svg>'
+    - title: "Lagi Calling"
+      description: "Holding a smartphone up to the ear with a bent arm."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%2314532d"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23bbf7d0" font-size="12" font-family="sans-serif">Call</text></svg>'
+    - title: "Calling Pegang Kepala"
+      description: "Holding a smartphone up to the ear with a bent arm and other hand placed on the back of the head."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23a21caf"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fae8ff" font-size="12" font-family="sans-serif">Call+</text></svg>'
+
 
 outputs:
   - JSON
 ---
-
 Use the attached character image as the **STRICT CHARACTER REFERENCE**.
 
 Create the **SAME CHARACTER** from the reference image in a new pose.
 
 **POSE:**
 
-<br>
-
 [{humanInput}]
-
-<br>
 
 **CHARACTER LOCK:**
 

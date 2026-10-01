@@ -6,70 +6,23 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: true
 default_input: "Peaceful golden hour sunset, warm orange ambient light, long soft shadows, clear warm sky."
 desc_prompt: |
-  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for a time and atmosphere shift of an existing background based on:
+  Create [JUMLAH_VARIANT] DIFFERENT short visual descriptions for changing the time and atmosphere of an existing environment based on:
 
-  [{target}]
-
-  Each variant must describe a **clearly different lighting and atmospheric condition**, not merely change the brightness or color slightly.
-
-  Write each variant as **one concise descriptive sentence**, specifying the overall lighting, sky appearance when visible, brightness level, color temperature, ambient illumination, and shadow characteristics.
+  [DESKRIPSIKAN]
 
   Rules:
 
-  * Focus **ONLY on lighting, sky, color temperature, brightness, shadows, and atmosphere**
-  * Describe how the new lighting affects the **entire scene consistently**
-  * Make each variant meaningfully different in **time of day, light direction, brightness, color temperature, sky condition, atmospheric quality, or shadow behavior**
-  * Examples may include morning, bright midday, golden hour, sunset, blue hour, night, overcast, rainy atmosphere, foggy atmosphere, or other appropriate conditions
-  * Do NOT create variants that differ only by a minor hue or brightness adjustment
-  * Keep the lighting physically believable and visually coherent
-  * Adapt the atmospheric condition naturally to [{target}]
+  * Each variant must represent a clearly different lighting or atmospheric condition, not merely a minor brightness or color change.
+  * Focus ONLY on time of day, lighting, sky, brightness, color temperature, shadows, and atmosphere.
+  * Vary the time, light direction, brightness, color temperature, sky condition, atmospheric quality, and shadow behavior meaningfully.
+  * Possible conditions include morning, midday, golden hour, sunset, blue hour, night, overcast, rain, fog, or other logical conditions.
+  * Apply the lighting and atmosphere consistently across the entire scene.
+  * Keep the original environment completely unchanged, including composition, layout, architecture, objects, vegetation, proportions, perspective, and camera.
+  * Do NOT mention specific physical objects or introduce, remove, or modify environmental elements.
+  * Keep each condition physically believable and suitable for 2D animation background generation.
+  * Keep each description concise and directly usable for asset generation pipelines.
 
-  ### ENVIRONMENT LOCK
-
-  The original environment is **completely locked**.
-
-  Do NOT change:
-
-  * composition
-  * layout
-  * architecture
-  * furniture
-  * objects
-  * vegetation
-  * structures
-  * proportions
-  * perspective
-  * camera angle
-  * environment elements
-
-  Only change the **lighting and atmospheric condition**.
-
-  ### CONTENT LOCK
-
-  Do NOT mention or describe specific physical objects such as:
-
-  * buildings
-  * houses
-  * trees
-  * furniture
-  * vehicles
-  * roads
-  * walls
-  * floors
-  * decorations
-  * props
-
-  Do NOT introduce new physical objects or environmental elements.
-
-  ### OUTPUT RULES
-
-  * Output exactly **[JUMLAH_VARIANT]** variants
-  * Number them sequentially
-  * One sentence per variant
-  * No explanations
-  * No headings
-  * No additional commentary
-  * Do not output fewer or more variants than requested
+  Output exactly [JUMLAH_VARIANT] numbered variants, ONE sentence per variant, with no explanations or extra text.
 
 
 image_prompt: |
@@ -127,66 +80,95 @@ database:
 outputs:
   - JSON
 ---
+Use the attached image as the **STRICT BACKGROUND REFERENCE**.
 
-Use the attached image as the STRICT BACKGROUND REFERENCE.
+Create the **EXACT SAME BACKGROUND** with only the requested time, lighting, weather, or atmosphere changed:
 
-ONLY change the following:
+[[{humanInput}]]
 
-<br>
+### ONLY CHANGE
 
-[{humanInput}]
+Change ONLY the visual conditions specified in [[{humanInput}]], such as:
 
-<br>
+* time of day
+* overall lighting
+* sky appearance
+* brightness
+* color temperature
+* shadows
+* atmospheric conditions
+* weather conditions when requested
 
-Preserve the original background EXACTLY.
+Apply these changes naturally and consistently across the entire scene.
 
-Do not change, redesign, remove, add, move, resize, or replace any existing:
-- buildings
-- roads
-- walls
-- furniture
-- trees
-- objects
-- environmental elements
-- object positions
-- composition
-- perspective
-- proportions
-- camera angle
-- scene layout
+### ENVIRONMENT LOCK
 
-Keep the original cartoon art style, linework, shapes, and visual design unchanged.
+Keep the physical environment **EXACTLY UNCHANGED**:
 
-Transform the scene naturally by adjusting ONLY:
-- overall lighting
-- sky appearance
-- environmental brightness
-- color temperature
-- shadows
-- atmosphere
-- weather conditions when requested
+* buildings and architecture
+* roads, floors, and terrain
+* walls, doors, windows, and structures
+* furniture and objects
+* trees and vegetation
+* object positions and spatial relationships
+* composition and scene layout
+* perspective and proportions
+* camera angle and framing
 
-The physical environment must remain exactly the same.
+Do NOT add, remove, replace, resize, move, redesign, or rearrange any existing environmental element.
 
-Do not add new buildings, objects, characters, vehicles, text, logos, or environmental elements unless specifically requested.
+### VISUAL STYLE LOCK
 
-Do not remove any existing elements.
+Preserve the original:
 
-Maintain the exact same composition and camera view.
+* 2D cartoon art style
+* linework and outline quality
+* shapes and proportions
+* colors and material appearance
+* rendering style
+* level of detail
+* visual design
 
-The result must look like the SAME background captured at a different time or under a different atmosphere.
+Do NOT reinterpret or redraw the environment in a different style.
 
-Preserve all original object placement, proportions, perspective, and environmental structure.
+### ATMOSPHERE RULE
 
-STRICT REFERENCE LOCK:
-Same location.
-Same composition.
-Same objects.
-Same object positions.
-Same perspective.
-Same camera angle.
-Same visual style.
+The requested change must feel like the **SAME LOCATION under different environmental conditions**, not a new background.
 
-ONLY change the time, lighting, and atmosphere.
+If changing time of day, adjust lighting, sky, shadows, and brightness naturally.
 
-Output a clean 2D animation background with the exact same environment and composition as the original image.
+If changing weather, modify ONLY weather-related visual conditions while keeping the physical environment unchanged.
+
+If changing atmosphere, adjust ONLY the requested atmospheric qualities without introducing unrelated elements.
+
+### DO NOT ADD OR REMOVE
+
+No new:
+
+* buildings
+* furniture
+* objects
+* trees
+* vehicles
+* characters
+* text
+* logos
+* environmental elements
+
+No existing elements may be removed unless they are naturally obscured by the requested weather or atmosphere.
+
+### FINAL LOCK
+
+**SAME LOCATION**
+**SAME ENVIRONMENT**
+**SAME OBJECTS**
+**SAME OBJECT POSITIONS**
+**SAME COMPOSITION**
+**SAME PERSPECTIVE**
+**SAME CAMERA VIEW**
+**SAME ART STYLE**
+**ONLY TIME / LIGHTING / WEATHER / ATMOSPHERE CHANGES**
+
+The final result must look like the **exact same background under the conditions specified in [[{humanInput}]]**.
+
+**ONLY CHANGE WHAT IS REQUESTED IN [[{humanInput}]].**

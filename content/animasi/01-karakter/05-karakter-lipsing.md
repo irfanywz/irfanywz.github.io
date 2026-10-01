@@ -53,161 +53,93 @@ database:
 outputs:
   - JSON
 ---
-# AIUEO LIP SYNC MOUTH SHAPE SHEET
-
 Use the attached character image as the **STRICT CHARACTER REFERENCE**.
 
-**SHEET CONFIGURATION:**
-
-<br>
+Create a clean **6-cell lip-sync mouth shape sheet** for the **EXACT SAME CHARACTER**.
 
 [{humanInput}]
 
-<br>
+The **original mouth is the PRIMARY MOUTH DESIGN REFERENCE**.
 
-Create a clean lip-sync mouth shape sheet for the **EXACT SAME CHARACTER**.
+### MOUTH DESIGN LOCK
 
-The original mouth in the reference image is the **PRIMARY MOUTH DESIGN REFERENCE**.
+Preserve the original mouth design across **ALL 6 shapes**, including:
 
-### ORIGINAL MOUTH DESIGN LOCK — VERY IMPORTANT
-
-**Preserve the original mouth design throughout ALL 6 lip-sync shapes.**
-
-The original mouth's:
-
-* lip shape
-* lip thickness
-* upper-lip shape
-* lower-lip shape
+* lip shape and thickness
+* upper and lower lip structure
 * cupid's bow
-* mouth width
-* mouth proportions
-* lip contour
+* width and proportions
+* lip contours
 * lip color
-* lip-balm / glossy appearance
-* visual details
-* overall feminine mouth characteristics
+* distinctive details such as glossy or lip-balm appearance
+* overall mouth characteristics
 
-must remain visually recognizable in **EVERY** mouth variation.
-
-**DO NOT redesign the mouth.**
-
-The lip-sync shapes are only **phonetic variations of the ORIGINAL MOUTH**, not completely different mouth designs.
-
-If the original mouth has **lip balm, glossy lips, defined lips, fuller lips, thin lips, a cupid's bow, or another distinctive feature**, those characteristics MUST remain visible and consistent across all 6 shapes.
-
-For example:
-
-**Original mouth = glossy lip-balm feminine lips**
-
-Then:
-
-* IDLE = same glossy lip-balm lips, naturally closed
-* A = same glossy lip-balm lips, naturally opened vertically
-* I = same glossy lip-balm lips, narrowed horizontally
-* U = same glossy lip-balm lips, naturally pursed
-* E = same glossy lip-balm lips, slightly widened
-* O = same glossy lip-balm lips, rounded open
-
-Do NOT replace the original lips with generic cartoon lips.
+The 6 shapes must look like **the same person's lips articulating different vowel sounds**, NOT six different mouth designs.
 
 ### LIP-SYNC SHAPES
 
-Create exactly 6 natural mouth variations:
+Create exactly these 6 articulations:
 
-**IDLE** — original mouth design, naturally relaxed and closed.
+1. **IDLE** — original mouth naturally relaxed and closed.
+2. **A** — original lips naturally opened vertically.
+3. **I** — original lips compressed into a narrower horizontal shape.
+4. **U** — original lips naturally pursed and rounded.
+5. **E** — original lips slightly widened and opened.
+6. **O** — original lips rounded into an open O shape.
 
-**A** — original mouth design naturally adapted into a vertically open A shape.
+Change the mouth **only as much as necessary** to represent each vowel.
 
-**I** — original mouth design naturally compressed into a narrow horizontal I shape.
-
-**U** — original mouth design naturally pursed into a rounded U shape.
-
-**E** — original mouth design naturally widened into a slightly open E shape.
-
-**O** — original mouth design naturally rounded into an O shape.
-
-The mouth should change **only as much as necessary to represent each vowel sound**.
-
-### MOUTH CONSISTENCY
+### CONSISTENCY
 
 Across all 6 shapes:
 
-* same mouth design language
-* same lip thickness
-* same lip color
-* same lip contour style
-* same feminine characteristics
-* same level of lip definition
-* same glossy or lip-balm appearance
-* same mouth position
-* same mouth scale
+* same lip design and visual language
+* same lip thickness, color, and definition
+* same distinctive lip characteristics
+* same mouth position and scale
 * same facial proportions
 
-The mouth must look like **the same person's lips performing different sounds**, not six different mouths.
+Do NOT redesign, replace, simplify, or genericize the original lips.
 
-### CHARACTER LOCK — DO NOT CHANGE
+### CHARACTER LOCK
 
-* exact same head shape
-* exact same face
-* exact same eyes
-* exact same eyebrows
-* exact same hairstyle
-* exact same hair color
-* exact same skin tone
-* exact same age and character identity
-* exact same outfit
-* exact same proportions
-* exact same 3/4 front view facing slightly right
-* exact same art style
+Keep everything else **EXACTLY UNCHANGED**:
 
-**ONLY the mouth articulation changes.**
+* head and face
+* eyes and eyebrows
+* hairstyle and hair color
+* skin tone
+* age and identity
+* body and proportions
+* clothing and accessories
+* 3/4 front view facing slightly right
+* camera angle and perspective
+* art style and line quality
+
+**ONLY THE MOUTH ARTICULATION MAY CHANGE.**
 
 ### VISUAL STYLE
 
+Match the original character:
+
 * simple 2D cartoon
-* thick black outlines
-* flat solid colors
-* clean simple shapes
-* minimal details
+* clean shapes
+* natural black outlines
+* solid colors
+* minimal detail
 * slightly handmade line quality
 * animation-friendly design
 
-### OUTPUT
+### SHEET OUTPUT
 
-JUST HEAD ZOOM.
-
-Show only the character's head and hair.
-
-Do not show:
-
-* neck
-* shoulders
-* torso
-* arms
-* hands
-* legs
-* full body
-
-Keep identical head framing and head size across all 6 shapes.
-
-White background.
-
-Clean 6-cell grid.
-
-Consistent spacing.
-
-No labels.
-No text.
-No extra mouth shapes.
-No redesigned lips.
-No generic replacement lips.
-No facial feature changes.
-No hairstyle changes.
-No exaggerated mouth opening.
-No oversized or tiny mouths.
-No extra characters.
-No props.
+* Head and hair only; no neck, shoulders, torso, or body.
+* Identical head framing and scale in all 6 cells.
+* Clean 6-cell grid with consistent spacing.
+* Plain white background.
+* No labels, text, borders, props, extra characters, or additional mouth shapes.
+* No exaggerated mouth openings.
+* No oversized or tiny mouths.
+* No facial or hairstyle changes.
 
 Create **EXACTLY 6 mouth shapes**:
 

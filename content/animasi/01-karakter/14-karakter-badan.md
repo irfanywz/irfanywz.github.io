@@ -45,53 +45,104 @@ image_prompt: |
   [note]
 
 database:
-  "Example":
+  "Wanita":
     - title: "Hourglass Curvy"
-      description: "Curvy hourglass figure with wide hips, pronounced curves, and large bust."
+      description: "Curvy hourglass figure with wide hips, pronounced curves, balanced bust, narrow waist, and soft limbs."
       image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23831843"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fbcfe8" font-size="12" font-family="sans-serif">Hourglass</text></svg>'
+    - title: "Voluptuous Full"
+      description: "Voluptuous figure with exceptionally large bust, wide prominent hips, thick thighs, and a soft rounded belly."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%239d174d"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fce7f3" font-size="12" font-family="sans-serif">Full</text></svg>'
+    - title: "Slim Petite"
+      description: "Slim, delicate frame with narrow shoulders, small bust, defined waist, slender hips, and thin limbs."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23be185d"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fbcfe8" font-size="12" font-family="sans-serif">Slim</text></svg>'
+    - title: "Athletic Toned"
+      description: "Toned, athletic build with moderately broad shoulders, firm bust, narrow waist, slim hips, and muscular limbs."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23db2777"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fce7f3" font-size="12" font-family="sans-serif">Athletic</text></svg>'
+    - title: "Muscular Fit"
+      description: "Muscular, defined female build with broad shoulders, firm chest, narrow waist, and thick, powerful limbs."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23a21caf"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fae8ff" font-size="12" font-family="sans-serif">Muscular</text></svg>'
+
+  "Pria":
+    - title: "Lean Fighter"
+      description: "Lean, densely muscled torso with broad shoulders, narrow waist, thick arms and legs, and an athletic, powerful silhouette built for combat."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23991b1b"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fecaca" font-size="12" font-family="sans-serif">MMA</text></svg>'
+    - title: "Bodybuilder Massive"
+      description: "Massive, chiseled torso with exaggerated chest volume, wide shoulders, narrow waist, and thick, defined limbs."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%237c2d12"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fed7aa" font-size="12" font-family="sans-serif">Muscle</text></svg>'
+    - title: "Slender Tall"
+      description: "Slender, elongated frame with narrow shoulders, flat chest, thin limbs, and a tall, willowy silhouette."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231e3a8a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23bfdbfe" font-size="12" font-family="sans-serif">Slender</text></svg>'
+    - title: "Chubby Relaxed"
+      description: "Round, soft torso with wide hips, protruding belly, thick limbs, and a bulky, comfortable silhouette."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23b45309"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fde68a" font-size="12" font-family="sans-serif">Chubby</text></svg>'
+    - title: "Swimmer Athletic"
+      description: "V-shaped torso with broad shoulders, slim waist, toned arms, and a streamlined, hydrodynamic silhouette."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230e7490"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23cffafe" font-size="12" font-family="sans-serif">Swimmer</text></svg>'
+    - title: "Sturdy Farmer"
+      description: "Sturdy, broad torso with thick shoulders, strong arms, wide hips, and a grounded, robust silhouette."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23365a2a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23bbf7d0" font-size="12" font-family="sans-serif">Farmer</text></svg>'
+    - title: "Agile Ninja"
+      description: "Lean, wiry frame with narrow shoulders, flat chest, thin but toned limbs, and an agile, stealthy silhouette."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23111827"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23e5e7eb" font-size="12" font-family="sans-serif">Ninja</text></svg>'
+    - title: "Giant Barbarian"
+      description: "Hulking, oversized torso with massive shoulders, thick chest, wide hips, and enormous limbs, creating a dominant, brutal silhouette."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%234c1d95"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ddd6fe" font-size="12" font-family="sans-serif">Giant</text></svg>'
+
+  "Universal":
+    - title: "Small Childlike"
+      description: "Small, compact frame with a proportionally large head, narrow shoulders, short limbs, and a cute, stubby silhouette."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23be185d"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fbcfe8" font-size="12" font-family="sans-serif">Small</text></svg>'
+    - title: "Chibi Mungil"
+      description: "Chibi-style small rounded body with a large head, stubby limbs, soft torso, and a compact, cute silhouette."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23f472b6"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fdf2f8" font-size="12" font-family="sans-serif">Chibi</text></svg>'
+    - title: "Mechanical Robot"
+      description: "Blocky, mechanical frame with rigid segmented torso, squared shoulders, cylindrical limbs, and a sturdy, robotic silhouette."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23374151"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23e5e7eb" font-size="12" font-family="sans-serif">Robot</text></svg>'
+    - title: "Monster Hulk"
+      description: "Massive, monstrous frame with hunched broad shoulders, thick chest, wide hips, and oversized heavy limbs."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%2314532d"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23bbf7d0" font-size="12" font-family="sans-serif">Monster</text></svg>'
+    - title: "Elegant Elf"
+      description: "Graceful, slender frame with narrow shoulders, slim waist, delicate limbs, and a tall, elegant silhouette."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23065f46"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23d1fae5" font-size="12" font-family="sans-serif">Elf</text></svg>'
+    - title: "Dwarf Stocky"
+      description: "Short, stocky frame with broad shoulders, thick torso, wide hips, and short, powerful limbs."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%2392400e"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fed7aa" font-size="12" font-family="sans-serif">Dwarf</text></svg>'  
 
 outputs:
   - JSON
 ---
-
-BODY SHAPE REPLACEMENT
-
 Use the attached character image as the **STRICT CHARACTER REFERENCE**.
 
-Create the **EXACT SAME CHARACTER** with a new body shape and physical proportions.
+Create the **EXACT SAME CHARACTER** with a new body shape and physical proportions based on:
 
-**NEW BODY SHAPE:**
+[[{humanInput}]]
 
-<br>
+### BODY CHANGE
 
-[{humanInput}]
+Change **ONLY the body shape, physical proportions, and overall body silhouette** according to [[{humanInput}]].
 
-<br>
+Adapt the existing clothing naturally to the new body contours while preserving its original design and colors.
 
-**CHARACTER LOCK — DO NOT CHANGE:**
+### CHARACTER LOCK
 
-* exact same face shape
-* exact same facial features (eyes, eyebrows, nose, mouth)
-* exact same hairstyle
-* exact same hair shape
-* exact same hair color
-* exact same skin tone
-* exact same outfit style and clothing colors
-* exact same age and identity
-* exact same pose
-* exact same camera angle
-* exact same 3/4 front view facing slightly right
-* exact same art style
+Keep everything else **EXACTLY UNCHANGED**, including:
 
-**ONLY CHANGE THE BODY SHAPE AND PROPORTIONS.**
+* face shape and facial features
+* hairstyle, hair shape, and hair color
+* skin tone
+* clothing design, outfit style, and colors
+* age and identity
+* pose
+* camera angle and perspective
+* 3/4 front view facing slightly right
+* art style and line quality
 
-Preserve the exact design, colors, and appearance of the head, face, hair, and clothing while adapting the outfit naturally to fit the new body contours.
+Do NOT redesign, replace, resize, or reposition any locked element.
 
-Do not redesign the face.
-Do not change the hairstyle.
-Do not change the skin tone.
-Do not change the clothing colors or design.
-Do not change the pose.
-Do not change the camera angle.
+Do NOT change the facial design, hairstyle, skin tone, clothing design, clothing colors, pose, camera angle, or character identity.
 
-**The ONLY intended change is the body shape and silhouette.**
+### FINAL LOCK
+
+The result must look like the **same original character**, with the **ONLY visible change being the new body shape and proportions** described in [[{humanInput}]].
+
+**ONLY CHANGE THE BODY SHAPE AND SILHOUETTE.**

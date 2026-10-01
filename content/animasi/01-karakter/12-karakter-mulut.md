@@ -6,74 +6,45 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: true
 default_input: "A full lush plump mouth with thick prominent lips and soft natural shape."
 desc_prompt: |
-  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for the character's mouth based on:
+  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for new mouth designs based on:
 
-  [DESKRIPSIKAN]
+  **[DESKRIPSIKAN]**
 
-  Each variant must describe a **clearly different mouth design**, with noticeable differences in lip shape, volume, thickness, contours, and overall structure.
+  Each variant must represent a **clearly different mouth structure**, with meaningful differences in lip shape, thickness, volume, width, curvature, contours, and overall silhouette.
 
-  Write each variant as **ONE concise sentence**, describing the physical lip shape, volume, thickness, contours, and stylistic details clearly.
+  ### RULES
 
-  Rules:
+  * Focus ONLY on the physical mouth structure and lips.
+  * Describe the upper and lower lip when relevant.
+  * Vary lip thickness, fullness, width, curvature, cupid's bow, contours, and overall silhouette meaningfully.
+  * Make every variant visually distinct; do NOT vary only color, expression, or tiny details.
+  * Avoid repeating the same mouth shape, proportions, thickness, volume, or contour.
+  * Keep designs natural, believable, simple, clean, readable, and suitable for 2D animation.
+  * Avoid unnecessary teeth, tongue, lipstick, gloss, lip balm, or other details unless explicitly requested in [DESKRIPSIKAN].
+  * Keep the design consistent with the simple 2D cartoon style and [DESKRIPSIKAN].
 
-  * Focus **ONLY on the physical mouth structure, lips, volume, shape, and style**
-  * Clearly describe the upper and lower lip shape when relevant
-  * Describe lip thickness, fullness, width, curvature, cupid's bow, and contours when relevant
-  * Create natural, believable, and animation-friendly mouth designs
-  * Ensure the mouth naturally matches the simple 2D cartoon style
-  * Make each variant visually distinct
-  * Do NOT make variants different only by lip color
-  * Do NOT make variants different only by expression
-  * Avoid repeating the same mouth shape, lip thickness, volume, contour, or overall silhouette
-  * Do NOT add unnecessary details such as teeth, tongue, lipstick, gloss, or lip balm unless requested by [DESKRIPSIKAN]
+  ### CHARACTER LOCK
 
-  **CHARACTER LOCK:**
+  ONLY change the mouth design.
 
-  * DO NOT modify or mention character identity
-  * DO NOT modify or mention face shape
-  * DO NOT modify or mention head shape
-  * DO NOT modify or mention eyes
-  * DO NOT modify or mention eyebrows
-  * DO NOT modify or mention nose
-  * DO NOT modify or mention hairstyle or hair
-  * DO NOT modify or mention skin tone
-  * DO NOT modify or mention body, clothing, accessories, pose, or background
-  * ONLY change the mouth design
+  Do NOT mention or modify:
 
-  **MOUTH STYLE:**
+  * character identity
+  * face or head shape
+  * eyes
+  * eyebrows
+  * nose
+  * hair or hairstyle
+  * skin tone
+  * body, clothing, accessories, pose, or background
 
-  * Keep the mouth consistent with the provided target description
-  * Keep the design simple, clean, readable, and suitable for 2D animation
-  * Preserve natural cartoon proportions
-  * Avoid overly realistic or highly detailed lips unless specifically requested
+  ### EXCLUSIONS
 
-  **DO NOT mention:**
+  Do NOT mention location, environment, setting, atmosphere, lighting, weather, time, actions, personality, backstory, or story.
 
-  * location
-  * environment
-  * background
-  * setting
-  * atmosphere
-  * lighting
-  * weather
-  * time
-  * actions
-  * poses
-  * personality
-  * backstory
-  * story
+  ### OUTPUT
 
-  Keep every description **short and directly usable for image generation**.
-
-  **OUTPUT RULES:**
-
-  * Output EXACTLY **[JUMLAH_VARIANT] variants**
-  * Number each variant
-  * One sentence per variant
-  * Do not output fewer or more variants
-  * Do not default to any specific number
-  * Do not add explanations, headings, or commentary
-
+  Output exactly **[JUMLAH_VARIANT] numbered variants**, ONE concise sentence per variant, with no explanations, headings, or extra t&#x65;**_]()**
 
 image_prompt: |
   Create ONE short visual description of the character's new mouth using image reference
@@ -129,61 +100,49 @@ database:
 outputs:
   - JSON
 ---
-
-MOUTH REPLACEMENT
-
 Use the attached character image as the **STRICT CHARACTER REFERENCE**.
 
-Create the **EXACT CHARACTER** with a new mouth.
-
-**NEW MOUTH:**
-
-<br>
+Create the **EXACT SAME CHARACTER** with a new mouth based on:
 
 [{humanInput}]
 
-<br>
+### MOUTH CHANGE
 
-**CHARACTER LOCK — DO NOT CHANGE:**
+Change **ONLY the mouth structure, shape, and style** according to [{humanInput}].
 
-* exact same face
-* exact same face shape
-* exact same hairstyle
-* exact same hair shape
-* exact same hair color
-* exact same skin tone
-* exact same eyes
-* exact same eyebrows
-* exact same body shape
-* exact same body proportions
-* exact same age and identity
-* exact same pose
-* exact same camera angle
-* exact same 3/4 front view facing slightly right
-* exact same art style
+Fit the new mouth naturally onto the existing face while preserving its original position, scale, proportions, and facial placement unless specifically changed by [{humanInput}].
 
-ONLY CHANGE THE MOUTH.
+### CHARACTER LOCK
 
-The new mouth must naturally fit the existing face and maintain the original mouth position, scale, proportions, and facial structure unless specifically changed in [NEW MOUTH].
+Keep everything else **EXACTLY UNCHANGED**, including:
 
-Keep the same visual style:
+* face shape
+* eyes and eyebrows
+* hairstyle, hair shape, and hair color
+* skin tone
+* body shape and proportions
+* age and identity
+* pose
+* camera angle and perspective
+* 3/4 front view facing slightly right
+* art style and line quality
+
+Do NOT redesign, reposition, resize, or modify any locked element.
+
+### VISUAL STYLE
+
+Match the existing character's visual style:
 
 * simple 2D cartoon
-* thick black outlines
-* flat solid colors
 * clean simple shapes
-* minimal details
+* solid colors
+* natural black outlines
+* minimal detail
 * slightly handmade line quality
 * animation-friendly design
 
-Do not change the face shape.
-Do not change the eyes.
-Do not change the eyebrows.
-Do not change the hairstyle.
-Do not change the hair color.
-Do not change the skin tone.
-Do not change the body.
-Do not change the pose.
-Do not change the camera angle.
+### FINAL LOCK
 
-**The ONLY intended change is the mouth structure, shape, and style.**
+The result must look like the **same original character**, with the **ONLY visible change being the new mouth** described in [{humanInput}].
+
+**ONLY CHANGE THE MOUTH.**

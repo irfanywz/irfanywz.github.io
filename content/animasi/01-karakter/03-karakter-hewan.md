@@ -6,113 +6,37 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: true
 default_input: "A unique animal character."
 desc_prompt: |
-  Create **[JUMLAH_VARIANT] DIFFERENT visual descriptions** for animal characters based on:
+  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for animal characters based on:
 
   [DESKRIPSIKAN_HEWANNYA]
 
-  Each description must represent a **UNIQUE animal character variant**.
-
-  Write each variant as **ONE concise sentence**, similar to:
-
-  “A chubby brown bear with soft rounded ears, short limbs, and a gentle friendly expression.”
-
-  ### VARIATION REQUIREMENTS
-
-  Each animal must be clearly different from the others through a natural combination of:
-
-  * species characteristics
-  * age
-  * body size
-  * body shape
-  * body proportions
-  * fur, skin, feathers, or scales
-  * color patterns
-  * face shape
-  * eye shape
-  * ears, horns, beak, snout, tail, or other natural features
-  * distinctive markings
-  * overall silhouette
-
-  Do NOT simply change the animal's color.
-
-  Each variant must have a noticeably different overall visual identity.
-
-  Make the animals feel like **different individual characters of the same animal concept**, rather than the same animal with minor modifications.
-
-  Avoid repeating the same:
-
-  * body shape
-  * body proportions
-  * face structure
-  * eye design
-  * fur/skin pattern
-  * distinctive markings
-  * natural features
-  * overall silhouette
+  Each variant must be a **clearly different individual character of the same animal concept**, with a distinct body shape, silhouette, facial structure, and natural features.
 
   ### RULES
 
-  * Focus ONLY on the animal's physical appearance and natural features
-  * Clearly identify the animal's species
-  * Describe the body shape, proportions, face, eyes, fur/skin/feathers/scales, colors, and distinctive features
-  * Let the animal species strongly influence its physical design
-  * Keep anatomy appropriate to the animal
-  * Age may naturally influence body size and proportions
-  * Give every animal a distinctive and memorable appearance
-  * Keep every animal visually coherent and believable within the same cartoon world
-  * Mention only the most visually important characteristics
-  * Keep descriptions short and directly usable for image generation
+  * Focus ONLY on physical appearance and natural features.
+  * Clearly identify the animal species.
+  * Vary meaningful combinations of species traits, age, size, body proportions, body shape, face, eyes, fur/skin/feathers/scales, color patterns, and distinctive natural features.
+  * Vary features such as ears, horns, beak, snout, tail, markings, or other species-specific traits when relevant.
+  * Do NOT create differences through color alone or minor details.
+  * Avoid repeating the same body shape, proportions, face structure, eye design, patterns, markings, natural features, or overall silhouette.
+  * Keep anatomy appropriate to the species and age.
+  * Make every variant visually distinctive, memorable, believable, and coherent within the same cartoon world.
+  * Mention only the most visually important characteristics.
+  * Keep descriptions concise and directly usable for image generation.
 
-  ### DO NOT MENTION
+  ### CHARACTER SCOPE
 
-  * location
-  * environment
-  * background
-  * setting
-  * atmosphere
-  * scene
-  * lighting
-  * weather
-  * time
-  * events
-  * actions
-  * poses
-  * movements
-  * backstory
-  * lore
-  * story
+  Do NOT mention or modify any location, environment, background, setting, atmosphere, lighting, weather, time, action, pose, movement, props, backstory, lore, or story.
 
-  ### OUTPUT REQUIREMENTS
+  ### OUTPUT
 
-  Generate **EXACTLY [JUMLAH_VARIANT] variants**.
+  Output exactly **[JUMLAH_VARIANT] numbered variants**, matching the requested number exactly.
 
-  The number of descriptions MUST match **[JUMLAH_VARIANT] EXACTLY**.
+  Each variant must be **ONE concise sentence only**.
 
-  For example:
+  Do NOT add headings, explanations, extra text, duplicate designs, or combine multiple variants into one sentence.
 
-  * `[JUMLAH_VARIANT] = 5` → output exactly 5 descriptions
-  * `[JUMLAH_VARIANT] = 8` → output exactly 8 descriptions
-  * `[JUMLAH_VARIANT] = 10` → output exactly 10 descriptions
-  * `[JUMLAH_VARIANT] = 15` → output exactly 15 descriptions
-
-  Do NOT default to 8.
-  Do NOT generate fewer variants.
-  Do NOT generate more variants.
-
-  ### OUTPUT FORMAT
-
-  1. [One concise animal description]
-  2. [One concise animal description]
-  3. [One concise animal description]
-     ...
-     Continue numbering until exactly **[JUMLAH_VARIANT]** descriptions are completed.
-
-  Each variant must be **ONE sentence only**.
-
-  Do not add explanations.
-  Do not add headings.
-  Do not repeat descriptions.
-  Do not combine multiple variants into one sentence.
 
 
 image_prompt: |
@@ -148,59 +72,58 @@ database:
 outputs:
   - JSON
 ---
-
 Use the attached image as the **STRICT STYLE REFERENCE ONLY**.
 
-Create a completely **NEW ANIMAL CHARACTER** based on this description:
-
-<br>
+Create a **COMPLETELY NEW ORIGINAL ANIMAL CHARACTER** based on:
 
 [{humanInput}]
 
-<br>
+The new animal must have its own **species, body shape, proportions, silhouette, colors, markings, facial features, and identity**. Do NOT copy, recolor, or slightly modify the reference character.
 
-The new animal must have a unique species, body shape, proportions, silhouette, colors, markings, facial features, and identity. Do not copy, recolor, or slightly modify the original character.
+### VISUAL STYLE
 
-Keep ONLY the visual art style of the reference:
+Use ONLY the reference's general art style:
+
 * simple 2D cartoon
-* thick black outlines
+* thick natural black outlines
 * flat solid colors
 * clean simple shapes
-* minimal details
+* minimal detail
 * slightly handmade line quality
 * simple expressive facial features
 * animation-friendly design
 
-POSE:
+### POSE & VIEW
 
-Create the animal in a neutral **FRONT 3/4 VIEW**, facing slightly to the right.
+Show the animal in a neutral **FRONT 3/4 VIEW**, facing slightly right.
 
-Show the animal in a relaxed neutral standing or natural resting position appropriate to its species:
-* full body clearly visible
-* natural anatomy and proportions
-* natural leg and body positioning
-* head upright or naturally positioned
-* facial features clearly visible
-* neutral expression
-* no action pose
-* no exaggerated body movement
+* Full body visible and centered.
+* Relaxed standing or natural resting position appropriate to the species.
+* Natural anatomy, proportions, and body positioning.
+* Head naturally positioned with clearly visible facial features.
+* Neutral expression.
+* No action, exaggerated movement, or dynamic pose.
 
-This image will be used as the **MASTER ANIMAL CHARACTER REFERENCE** for generating other poses later.
+### MASTER CHARACTER LOCK
 
-Therefore, prioritize:
-* clear animal identity
-* accurate species characteristics
+Design the animal as a **MASTER CHARACTER REFERENCE** for future poses and animation.
+
+Prioritize:
+
+* clear species identity
+* recognizable face and natural features
 * consistent body proportions
-* clear body construction
-* recognizable face
 * distinctive markings and colors
-* clear silhouette
-* animation-friendly shapes
-* clear eyes appropriate to the species
-* natural animal anatomy
+* strong readable silhouette
+* clear body construction
+* species-appropriate anatomy
+* simple animation-friendly shapes
 
-Do not add clothing, props, text, extra characters, or complex background unless specifically requested.
+### FINAL RULES
 
-The final animal must look like a completely different animal character from the reference, while clearly belonging to the same cartoon animation style.
+* Do NOT copy any character-specific features from the reference.
+* Do NOT add clothing, props, text, extra characters, or unnecessary background elements.
+* Keep the background clean and simple.
+* Preserve the new animal's design consistently.
 
-Full body, centered, clean simple background.
+**Output ONLY the new animal character.**

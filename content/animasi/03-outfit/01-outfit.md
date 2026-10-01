@@ -6,73 +6,24 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: true
 default_input: "Casual denim jacket over a plain white t-shirt, dark cargo pants, and canvas sneakers"
 desc_prompt: |
-  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for the character's new outfit based on:
+  Create [JUMLAH_VARIANT] DIFFERENT short visual descriptions for new outfits based on:
 
   [DESKRIPSIKAN]
 
-  Each variant must describe a **clearly different outfit design**, with noticeable differences in clothing pieces, layers, footwear, accessories, materials, colors, and overall silhouette.
-
-  Write each variant as **ONE concise sentence**, describing the clothing items, layers, materials, footwear, accessories, and colors clearly.
-
   Rules:
 
-  * Focus **ONLY on clothing, footwear, and accessories**
-  * Clearly describe the upper-body clothing
-  * Clearly describe the lower-body clothing
-  * Describe layers, footwear, and accessories when relevant
-  * Describe materials and colors when visually important
-  * Create natural, believable, and animation-friendly outfit combinations
-  * Make each variant visually distinct
-  * Do NOT make variants different only by changing clothing colors
-  * Do NOT make variants different only by changing one small accessory
-  * Avoid repeating the same clothing combination, silhouette, material combination, or accessory set
-  * Keep outfits appropriate and visually coherent for the target character
+  * Each variant must represent a clearly different outfit design, not merely a color or small accessory change.
+  * Focus ONLY on clothing, footwear, and accessories.
+  * Describe the upper garment, lower garment, layers, footwear, accessories, materials, and colors when relevant.
+  * Vary the clothing combination, silhouette, layers, materials, footwear, and accessory set meaningfully between variants.
+  * Avoid repeating the same overall outfit combination or silhouette.
+  * Keep each outfit natural, believable, coherent with [DESKRIPSIKAN], and suitable for modular 2D animation.
+  * Keep clothing shapes simple, clear, and recognizable.
+  * Do NOT mention or modify the character, face, facial features, hair, skin, body proportions, pose, expression, or movement.
+  * Do NOT mention the environment, background, setting, lighting, weather, atmosphere, time, actions, personality, or story.
+  * Avoid excessive details unless relevant to [DESKRIPSIKAN].
 
-  **CHARACTER LOCK:**
-
-  * DO NOT modify or mention character identity
-  * DO NOT modify or mention body shape or proportions
-  * DO NOT modify or mention head shape
-  * DO NOT modify or mention face or facial features
-  * DO NOT modify or mention hairstyle or hair
-  * DO NOT modify or mention skin tone
-  * DO NOT modify or mention pose or expression
-  * ONLY change the outfit
-
-  **OUTFIT STYLE:**
-
-  * Keep the outfit consistent with [DESKRIPSIKAN]
-  * Use simple, clear, readable clothing shapes
-  * Keep designs suitable for 2D cartoon animation
-  * Avoid excessive clothing details unless specifically requested
-  * Maintain believable proportions and natural clothing construction
-
-  **DO NOT mention:**
-
-  * location
-  * environment
-  * background
-  * setting
-  * atmosphere
-  * lighting
-  * weather
-  * time
-  * actions
-  * poses
-  * personality
-  * backstory
-  * story
-
-  Keep every description **short and directly usable for image generation**.
-
-  **OUTPUT RULES:**
-
-  * Output EXACTLY **[JUMLAH_VARIANT] variants**
-  * Number each variant
-  * One sentence per variant
-  * Do not output fewer or more variants
-  * Do not default to any specific number
-  * Do not add explanations, headings, or commentary
+  Output exactly [JUMLAH_VARIANT] numbered variants, ONE sentence per variant, with no explanations or extra text.
 
 
 image_prompt: |
@@ -161,80 +112,61 @@ outputs:
   - JSON
 ---
 
-**OUTFIT REPLACEMENT**
-
 Use the attached character image as the **STRICT CHARACTER REFERENCE**.
 
-Create the **EXACT SAME CHARACTER** wearing the new outfit described below.
+Create the **EXACT SAME CHARACTER** wearing a completely new outfit based on:
 
-**NEW OUTFIT:**
+[[{humanInput}]]
 
-<br>
+### ONLY CHANGE
 
-[{humanInput}]
+Replace the character's existing clothing and footwear with the requested outfit.
 
-<br>
+Follow [[{humanInput}]] accurately, including:
 
-Replace the character's current clothing with the new outfit.
+* upper-body clothing
+* lower-body clothing
+* footwear
+* clothing layers
+* accessories when specified
+* colors, patterns, materials, and distinctive details
 
-The new outfit must naturally fit the character's existing body shape, proportions, age, and anatomy.
+Include **EVERY specified clothing piece**. Do NOT omit the lower garment or footwear, and do NOT invent unnecessary outfit elements.
 
-**CHARACTER LOCK — DO NOT CHANGE:**
+Adapt the new outfit naturally to the character's existing body shape, proportions, age, and anatomy.
 
-* exact same character identity
-* exact same head and face
-* exact same facial features
-* exact same face shape
-* exact same hairstyle and hair shape
-* exact same hair color
-* exact same skin tone
-* exact same body shape
-* exact same body proportions
-* exact same age
-* exact same pose
-* exact same body position
-* exact same camera angle
-* exact same 3/4 front view facing slightly right
-* exact same art style
+### CHARACTER LOCK
 
-**OUTFIT RULES:**
+Keep EVERYTHING ELSE EXACTLY UNCHANGED:
 
-* change ONLY the clothing and footwear
-* follow the outfit description accurately
-* adapt the clothing naturally to the character's body
-* keep the outfit visually clear and easy to recognize
-* maintain simple, believable clothing construction
-* include all clothing pieces specified in [DESCRIPTION]
-* preserve specified colors, patterns, and important clothing details
-* do not add unnecessary clothing or accessories
-* do not remove clothing pieces unless required by the new outfit description
+* character identity and age
+* head, face, and facial features
+* hairstyle and hair color
+* skin tone
+* body shape, proportions, and silhouette
+* pose and body position
+* 3/4 front view facing slightly right
+* camera angle and perspective
+* art style and line quality
 
-Keep the same visual style:
+Do NOT redesign, resize, reposition, or modify any locked element.
+
+### VISUAL STYLE
+
+Match the original character:
 
 * simple 2D cartoon
-* thick black outlines
+* thick natural black outlines
 * flat solid colors
 * clean simple shapes
-* minimal details
+* minimal detail
 * slightly handmade line quality
 * animation-friendly design
 
-Do not redesign the character.
+### FINAL LOCK
 
-Do not change the head or face.
+Do NOT add props, extra characters, text, or unrelated elements.
 
-Do not change the hairstyle.
+The result must look like the **same original character wearing ONLY the newly requested outfit**, with all other character features preserved.
 
-Do not change the hair color.
-
-Do not change the skin tone.
-
-Do not change the body shape or proportions.
-
-Do not change the pose or body position.
-
-Do not change the camera angle or view.
-
-Do not add props, extra characters, or text.
-
-**The ONLY intended change is the character's clothing and footwear.**
+**ONLY CHANGE THE CLOTHING AND FOOTWEAR.**

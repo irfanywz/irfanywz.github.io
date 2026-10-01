@@ -2,10 +2,10 @@
     "use strict";
 
     const config = {
-        ELEMENT_COUNT: 1,
+        ELEMENT_COUNT: 5,
         ICONS: ['🦇', '🍂', '💀', '🎃', '🕸️'],
-        MIN_SIZE: 18,
-        MAX_SIZE: 32,
+        MIN_SIZE: 12,
+        MAX_SIZE: 14,
         WIND_SPEED_X: 2.5,
         FALL_SPEED_Y: 0.9,
     };

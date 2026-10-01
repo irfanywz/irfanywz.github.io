@@ -8,7 +8,7 @@ default_input: 'Buat logo untuk channel YouTube "Bang Jay" logo horizontal untuk
 desc_prompt: |
   Create [JUMLAH_VARIANT] DIFFERENT short visual descriptions for custom 2D animated logos based on:
 
-  [{target}]
+  [DESKRIPSIKAN]
 
   Write each as ONE concise descriptive sentence specifying the core logo concept, main visual icon/symbol or mascot, lettering/text treatment, and horizontal or badge-style layout.
 
@@ -54,89 +54,98 @@ database:
 outputs:
   - JSON
 ---
+Use the attached image as the **STRICT STYLE REFERENCE ONLY**.
 
-Use the attached image as the STRICT STYLE REFERENCE ONLY.
+Create a **COMPLETELY NEW ORIGINAL LOGO** based on:
 
-Create a completely NEW ORIGINAL LOGO based on this description:
+[humanInput]
 
-<br>
+### ORIGINALITY
 
-[{humanInput}]
+Create a unique logo with its own:
 
-<br>
+* concept
+* identity
+* silhouette
+* composition
+* shape language
+* typography, if needed
+* symbols and visual elements
 
-The logo must have a completely unique identity, concept, shape, silhouette, composition, typography treatment (if needed), symbols, details, proportions, and visual elements.
+Do NOT copy, trace, recolor, remix, or closely imitate the reference logo or any of its specific design elements.
 
-DO NOT COPY the logo, character, object, symbol, composition, or specific design from the reference image.
+### STYLE REFERENCE
 
-Use the reference image ONLY to understand and match its:
-* visual art style
-* drawing language
+Use the reference ONLY for its general:
+
+* visual language
 * line quality
 * shape language
 * color treatment
 * simplicity
-* overall design approach
+* illustration approach
 
-LOGO STYLE:
-Design the logo so it feels like it belongs to the same animated world and was created by the same artist as the reference.
+The new logo should feel like it belongs to the **same 2D animated world**, while remaining completely original.
+
+### LOGO STYLE
 
 Use:
-* simple 2D cartoon design
-* thick black outlines
+
+* hand-drawn 2D cartoon design
+* thick natural black outlines
 * flat solid colors
-* clean rounded or simple shapes
-* minimal visual details
+* clean simple shapes
 * slightly handmade line quality
-* expressive and playful shape language
-* strong readable silhouette
 * simple color palette
-* animation-friendly visual construction
-* clear and recognizable design
+* strong readable silhouette
+* minimal meaningful details
+* playful expressive shapes
+* animation-friendly construction
 
-LOGO DESIGN:
-Create a standalone logo with a strong and memorable visual identity.
+Avoid:
 
-The logo must:
-* be clearly recognizable at a glance
-* have a strong silhouette
-* remain readable when displayed at small size
-* use simple shapes that are easy to understand
-* have balanced proportions
-* avoid unnecessary tiny details
-* avoid overly realistic rendering
-* avoid complex gradients or textures
-* feel playful, natural, and suitable for a 2D animated series
-* visually fit naturally with the animation style of the reference
+* generic corporate logo design
+* flat vector-icon appearance
+* excessive geometric precision
+* photorealism
+* 3D rendering
+* complex gradients
+* excessive textures
+* tiny unreadable details
 
-If the description suggests a symbol, mascot, object, animal, character, or other visual element, transform it into a simplified logo design, not a detailed illustration.
+### DESIGN
 
-If text is required by the description, integrate it naturally into the logo design using lettering that matches the same cartoon visual language.
-
-IMPORTANT:
-The logo should NOT look like a generic modern corporate logo.
-It should feel like a hand-designed logo from the same 2D animated universe, with the same simplicity, bold outlines, flat colors, and playful visual language as the reference.
-
-Do not simply place an object inside a logo shape.
-Instead, combine the concept into a single cohesive visual identity.
+Create a **single cohesive visual identity**, not simply an object placed inside a logo shape.
 
 Prioritize:
-* unique identity
+
 * memorable silhouette
 * clear concept
-* strong shape language
-* clean composition
-* readable design
-* consistent visual style
-* simple colors
-* thick outlines
-* animation-world consistency
-* professional but playful appearance
+* recognizable shape
+* balanced proportions
+* strong visual hierarchy
+* readability at small size
+* simple but distinctive details
 
-Do not add characters, objects, decorations, mockups, posters, signs, UI elements, scenery, or unrelated elements unless they are essential to the logo concept.
+If [humanInput] contains a character, animal, object, or symbol, simplify it into a **strong logo form**, not a detailed illustration.
 
-Do not imitate or reproduce the reference logo.
+If text is required, integrate it naturally into the logo using bold, playful lettering consistent with the same 2D cartoon language.
 
-The final result must look like a completely original logo, while naturally feeling as if it was designed and illustrated by the same artist who created the reference animation style.
+### COMPOSITION
 
-Centered composition, complete logo visible, clean simple background, no unnecessary elements.
+* centered
+* complete logo visible
+* clean simple background
+* no unnecessary elements
+* no mockup or presentation scene
+
+Do NOT add unrelated characters, objects, scenery, decorations, UI elements, posters, or signs.
+
+### FINAL
+
+The result must be a **completely original, memorable logo** that feels hand-designed for a 2D animated series while naturally matching the reference's visual language.
+
+**REFERENCE = STYLE ONLY.**
+**[humanInput] = LOGO CONCEPT.**
+
+Output ONLY the finished logo.

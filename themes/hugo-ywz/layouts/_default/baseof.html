@@ -40,6 +40,8 @@
 
     <!-- Exit Intent Popup Component -->
     {{ partialCached "baseof/exit-intent-popup.html" . }}
+    
+    {{ partialCached "baseof/page-loader.html" . }}
 
     {{ if not $hideFooter }}
         {{ partialCached "baseof/js-bottom.html" . }}

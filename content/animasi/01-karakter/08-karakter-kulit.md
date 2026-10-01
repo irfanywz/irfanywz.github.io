@@ -6,59 +6,43 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: true
 default_input: "warm light beige skin tone"
 desc_prompt: |
-  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for the character's skin tone based on:
+  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for skin tones based on:
 
-  [DESKRIPSIKAN]
+  **[DESKRIPSIKAN]**
 
-  Each variant must describe a **clearly different skin tone and complexion shade**, not merely small changes of the same color.
+  Each variant must represent a **clearly different skin tone and complexion**, with meaningful differences in shade depth and undertone.
 
-  Write each variant as **ONE concise sentence**, describing the skin color, shade, and undertone clearly.
+  ### RULES
 
-  Rules:
+  * Focus ONLY on skin tone, complexion shade, and undertone.
+  * Clearly describe the skin color, shade depth, and undertone.
+  * Vary the shade meaningfully from light to deep when appropriate.
+  * Use distinct undertones such as warm, cool, neutral, golden, olive, peach, or reddish when relevant.
+  * Make every variant visually distinct and easy to recognize.
+  * Do NOT create differences through minor wording changes or tiny shade adjustments.
+  * Keep all skin tones natural, believable, and suitable for 2D character design.
+  * Keep each variant consistent with [DESKRIPSIKAN].
 
-  * Focus **ONLY on skin tone and complexion shade**
-  * Clearly describe the skin color, depth of shade, and undertone
-  * Create natural and believable skin-tone variations
-  * Variants may range from very light to deep skin tones, with different undertones such as warm, cool, neutral, golden, olive, reddish, or peach
-  * Avoid making variants different only by minor wording changes
-  * Each variant should be visually distinct and easy to recognize
+  ### CHARACTER LOCK
 
-  **CHARACTER LOCK:**
+  ONLY change the skin tone and complexion.
 
-  * DO NOT modify or mention facial features
-  * DO NOT modify or mention face shape
-  * DO NOT modify or mention hairstyle or hair color
-  * DO NOT modify or mention body shape or proportions
-  * DO NOT modify or mention clothing, accessories, pose, or expression
-  * ONLY change the skin tone and complexion shade
+  Do NOT mention or modify:
 
-  **DO NOT mention:**
+  * face or facial features
+  * head shape
+  * hair or hair color
+  * body shape or proportions
+  * clothing or accessories
+  * pose or expression
 
-  * location
-  * environment
-  * background
-  * setting
-  * atmosphere
-  * lighting
-  * weather
-  * time
-  * actions
-  * poses
-  * personality
-  * backstory
-  * story
+  ### EXCLUSIONS
 
-  Keep every description **short and directly usable for image generation**.
+  Do NOT mention location, environment, background, setting, atmosphere, lighting, weather, time, actions, personality, backstory, or story.
 
-  **OUTPUT RULES:**
+  ### OUTPUT
 
-  * Output EXACTLY **[JUMLAH_VARIANT] variants**
-  * Number each variant
-  * One sentence per variant
-  * Do not output fewer or more variants
-  * Do not default to any specific number
-  * Do not add explanations, headings, or commentary
-
+  Output exactly **[JUMLAH_VARIANT] numbered variants**, ONE concise sentence per variant, with no explanations, headings, or extra text.
 
 image_prompt: |
   Create ONE short visual description of the character's skin tone using image reference
@@ -92,62 +76,50 @@ database:
 outputs:
   - JSON
 ---
-
-SKIN TONE REPLACEMENT
-
 Use the attached character image as the **STRICT CHARACTER REFERENCE**.
 
-Create the **EXACT SAME CHARACTER** with a new skin tone.
-
-**NEW SKIN TONE:**
-
-<br>
+Create the **EXACT SAME CHARACTER** with a new skin tone based on:
 
 [{humanInput}]
 
-<br>
+### SKIN TONE CHANGE
 
-**CHARACTER LOCK — DO NOT CHANGE:**
+Change **ONLY the skin tone**.
 
-* exact same face
-* exact same facial features
-* exact same face shape
-* exact same hairstyle
-* exact same hair shape
-* exact same hair color
-* exact same eyes
-* exact same eyebrows
-* exact same mouth
-* exact same body shape
-* exact same body proportions
-* exact same age and identity
-* exact same pose
-* exact same camera angle
-* exact same 3/4 front view facing slightly right
-* exact same art style
+Apply the new skin tone consistently to **all visible skin areas**, including the face, neck, arms, hands, legs, and feet.
 
-**ONLY CHANGE THE SKIN TONE.**
+Preserve the original skin shading and natural tonal variation while adapting them to the new skin tone.
 
-Apply the new skin tone consistently to all visible skin areas, including the face, neck, arms, hands, legs, and feet.
+### CHARACTER LOCK
 
-Preserve the original facial features, body proportions, silhouette, and character identity exactly.
+Keep everything else **EXACTLY UNCHANGED**, including:
 
-Keep the same visual style:
+* face shape and facial features
+* eyes, eyebrows, and mouth
+* hairstyle, hair shape, and hair color
+* body shape, proportions, silhouette, age, and identity
+* clothing and accessories
+* pose
+* camera angle and perspective
+* 3/4 front view facing slightly right
+* art style and line quality
+
+Do NOT redesign, reposition, resize, or modify any locked element.
+
+### VISUAL STYLE
+
+Match the existing character's visual style:
 
 * simple 2D cartoon
-* thick black outlines
-* flat solid colors
 * clean simple shapes
-* minimal details
+* solid colors
+* natural black outlines
+* minimal detail
 * slightly handmade line quality
 * animation-friendly design
 
-Do not change the face.
-Do not change the hairstyle.
-Do not change the eyes.
-Do not change the body.
-Do not change the outfit.
-Do not change the pose.
-Do not change the camera angle.
+### FINAL LOCK
 
-**The ONLY intended change is the skin tone.**
+The result must look like the **same original character**, with the **ONLY visible change being the new skin tone** described in [{humanInput}].
+
+**ONLY CHANGE THE SKIN TONE.**

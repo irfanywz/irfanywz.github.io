@@ -3,7 +3,7 @@ title: "Tentang Blog"
 # description: "ikan lohan ikan gabus, direndam dulu baru direbus, agar silahturahmi tidak terputus, pinjam dulu seratus. 😜"
 # description: "Beli bubur dicampur kuah,Dimakan hangat di atas kardus,Agar silaturahmi tidak terputus,Pinjam dulu seratus. 😆"
 # description: "Pergi ke pasar membeli mangga, pulangnya naik kereta cepat. Selamat datang di halaman saya, semoga ada ilmu yang bermanfaat."
-description: "Pergi ke pasar membeli mangga, Selamat datang di halaman saya"
+description: "Pergi ke pasar membeli mangga, Selamat datang di halaman saya 🤓"
 layout: "about"
 profile_picture: "avatar.avif"
 draft: false
@@ -11,8 +11,8 @@ draft: false
 # Pengaturan Judul Tab
 tabs:
   tab_kenalan: "Perkenalan"
-  tab_support: "Support"
-  tab_portofolio: "Portofolio"
+  tab_support: "Dukungan"
+  tab_portofolio: "Pekerjaan"
 
 # Pengaturan Konten Tab Support
 support:
@@ -238,28 +238,28 @@ portfolio_items:
     gambar: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh8IZn4iRX1ICC34vK1O32goHWQQUaBH7YfJEaOC24Lg27TIXK3dVc2TIbJNWhDlrOjZcaYmwecStyXe7cF6ZQx1oM0dP7Qr-QXiSoo5ZafjFVp7sSppv9hexahrI_EvYGSxVqxP5Ars123ATdy0w0vbK8GBYceWRlC9xUznxyGPNuldXhr8at2rcs06OE/s320/kurteyki.jpg"
 
 
-  - nama: "Redesain UI/UX Web Personal"
+  - nama: "Blog Personal"
     tahun: "2026-08"
     kategori: "website"
-    deskripsi: "Perancangan antarmuka situs bertema gelap dengan konsep minimalis modern."
+    deskripsi: "Membuat blog personal dengan tampilan menarik, menggunakan metode SSG (static site generator) Hugo"
     link: "/"
-    tags: ["Tailwind CSS", "Hugo", "UI/UX"]
+    tags: ["Website", "Blog"]
     archived: false
     
-  - nama: "Animasi Karakter 2D Horror"
-    tahun: "2026-03" 
+  - nama: "Channel Youtube Animasi 2D"
+    tahun: "2026-09" 
     kategori: "animasi"
-    deskripsi: "Rigging modul dan pembuatan animasi adegan horror 2D menggunakan Moho Pro."
+    deskripsi: "Membuat konten animasi 2d dengan memanfaatkan asset yang dibuat menggunakan AI"
     link: "/"
     tags: ["Moho Pro", "2D Animation", "Character Rigging"]
 
-  - nama: "Aplikasi Management YouTube (Promise-ETY)"
+  - nama: "Aplikasi Manajemen Akun YouTube (Promise-ETY)"
     tahun: "2025-12"
     kategori: "aplikasi"
-    deskripsi: "Desktop app otomatisasi manajemen akun dan optimasi SEO YouTube."
+    deskripsi: "Aplikasi Desktop otomatisasi, manajemen akun dan riset konten YouTube."
     link: "/promise-ety"
-    tags: ["Python", "Tornado", "Pyarmor"]
-    gambar: 'promise-ety.avif'  
+    tags: ["Aplikasi", "Desktop"]
+    gambar: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgXi8smHoGwO5b_FFF_SX7Mdx8hR1ESop5NvKGbJ8dWkDn6i8_CARTF0A_EFskrc1MdPxQy0Fs7glZS2G30fhx4UKHxcwn_D2plb1JRG8_Nr8ZdgNgbxznRoOZup6snmG1B_NNMGGNfBv9MhDpPi0uJ4hVJMa00aGvIeRpY2mGwRJ4z_VlJwofjZUpBKhI/s200/aplikasi-promise-ety.png'  
 
 ---
 

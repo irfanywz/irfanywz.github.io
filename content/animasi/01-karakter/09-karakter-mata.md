@@ -6,74 +6,48 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: true
 default_input: "Cartoon eyes with visible white sclera, clear dark pupils, and clean outlines."
 desc_prompt: |
-  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for the character's eyes based on:
+  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for new eye designs based on:
 
-  [DESKRIPSIKAN]
+  **[DESKRIPSIKAN]**
 
-  Each variant must describe a **clearly different eye design**, with noticeable differences in eye shape, eyelid structure, sclera visibility, pupil style, and visual characteristics.
+  Each variant must represent a **clearly different eye structure**, with meaningful differences in eye shape, eyelids, sclera visibility, pupil style, and overall silhouette.
 
-  Write each variant as **ONE concise sentence**, describing the eye shape, visible white sclera, pupil style, and important eye details clearly.
+  ### RULES
 
-  Rules:
+  * Focus ONLY on the eyes.
+  * **ALWAYS include clearly visible white sclera in every variant.**
+  * Clearly describe the overall eye shape and structure.
+  * Clearly describe the pupil shape or style.
+  * Vary eye shape, eyelid structure, sclera exposure, pupil style, proportions, and overall silhouette meaningfully.
+  * Make every variant visually distinct; do NOT vary only eye color or expression.
+  * Avoid repeating the same eye shape, eyelid structure, pupil style, or silhouette.
+  * Mention iris shape, eyelashes, or other details only when relevant.
+  * Keep designs natural, believable, simple, clean, readable, and suitable for 2D animation.
+  * Avoid overly realistic or highly detailed eyes unless explicitly requested in [DESKRIPSIKAN].
+  * Keep every design consistent with [DESKRIPSIKAN].
 
-  * Focus **ONLY on the eyes**
-  * Clearly describe the eye shape and overall eye structure
-  * **ALWAYS include clearly visible white sclera**
-  * Clearly describe the pupil shape or style
-  * Describe eyelids, iris shape, eyelashes, or other eye details only when relevant
-  * Create natural, believable, and animation-friendly eye designs
-  * Make each variant visually distinct
-  * Do NOT make variants different only by eye color
-  * Do NOT make variants different only by expression
-  * Avoid repeating the same eye shape, eyelid structure, pupil style, or overall silhouette
+  ### CHARACTER LOCK
 
-  **CHARACTER LOCK:**
+  ONLY change the eye design.
 
-  * DO NOT modify or mention character identity
-  * DO NOT modify or mention face shape
-  * DO NOT modify or mention head shape
-  * DO NOT modify or mention nose
-  * DO NOT modify or mention eyebrows
-  * DO NOT modify or mention mouth or lips
-  * DO NOT modify or mention hairstyle or hair
-  * DO NOT modify or mention skin tone
-  * DO NOT modify or mention body, clothing, accessories, pose, or background
-  * ONLY change the eye design
+  Do NOT mention or modify:
 
-  **EYE STYLE:**
+  * character identity
+  * face or head shape
+  * eyebrows
+  * nose
+  * mouth or lips
+  * hair or hairstyle
+  * skin tone
+  * body, clothing, accessories, pose, or background
 
-  * Keep the eyes consistent with the provided target description
-  * Maintain clearly visible white sclera in every variant
-  * Keep the design simple, clean, readable, and suitable for 2D animation
-  * Avoid overly realistic or highly detailed eyes unless specifically requested
+  ### EXCLUSIONS
 
-  **DO NOT mention:**
+  Do NOT mention location, environment, setting, atmosphere, lighting, weather, time, actions, personality, backstory, or story.
 
-  * location
-  * environment
-  * background
-  * setting
-  * atmosphere
-  * lighting
-  * weather
-  * time
-  * actions
-  * poses
-  * personality
-  * backstory
-  * story
+  ### OUTPUT
 
-  Keep every description **short and directly usable for image generation**.
-
-  **OUTPUT RULES:**
-
-  * Output EXACTLY **[JUMLAH_VARIANT] variants**
-  * Number each variant
-  * One sentence per variant
-  * Do not output fewer or more variants
-  * Do not default to any specific number
-  * Do not add explanations, headings, or commentary
-
+  Output exactly **[JUMLAH_VARIANT] numbered variants**, ONE concise sentence per variant, with no explanations, headings, or extra text.
 
 image_prompt: |
   Create ONE short visual description of the character's new eyes using image reference
@@ -107,60 +81,50 @@ database:
 outputs:
   - JSON
 ---
-
-EYE REPLACEMENT
-
 Use the attached character image as the **STRICT CHARACTER REFERENCE**.
 
-Create the **EXACT CHARACTER** with new eyes.
-
-**NEW EYES:**
-
-<br>
+Create the **EXACT SAME CHARACTER** with new eyes based on:
 
 [{humanInput}]
 
-<br>
+### EYE CHANGE
 
-**CHARACTER LOCK — DO NOT CHANGE:**
+Change **ONLY the eyes** according to [{humanInput}].
 
-* exact same face
-* exact same face shape
-* exact same hairstyle
-* exact same hair shape
-* exact same hair color
-* exact same skin tone
-* exact same eyebrows
-* exact same mouth
-* exact same body shape
-* exact same body proportions
-* exact same age and identity
-* exact same pose
-* exact same camera angle
-* exact same 3/4 front view facing slightly right
-* exact same art style
+Fit the new eyes naturally onto the existing face while preserving their original position, spacing, scale, proportions, and facial placement unless specifically changed by [{humanInput}].
 
-ONLY CHANGE THE EYES.
+### CHARACTER LOCK
 
-The new eyes must naturally fit the existing face and maintain the original eye position, spacing, scale, and facial proportions unless specifically changed in [NEW EYES].
+Keep everything else **EXACTLY UNCHANGED**, including:
 
-Keep the same visual style:
+* face and head shape
+* eyebrows
+* mouth
+* hairstyle, hair shape, and hair color
+* skin tone
+* body shape and proportions
+* age and identity
+* pose
+* camera angle and perspective
+* 3/4 front view facing slightly right
+* art style and line quality
+
+Do NOT redesign, reposition, resize, or modify any locked element.
+
+### VISUAL STYLE
+
+Match the existing character's visual style:
 
 * simple 2D cartoon
-* thick black outlines
-* flat solid colors
 * clean simple shapes
-* minimal details
+* solid colors
+* natural black outlines
+* minimal detail
 * slightly handmade line quality
 * animation-friendly design
 
-Do not change the face shape.
-Do not change the hairstyle.
-Do not change the eyebrows.
-Do not change the mouth.
-Do not change the skin tone.
-Do not change the body.
-Do not change the pose.
-Do not change the camera angle.
+### FINAL LOCK
 
-The ONLY intended change is the eyes.
+The result must look like the **same original character**, with the **ONLY visible change being the new eyes** described in [{humanInput}].
+
+**ONLY CHANGE THE EYES.**

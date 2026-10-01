@@ -6,79 +6,24 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: true
 default_input: "Casual denim jacket over a plain white t-shirt"
 desc_prompt: |
-  Create **[JUMLAH_VARIANT] DIFFERENT short visual descriptions** for the character's new upper-body clothing based on:
+  Create [JUMLAH_VARIANT] DIFFERENT short visual descriptions for new upper-body clothing based on:
 
   [DESKRIPSIKAN]
 
-  Each variant must describe a **clearly different upper-body outfit design**, with noticeable differences in garment type, cut, fit, sleeves, collar, material, details, and colors.
-
-  Write each variant as **ONE concise sentence**, describing the upper garment, sleeves, collar or neckline, fit, material, and colors clearly.
-
   Rules:
 
-  * Focus **ONLY on upper-body clothing**
-  * Clearly identify the main upper garment
-  * Describe sleeve length and style
-  * Describe collar or neckline when relevant
-  * Describe fit such as fitted, regular, loose, oversized, or cropped when relevant
-  * Describe fabric or material when visually important
-  * Describe colors and simple clothing details when relevant
-  * Create natural, believable, and animation-friendly clothing designs
-  * Make each variant visually distinct
-  * Do NOT make variants different only by changing color
-  * Do NOT make variants different only by changing sleeve length
-  * Avoid repeating the same garment type, construction, silhouette, material, or overall design
-  * Keep the clothing visually coherent with [DESKRIPSIKAN]
+  * Each variant must represent a clearly different upper-body clothing design, not merely a color or sleeve change.
+  * Focus ONLY on the upper garment.
+  * Describe the garment type, silhouette, sleeves, collar/neckline, fit, material, and colors when relevant.
+  * Vary the garment type, cut, silhouette, sleeve design, construction, fit, and material meaningfully between variants.
+  * Avoid repeating the same overall garment design across variants.
+  * Keep each design simple, believable, readable, and suitable for modular 2D animation.
+  * Keep the clothing coherent with [DESKRIPSIKAN].
+  * Do NOT mention or modify the character, head, face, eyes, hair, skin, body proportions, lower clothing, footwear, accessories, pose, expression, or movement.
+  * Do NOT mention the environment, background, setting, lighting, weather, atmosphere, time, actions, personality, or story.
+  * Avoid excessive folds, patterns, textures, or tiny decorative details unless relevant to [DESKRIPSIKAN].
 
-  **CHARACTER LOCK:**
-
-  * DO NOT modify or mention character identity
-  * DO NOT modify or mention head shape
-  * DO NOT modify or mention face or facial features
-  * DO NOT modify or mention eyes, eyebrows, nose, or mouth
-  * DO NOT modify or mention hairstyle or hair
-  * DO NOT modify or mention hair color
-  * DO NOT modify or mention skin tone
-  * DO NOT modify or mention body shape or proportions
-  * DO NOT modify or mention lower-body clothing
-  * DO NOT modify or mention footwear
-  * DO NOT modify or mention pose or expression
-  * ONLY change the upper-body clothing
-
-  **UPPER-BODY CLOTHING STYLE:**
-
-  * Keep the clothing consistent with [DESKRIPSIKAN]
-  * Keep the design simple, clean, readable, and suitable for 2D cartoon animation
-  * Maintain natural clothing proportions
-  * Avoid excessive folds, patterns, textures, or tiny details unless specifically requested
-  * Prioritize a clear and recognizable clothing silhouette
-
-  **DO NOT mention:**
-
-  * location
-  * environment
-  * background
-  * setting
-  * atmosphere
-  * lighting
-  * weather
-  * time
-  * actions
-  * poses
-  * personality
-  * backstory
-  * story
-
-  Keep every description **short and directly usable for image generation**.
-
-  **OUTPUT RULES:**
-
-  * Output EXACTLY **[JUMLAH_VARIANT] variants**
-  * Number each variant
-  * One sentence per variant
-  * Do not output fewer or more variants
-  * Do not default to any specific number
-  * Do not add explanations, headings, or commentary
+  Output exactly [JUMLAH_VARIANT] numbered variants, ONE sentence per variant, with no explanations or extra text.
 
 
 image_prompt: |
@@ -98,6 +43,10 @@ image_prompt: |
   **Output ONE description sentence only.**
 
 database:
+  "Mine":
+    - title: "Kaos Graphic"
+      description: "A light dark crew-neck short-sleeve t-shirt with a relaxed fit featuring a cute emoji smiling face with sunglases on the front."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23F244BC"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Kaos Graphic</text></svg>'    
   "T-Shirt":
     - title: "Graphic Print T-Shirt"
       description: "Faded black graphic t-shirt with a large vintage motorcycle illustration."
@@ -133,89 +82,53 @@ database:
 outputs:
   - JSON
 ---
-
-**TOP / SHIRT REPLACEMENT**
-
 Use the attached character image as the **STRICT CHARACTER REFERENCE**.
 
-Create the **EXACT SAME CHARACTER** with new upper-body clothing.
-
-**NEW TOP:**
-
-<br>
+Create the **EXACT SAME CHARACTER** with a new upper-body clothing based on:
 
 [{humanInput}]
 
-<br>
+### ONLY CHANGE
 
-Replace **ONLY** the character's upper-body clothing with the new clothing described above.
+Replace **ONLY the upper-body clothing** according to [{humanInput}].
 
-**CHARACTER AND LOWER CLOTHING LOCK — DO NOT CHANGE:**
+The new clothing must fit the existing body naturally and accurately follow the requested **garment type, color, sleeves, collar, fit, material, pattern, and important visible details**.
 
-* exact same character identity
-* exact same head and face
-* exact same facial features
-* exact same face shape
-* exact same hairstyle and hair shape
-* exact same hair color
-* exact same skin tone
-* exact same body shape
-* exact same body proportions
-* exact same age
-* exact same pose
-* exact same body position
-* exact same camera angle
-* exact same 3/4 front view facing slightly right
-* exact same art style
+### CHARACTER LOCK
 
-**KEEP EXACTLY THE SAME:**
+Keep EVERYTHING ELSE EXACTLY UNCHANGED:
 
-* original pants, skirt, shorts, or other lower-body clothing
+* character identity and age
+* head, face, and facial features
+* hairstyle and hair color
+* skin tone
+* body shape and proportions
+* pose and body position
+* 3/4 front view facing slightly right
+* camera angle and perspective
+* original lower-body clothing
 * original footwear
-* original accessories unless they are part of the upper-body clothing
+* original accessories not belonging to the upper clothing
+* art style and line quality
 
-**ONLY CHANGE:**
+Do NOT redesign, resize, reposition, recolor, or modify any locked element.
 
-* shirt
-* t-shirt
-* blouse
-* polo shirt
-* jacket
-* sweater
-* hoodie
-* cardigan
-* dress top or other upper-body clothing specified in [NEW TOP]
+### VISUAL STYLE
 
-The new upper-body clothing must naturally fit the character's existing body shape and proportions.
-
-Follow the new clothing description accurately, including important colors, patterns, sleeves, collar, and visible details.
-
-Keep the same visual style:
+Match the existing character:
 
 * simple 2D cartoon
-* thick black outlines
+* thick natural black outlines
 * flat solid colors
 * clean simple shapes
-* minimal details
+* minimal detail
 * slightly handmade line quality
 * animation-friendly design
 
-Do not change the pants, skirt, shorts, or other lower-body clothing.
+### FINAL LOCK
 
-Do not change the footwear.
+Do NOT add props, extra characters, text, or unrelated elements.
 
-Do not redesign the character.
+The result must look like the **same original character with ONLY the upper-body clothing replaced**.
 
-Do not change the face.
-
-Do not change the hairstyle.
-
-Do not change the body.
-
-Do not change the pose.
-
-Do not change the camera angle.
-
-Do not add props, extra characters, or text.
-
-**The ONLY intended change is the upper-body clothing.**
+**ONLY CHANGE THE UPPER-BODY CLOTHING.**

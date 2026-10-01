@@ -8,7 +8,7 @@ default_input: "WARGA KAMPUNG GEMPAR!"
 desc_prompt: |
   Create [JUMLAH_VARIANT] DIFFERENT short visual descriptions for high-impact YouTube thumbnail scenes based on:
 
-  [{target}]
+  [DESKRIPSIKAN]
 
   Write each as ONE concise descriptive sentence specifying the dramatic action, character expressions, emotional tone, and visual focus clearly.
 
@@ -39,36 +39,16 @@ image_prompt: |
 
   **Output ONE scene description sentence only.**
 
-database:
-  "Drama & Kejutan Warga":
-    - title: "Warga Kampung Gempar"
-      description: "WARGA KAMPUNG GEMPAR!"
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23dc2626"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="11" font-family="sans-serif">GEMPAR</text></svg>'
-    - title: "Rahasia Terbongkar"
-      description: "RAHASIA INI AKHIRNYA TERBONGKAR!"
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23b91c1c"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="11" font-family="sans-serif">TERBONGKAR</text></svg>'
-
-  "Komedi & Kepanikan":
-    - title: "Kacau Balau"
-      description: "Bikin Ulah Lagi, Suasana Langsung Kacau!"
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23d97706"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="11" font-family="sans-serif">KACAU</text></svg>'
-    - title: "Panik Banget"
-      description: "PANIK! KETAHUAN WARGA SEKAMPUNG!"
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23b45309"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="11" font-family="sans-serif">PANIK</text></svg>'
+database: false
 
 outputs:
   - JSON
 ---
-
 Use the attached image as the **STRICT VISUAL REFERENCE**.
 
 Create a **high-impact YouTube thumbnail for an animated story video** using this title:
 
-<br>
-
-**[{humanInput}]**
-
-<br>
+[{humanInput}]
 
 Keep the main characters and important visual elements recognizable and consistent with the reference.
 

@@ -1,37 +1,13 @@
 ---
-title: "Object State Sprite Sheet Generator"
+title: "Object Sprite Sheet"
 slug: "objek-sheet-generator"
 description: "Prompt builder untuk menghasilkan sprite sheet progresif yang menunjukkan perubahan kondisi, state, atau fase dari sebuah objek dengan konsistensi visual yang ketat"
 image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
 has_database: true
 default_input: "Tampilkan progres objek yang terisi penuh cairan hingga perlahan habis kosong secara bertahap."
-desc_prompt: |
-  Create **ONE short visual description** for an object state progression sequence based on:
 
-  [{target}]
-
-  Write it as **one concise descriptive sentence**, specifying the sequential condition changes, states, and progressive steps clearly.
-
-  Rules:
-  * Focus **ONLY on the sequential physical state changes or condition progression**
-  * **DO NOT change the object's core identity, style, or base structure**
-  * Keep it **short and directly usable for sprite sheet generation**
-
-  **Output ONE sentence only.**
-
-image_prompt: |
-  OBJECT STATE BASELINE ANALYSIS
-
-  Use the attached reference image to analyze and extract the baseline state, structure, and visual identity of the object.
-
-  Create **ONE concise visual baseline sentence** for guiding the multi-state sprite sheet progression.
-
-  Rules:
-  * Focus **ONLY on the base object identity and initial structural condition**
-  * **DO NOT describe temporary dynamic states that will evolve**
-  * Keep the text short, clean, and directly usable for the sprite tool
-
-  **Output ONE baseline description sentence only.**
+desc_prompt: false
+image_prompt: false
 
 database:
   "Konsumsi & Penggunaan":
@@ -53,16 +29,11 @@ database:
 outputs:
   - JSON
 ---
-
 Use the attached image as the STRICT OBJECT REFERENCE.
 
 Create a clean **OBJECT STATE SPRITE SHEET** showing the exact same object in multiple sequential states based on:
 
-<br>
-
-**[{humanInput}]**
-
-<br>
+[{humanInput}]
 
 Keep the object's original design STRICTLY CONSISTENT across all states.
 

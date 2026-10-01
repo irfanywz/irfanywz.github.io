@@ -6,24 +6,19 @@ image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeN
 has_database: false
 default_input: ""
 variables_config:
-  fix:
+  REPAIR_FIX:
     type: "text"
-    label: "Masukan Deskripsi"
+    label: "REPAIR_FIX"
     placeholder: ""
     default: "Clean up blurry outlines, fix distorted geometric shapes, and remove unwanted AI artifacts on structures."
 outputs:
   - JSON
 ---
-
 Use the attached image as the STRICT BACKGROUND REFERENCE.
 
 Repair and clean up ONLY the specified problem areas:
 
-<br>
-
-[fix]
-
-<br>
+[REPAIR_FIX]
 
 Preserve the original background exactly as much as possible.
 
