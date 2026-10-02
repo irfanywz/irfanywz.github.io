@@ -6,7 +6,7 @@ date: 2026-08-01T21:00:31+07:00
 image: disqus-error.avif
 topics: ["Teknologi"]
 keywords: ["Kode"]
-showAds: true
+showAds: false
 adPositions: [2, 5, 7]
 draft: false
 ---

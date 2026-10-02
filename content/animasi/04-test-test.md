@@ -22,8 +22,7 @@ variables_config:
     type: "number"
     label: "Jumlah Kata"
     default: 500
-outputs:
-  - JSON    
+outputs: ["JSON"]    
 draft: true
 ---
 

@@ -2,7 +2,7 @@
 title: "Background Interior"
 slug: "background-interior"
 description: "Prompt builder untuk background interior"
-image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
+#image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
 has_database: true
 default_input: "Cozy traditional Indonesian living room with bamboo walls and bale-bale"
 desc_prompt: |
@@ -44,24 +44,13 @@ image_prompt: |
   - OUTPUT EXACTLY ONE SENTENCE.
 
 database:
-  "Rumah Tradisional":
-    - title: "Ruang Tamu Tradisional"
-      description: "Cozy traditional Indonesian living room with bamboo walls, wooden bench (bale-bale), ceramic jar, and woven mat."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23451a03"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fed7aa" font-size="12" font-family="sans-serif">Tamu</text></svg>'
-    - title: "Dapur Jadul Klasik"
-      description: "Traditional Indonesian country kitchen with wood-burning stove (tungku tanah liat), hanging kitchen utensils, and wooden shelves."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%237c2d12"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffedd5" font-size="12" font-family="sans-serif">Dapur</text></svg>'
+  "#Favorite":
 
-  "Kamar & Ruang Kerja":
-    - title: "Kamar Tidur Sederhana"
-      description: "Simple retro Indonesian bedroom with a wooden bed frame, vintage wooden wardrobe, small desk, and curtained window."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231e3a8a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23bfdbfe" font-size="12" font-family="sans-serif">Kamar</text></svg>'
-    - title: "Ruang Kerja/Studio Retro"
-      description: "Indonesian retro workspace with wooden desk, old box television, bookshelves filled with cassette tapes, and patterned tile floor."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23065f46"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23a7f3d0" font-size="12" font-family="sans-serif">Studio</text></svg>'
+    - title: "Penjara"
+      description: "Permukaan lantai ubin keramik usang menghiasi foreground, melewati susunan jeruji besi sel tahanan vertikal rapat dengan gembok besar di middle ground, berlatar dinding blok sel tahanan berplester kasar dengan ventilasi kecil di background, di bawah struktur atas berupa langit-langit beton datar berhias lampu pengaman kotak di upper area."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23A57E40"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Penjara</text></svg>'
 
-outputs:
-  - JSON
+outputs: ["JSON"]
 ---
 Use the attached image as a **STRICT STYLE REFERENCE ONLY**.
 

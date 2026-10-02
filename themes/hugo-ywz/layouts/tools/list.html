@@ -2,11 +2,11 @@
 {{ end }}
 
 {{ define "main" }}
-    <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300"
+    <main class="flex-grow bg-gray-50/50 dark:bg-gray-950/50 transition-colors duration-300"
         x-data="{
             search: '',
             selectedCategory: 'all',
-            swiper: null,
+            mobileCategoryOpen: false,
             items: [
                 {{ range .Pages }}
                 {
@@ -41,20 +41,6 @@
                     }
                     window.history.pushState({}, '', url);
                 });
-
-                // Inisialisasi Swiper JS untuk kategori
-                this.swiper = new Swiper(this.$refs.swiperContainer, {
-                    modules: window.SwiperModules,
-                    slidesPerView: 'auto',
-                    spaceBetween: 6,
-                    freeMode: true,
-                    grabCursor: true,
-                    mousewheel: {
-                        forceToAxis: true,
-                    },
-                    observer: true,
-                    observeParents: true,
-                });
             },
             get categoryCounts() {
                 const counts = {};
@@ -67,6 +53,10 @@
                 });
                 return Object.entries(counts).map(([name, count]) => ({ name, count }));
             },
+            getActiveCategoryTitle() {
+                if (this.selectedCategory === 'all') return 'Semua Alat';
+                return this.selectedCategory;
+            },
             get filteredItems() {
                 const s = this.search.toLowerCase();
                 return this.items.filter(item => {
@@ -78,105 +68,183 @@
             }
         }">
 
-    <div class="container max-w-6xl mx-auto px-4 py-12">
-        <!-- Header & Search -->
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 border-b border-gray-100 dark:border-gray-800 pb-8">
-            <div class="max-w-2xl">
-                <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tight flex items-center gap-3">
-                    <span class="icon-[ri--tools-line] text-orange-500"></span>
-                    {{.Title}}
-                </h1>
-                <p class="text-lg text-gray-500 dark:text-gray-400">{{ .Description }}</p>
-            </div>
+    <div class="container max-w-7xl mx-auto px-4 py-8">
+        
+        <!-- LAYOUT UTAMA 2 KOLOM (Sidebar Kiri & Konten Kanan) -->
+        <div class="flex flex-col md:flex-row gap-8 items-start relative">
             
-            <div class="relative w-full md:w-72">
-                <i class="icon-[ri--search-line] absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                <input type="search" x-model="search" placeholder="Cari alat..." 
-                    class="w-full pl-11 pr-4 py-2.5 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all shadow-sm">
-            </div>
-        </div>
+            <!-- SIDEBAR KIRI (Header Kompak + Navigasi Kategori) -->
+            <div class="w-full md:w-72 flex flex-col gap-6 flex-shrink-0 sticky top-24">
+                
+                <!-- Header Kompak di Kiri -->
+                <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-5 shadow-2xs space-y-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-950/50 text-orange-500 flex items-center justify-center flex-shrink-0 border border-orange-100 dark:border-orange-900/40">
+                            <span class="icon-[ri--tools-line] text-xl"></span>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <h1 class="text-base font-black text-gray-900 dark:text-white tracking-tight leading-tight truncate">{{.Title}}</h1>
+                            <p class="text-[11px] text-gray-400 mt-0.5 line-clamp-1">{{ .Description }}</p>
+                        </div>
+                    </div>
 
-        <!-- Filter Category Swiper Container -->
-        <div class="relative group mb-6">
-            <div x-ref="swiperContainer" class="swiper overflow-hidden py-1 px-0.5">
-                <div class="swiper-wrapper items-center">
-                    
-                    <!-- Tombol Semua -->
-                    <div class="swiper-slide !w-auto">
-                        <button @click="selectedCategory = 'all'"
-                            :class="selectedCategory === 'all' 
-                                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/25' 
-                                : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
-                            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0 cursor-pointer">
-                            <span>Semua</span>
-                            <span class="px-2 py-0.5 text-xs rounded-full"
-                                :class="selectedCategory === 'all' 
-                                    ? 'bg-white/20 text-white' 
-                                    : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'"
-                                x-text="items.length">
+                    <!-- Search Bar Kompak di Sidebar dengan posisi icon diperbaiki -->
+                    <div class="relative w-full pt-1">
+                        <span class="icon-[ri--search-line] absolute left-3 top-[calc(50%+2px)] -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></span>
+                        <input type="search" x-model="search" placeholder="Cari alat..." 
+                            class="w-full pl-9 pr-3.5 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700/70 rounded-xl text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all">
+                    </div>
+                </div>
+
+                <!-- Navigasi Kategori (Desktop) -->
+                <div class="hidden md:flex bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-4 flex-col gap-1.5 shadow-2xs">
+                    <div class="pb-2 px-2 text-[10px] font-black uppercase tracking-wider text-gray-400">
+                        Kategori Alat
+                    </div>
+
+                    <!-- Tombol Semua Kategori -->
+                    <button @click="selectedCategory = 'all'"
+                        :class="selectedCategory === 'all' ? 'bg-indigo-600 text-white shadow-xs font-bold' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/60 font-medium'"
+                        class="px-3.5 py-2.5 rounded-xl text-xs transition cursor-pointer flex items-center justify-between text-left">
+                        <span class="flex items-center gap-2">
+                            <span class="icon-[ri--apps-2-line] w-4 h-4"></span>
+                            Semua Alat
+                        </span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-md bg-black/10 dark:bg-white/10" x-text="items.length"></span>
+                    </button>
+
+                    <!-- List Kategori Dinamis Desktop -->
+                    <template x-for="cat in categoryCounts" :key="cat.name">
+                        <button @click="selectedCategory = cat.name"
+                            :class="selectedCategory === cat.name ? 'bg-indigo-600 text-white shadow-xs font-bold' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/60 font-medium'"
+                            class="px-3.5 py-2.5 rounded-xl text-xs transition cursor-pointer flex items-center justify-between text-left capitalize">
+                            <span class="flex items-center gap-2 truncate">
+                                <span class="icon-[ri--folder-3-line] w-4 h-4 opacity-70"></span>
+                                <span class="truncate" x-text="cat.name"></span>
                             </span>
+                            <span class="text-[10px] px-2 py-0.5 rounded-md bg-black/10 dark:bg-white/10 ml-2" x-text="cat.count"></span>
+                        </button>
+                    </template>
+                </div>
+            </div>
+
+            <!-- OFFCANVAS / BOTTOM SHEET KATEGORI KHUSUS MOBILE -->
+            <div x-show="mobileCategoryOpen" class="fixed inset-0 z-50 md:hidden flex flex-col justify-end" style="display: none;">
+                <!-- Backdrop -->
+                <div x-show="mobileCategoryOpen"
+                     x-transition:enter="transition-opacity ease-out duration-200"
+                     x-transition:enter-start="opacity-0"
+                     x-transition:enter-end="opacity-100"
+                     x-transition:leave="transition-opacity ease-in duration-150"
+                     x-transition:leave-start="opacity-100"
+                     x-transition:leave-end="opacity-0"
+                     @click="mobileCategoryOpen = false"
+                     class="absolute inset-0 bg-black/50 backdrop-blur-xs"></div>
+
+                <!-- Panel Bottom Sheet -->
+                <div x-show="mobileCategoryOpen"
+                     x-transition:enter="transition-transform ease-out duration-300"
+                     x-transition:enter-start="translate-y-full"
+                     x-transition:enter-end="translate-y-0"
+                     x-transition:leave="transition-transform ease-in duration-200"
+                     x-transition:leave-start="translate-y-0"
+                     x-transition:leave-end="translate-y-full"
+                     class="relative bg-white dark:bg-gray-900 rounded-t-3xl shadow-2xl p-5 max-h-[75vh] flex flex-col z-50">
+                    
+                    <div class="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-800">
+                        <h4 class="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                            <span class="icon-[ri--folder-3-line] w-4 h-4 text-indigo-500"></span>
+                            Pilih Kategori Alat
+                        </h4>
+                        <button @click="mobileCategoryOpen = false" class="text-gray-400 hover:text-gray-600 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <span class="icon-[ri--close-line] w-5 h-5"></span>
                         </button>
                     </div>
 
-                    <!-- Tombol Kategori Dinamis -->
-                    <template x-for="cat in categoryCounts" :key="cat.name">
-                        <div class="swiper-slide !w-auto">
-                            <button @click="selectedCategory = cat.name"
-                                :class="selectedCategory === cat.name 
-                                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/25' 
-                                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'"
-                                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0 capitalize cursor-pointer">
-                                <span x-text="cat.name"></span>
-                                <span class="px-2 py-0.5 text-xs rounded-full"
-                                    :class="selectedCategory === cat.name 
-                                        ? 'bg-white/20 text-white' 
-                                        : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'"
-                                    x-text="cat.count">
+                    <!-- Daftar Kategori Mobile Sheet -->
+                    <div class="overflow-y-auto py-3 space-y-1.5">
+                        <button @click="selectedCategory = 'all'; mobileCategoryOpen = false"
+                            :class="selectedCategory === 'all' ? 'bg-indigo-600 text-white font-bold' : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300'"
+                            class="w-full px-4 py-3 rounded-xl text-xs transition flex items-center justify-between text-left">
+                            <span class="flex items-center gap-2.5">
+                                <span class="icon-[ri--apps-2-line] w-4 h-4"></span>
+                                Semua Alat
+                            </span>
+                            <span class="text-[10px] px-2 py-0.5 rounded-md bg-black/10 dark:bg-white/10" x-text="items.length"></span>
+                        </button>
+
+                        <template x-for="cat in categoryCounts" :key="'mob-' + cat.name">
+                            <button @click="selectedCategory = cat.name; mobileCategoryOpen = false"
+                                :class="selectedCategory === cat.name ? 'bg-indigo-600 text-white font-bold' : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300'"
+                                class="w-full px-4 py-3 rounded-xl text-xs transition flex items-center justify-between text-left capitalize">
+                                <span class="flex items-center gap-2.5 truncate">
+                                    <span class="icon-[ri--folder-3-line] w-4 h-4 opacity-70"></span>
+                                    <span class="truncate" x-text="cat.name"></span>
                                 </span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-md bg-black/10 dark:bg-white/10" x-text="cat.count"></span>
                             </button>
-                        </div>
-                    </template>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- Grid Items -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <template x-for="item in filteredItems" :key="item.permalink">
-                <a :href="item.permalink" 
-                   :target="item.isExternal ? '_blank' : ''"
-                   :rel="item.isExternal ? 'noopener noreferrer nofollow' : ''"
-                   class="group block bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-                    
-                    <div class="flex items-start gap-4 mb-4">
-                        <div class="w-16 h-16 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm border border-indigo-100 dark:border-indigo-900/50">
-                            <i :class="item.icon" class="text-3xl"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" x-text="item.displayTitle"></h2>
-                            <p class="text-xs text-gray-500 dark:text-gray-400" x-text="item.date"></p>
-                        </div>
-                    </div>
-                    
-                    <p class="text-gray-600 dark:text-gray-300 text-sm line-clamp-2 mb-4" x-text="item.displayDesc"></p>
-
-                    <!-- Category Badges -->
-                    <div class="flex flex-wrap gap-1.5 pt-2 border-t border-gray-100 dark:border-gray-700/50">
-                        <template x-for="cat in item.categories" :key="cat">
-                            <span class="inline-block px-2.5 py-0.5 text-[11px] font-medium bg-gray-100 dark:bg-gray-700/50 text-gray-600 dark:text-gray-400 rounded-md capitalize" x-text="cat"></span>
                         </template>
                     </div>
-                </a>
-            </template>
-        </div>
-        
-        <!-- Empty State -->
-        <div x-show="filteredItems.length === 0" x-transition class="text-center py-16" style="display: none;">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
-                <i class="icon-[ri--search-2-line] text-2xl text-gray-400"></i>
+                </div>
             </div>
-            <p class="text-gray-500 dark:text-gray-400 text-lg">Alat tidak ditemukan.</p>
+
+            <!-- KONTEN UTAMA: Grid Kartu Alat di Kanan -->
+            <div class="flex-1 w-full flex flex-col gap-5">
+                
+                <!-- TOMBOL TRIGGER KATEGORI KHUSUS MOBILE (Dipindah ke bawah header/sidebar kiri khusus tampilan HP) -->
+                <div class="md:hidden bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-4 rounded-2xl flex items-center justify-between shadow-2xs">
+                    <div class="flex items-center gap-2 truncate">
+                        <span class="text-[11px] text-gray-400 font-bold uppercase">Kategori:</span>
+                        <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 capitalize truncate" x-text="getActiveCategoryTitle()"></span>
+                    </div>
+                    <button @click="mobileCategoryOpen = true" class="px-3.5 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 text-xs font-bold flex items-center gap-1.5 flex-shrink-0 cursor-pointer">
+                        <span class="icon-[ri--filter-3-line] w-4 h-4"></span>
+                        Pilih Kategori
+                    </button>
+                </div>
+
+                <!-- Grid Kartu Alat -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                    <template x-for="item in filteredItems" :key="item.permalink">
+                        <a :href="item.permalink" 
+                           :target="item.isExternal ? '_blank' : ''"
+                           :rel="item.isExternal ? 'noopener noreferrer nofollow' : ''"
+                           class="group block bg-white dark:bg-gray-900 rounded-2xl shadow-2xs border border-gray-200 dark:border-gray-800 p-5 hover:shadow-md hover:border-indigo-500/50 dark:hover:border-indigo-500/50 transition-all duration-300 flex flex-col justify-between">
+                            
+                            <div>
+                                <div class="flex items-start gap-4 mb-3">
+                                    <div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-950/60 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 flex-shrink-0 group-hover:scale-105 transition-transform duration-300 border border-indigo-100 dark:border-indigo-900/50">
+                                        <i :class="item.icon" class="text-2xl"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <h2 class="text-base font-bold text-gray-900 dark:text-white mb-0.5 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate" x-text="item.displayTitle"></h2>
+                                        <p class="text-[11px] text-gray-400" x-text="item.date"></p>
+                                    </div>
+                                </div>
+                                
+                                <p class="text-gray-600 dark:text-gray-300 text-xs sm:text-sm line-clamp-2 mb-4 leading-relaxed" x-text="item.displayDesc"></p>
+                            </div>
+
+                            <!-- Category Badges -->
+                            <div class="flex flex-wrap gap-1.5 pt-3 border-t border-gray-100 dark:border-gray-800/80">
+                                <template x-for="cat in item.categories" :key="cat">
+                                    <span class="inline-block px-2.5 py-0.5 text-[10px] font-semibold bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-md capitalize" x-text="cat"></span>
+                                </template>
+                            </div>
+                        </a>
+                    </template>
+                </div>
+                
+                <!-- Empty State -->
+                <div x-show="filteredItems.length === 0" x-transition class="text-center py-20 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800" style="display: none;">
+                    <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gray-100 dark:bg-gray-800 mb-3 text-gray-400">
+                        <i class="icon-[ri--search-2-line] text-xl"></i>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 font-bold text-sm">Alat tidak ditemukan</p>
+                    <p class="text-xs text-gray-400 mt-1">Coba gunakan kata kunci lain atau pilih kategori yang berbeda.</p>
+                </div>
+            </div>
+
         </div>
     </div>
     </main>

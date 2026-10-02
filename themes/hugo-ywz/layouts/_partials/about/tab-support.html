@@ -1,5 +1,6 @@
-<!-- Tambahkan id="support-section" di sini agar bisa jadi target scroll otomatis -->
-<div x-show="activeTab === 'support'" id="support-section" class="p-6 sm:p-10" style="display: none;">
+<!-- Tambahkan id="support-section" agar bisa jadi target scroll otomatis -->
+<div x-show="activeTab === 'support'" id="support-section" class="p-6 sm:p-10" style="display: none;" 
+     x-data="{ showModal: false }">
     <div class="max-w-xl mx-auto text-center">
         <div class="inline-flex p-3 bg-red-50 dark:bg-red-950/40 text-red-500 rounded-2xl mb-4">
             <span class="icon-[ri--heart-3-line] w-8 h-8"></span>
@@ -12,7 +13,7 @@
         </p>
 
         <!-- Kotak QRIS -->
-        <div class="p-4 bg-slate-50 dark:bg-gray-800/50 rounded-2xl border border-slate-200 dark:border-gray-700 inline-block shadow-inner mb-8">
+        <div class="p-4 bg-slate-50 dark:bg-gray-800/50 rounded-2xl border border-slate-200 dark:border-gray-700 inline-block shadow-inner mb-6">
             <img src="{{ with .Params.support }}{{ .qr_image }}{{ end }}" 
                  class="w-72 h-72 sm:w-80 sm:h-80 mx-auto rounded-xl object-contain bg-white p-2 cursor-pointer hover:opacity-90 transition-opacity"
                  x-data 
@@ -20,11 +21,80 @@
                  alt="QRIS Donasi" 
                  title="Klik untuk memperbesar"
                  loading="lazy">
+            <p class="text-xs text-slate-400 dark:text-gray-500 my-3">
+                {{ with .Params.support }}{{ .footer_text }}{{ end }}
+            </p>                 
         </div>
 
-        <p class="text-xs text-slate-400 dark:text-gray-500 mb-10">
-            {{ with .Params.support }}{{ .footer_text }}{{ end }}
-        </p>
+        <!-- TOMBOL KONFIRMASI DUKUNGAN -->
+        <div class="mb-8">
+            <button @click="showModal = true" class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm transition-all shadow-lg shadow-indigo-500/25">
+                <span class="icon-[ri--checkbox-circle-line] w-5 h-5"></span>
+                Konfirmasi Dukungan
+            </button>
+        </div>
+
+    </div>
+
+    <!-- MODAL FORM KONFIRMASI -->
+    <div x-show="showModal" 
+         x-cloak
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+        
+        <div @click.away="showModal = false" 
+             class="bg-white dark:bg-gray-900 w-full max-w-md rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-gray-800 shadow-2xl text-left relative">
+            
+            <!-- Tombol Close (X) -->
+            <button @click="showModal = false" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 dark:hover:text-gray-200">
+                <span class="icon-[ri--close-line] w-6 h-6"></span>
+            </button>
+
+            <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2">
+                <span class="icon-[ri--heart-3-fill] text-red-500"></span> Form Konfirmasi Donasi
+            </h4>
+            <p class="text-xs text-slate-500 dark:text-gray-400 mb-6">
+                Isi data di bawah setelah Anda melakukan scan QRIS agar nama Anda bisa disematkan dihalaman ini
+            </p>
+
+            <!-- FORM WEB3FORMS -->
+            <form id="support-form" class="space-y-4">
+                <!-- Ganti dengan Access Key Web3Forms Anda yang valid -->
+                <input type="hidden" name="access_key" value="feedd383-8f73-47a0-8f20-f20696999a1a">
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                <input type="hidden" name="subject" value="Konfirmasi Dukungan Baru Masuk!">
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-gray-300 mb-1">Nama / Nama Samaran *</label>
+                    <input type="text" name="nama" required placeholder="Contoh: Budi Santoso" 
+                           class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-gray-300 mb-1">Pesan / Ucapan (Opsional)</label>
+                    <textarea name="pesan" rows="3" placeholder="Semoga blognya makin bermanfaat!" 
+                              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-gray-300 mb-1">Link Website / Media Sosial (Opsional)</label>
+                    <input type="url" name="link" placeholder="https://namadomain.com" 
+                           class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500">
+                </div>
+
+                <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm transition-all shadow-md">
+                    Kirim Konfirmasi
+                </button>
+            </form>
+
+            <!-- Wadah Result Status Pengiriman -->
+            <div id="support-result" class="mt-4 text-sm" style="display: none;"></div>
+        </div>
     </div>
 
     <!-- LIST ORANG BAIK / SUPPORTERS -->
@@ -33,7 +103,7 @@
         <div class="flex items-center justify-between mb-4">
             <h4 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <span class="icon-[ri--heart-3-line] text-red-500"></span>
-                Terima Kasih Orang Baik ❤️
+                Terima Kasih Orang Baik
             </h4>
         </div>
 
@@ -72,4 +142,59 @@
         </div>
     </div>
     {{ end }}
+
+    <!-- JAVASCRIPT KHUSUS FORM SUPPORT TERPISAH DI SINI -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('support-form');
+            const result = document.getElementById('support-result');
+            
+            if (form && result) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(form);
+                    const object = Object.fromEntries(formData);
+                    const json = JSON.stringify(object);
+                    
+                    result.style.display = "block";
+                    result.innerHTML = "Mohon tunggu sebentar...";
+                    result.className = "mt-4 p-3 rounded-xl text-xs bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400";
+
+                    fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: json
+                    })
+                    .then(async (response) => {
+                        let resJson = await response.json();
+                        
+                        if (response.status === 200) {
+                            result.innerHTML = "Konfirmasi berhasil terkirim! Terima kasih banyak dukungannya ❤️";
+                            result.className = "mt-4 p-3 rounded-xl text-xs bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400";
+                        } else {
+                            console.error("Web3Forms Error:", resJson);
+                            result.innerHTML = resJson.message || "Terjadi kesalahan saat mengirim.";
+                            result.className = "mt-4 p-3 rounded-xl text-xs bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400";
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Fetch Error:", error);
+                        result.innerHTML = "Terjadi kesalahan jaringan! Coba lagi.";
+                        result.className = "mt-4 p-3 rounded-xl text-xs bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400";
+                    })
+                    .finally(function() {
+                        form.reset();
+                        setTimeout(() => {
+                            result.innerHTML = "";
+                            result.style.display = "none";
+                        }, 6000);
+                    });
+                });
+            }
+        });
+    </script>
 </div>

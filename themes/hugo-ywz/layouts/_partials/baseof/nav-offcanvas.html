@@ -31,92 +31,122 @@
     <!-- Area yang bisa digulir (Scrollable Content) -->
     <div class="p-4 overflow-y-auto flex-grow flex flex-col justify-between space-y-6">
         
-        <div class="space-y-6">
-            {{ $page_url := $.Page.RelPermalink | relLangURL }}
-            {{ $page_split := index (split $page_url "/") 1 }}
+<div class="space-y-6">
+    {{ $page_url := $.Page.RelPermalink | relLangURL }}
+    {{ $page_split := index (split $page_url "/") 1 }}
+    
+    {{/* 1. Kumpulkan semua item menu yang sudah diurutkan berdasarkan Weight */}}
+    {{ $sortedMenu := sort .Site.Menus.footer "Weight" }}
+
+    {{/* 2. Buat list grup unik dengan mendeteksi kemunculan pertama, agar urutan grupnya ngikutin weight item di dalamnya */}}
+    {{ $groups := slice }}
+    {{ range $sortedMenu }}
+        {{ if and .Params.group (not (in $groups .Params.group)) }}
+            {{ $groups = $groups | append .Params.group }}
+        {{ end }}
+    {{ end }}
+
+<nav class="space-y-1" x-data="{ 
+    openDropdowns: {
+        {{ range $index, $groupName := $groups }}
+            {{ $isThisGroupActive := false }}
+            {{ range $.Site.Menus.footer }}
+                {{ if eq .Params.group $groupName }}
+                    {{ $menu_item_url := .URL | relLangURL }}
+                    {{ $page_url := $.Page.RelPermalink | relLangURL }}
+                    {{ if and (eq $menu_item_url $page_url) (not $.IsHome) }}
+                        {{ $isThisGroupActive = true }}
+                    {{ end }}
+                {{ end }}
+            {{ end }}
+            '{{ $groupName }}': {{ if $isThisGroupActive }}true{{ else }}false{{ end }}{{ if lt (add $index 1) (len $groups) }},{{ end }}
+        {{ end }}
+    }
+}">
+    
+    {{ $page_url := $.Page.RelPermalink | relLangURL }}
+    {{ $sortedMenu := sort .Site.Menus.footer "Weight" }}
+    {{ $renderedGroups := slice }}
+
+    {{ range $sortedMenu.ByWeight }}
+        {{ if not .Params.group }}
+            {{/* --- RENDER MENU BIASA --- */}}
+            {{ $menu_item_url := .URL | relLangURL }}
+            {{ $active := and (eq $menu_item_url $page_url) (not $.IsHome) }}
+
+            <a class='flex items-center gap-3 px-4 py-3 rounded-xl transition-colors {{ if or ($active) (and ($.IsHome) (eq .URL "/")) }}bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}' href="{{ .URL | relLangURL }}">
+                <span class="{{ .Pre }} w-5 h-5 {{ .Params.color }}"></span>
+                <span>{{ .Name }}</span>
+            </a>
+
+        {{ else if and .Params.group (not (in $renderedGroups .Params.group)) }}
+            {{/* --- RENDER DROPDOWN DENGAN OPSI GROUP URL --- */}}
+            {{ $groupKey := .Params.group }}
+            {{ $renderedGroups = $renderedGroups | append $groupKey }}
             
-            <!-- Kumpulkan daftar grup dropdown yang unik dari menu -->
-            {{ $groups := slice }}
-            {{ range .Site.Menus.footer }}
-                {{ if and .Params.group (not (in $groups .Params.group)) }}
-                    {{ $groups = $groups | append .Params.group }}
+            {{ $groupTitle := $groupKey | humanize }}
+            {{ $groupIcon := "icon-[ri--apps-2-line]" }}
+            {{ $groupUrl := "" }}
+            {{ $isThisGroupActive := false }}
+
+            {{/* Ambil konfigurasi dropdown dan group_url dari item-item di dalam grup ini */}}
+            {{ range $.Site.Menus.footer }}
+                {{ if eq .Params.group $groupKey }}
+                    {{ if .Params.dropdown_title }}{{ $groupTitle = .Params.dropdown_title }}{{ end }}
+                    {{ if .Params.dropdown_icon }}{{ $groupIcon = .Params.dropdown_icon }}{{ end }}
+                    {{ if .Params.group_url }}{{ $groupUrl = .Params.group_url | relLangURL }}{{ end }}
+                    
+                    {{ $menu_item_url := .URL | relLangURL }}
+                    {{ if and (eq $menu_item_url $page_url) (not $.IsHome) }}
+                        {{ $isThisGroupActive = true }}
+                    {{ end }}
                 {{ end }}
             {{ end }}
 
-            <!-- Inisialisasi state openDropdowns berdasarkan status aktif MING-MASING grup secara spesifik -->
-            <nav class="space-y-1" x-data="{ 
-                openDropdowns: {
-                    {{ range $index, $groupName := $groups }}
-                        {{ $isThisGroupActive := false }}
-                        {{ range $.Site.Menus.footer }}
-                            {{ if eq .Params.group $groupName }}
-                                {{ $menu_item_url := .URL | relLangURL }}
-                                {{ if and (strings.Contains $menu_item_url $page_split) (not $.IsHome) }}
-                                    {{ $isThisGroupActive = true }}
-                                {{ end }}
-                            {{ end }}
-                        {{ end }}
-                        '{{ $groupName }}': {{ if $isThisGroupActive }}true{{ else }}false{{ end }}{{ if lt (add $index 1) (len $groups) }},{{ end }}
-                    {{ end }}
-                }
-            }">
-                
-                <!-- Render Menu Utama -->
-                {{ range .Site.Menus.footer }}
-                    {{ if not .Params.group }}
-                        {{ $menu_item_url := .URL | relLangURL }}
-                        {{ $active := and (strings.Contains $menu_item_url $page_split) (not $.IsHome) }}
+            {{/* Cek apakah halaman saat ini sama persis dengan groupUrl */}}
+            {{ $isGroupUrlActive := and (ne $groupUrl "") (eq $groupUrl $page_url) }}
+            {{ $isAnyActive := or $isThisGroupActive $isGroupUrlActive }}
 
-                        <a class='flex items-center gap-3 px-4 py-3 rounded-xl transition-colors {{ if or ($active) (and ($.IsHome) (eq .URL "/")) }}bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}' href="{{ .URL | relLangURL }}">
+            <div class="flex items-center rounded-xl transition-colors {{ if $isAnyActive }}bg-indigo-50/60 dark:bg-indigo-900/10 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}">
+                
+                {{/* Bagian Kiri: Bisa diklik sebagai Link Utama Grup (Jika group_url diisi) */}}
+                {{ if $groupUrl }}
+                    <a href="{{ $groupUrl }}" class="flex-grow flex items-center gap-3 px-4 py-3">
+                        <span class="{{ $groupIcon }} w-5 h-5 {{ if $isAnyActive }}text-indigo-600 dark:text-indigo-400{{ else }}text-indigo-500{{ end }}"></span>
+                        <span>{{ $groupTitle }}</span>
+                    </a>
+                {{ else }}
+                    <div class="flex-grow flex items-center gap-3 px-4 py-3 select-none">
+                        <span class="{{ $groupIcon }} w-5 h-5 {{ if $isAnyActive }}text-indigo-600 dark:text-indigo-400{{ else }}text-indigo-500{{ end }}"></span>
+                        <span>{{ $groupTitle }}</span>
+                    </div>
+                {{ end }}
+
+                {{/* Bagian Kanan: Tombol Panah khusus untuk Toggle Buka/Tutup Dropdown */}}
+                <button @click="openDropdowns['{{ $groupKey }}'] = !openDropdowns['{{ $groupKey }}']" type="button" class="p-3 focus:outline-none cursor-pointer" aria-label="Toggle Dropdown">
+                    <span class="icon-[ri--arrow-down-s-line] w-4 h-4 transition-transform duration-200 block" :class="openDropdowns['{{ $groupKey }}'] ? 'rotate-180' : ''"></span>
+                </button>
+            </div>
+
+            {{/* Daftar Item di dalam Dropdown */}}
+            <div x-show="openDropdowns['{{ $groupKey }}']" x-transition.origin.top.duration.200ms class="space-y-1 pt-1 pl-2" style="display: none;">
+                {{ range $.Site.Menus.footer.ByWeight }}
+                    {{ if eq .Params.group $groupKey }}
+                        {{ $menu_item_url := .URL | relLangURL }}
+                        {{ $active := and (eq $menu_item_url $page_url) (not $.IsHome) }}
+
+                        <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors {{ if $active }}bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}" href="{{ .URL | relLangURL }}">
                             <span class="{{ .Pre }} w-5 h-5 {{ .Params.color }}"></span>
                             <span>{{ .Name }}</span>
                         </a>
                     {{ end }}
                 {{ end }}
+            </div>
 
-                <!-- Render Dropdown Dinamis -->
-                {{ range $groups }}
-                    {{ $groupKey := . }}
-                    {{ $groupTitle := . | humanize }}
-                    {{ $groupIcon := "icon-[ri--apps-2-line]" }}
-                    {{ $isThisGroupActive := false }}
-
-                    {{ range $.Site.Menus.footer }}
-                        {{ if eq .Params.group $groupKey }}
-                            {{ if .Params.dropdown_title }}{{ $groupTitle = .Params.dropdown_title }}{{ end }}
-                            {{ if .Params.dropdown_icon }}{{ $groupIcon = .Params.dropdown_icon }}{{ end }}
-                            {{ $menu_item_url := .URL | relLangURL }}
-                            {{ if and (strings.Contains $menu_item_url $page_split) (not $.IsHome) }}
-                                {{ $isThisGroupActive = true }}
-                            {{ end }}
-                        {{ end }}
-                    {{ end }}
-
-                    <button @click="openDropdowns['{{ $groupKey }}'] = !openDropdowns['{{ $groupKey }}']" type="button" class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors {{ if $isThisGroupActive }}bg-indigo-50/60 dark:bg-indigo-900/10 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}">
-                        <div class="flex items-center gap-3">
-                            <span class="{{ $groupIcon }} w-5 h-5 {{ if $isThisGroupActive }}text-indigo-600 dark:text-indigo-400{{ else }}text-indigo-500{{ end }}"></span>
-                            <span>{{ $groupTitle }}</span>
-                        </div>
-                        <span class="icon-[ri--arrow-down-s-line] w-4 h-4 transition-transform duration-200" :class="openDropdowns['{{ $groupKey }}'] ? 'rotate-180' : ''"></span>
-                    </button>
-
-                    <div x-show="openDropdowns['{{ $groupKey }}']" x-transition.origin.top.duration.200ms class="space-y-1 pt-1 pl-2" style="display: none;">
-                        {{ range $.Site.Menus.footer }}
-                            {{ if eq .Params.group $groupKey }}
-                                {{ $menu_item_url := .URL | relLangURL }}
-                                {{ $active := and (strings.Contains $menu_item_url $page_split) (not $.IsHome) }}
-
-                                <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors {{ if $active }}bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-medium{{ else }}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800{{ end }}" href="{{ .URL | relLangURL }}">
-                                    <span class="{{ .Pre }} w-5 h-5 {{ .Params.color }}"></span>
-                                    <span>{{ .Name }}</span>
-                                </a>
-                            {{ end }}
-                        {{ end }}
-                    </div>
-                {{ end }}
-
-            </nav>
-        </div>
+        {{ end }}
+    {{ end }}
+</nav>
+</div>
 
         <!-- Bagian Social Links -->
         {{ if .Site.Menus.social }}

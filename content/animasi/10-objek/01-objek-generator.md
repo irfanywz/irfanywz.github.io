@@ -2,7 +2,7 @@
 title: "Object Generator"
 slug: "objek-generator"
 description: "Prompt builder untuk merancang objek atau prop animasi 2D original yang bersih, proporsional, dan konsisten dengan gaya seni referensi"
-image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
+#image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
 has_database: true
 default_input: "A vintage wooden toolbox filled with simple metal tools and a red latch."
 desc_prompt: |
@@ -36,8 +36,7 @@ database:
       description: "A vintage wooden toolbox filled with simple metal tools and a red latch."
       image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%236366f1"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="10" font-family="sans-serif">Toolbox</text></svg>'
 
-outputs:
-  - JSON
+outputs: ["JSON"]
 ---
 Use the attached image as the **STRICT STYLE REFERENCE ONLY**.
 

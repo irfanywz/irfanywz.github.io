@@ -4,7 +4,7 @@ date: 2026-08-23T15:30:00+07:00
 description: "Alat untuk menghasilkan daftar tautan pencarian dari banyak kata kunci dengan tambahan kustom teks di belakang secara instan menggunakan Alpine.js."
 icon: "icon-[ri--list-check]"
 categories:
-  - "Cyber"
+  - "Web"
 ---
 
 <div class="max-w-4xl mx-auto mt-6 space-y-6" x-data="searchOpener()">

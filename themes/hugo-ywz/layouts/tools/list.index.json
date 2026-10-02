@@ -1,0 +1,13 @@
+[
+{{ range $index, $page := .CurrentSection.Pages }}
+  {{ if $index }},{{ end }}
+  {
+    "title": {{ .Title | jsonify }},
+    "description": {{ .Params.description | default .Summary | jsonify }},
+    "permalink": {{ if .Params.link }}{{ .Params.link | jsonify }}{{ else }}{{ .RelPermalink | jsonify }}{{ end }},
+    "isExternal": {{ if .Params.link }}true{{ else }}false{{ end }},
+    "icon": {{ or .Params.icon "icon-[ri--wrench-line]" | jsonify }},
+    "categories": {{ or .Params.categories (slice "General") | jsonify }}
+  }
+{{ end }}
+]

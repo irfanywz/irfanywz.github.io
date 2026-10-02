@@ -2,9 +2,21 @@
     {{ if and (isset .Params "premium") .Params.premium }}
         {{ partial "components/swg-metadata.html" . }}
     {{ end }}
+
+    {{ if and (isset .Params "layout") (eq .Params.layout "naskah") }}
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:wght@400;700&family=Poppins:wght@400;500;600;700&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    {{ end }}
+
 {{ end }}
 
-{{ define "main" }}
+{{ define "config" }}
+    {{ if and (isset .Params "layout") (eq .Params.layout "naskah") }}
+        {{ .Scratch.Set "hideHeader" true }}
+        {{ .Scratch.Set "hideFooter" true }}
+    {{ end }}
+{{ end }}
+
+{{ define "main" }}    
     {{ $layout := .Params.layout | default "withsidebar" }}
     {{ partial (printf "posts/layout/%s.html" $layout) . }}
 {{ end }}

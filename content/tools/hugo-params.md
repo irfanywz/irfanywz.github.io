@@ -4,7 +4,7 @@ date: 2026-03-25T23:00:00+07:00
 description: "Alat praktis untuk menghasilkan parameter YAML Hugo dari teks secara otomatis dengan tata letak 1 kolom dan random SVG warna."
 icon: "icon-[ri--code-box-line]"
 categories:
-  - "Hugo"
+  - "Konten"
 ---
 
 <div class="max-w-3xl mx-auto mt-6" x-data="hugoGenerator()">
@@ -43,7 +43,7 @@ id="dbKey"
 x-model="dbName"
 @input="generateHugo"
 class="w-full p-2 rounded-lg border border-blue-200 dark:border-blue-800 bg-white dark:bg-gray-800 text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all font-mono"
-placeholder="Contoh: Seragam">
+placeholder="Contoh: Seragam" value="#Favorite">
 </div>
 </div>
 </div>
@@ -131,16 +131,29 @@ Tip: Gunakan baris baru untuk setiap item berbeda.
 <script>
 function hugoGenerator() {
     return {
-        outputMode: 'db', // 'db' or 'direct'
-        dbName: 'Seragam',
-        userInput: 'TAHANAN|A bright orange long-sleeve jumpsuit with a collared neck, a front zipper, black "TAHANAN PULICI" text printed on the left chest',
+        outputMode: localStorage.getItem('hugo_outputMode') || 'db',
+        dbName: localStorage.getItem('hugo_dbName') || '',
+        userInput: localStorage.getItem('hugo_userInput') || '',
         outputYaml: '',
         itemCount: 0,
         copied: false,
 
         init() {
             this.generateHugo();
-            this.$watch('outputMode', () => this.generateHugo());
+            
+            // Watchers untuk menyimpan perubahan ke localStorage secara otomatis
+            this.$watch('outputMode', (val) => {
+                localStorage.setItem('hugo_outputMode', val);
+                this.generateHugo();
+            });
+            this.$watch('dbName', (val) => {
+                localStorage.setItem('hugo_dbName', val);
+                this.generateHugo();
+            });
+            this.$watch('userInput', (val) => {
+                localStorage.setItem('hugo_userInput', val);
+                this.generateHugo();
+            });
         },
 
         getRandomColor() {
@@ -188,7 +201,6 @@ function hugoGenerator() {
                 const randomHex = this.getRandomColor();
                 const encodedBg = randomHex.replace('#', '%23');
 
-                // Menggunakan format SVG string yang bersih dan valid tanpa escape berlebih
                 const svgString = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="${encodedBg}"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">${title}</text></svg>`;
 
                 let itemBlock = `    - title: "${title}"\n      description: "${safeDesc}"\n      image: '${svgString}'`;
@@ -244,6 +256,9 @@ function hugoGenerator() {
             this.userInput = '';
             this.outputYaml = '';
             this.itemCount = 0;
+            // Bersihkan juga dari localStorage saat tombol Hapus Semua ditekan
+            localStorage.removeItem('hugo_userInput');
+            localStorage.removeItem('hugo_dbName');
         }
     }
 }

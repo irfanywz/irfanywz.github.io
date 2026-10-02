@@ -2,7 +2,7 @@
 title: "Background Repair & Cleanup"
 slug: "background-repair"
 description: "Prompt builder untuk memperbaiki dan membersihkan background animasi 2D dari garis yang buram, bentuk yang terdistorsi, serta artefak yang tidak diinginkan tanpa mengubah struktur asli gambar"
-image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
+#image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
 has_database: false
 default_input: ""
 variables_config:
@@ -11,8 +11,7 @@ variables_config:
     label: "REPAIR_FIX"
     placeholder: ""
     default: "Clean up blurry outlines, fix distorted geometric shapes, and remove unwanted AI artifacts on structures."
-outputs:
-  - JSON
+outputs: ["JSON"]
 ---
 Use the attached image as the STRICT BACKGROUND REFERENCE.
 

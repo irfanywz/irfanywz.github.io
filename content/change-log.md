@@ -4,6 +4,31 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  - version: "2.9.0"
+    date: "2 Oktober 2026"
+    changes:
+      - tag: "Pembaruan"
+        description: "2 - refactory kode prompt sekarang ada fitur batch inputnya, pakai claude ai buat ngembanginnya"
+      - tag: "Pembaruan"
+        description: "2 - memindahkan halaman naskah sekarang jadi bagian dari layout posts utama"
+      - tag: "Pembaruan"
+        description: "1 - refactory semua base prompt animasi biar lebih sederhana"
+      - tag: "Fitur Baru"
+        description: "1 - menambahkan favicon dot dengan javascript"
+      - tag: "Fitur Baru"
+        description: "1 - menambahkan loading bar diatas header"
+      - tag: "Perbaikan"
+        description: "30 - perbaikan halaman prompt"
+      - tag: "Perbaikan"
+        description: "30 - perbaikan halaman about portofolio cardnya yang kepotong"
+      - tag: "Pembaruan"
+        description: "30 - full 1 hari refactory prompt animasi keformat markdown saja biar lebih mudah untuk dikembangkan"
+      - tag: "Fitur Baru"
+        description: "29 - membuat halaman prompt"
+      - tag: "Pembaruan"
+        description: "28 - menghapus halaman kosa kata, koleksi, playlist musik"
+      - tag: "Fitur Baru"
+        description: "28 - membuat widget playlist music sebagai gantinya"
   - version: "2.8.0"
     date: "26 September 2026"
     changes:

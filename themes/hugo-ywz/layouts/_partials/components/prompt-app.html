@@ -233,7 +233,12 @@
 
                         <div class="grid grid-cols-1 sm:grid-cols-[80px_1fr] gap-4 items-center bg-white dark:bg-gray-900 p-3.5 rounded-xl border border-gray-200 dark:border-gray-800">
                             <div class="w-20 h-20 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex items-center justify-center mx-auto">
-                                <img decoding="async" loading="lazy" :src="builderImage" alt="Preview" class="w-full h-full object-cover">
+                                <template x-if="activePrompt.image">
+                                    <img decoding="async" loading="lazy" :src="builderImage" alt="Preview" class="w-full h-full object-cover">
+                                </template>
+                                <template x-if="!activePrompt.image">
+                                    <span class="icon-[ri--image-ai-fill] text-indigo-600 dark:text-indigo-400 text-xl"></span>
+                                </template>                                
                             </div>
                             <div class="space-y-1">
                                 <div class="flex items-center justify-between">
@@ -277,8 +282,13 @@
                         <div class="bg-gray-50 dark:bg-gray-950 p-4 rounded-xl border border-gray-200 dark:border-gray-800 text-xs font-mono text-gray-800 dark:text-gray-200 leading-relaxed max-h-52 overflow-y-auto shadow-inner whitespace-pre-wrap select-all"
                              x-html="dbPromptRendered"></div>
 
-                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                            <p class="text-[11px] text-gray-500 dark:text-gray-400" title="Perkiraan kasar (±4 karakter per token). Jumlah sebenarnya tergantung model." x-text="formatStats(dbPromptRaw)"></p>
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
+                            <p class="text-[11px] text-gray-500 dark:text-gray-400 sm:mr-auto" title="Perkiraan kasar (±4 karakter per token). Jumlah sebenarnya tergantung model." x-text="formatStats(dbPromptRaw)"></p>
+                            <button @click="showBatchModal = true"
+                                    class="w-full sm:w-auto px-4 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-xl transition flex items-center justify-center gap-2 cursor-pointer">
+                                <span class="icon-[ri--stack-line] w-3.5 h-3.5"></span>
+                                <span>Batch</span>
+                            </button>
                             <button @click="copy(dbPromptRaw, 'copiedMaster')"
                                     class="w-full sm:w-auto px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer">
                                 <span :class="copiedMaster ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'" class="w-3.5 h-3.5"></span>
@@ -302,7 +312,7 @@
                                 </div>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                                     <template x-for="field in promptFields" :key="field.name">
-                                        <div>
+                                        <div :class="field.type === 'textarea' ? 'sm:col-span-2' : ''">
                                             <label class="block text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1" x-text="field.label"></label>
 
                                             <template x-if="field.type === 'select'">
@@ -314,8 +324,13 @@
                                                 </select>
                                             </template>
 
+                                            <template x-if="field.type === 'textarea'">
+                                                <textarea x-model="promptVariables[field.name]" :placeholder="field.placeholder" :rows="field.rows"
+                                                          class="w-full px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition resize-y"></textarea>
+                                            </template>
+
                                             <!-- text, number, datalist -->
-                                            <template x-if="field.type !== 'select'">
+                                            <template x-if="field.type !== 'select' && field.type !== 'textarea'">
                                                 <div>
                                                     <input :type="field.type === 'number' ? 'number' : 'text'"
                                                            :list="field.type === 'datalist' ? 'list-' + field.name : null"
@@ -446,6 +461,73 @@
         </div>
     </div>
 
+    <!-- Sub-modal: batch generator (one master prompt per description line) -->
+    <div x-show="showBatchModal" class="fixed inset-0 z-60 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4" @click.self="showBatchModal = false" style="display: none;">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-2xl rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                <h4 class="text-xs font-bold text-gray-800 dark:text-gray-200">Batch Prompt Generator</h4>
+                <button @click="showBatchModal = false" class="text-gray-400 hover:text-gray-600 cursor-pointer">
+                    <span class="icon-[ri--close-line] text-lg"></span>
+                </button>
+            </div>
+
+            <div class="p-5 overflow-y-auto space-y-4 flex-grow">
+                <div class="space-y-1.5">
+                    <div class="flex items-center justify-between">
+                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Daftar Deskripsi (satu per baris)</label>
+                        <div class="flex items-center gap-2">
+                            <button @click="pasteBatch()" class="text-[11px] text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold flex items-center gap-1 cursor-pointer bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-lg transition">
+                                <span class="icon-[ri--clipboard-line]"></span> Paste
+                            </button>
+                            <button x-show="batchInput" @click="batchInput = ''" style="display: none;" class="text-[11px] text-gray-500 hover:text-red-500 font-semibold flex items-center gap-1 cursor-pointer">
+                                <span class="icon-[ri--delete-bin-line]"></span> Hapus
+                            </button>
+                        </div>
+                    </div>
+                    <textarea x-model="batchInput" rows="5" placeholder="Satu deskripsi per baris...&#10;wanita memakai kebaya merah&#10;pria berjas hitam di kota malam"
+                              class="w-full bg-gray-50 dark:bg-gray-950 border border-gray-300 dark:border-gray-700 rounded-xl px-3 py-2 text-xs text-gray-800 dark:text-gray-200 focus:outline-none focus:border-indigo-500 resize-y"></textarea>
+                </div>
+
+                <div class="flex items-center justify-between gap-3">
+                    <span class="text-[11px] font-semibold text-gray-600 dark:text-gray-300" x-text="batchItems.length + ' deskripsi'"></span>
+                    <div class="flex items-center gap-2">
+                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Format</label>
+                        <select x-model="batchFormat" class="px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                            <template x-for="format in batchFormats" :key="format.id">
+                                <option :value="format.id" x-text="format.label"></option>
+                            </template>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <template x-for="item in batchItems" :key="item.id">
+                        <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-3 bg-gray-50 dark:bg-gray-900/50 space-y-2">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400" x-text="'#' + (item.id + 1)"></span>
+                                <button @click="copy(item.prompt, 'copiedBatchIndex', item.id)" class="text-[11px] text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold flex items-center gap-1 cursor-pointer">
+                                    <span :class="copiedBatchIndex === item.id ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
+                                    <span x-text="copiedBatchIndex === item.id ? 'Tersalin' : 'Salin'"></span>
+                                </button>
+                            </div>
+                            <p class="text-xs font-mono text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap max-h-24 overflow-y-auto" x-text="item.prompt"></p>
+                        </div>
+                    </template>
+                    <p x-show="batchItems.length === 0" class="text-xs text-gray-400 text-center py-6">Masukkan deskripsi di atas untuk membuat prompt secara massal.</p>
+                </div>
+            </div>
+
+            <div class="px-5 py-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <p class="text-[11px] text-gray-500 dark:text-gray-400" title="Perkiraan kasar (±4 karakter per token). Jumlah sebenarnya tergantung model." x-text="formatStats(batchOutput)"></p>
+                <button @click="copy(batchOutput, 'copiedBatch')" :disabled="batchItems.length === 0"
+                        class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span :class="copiedBatch ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
+                    <span x-text="copiedBatch ? 'Semua Prompt Berhasil Disalin!' : 'Salin Semua (' + batchItems.length + ')'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal: resources & tools -->
     <div x-show="resourceModalOpen" class="fixed inset-0 z-50 overflow-y-auto px-4 py-6 sm:p-0 flex items-center justify-center" style="display: none;">
         <div @click="resourceModalOpen = false" class="fixed inset-0 bg-black/60 backdrop-blur-xs"></div>
@@ -538,6 +620,13 @@ const SUB_MODAL_BUTTONS = [
     { type: 'image', label: 'Referensi Gambar', icon: 'icon-[ri--image-line]' },
 ];
 
+/** How the batch results are joined into one copyable block. */
+const BATCH_FORMATS = [
+    { id: 'blank', label: 'Dipisah baris kosong', join: (prompts) => prompts.join('\n\n') },
+    { id: 'divider', label: 'Dipisah garis (---)', join: (prompts) => prompts.join('\n\n---\n\n') },
+    { id: 'oneline', label: 'Satu baris per prompt', join: (prompts) => prompts.map((p) => p.replace(/\s*\n\s*/g, ' ')).join('\n') },
+];
+
 /* ==========================================================================
    Pure helpers (no component state)
    ========================================================================== */
@@ -555,6 +644,18 @@ function formatTextStats(text = '') {
     const tokens = Math.ceil(chars / TOKEN_CHARS_RATIO);
     const fmt = (n) => n.toLocaleString('id-ID');
     return `${fmt(chars)} karakter, ${fmt(words)} kata, ≈ ${fmt(tokens)} token`;
+}
+
+/** Category slug for URLs: explicit alias/slug from index.json, else the folder name without its order prefix ("01-karakter" -> "karakter"). */
+function getCategorySlug(category) {
+    const folder = category.category || '';
+    return category.alias || category.slug || folder.replace(/^\d+-/, '') || folder;
+}
+
+/** "/animasi/15-kendaraan/kendaraan-extract-wheel/index.json" -> "kendaraan-extract-wheel" */
+function getPromptSlug(jsonUrl = '') {
+    const segments = jsonUrl.split('?')[0].replace(/\.json$/i, '').replace(/\/index$/i, '').split('/').filter(Boolean);
+    return segments.pop() || jsonUrl;
 }
 
 async function fetchJson(url) {
@@ -627,6 +728,12 @@ document.addEventListener('alpine:init', () => {
         dbSearchQuery: '',
         selectedDbCategory: 'all',
 
+        // --- Batch generator state ---
+        batchFormats: BATCH_FORMATS,
+        showBatchModal: false,
+        batchInput: '',
+        batchFormat: BATCH_FORMATS[0].id,
+
         // --- Sub-modal state ---
         showSubModal: false,
         subModalType: 'desc',
@@ -635,22 +742,24 @@ document.addEventListener('alpine:init', () => {
         // --- Copy feedback ---
         copiedMaster: false,
         copiedSub: false,
+        copiedBatch: false,
+        copiedBatchIndex: false, // id of the batch item just copied
 
         /* ------------------------------------------------------------------
            Lifecycle
            ------------------------------------------------------------------ */
         async init() {
             const params = new URLSearchParams(window.location.search);
-            this.selectedCategory = params.get('category') || 'all';
             this.globalSearchQuery = params.get('search') || '';
 
             try {
                 this.pageData = await fetchJson(INDEX_URL);
                 this.allPrompts = this.flattenPrompts(this.pageData.categories);
+                this.selectedCategory = this.resolveCategoryParam(params.get('category'));
 
-                const promptParam = params.get('prompt');
-                const target = promptParam && this.allPrompts.find((p) => p.json_url === promptParam || p.json_url.endsWith(promptParam));
-                if (target) this.openPromptDetail(target.json_url, false);
+                const target = this.findPromptByParam(params.get('prompt'));
+                if (target) this.openPromptDetail(target.json_url);
+                this.updateUrlParams(); // rewrites old or invalid links to the clean slug form
             } catch (err) {
                 console.error('Gagal memuat index prompt:', err);
             } finally {
@@ -664,10 +773,32 @@ document.addEventListener('alpine:init', () => {
             return categories.flatMap((cat) =>
                 (cat.prompts || []).map((prompt) => ({
                     ...prompt,
-                    categorySlug: cat.category,
+                    slug: prompt.alias || prompt.slug || getPromptSlug(prompt.json_url),
+                    categorySlug: getCategorySlug(cat),
                     categoryTitle: cat.category_title || cat.category,
                 }))
             );
+        },
+
+        /** Resolve ?category= to a category slug; the old folder-name form ("01-karakter") still works. */
+        resolveCategoryParam(param) {
+            const match = (this.pageData.categories || []).find((c) => getCategorySlug(c) === param || c.category === param);
+            return match ? getCategorySlug(match) : 'all';
+        },
+
+        /** Slug used in the shareable URL (?prompt=...) for the open prompt. */
+        get activePromptSlug() {
+            return this.allPrompts.find((p) => p.json_url === this.activePromptUrl)?.slug || '';
+        },
+
+        /** Resolve ?prompt=: slug/alias first (preferring the selected category), then legacy json_url links. */
+        findPromptByParam(param) {
+            if (!param) return null;
+            const matches = this.allPrompts.filter((p) => p.slug === param);
+            return matches.find((p) => p.categorySlug === this.selectedCategory)
+                || matches[0]
+                || this.allPrompts.find((p) => p.json_url === param || p.json_url.endsWith(param))
+                || null;
         },
 
         updateUrlParams() {
@@ -676,7 +807,7 @@ document.addEventListener('alpine:init', () => {
             const entries = {
                 category: this.selectedCategory !== 'all' ? this.selectedCategory : '',
                 search: query,
-                prompt: this.modalOpen ? this.activePromptUrl : '',
+                prompt: this.modalOpen ? this.activePromptSlug : '',
             };
             Object.entries(entries).forEach(([key, value]) => {
                 value ? url.searchParams.set(key, value) : url.searchParams.delete(key);
@@ -693,7 +824,7 @@ document.addEventListener('alpine:init', () => {
 
         get categoryItems() {
             const categories = (this.pageData.categories || []).map((cat) => ({
-                slug: cat.category,
+                slug: getCategorySlug(cat),
                 title: cat.category_title || cat.category,
                 count: (cat.prompts || []).length,
                 icon: 'icon-[ri--folder-3-line]',
@@ -742,6 +873,9 @@ document.addEventListener('alpine:init', () => {
                 selectedItem: null,
                 builderValues: {},
                 dynamicInputs: {},
+                batchInput: '',
+                copiedBatch: false,
+                copiedBatchIndex: false,
             });
             if (updateHistory) this.updateUrlParams();
 
@@ -782,10 +916,11 @@ document.addEventListener('alpine:init', () => {
             if (config) {
                 return Object.entries(config).map(([name, cfg]) => ({
                     name,
-                    type: cfg.type || 'text',
+                    type: (cfg.type || 'text').toLowerCase(),
                     label: cfg.label || name,
                     placeholder: cfg.placeholder || `Pilih atau ketik ${name}...`,
                     options: cfg.options || [],
+                    rows: cfg.rows || 3,
                     default: cfg.default !== undefined ? cfg.default : '',
                 }));
             }
@@ -832,8 +967,28 @@ document.addEventListener('alpine:init', () => {
             return escapeHtml(this.activePrompt.raw_content || '').replace(HUMAN_INPUT_PATTERN, () => inputHtml);
         },
 
-        get dbPromptRaw() {
-            return (this.activePrompt.raw_content || '').replace(HUMAN_INPUT_PATTERN, () => this.builderInputResolved);
+        /** Master prompt with [humanInput] replaced by the given (already resolved) description. */
+        buildMasterPrompt(input) {
+            return (this.activePrompt.raw_content || '').replace(HUMAN_INPUT_PATTERN, () => input);
+        },
+
+        get dbPromptRaw() { return this.buildMasterPrompt(this.builderInputResolved); },
+
+        /* ------------------------------------------------------------------
+           Batch generator: one master prompt per non-empty description line.
+           [VAR] placeholders use the builder's customization values.
+           ------------------------------------------------------------------ */
+        get batchItems() {
+            return this.batchInput
+                .split(/\r?\n/)
+                .map((line) => line.trim())
+                .filter(Boolean)
+                .map((description, id) => ({ id, description, prompt: this.buildMasterPrompt(this.fillBuilderVars(description)) }));
+        },
+
+        get batchOutput() {
+            const format = BATCH_FORMATS.find((f) => f.id === this.batchFormat) || BATCH_FORMATS[0];
+            return format.join(this.batchItems.map((item) => item.prompt));
         },
 
         /** True when the prompt ships a non-empty database. `database: false` (or none) hides the picker button. */
@@ -866,14 +1021,25 @@ document.addEventListener('alpine:init', () => {
             this.showDbPicker = false;
         },
 
-        async pasteClipboard() {
+        /** Read trimmed text from the clipboard; returns '' (after warning the user) when blocked. */
+        async readClipboard() {
             try {
-                const text = await navigator.clipboard.readText();
-                if (text) this.builderInput = text.trim();
+                return (await navigator.clipboard.readText()).trim();
             } catch (err) {
                 console.error('Gagal melakukan paste dari clipboard:', err);
                 alert('Tidak dapat mengakses clipboard. Pastikan browser mengizinkan akses clipboard atau gunakan shortcut Ctrl+V.');
+                return '';
             }
+        },
+
+        async pasteClipboard() {
+            const text = await this.readClipboard();
+            if (text) this.builderInput = text;
+        },
+
+        async pasteBatch() {
+            const text = await this.readClipboard();
+            if (text) this.batchInput = text;
         },
 
         /* ------------------------------------------------------------------
@@ -935,12 +1101,15 @@ document.addEventListener('alpine:init', () => {
         /** Readable size of a text (characters, words, estimated tokens). */
         formatStats(text) { return formatTextStats(text); },
 
-        /** Copy text and flash a feedback flag ('copiedMaster' | 'copiedSub') for a moment. */
-        async copy(text, flag) {
+        /**
+         * Copy text and flash a feedback flag for a moment.
+         * `token` is the value the flag is set to: true, or an item id when several buttons share one flag.
+         */
+        async copy(text, flag, token = true) {
             try {
                 await navigator.clipboard.writeText(text);
-                this[flag] = true;
-                setTimeout(() => { this[flag] = false; }, COPY_FEEDBACK_MS);
+                this[flag] = token;
+                setTimeout(() => { if (this[flag] === token) this[flag] = false; }, COPY_FEEDBACK_MS);
             } catch (err) {
                 console.error('Gagal menyalin ke clipboard:', err);
             }

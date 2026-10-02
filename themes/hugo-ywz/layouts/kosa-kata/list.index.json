@@ -1,0 +1,25 @@
+{
+  "section": {{ .Title | jsonify }},
+  "description": {{ .Description | jsonify }},
+  "categories": [
+    {{- $pages := .RegularPages -}}
+    {{- range $index, $page := $pages -}}
+    {
+      "category_title": {{ $page.Title | jsonify }},
+      "slug": {{ $page.Params.slug | default $page.File.BaseFileName | jsonify }},
+      "description": {{ $page.Description | jsonify }},
+      "vocabularies": [
+        {{- $vocabs := $page.Params.vocabularies -}}
+        {{- range $vIndex, $v := $vocabs -}}
+        {
+          "term": {{ $v.term | jsonify }},
+          "definition": {{ $v.definition | jsonify }},
+          "example": {{ $v.example | default "" | jsonify }},
+          "date": {{ $v.date | jsonify }}
+        }{{ if lt (add $vIndex 1) (len $vocabs) }},{{ end }}
+        {{- end -}}
+      ]
+    }{{ if lt (add $index 1) (len $pages) }},{{ end }}
+    {{- end -}}
+  ]
+}

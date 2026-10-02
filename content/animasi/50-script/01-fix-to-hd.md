@@ -2,7 +2,7 @@
 title: "Fix Kualitas Gambar"
 slug: "fix-image"
 description: "Prompt builder untuk memperbaiki kualitas gambar, mempertajam detail, menghilangkan blur, noise, serta artefak kompresi tanpa mengubah bentuk atau isi asli gambar"
-image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
+#image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
 has_database: true
 default_input: "Fix overall blur, softness, and low resolution."
 desc_prompt: false
@@ -38,8 +38,7 @@ database:
       description: "Clean up rough linework, ensure consistent outline thickness, and preserve flat color fills."
       image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230f766e"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="10" font-family="sans-serif">Clean Lines</text></svg>'
 
-outputs:
-  - JSON
+outputs: ["JSON"]
 ---
 Use the attached image as the **STRICT IMAGE REFERENCE**.
 

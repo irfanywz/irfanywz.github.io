@@ -2,7 +2,7 @@
 title: "Desain Ulang Objek"
 slug: "objek-redesain"
 description: "Prompt builder untuk merancang ulang (redesign) sebuah objek referensi menjadi bentuk baru yang unik, kreatif, dan fungsional tanpa menghilangkan identitas aslinya"
-image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
+#image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
 has_database: true
 default_input: "Ubah objek menjadi gaya futuristik dengan aksen lampu neon bercahaya dan material metalik modern."
 
@@ -26,8 +26,7 @@ database:
       description: "Redesain objek menjadi bentuk geometris bersih, sudut melengkung halus, dan palet warna monokromatik."
       image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23374151"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="11" font-family="sans-serif">Minimalis</text></svg>'
 
-outputs:
-  - JSON
+outputs: ["JSON"]
 ---
 Use the attached image as the STRICT OBJECT REFERENCE.
 

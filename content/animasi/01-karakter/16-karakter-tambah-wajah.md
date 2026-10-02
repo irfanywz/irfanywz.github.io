@@ -2,7 +2,7 @@
 title: "Karakter Tambah Wajah"
 slug: "karakter-tambah-wajah"
 description: "Prompt builder untuk merancang dan menambahkan wajah unik, ekspresif, serta detail khas pada karakter kartun original yang berwajah kosong (faceless)"
-image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
+#image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
 has_database: true
 default_input: "sharp fierce male face with narrow eyes and thick eyebrows"
 desc_prompt: |
@@ -91,8 +91,7 @@ database:
       image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23701a75"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23f5d0fe" font-size="11" font-family="sans-serif">Geek Glasses</text></svg>'
 
 
-outputs:
-  - JSON
+outputs: ["JSON"]
 ---
 Use the attached image as the **STRICT CHARACTER REFERENCE**.
 

@@ -2,7 +2,7 @@
 title: "Outfit Transfer"
 slug: "outfit-transfer"
 description: "Mengubah outfit karakter melalui gambar referensi"
-image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
+#image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
 
 variables_config:
   NOTE:
@@ -11,8 +11,7 @@ variables_config:
     placeholder: ""
     default: "Transfer the complete outfit accurately from the outfit reference."
 
-outputs:
-  - JSON
+outputs: ["JSON"]
 ---
 Use the attached **CHARACTER IMAGE** as the **STRICT CHARACTER REFERENCE**.
 

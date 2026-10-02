@@ -1,0 +1,270 @@
+<div x-data="kosakataPlayerApp()">
+    <!-- Tombol Pemicu Modal Kosakata -->
+    <button @click="kosakataModalOpen = true" class="w-10 h-10 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center transition-all shadow-sm cursor-pointer" title="Kamus Kosakata">
+        <span class="icon-[ri--booklet-line] w-5 h-5"></span>
+    </button>
+
+    <!-- OFFCANVAS / MODAL UTAMA: KOSAKATA -->
+    <div x-show="kosakataModalOpen" class="fixed inset-0 z-50 overflow-hidden" style="display: none;">
+        <!-- Backdrop -->
+        <div x-show="kosakataModalOpen"
+             x-transition:enter="transition-opacity ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition-opacity ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @click="kosakataModalOpen = false"
+             class="absolute inset-0 bg-black/50 backdrop-blur-xs"></div>
+
+        <!-- Panel Utama -->
+        <div x-show="kosakataModalOpen"
+             x-transition:enter="transition-transform ease-out duration-300"
+             x-transition:enter-start="translate-y-full"
+             x-transition:enter-end="translate-y-0"
+             x-transition:leave="transition-transform ease-in duration-300"
+             x-transition:leave-start="translate-y-0"
+             x-transition:leave-end="translate-y-full"
+             class="absolute bottom-0 left-0 right-0 md:w-4/5 lg:w-3/4 md:mx-auto h-[90vh] bg-white dark:bg-gray-900 rounded-t-3xl shadow-2xl flex flex-col overflow-hidden">
+            
+            <!-- Header & Search Bar -->
+            <div class="p-5 sm:p-6 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                        <span class="icon-[ri--translate-2] w-5 h-5"></span>
+                    </div>
+                    <div>
+                        <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">Kamus Kosakata Pribadi</h3>
+                        <p class="text-xs text-gray-400">Pusat istilah, definisi, dan catatan bahasa.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <!-- Search Bar -->
+                    <div class="relative flex-grow sm:w-72">
+                        <span class="icon-[ri--search-line] absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></span>
+                        <input type="text" x-model="kosakataSearch" placeholder="Cari istilah / arti..." 
+                            class="w-full pl-10 pr-9 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs sm:text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition">
+                        <button x-show="kosakataSearch.length > 0" @click="kosakataSearch = ''" style="display: none;"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            <span class="icon-[ri--close-circle-fill] w-4 h-4"></span>
+                        </button>
+                    </div>
+
+                    <button @click="kosakataModalOpen = false" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer flex-shrink-0">
+                        <span class="icon-[ri--close-line] w-6 h-6"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Body Content -->
+            <div class="flex-1 flex flex-col md:flex-row overflow-hidden bg-gray-50/50 dark:bg-gray-950/50">
+                
+                <!-- MOBILE BUTTON KATEGORI (Memunculkan Offcanvas kecil khusus kategori) -->
+                <div class="md:hidden p-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+                    <span class="text-xs font-bold text-gray-400 uppercase">Kategori:</span>
+                    <button @click="categoryDropdownOpen = true" type="button" class="flex items-center justify-between gap-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200 text-xs font-semibold rounded-xl px-3.5 py-2 outline-none cursor-pointer">
+                        <span x-text="activeCategoryTitle"></span>
+                        <span class="icon-[ri--arrow-down-s-line] text-sm"></span>
+                    </button>
+                </div>
+
+                <!-- KOLOM KIRI: Daftar Kategori (Hanya muncul di Desktop) -->
+                <div class="hidden md:block md:w-4/12 lg:w-3/12 border-r border-gray-200 dark:border-gray-800 overflow-y-auto p-4 space-y-1.5 bg-white dark:bg-gray-900">
+                    <div class="px-2 pb-2 text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
+                        Daftar Kategori
+                    </div>
+
+                    <!-- Tombol "Semua" -->
+                    <button @click="selectedCategorySlug = ''"
+                            :class="selectedCategorySlug === '' ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 border-emerald-300 dark:border-emerald-800 font-bold shadow-2xs' : 'bg-transparent text-gray-700 dark:text-gray-300 border-transparent hover:bg-gray-50 dark:hover:bg-gray-800/60 font-medium'"
+                            class="w-full text-left px-3.5 py-2.5 rounded-xl border transition-all flex items-center justify-between cursor-pointer group">
+                        <span class="text-xs sm:text-sm">Semua Kategori</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400" 
+                              x-text="totalVocabCount"></span>
+                    </button>
+
+                    <!-- List Kategori Lainnya -->
+                    <template x-for="(cat, catIndex) in kosakataCategories" :key="'cat-' + catIndex">
+                        <button @click="selectedCategorySlug = cat.slug"
+                                :class="selectedCategorySlug === cat.slug ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 border-emerald-300 dark:border-emerald-800 font-bold shadow-2xs' : 'bg-transparent text-gray-700 dark:text-gray-300 border-transparent hover:bg-gray-50 dark:hover:bg-gray-800/60 font-medium'"
+                                class="w-full text-left px-3.5 py-2.5 rounded-xl border transition-all flex items-center justify-between cursor-pointer group">
+                            <span class="text-xs sm:text-sm capitalize truncate" x-text="cat.category_title"></span>
+                            <span class="text-[10px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 group-hover:bg-white dark:group-hover:bg-gray-700 transition" 
+                                  x-text="cat.vocabularies ? cat.vocabularies.length : 0"></span>
+                        </button>
+                    </template>
+                </div>
+
+                <!-- KOLOM KANAN: List Istilah & Arti (Hasil Filter Kategori & Search) -->
+                <div class="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4">
+                    <div class="space-y-4 max-w-3xl mx-auto">
+                        <!-- Header Informasi Kategori Aktif -->
+                        <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 pb-3">
+                            <div>
+                                <h4 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white capitalize" x-text="activeCategoryTitle"></h4>
+                                <p class="text-xs text-gray-400 mt-0.5" x-text="activeCategoryDescription"></p>
+                            </div>
+                            <span class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex-shrink-0" 
+                                  x-text="filteredVocabularies.length + ' Istilah'"></span>
+                        </div>
+
+                        <!-- List Kartu Istilah & Arti -->
+                        <div class="space-y-3">
+                            <template x-for="(v, vIndex) in filteredVocabularies" :key="'vocab-' + vIndex">
+                                <div class="p-4 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-2xs hover:border-emerald-200 dark:hover:border-emerald-900/60 transition space-y-2">
+                                    <div class="flex items-start justify-between gap-4">
+                                        <div>
+                                            <span class="text-[9px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block mb-0.5" x-text="v.categoryTitle"></span>
+                                            <h5 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white" x-text="v.term"></h5>
+                                        </div>
+                                        <span class="text-[10px] font-mono text-gray-400 bg-gray-50 dark:bg-gray-800 px-2 py-0.5 rounded-md flex-shrink-0" x-text="v.date ? v.date.split('T')[0] : ''"></span>
+                                    </div>
+                                    
+                                    <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed" x-text="v.definition"></p>
+
+                                    <template x-if="v.example">
+                                        <div class="mt-2 pt-2 border-t border-gray-100 dark:border-gray-800/80 text-xs text-gray-500 dark:text-gray-400 italic bg-gray-50/60 dark:bg-gray-800/30 p-2.5 rounded-xl">
+                                            <span x-text="`Contoh: &ldquo;${v.example}&rdquo;`"></span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+
+                            <!-- Empty State -->
+                            <template x-if="filteredVocabularies.length === 0">
+                                <div class="text-center py-12 bg-white dark:bg-gray-900 rounded-2xl border border-dashed border-gray-200 dark:border-gray-800">
+                                    <span class="icon-[ri--search-eye-line] w-8 h-8 mx-auto text-gray-300 dark:text-gray-600 mb-2 block"></span>
+                                    <p class="text-xs font-semibold text-gray-600 dark:text-gray-400">Tidak ada kosakata yang ditemukan</p>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- OFFCANVAS KECIL: PILIH KATEGORI KHUSUS MOBILE -->
+    <div x-show="categoryDropdownOpen" class="fixed inset-0 z-50 overflow-hidden md:hidden" style="display: none;">
+        <!-- Backdrop -->
+        <div x-show="categoryDropdownOpen"
+             x-transition:enter="transition-opacity ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition-opacity ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @click="categoryDropdownOpen = false"
+             class="absolute inset-0 bg-black/50 backdrop-blur-xs"></div>
+
+        <!-- Panel Daftar Kategori Mobile -->
+        <div x-show="categoryDropdownOpen"
+             x-transition:enter="transition-transform ease-out duration-300"
+             x-transition:enter-start="translate-y-full"
+             x-transition:enter-end="translate-y-0"
+             x-transition:leave="transition-transform ease-in duration-300"
+             x-transition:leave-start="translate-y-0"
+             x-transition:leave-end="translate-y-full"
+             class="absolute bottom-0 left-0 right-0 max-h-[70vh] bg-white dark:bg-gray-900 rounded-t-3xl shadow-2xl flex flex-col overflow-hidden">
+            
+            <div class="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+                <h4 class="text-sm font-bold text-gray-900 dark:text-white">Pilih Kategori</h4>
+                <button @click="categoryDropdownOpen = false" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1.5 rounded-full">
+                    <span class="icon-[ri--close-line] w-5 h-5"></span>
+                </button>
+            </div>
+
+            <div class="p-4 overflow-y-auto space-y-1.5">
+                <!-- Tombol "Semua" -->
+                <button @click="selectedCategorySlug = ''; categoryDropdownOpen = false"
+                        :class="selectedCategorySlug === '' ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 border-emerald-300 dark:border-emerald-800 font-bold' : 'bg-transparent text-gray-700 dark:text-gray-300 border-transparent hover:bg-gray-50 dark:hover:bg-gray-800/60 font-medium'"
+                        class="w-full text-left px-3.5 py-2.5 rounded-xl border transition-all flex items-center justify-between cursor-pointer">
+                    <span class="text-xs">Semua Kategori</span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-500" x-text="totalVocabCount"></span>
+                </button>
+
+                <!-- List Kategori -->
+                <template x-for="(cat, catIndex) in kosakataCategories" :key="'m-cat-' + catIndex">
+                    <button @click="selectedCategorySlug = cat.slug; categoryDropdownOpen = false"
+                            :class="selectedCategorySlug === cat.slug ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 border-emerald-300 dark:border-emerald-800 font-bold' : 'bg-transparent text-gray-700 dark:text-gray-300 border-transparent hover:bg-gray-50 dark:hover:bg-gray-800/60 font-medium'"
+                            class="w-full text-left px-3.5 py-2.5 rounded-xl border transition-all flex items-center justify-between cursor-pointer">
+                        <span class="text-xs capitalize truncate" x-text="cat.category_title"></span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-500" x-text="cat.vocabularies ? cat.vocabularies.length : 0"></span>
+                    </button>
+                </template>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function kosakataPlayerApp() {
+        return {
+            kosakataCategories: [],
+            kosakataModalOpen: false,
+            categoryDropdownOpen: false, // State untuk offcanvas kategori mobile
+            kosakataSearch: '',
+            selectedCategorySlug: '',
+
+            init() {
+                this.loadVocabularies();
+            },
+
+            async loadVocabularies() {
+                try {
+                    let res = await fetch('{{ "kosa-kata/index.json" | relURL }}').catch(() => null);
+                    if (res && res.ok) {
+                        let data = await res.json();
+                        if (data && data.categories) {
+                            this.kosakataCategories = data.categories;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Gagal meload data kosakata:', error);
+                }
+            },
+
+            get totalVocabCount() {
+                return this.kosakataCategories.reduce((acc, cat) => acc + (cat.vocabularies ? cat.vocabularies.length : 0), 0);
+            },
+
+            get activeCategoryTitle() {
+                if (this.selectedCategorySlug === '') return 'Semua Kategori';
+                let cat = this.kosakataCategories.find(c => c.slug === this.selectedCategorySlug);
+                return cat ? cat.category_title : 'Kategori';
+            },
+
+            get activeCategoryDescription() {
+                if (this.selectedCategorySlug === '') return 'Menampilkan seluruh daftar kosakata dari semua kategori.';
+                let cat = this.kosakataCategories.find(c => c.slug === this.selectedCategorySlug);
+                return cat ? (cat.description || 'Kumpulan istilah dalam kategori ini.') : '';
+            },
+
+            get filteredVocabularies() {
+                let allItems = [];
+                
+                this.kosakataCategories.forEach(cat => {
+                    if (this.selectedCategorySlug === '' || cat.slug === this.selectedCategorySlug) {
+                        if (cat.vocabularies) {
+                            cat.vocabularies.forEach(v => {
+                                allItems.push({ ...v, categoryTitle: cat.category_title });
+                            });
+                        }
+                    }
+                });
+
+                let query = (this.kosakataSearch || '').toLowerCase();
+                if (!query) return allItems;
+
+                return allItems.filter(v => {
+                    let matchesTerm = v.term && v.term.toLowerCase().includes(query);
+                    let matchesDef = v.definition && v.definition.toLowerCase().includes(query);
+                    return matchesTerm || matchesDef;
+                });
+            }
+        }
+    }
+</script>

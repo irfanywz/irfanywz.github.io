@@ -1,0 +1,1445 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6" x-data="promptApp()">
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+        <!-- Sidebar: header, search, categories -->
+        <aside class="lg:col-span-3 space-y-4 lg:sticky lg:top-6">
+
+            <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-5 rounded-2xl shadow-xs space-y-3">
+                <div class="flex items-center justify-between">
+                    <h1 class="text-xl font-black text-gray-900 dark:text-white tracking-tight flex items-center gap-2">
+                        <span class="icon-[ri--terminal-box-line] text-indigo-600"></span>
+                        <span x-text="pageData.section || 'Kumpulan Prompt'"></span>
+                    </h1>
+                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-[11px] font-semibold text-gray-600 dark:text-gray-300">
+                        <span class="icon-[ri--database-2-line] text-indigo-600 dark:text-indigo-400"></span>
+                        <span x-text="allPrompts.length"></span>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed"
+                   x-text="pageData.description || 'Pusat penyimpanan prompt AI terstruktur, mudah dicari, dan siap pakai.'"></p>
+
+                <div class="relative w-full">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                        <span class="icon-[ri--search-line] text-sm"></span>
+                    </span>
+                    <input type="text" x-model.debounce.200ms="globalSearchQuery" placeholder="Cari prompt..."
+                           class="w-full pl-10 pr-9 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+                    <button x-show="globalSearchQuery" @click="globalSearchQuery = ''" style="display: none;"
+                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                        <span class="icon-[ri--close-circle-fill] text-sm"></span>
+                    </button>
+                </div>
+
+                <!-- Mobile category trigger -->
+                <div class="block lg:hidden pt-1">
+                    <button @click="categoryOpen = true"
+                            class="w-full px-3 py-2.5 bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-800/60 text-indigo-600 dark:text-indigo-400 rounded-xl text-xs font-bold flex items-center justify-between transition shadow-xs cursor-pointer">
+                        <span class="flex items-center gap-2">
+                            <span class="icon-[ri--folder-3-line] text-sm"></span>
+                            <span x-text="categoryTriggerLabel"></span>
+                        </span>
+                        <span class="icon-[ri--arrow-down-s-line] text-base"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Desktop category list -->
+            <div class="hidden lg:block bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-3 rounded-2xl shadow-xs space-y-1">
+                <p class="text-[10px] font-bold uppercase tracking-wider text-gray-400 px-3 py-1">Pilih Kategori</p>
+                <div x-show="isLoadingList" class="space-y-0.5 animate-pulse motion-reduce:animate-none" aria-hidden="true">
+                    <template x-for="n in 4" :key="n">
+                        <div class="h-8 rounded-xl bg-gray-200 dark:bg-gray-800"></div>
+                    </template>
+                </div>
+                <div x-show="!isLoadingList" style="display: none;" class="space-y-0.5 max-h-[320px] overflow-y-auto pr-1">
+                    <template x-for="cat in categoryItems" :key="cat.slug">
+                        <button @click="selectCategory(cat.slug)"
+                                class="w-full px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center justify-between"
+                                :class="selectedCategory === cat.slug ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-500/20' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'">
+                            <span class="flex items-center gap-2.5 truncate">
+                                <span :class="cat.icon" class="w-3.5 h-3.5 flex-shrink-0"></span>
+                                <span class="truncate" x-text="cat.title"></span>
+                            </span>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] flex-shrink-0"
+                                  :class="selectedCategory === cat.slug ? 'bg-white/20 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-500'"
+                                  x-text="cat.count"></span>
+                        </button>
+                    </template>
+                </div>
+            </div>
+
+            {{ with .Params.resources }}
+            <div class="pt-1">
+                <button @click="resourceModalOpen = true"
+                        class="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-800 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 border border-gray-200 dark:border-gray-700 hover:border-indigo-200 dark:hover:border-indigo-800/60 text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-xl text-xs font-bold flex items-center justify-between transition shadow-xs cursor-pointer">
+                    <span class="flex items-center gap-2">
+                        <span class="icon-[ri--folder-shared-line] text-sm text-indigo-600 dark:text-indigo-400"></span>
+                        <span>Resources & Tools</span>
+                    </span>
+                    <span class="icon-[ri--external-link-line] text-sm text-gray-400"></span>
+                </button>
+            </div>
+            {{ end }}
+        </aside>
+
+        <!-- Prompt list -->
+        <main class="lg:col-span-9 space-y-3">
+
+            <div x-show="isLoadingList" class="space-y-3" role="status">
+                <span class="sr-only">Memuat daftar prompt...</span>
+                <div class="animate-pulse motion-reduce:animate-none space-y-3" aria-hidden="true">
+                    <div class="flex items-center justify-between px-1">
+                        <div class="h-4 w-40 rounded bg-gray-200 dark:bg-gray-800"></div>
+                        <div class="h-4 w-20 rounded bg-gray-200 dark:bg-gray-800"></div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <template x-for="n in 6" :key="n">
+                            <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-3 min-w-0 flex-grow">
+                                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gray-200 dark:bg-gray-800 flex-shrink-0"></div>
+                                    <div class="space-y-1.5 flex-grow">
+                                        <div class="h-3.5 w-16 rounded bg-gray-200 dark:bg-gray-800"></div>
+                                        <div class="h-4 w-2/3 rounded bg-gray-200 dark:bg-gray-800"></div>
+                                        <div class="h-3 w-1/2 rounded bg-gray-200 dark:bg-gray-800"></div>
+                                    </div>
+                                </div>
+                                <div class="w-8 h-8 rounded-lg bg-gray-200 dark:bg-gray-800 flex-shrink-0"></div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            <div x-show="!isLoadingList" style="display: none;" class="space-y-3">
+
+                <div class="flex items-center justify-between px-1 text-xs text-gray-500 dark:text-gray-400">
+                    <span x-text="activeFilterLabel"></span>
+                    <span class="font-bold text-gray-700 dark:text-gray-300" x-text="filteredPrompts.length + ' Ditemukan'"></span>
+                </div>
+
+                <div class="space-y-2.5">
+                    <template x-for="prompt in filteredPrompts" :key="prompt.json_url">
+                        <div @click="openPromptDetail(prompt.json_url)"
+                             class="group bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-3 sm:p-3.5 hover:border-indigo-500 dark:hover:border-indigo-500 transition-all shadow-xs hover:shadow-md cursor-pointer flex items-center justify-between gap-3">
+
+                            <div class="flex items-center gap-3 min-w-0 flex-grow">
+                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/50 flex-shrink-0 overflow-hidden flex items-center justify-center">
+                                    <template x-if="prompt.image">
+                                        <img decoding="async" loading="lazy" :src="prompt.image" alt="Preview" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    </template>
+                                    <template x-if="!prompt.image">
+                                        <span class="icon-[ri--image-ai-fill] text-indigo-600 dark:text-indigo-400 text-xl"></span>
+                                    </template>
+                                </div>
+
+                                <div class="space-y-0.5 min-w-0 flex-grow">
+                                    <span class="inline-block text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400" x-text="prompt.categoryTitle"></span>
+                                    <h4 class="text-xs sm:text-sm font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate" x-text="prompt.title"></h4>
+                                    <p class="text-[11px] text-gray-500 dark:text-gray-400 line-clamp-1" x-text="prompt.description"></p>
+                                </div>
+                            </div>
+
+                            <div class="w-8 h-8 flex-shrink-0 rounded-lg bg-gray-50 dark:bg-gray-800 group-hover:bg-indigo-600 group-hover:text-white text-gray-400 flex items-center justify-center transition-all">
+                                <span class="icon-[ri--arrow-right-s-line] text-base"></span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <template x-if="filteredPrompts.length === 0">
+                    <div class="text-center py-16 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl">
+                        <span class="icon-[ri--search-eye-line] text-3xl text-gray-400 mb-1.5"></span>
+                        <p class="text-xs font-semibold text-gray-700 dark:text-gray-300">Prompt tidak ditemukan.</p>
+                        <p class="text-[11px] text-gray-400 mt-0.5">Coba kata kunci lain atau pilih kategori lain.</p>
+                    </div>
+                </template>
+            </div>
+        </main>
+    </div>
+
+    <!-- Offcanvas: mobile categories -->
+    <div x-show="categoryOpen" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center" style="display: none;">
+        <div @click="categoryOpen = false" class="fixed inset-0 bg-black/60 backdrop-blur-xs"></div>
+        <div class="relative w-full max-w-lg bg-white dark:bg-gray-900 rounded-t-3xl sm:rounded-2xl shadow-2xl p-5 z-10 border-t sm:border border-gray-200 dark:border-gray-800 max-h-[80vh] flex flex-col">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-gray-800 mb-3">
+                <h3 class="text-sm font-bold text-gray-900 dark:text-white">Pilih Kategori Prompt</h3>
+                <button @click="categoryOpen = false" class="text-gray-400 hover:text-gray-600 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
+                    <span class="icon-[ri--close-line] w-4 h-4"></span>
+                </button>
+            </div>
+            <div class="space-y-1 overflow-y-auto pr-1 flex-grow">
+                <template x-for="cat in categoryItems" :key="cat.slug">
+                    <button @click="selectCategory(cat.slug); categoryOpen = false"
+                            class="w-full px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-between"
+                            :class="selectedCategory === cat.slug ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-500/20' : 'text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800'">
+                        <span class="flex items-center gap-2.5 truncate">
+                            <span :class="cat.icon" class="w-4 h-4 flex-shrink-0"></span>
+                            <span class="truncate" x-text="cat.title"></span>
+                        </span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] flex-shrink-0"
+                              :class="selectedCategory === cat.slug ? 'bg-white/20 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'"
+                              x-text="cat.count"></span>
+                    </button>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: prompt detail -->
+    <div x-show="modalOpen" class="fixed inset-0 z-50 overflow-y-auto px-4 py-6 sm:p-0 flex items-center justify-center" style="display: none;">
+        <div @click="closeModal()" class="fixed inset-0 bg-black/60 backdrop-blur-xs"></div>
+
+        <div class="relative w-full bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-5 sm:p-6 z-10 border border-gray-200 dark:border-gray-800 my-auto transition-[max-width] duration-200"
+             :class="useAi ? 'max-w-6xl' : 'max-w-2xl'">
+
+            <div x-show="isLoadingDetail" role="status">
+                <span class="sr-only">Mengambil data prompt...</span>
+                <div class="animate-pulse motion-reduce:animate-none space-y-4" aria-hidden="true">
+                    <div class="space-y-2">
+                        <div class="h-5 w-1/2 rounded bg-gray-200 dark:bg-gray-800"></div>
+                        <div class="h-3 w-3/4 rounded bg-gray-200 dark:bg-gray-800"></div>
+                    </div>
+                    <div class="h-40 rounded-xl bg-gray-200 dark:bg-gray-800"></div>
+                    <div class="h-10 w-full sm:w-44 ml-auto rounded-xl bg-gray-200 dark:bg-gray-800"></div>
+                </div>
+            </div>
+
+            <div x-show="!isLoadingDetail" style="display: none;" class="space-y-4">
+                <div class="flex items-start justify-between gap-3 mb-1">
+                    <div>
+                        <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white" x-text="activePrompt.title"></h3>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5" x-text="activePrompt.description"></p>
+                    </div>
+                    <button @click="closeModal()" class="text-gray-400 hover:text-gray-600 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer flex-shrink-0">
+                        <span class="icon-[ri--close-line] w-4 h-4"></span>
+                    </button>
+                </div>
+
+                <!-- A: prompt with database builder -->
+                <template x-if="activePrompt.has_database">
+                    <div class="space-y-4">
+                        <div x-show="subModalButtons.length > 0" class="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-gray-800">
+                            <span class="text-xs font-bold text-gray-700 dark:text-gray-300">Sub-Prompt Generator:</span>
+                            <div class="flex items-center gap-2">
+                                <template x-for="btn in subModalButtons" :key="btn.type">
+                                    <button @click="openSubModal(btn.type)"
+                                            class="text-xs bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-1.5 rounded-xl transition font-medium cursor-pointer flex items-center gap-1.5">
+                                        <span :class="btn.icon"></span>
+                                        <span x-text="btn.label"></span>
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-[80px_1fr] gap-4 items-center bg-white dark:bg-gray-900 p-3.5 rounded-xl border border-gray-200 dark:border-gray-800">
+                            <div class="w-20 h-20 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex items-center justify-center mx-auto">
+                                <template x-if="activePrompt.image">
+                                    <img decoding="async" loading="lazy" :src="builderImage" alt="Preview" class="w-full h-full object-cover">
+                                </template>
+                                <template x-if="!activePrompt.image">
+                                    <span class="icon-[ri--image-ai-fill] text-indigo-600 dark:text-indigo-400 text-xl"></span>
+                                </template>                                
+                            </div>
+                            <div class="space-y-1">
+                                <div class="flex items-center justify-between">
+                                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Input Deskripsi Target</label>
+                                    <div class="flex items-center gap-2">
+                                        <button @click="pasteClipboard()" class="text-[11px] text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold flex items-center gap-1 cursor-pointer bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-lg transition">
+                                            <span class="icon-[ri--clipboard-line]"></span> Paste
+                                        </button>
+                                        <button x-show="hasDatabase" @click="showDbPicker = true" class="text-[11px] text-indigo-600 dark:text-indigo-400 hover:underline font-semibold flex items-center gap-1 cursor-pointer">
+                                            <span class="icon-[ri--list-settings-line]"></span> Pilih dari Database
+                                        </button>
+                                    </div>
+                                </div>
+                                <input type="text" x-model="builderInput" placeholder="Masukkan deskripsi..." @focus="$el.select()"
+                                       class="w-full bg-gray-50 dark:bg-gray-950 border border-gray-300 dark:border-gray-700 rounded-xl px-3 py-2 text-xs text-gray-800 dark:text-gray-200 focus:outline-none focus:border-indigo-500">
+                            </div>
+                        </div>
+
+                        <!-- Dynamic form: one input per [VAR] found in the description -->
+                        <template x-if="builderParams.length > 0">
+                            <div class="p-3.5 bg-indigo-50/50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 rounded-xl space-y-2.5">
+                                <div class="flex items-center justify-between text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                                    <span class="flex items-center gap-1.5">
+                                        <span class="icon-[ri--input-field]"></span>
+                                        <span>Kustomisasi Deskripsi</span>
+                                    </span>
+                                    <span class="text-[10px] font-semibold" x-text="builderFilledCount + '/' + builderParams.length + ' terisi'"></span>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                    <template x-for="param in builderParams" :key="param">
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1" x-text="param"></label>
+                                            <input type="text" x-model="builderValues[param]" :placeholder="'Masukkan ' + param + '...'"
+                                                   class="w-full px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition">
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+
+                        <div class="bg-gray-50 dark:bg-gray-950 p-4 rounded-xl border border-gray-200 dark:border-gray-800 text-xs font-mono text-gray-800 dark:text-gray-200 leading-relaxed max-h-52 overflow-y-auto shadow-inner whitespace-pre-wrap select-all"
+                             x-html="dbPromptRendered"></div>
+
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
+                            <p class="text-[11px] text-gray-500 dark:text-gray-400 sm:mr-auto" title="Perkiraan kasar (±4 karakter per token). Jumlah sebenarnya tergantung model." x-text="formatStats(dbPromptRaw)"></p>
+                            <button @click="showBatchModal = true"
+                                    class="w-full sm:w-auto px-4 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-xl transition flex items-center justify-center gap-2 cursor-pointer">
+                                <span class="icon-[ri--stack-line] w-3.5 h-3.5"></span>
+                                <span>Batch</span>
+                            </button>
+                            <button @click="copy(dbPromptRaw, 'copiedMaster')"
+                                    class="w-full sm:w-auto px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer">
+                                <span :class="copiedMaster ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'" class="w-3.5 h-3.5"></span>
+                                <span x-text="copiedMaster ? 'Master Prompt Berhasil Disalin!' : 'Salin Master Prompt'"></span>
+                            </button>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- B: regular prompt with dynamic form -->
+                <template x-if="!activePrompt.has_database">
+                    <div :class="useAi ? 'grid grid-cols-1 lg:grid-cols-2 gap-5 items-start' : ''">
+                    <div class="space-y-4 min-w-0">
+                        <div class="bg-gray-50 dark:bg-gray-950 p-3.5 sm:p-4 rounded-xl border border-gray-200 dark:border-gray-800 text-xs sm:text-sm text-gray-800 dark:text-gray-200 font-mono select-all overflow-x-auto max-h-52 overflow-y-auto shadow-inner whitespace-pre-wrap"
+                             x-html="regularPromptRendered"></div>
+
+                        <template x-if="promptFields.length > 0">
+                            <div class="p-3.5 bg-indigo-50/50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 rounded-xl space-y-2.5">
+                                <div class="flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                                    <span class="icon-[ri--input-field]"></span>
+                                    <span>Isi Parameter:</span>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                    <template x-for="field in promptFields" :key="field.name">
+                                        <div :class="field.type === 'textarea' ? 'sm:col-span-2' : ''">
+                                            <label class="block text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1" x-text="field.label"></label>
+
+                                            <template x-if="field.type === 'select'">
+                                                <select x-model="promptVariables[field.name]" class="w-full px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition">
+                                                    <option value="">Pilih opsi...</option>
+                                                    <template x-for="opt in field.options" :key="opt">
+                                                        <option :value="opt" x-text="opt"></option>
+                                                    </template>
+                                                </select>
+                                            </template>
+
+                                            <template x-if="field.type === 'textarea'">
+                                                <textarea x-model="promptVariables[field.name]" :placeholder="field.placeholder" :rows="field.rows"
+                                                          class="w-full px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition resize-y"></textarea>
+                                            </template>
+
+                                            <!-- text, number, datalist -->
+                                            <template x-if="field.type !== 'select' && field.type !== 'textarea'">
+                                                <div>
+                                                    <input :type="field.type === 'number' ? 'number' : 'text'"
+                                                           :list="field.type === 'datalist' ? 'list-' + field.name : null"
+                                                           x-model="promptVariables[field.name]" :placeholder="field.placeholder"
+                                                           class="w-full px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition">
+                                                    <template x-if="field.type === 'datalist'">
+                                                        <datalist :id="'list-' + field.name">
+                                                            <template x-for="opt in field.options" :key="opt">
+                                                                <option :value="opt"></option>
+                                                            </template>
+                                                        </datalist>
+                                                    </template>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                            <p class="text-[11px] text-gray-500 dark:text-gray-400" title="Perkiraan kasar (±4 karakter per token). Jumlah sebenarnya tergantung model." x-text="formatStats(regularPromptRaw)"></p>
+                            <button @click="copy(regularPromptRaw, 'copiedMaster')"
+                                    class="w-full sm:w-auto px-5 py-2.5 text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
+                                    :class="useAi ? 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700' : 'bg-indigo-600 hover:bg-indigo-500 text-white'">
+                                <span :class="copiedMaster ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'" class="w-3.5 h-3.5"></span>
+                                <span x-text="copiedMaster ? 'Prompt Berhasil Disalin!' : 'Salin Prompt Ini'"></span>
+                            </button>
+                            <button x-show="useAi" @click="generateAi()" style="display: none;"
+                                    class="w-full sm:w-auto px-5 py-2.5 text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
+                                    :class="aiLoading ? 'bg-red-600 hover:bg-red-500' : 'bg-indigo-600 hover:bg-indigo-500'">
+                                <span :class="aiLoading ? 'icon-[ri--stop-circle-line]' : 'icon-[ri--sparkling-2-fill]'" class="w-3.5 h-3.5"></span>
+                                <span x-text="aiLoading ? 'Hentikan' : (aiOutput ? 'Generate Ulang' : 'Generate dengan AI')"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- AI result panel (right column, only when use_ai: true) -->
+                    <template x-if="useAi">
+                        <div x-ref="aiPanel" class="flex flex-col min-w-0 min-h-[360px] lg:h-[560px] rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50/60 dark:bg-gray-950/50 overflow-hidden">
+                            <div class="flex items-center justify-between gap-2 px-3.5 py-2.5 border-b border-gray-200 dark:border-gray-800">
+                                <div class="flex items-center gap-1.5 min-w-0 text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                                    <span class="icon-[ri--sparkling-2-line]"></span>
+                                    <span>Hasil AI</span>
+                                    <span class="text-[10px] font-semibold text-gray-400 truncate" x-text="aiStatus || aiModels[0]"></span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <select x-model="aiFormatChoice" title="Format tampilan hasil"
+                                            class="text-[11px] font-semibold bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-lg px-1.5 py-0.5 outline-none cursor-pointer">
+                                        <option value="auto">Auto</option>
+                                        <option value="text">Teks</option>
+                                        <option value="markdown">Markdown</option>
+                                        <option value="json">JSON</option>
+                                    </select>
+                                    <button x-show="aiOutput" @click="copy(aiView.text, 'copiedAi')" style="display: none;"
+                                            class="text-[11px] text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold flex items-center gap-1 cursor-pointer bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-lg transition">
+                                        <span :class="copiedAi ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
+                                        <span x-text="copiedAi ? 'Tersalin' : 'Salin Hasil'"></span>
+                                    </button>
+                                    <button @click="aiShowSettings = !aiShowSettings" title="Pengaturan API"
+                                            class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
+                                        <span class="icon-[ri--settings-3-line] text-sm"></span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div x-show="aiShowSettings" style="display: none;" class="px-3.5 py-3 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 space-y-2.5">
+                                <div>
+                                    <div class="flex items-center justify-between mb-1">
+                                        <label class="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Gemini API Key (satu per baris)</label>
+                                        <button @click="aiRevealKeys = !aiRevealKeys" class="text-[10px] font-semibold text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer" x-text="aiRevealKeys ? 'Sembunyikan' : 'Tampilkan'"></button>
+                                    </div>
+                                    <textarea x-model="aiApiKey" rows="3" spellcheck="false" autocomplete="off" placeholder="AIza...&#10;AIza...&#10;AIza..."
+                                              :style="aiRevealKeys ? '' : '-webkit-text-security: disc; text-security: disc;'"
+                                              class="w-full px-3 py-1.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-mono text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none resize-y"></textarea>
+                                    <p class="text-[10px] text-gray-400 mt-1" x-text="aiKeys.length + ' key aktif, dipakai bergiliran setiap generate'"></p>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">Model (satu per baris, urutan = cadangan)</label>
+                                    <textarea x-model="aiModelPref" rows="2" spellcheck="false" placeholder="gemini-2.5-flash&#10;gemini-2.5-flash-lite"
+                                              class="w-full px-3 py-1.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-mono text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none resize-y"></textarea>
+                                </div>
+                                <p class="text-[10px] text-gray-400 leading-relaxed">Jika sebuah key kena limit atau tidak valid, otomatis pindah ke key berikutnya, lalu ke model cadangan. Disimpan di localStorage browser ini. Per prompt bisa diatur lewat <code>ai_model</code>, <code>ai_output</code>, <code>ai_temperature</code>, <code>ai_system</code>.</p>
+                            </div>
+
+                            <div x-ref="aiBody" class="flex-grow overflow-y-auto p-4">
+                                <p x-show="aiError" style="display: none;" class="text-xs font-semibold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/50 rounded-lg px-3 py-2 mb-3" x-text="aiError"></p>
+                                <div x-show="aiView.kind === 'html' && aiView.html" style="display: none;" class="text-xs sm:text-sm text-gray-800 dark:text-gray-200 leading-relaxed break-words" x-html="aiView.html"></div>
+                                <div x-show="aiView.kind === 'list'" style="display: none;" class="space-y-2">
+                                    <template x-for="(item, i) in (aiView.items || [])" :key="i">
+                                        <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-3 bg-white dark:bg-gray-900 space-y-1.5">
+                                            <div class="flex items-center justify-between gap-2">
+                                                <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400" x-text="'#' + (i + 1)"></span>
+                                                <button @click="copy(item, 'copiedAiItem', i)" class="text-[11px] text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold flex items-center gap-1 cursor-pointer">
+                                                    <span :class="copiedAiItem === i ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
+                                                    <span x-text="copiedAiItem === i ? 'Tersalin' : 'Salin'"></span>
+                                                </button>
+                                            </div>
+                                            <p class="text-xs font-mono text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap break-words" x-text="item"></p>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div x-show="aiLoading && !aiOutput" style="display: none;" class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                                    <span class="icon-[ri--loader-4-line] animate-spin motion-reduce:animate-none"></span>
+                                    <span>Menunggu respons AI...</span>
+                                </div>
+                                <div x-show="!aiOutput && !aiLoading && !aiError" class="h-full flex flex-col items-center justify-center text-center gap-1.5 py-10">
+                                    <span class="icon-[ri--sparkling-2-line] text-2xl text-gray-300 dark:text-gray-600"></span>
+                                    <p class="text-xs font-semibold text-gray-600 dark:text-gray-300">Hasil akan muncul di sini</p>
+                                    <p class="text-[11px] text-gray-400">Isi parameter, lalu tekan Generate dengan AI.</p>
+                                </div>
+                            </div>
+
+                            <div x-show="aiOutput" style="display: none;" class="px-3.5 py-2 border-t border-gray-200 dark:border-gray-800 text-[11px] text-gray-500 dark:text-gray-400" x-text="formatStats(aiOutput)"></div>
+                        </div>
+                    </template>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sub-modal: database picker -->
+    <div x-show="showDbPicker" class="fixed inset-0 z-60 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4" @click.self="showDbPicker = false" style="display: none;">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-2xl rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col max-h-[85vh]">
+            <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                <h4 class="text-xs font-bold text-gray-800 dark:text-gray-200">Pilih dari Database</h4>
+                <button @click="showDbPicker = false" class="text-gray-400 hover:text-gray-600 cursor-pointer">
+                    <span class="icon-[ri--close-line] text-lg"></span>
+                </button>
+            </div>
+
+            <div class="px-5 py-3 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 space-y-3">
+                <div class="relative w-full">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                        <span class="icon-[ri--search-line] text-xs"></span>
+                    </span>
+                    <input type="text" x-model="dbSearchQuery" placeholder="Cari nama atau deskripsi..."
+                           class="w-full pl-9 pr-8 py-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <button x-show="dbSearchQuery" @click="dbSearchQuery = ''" style="display: none;"
+                            class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-gray-400 hover:text-gray-600">
+                        <span class="icon-[ri--close-circle-fill] text-xs"></span>
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                    <template x-for="cat in dbCategories" :key="cat">
+                        <button @click="selectedDbCategory = cat"
+                                class="px-4 py-1.5 rounded-full text-xs font-semibold transition-all whitespace-nowrap cursor-pointer border shadow-xs capitalize"
+                                :class="selectedDbCategory === cat ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-indigo-500'"
+                                x-text="cat === 'all' ? 'Semua' : cat"></button>
+                    </template>
+                </div>
+            </div>
+
+            <div class="p-5 overflow-y-auto flex-grow">
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <template x-for="(item, index) in flattenedDatabase" :key="index + '-' + (item.title || 'item')">
+                        <div @click="selectDbItem(item)" class="group border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 rounded-xl p-3 cursor-pointer bg-gray-50 dark:bg-gray-900/50 flex flex-col items-center text-center transition">
+                            <div class="w-full h-20 bg-gray-200 dark:bg-gray-800 rounded-lg mb-2 overflow-hidden flex items-center justify-center">
+                                <img decoding="async" loading="lazy" :src="item.image" alt="" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                            </div>
+                            <span class="text-xs font-bold text-gray-800 dark:text-gray-200 mb-0.5" x-text="item.title"></span>
+                            <span class="text-[10px] text-gray-500 dark:text-gray-400 line-clamp-2" x-text="item.description"></span>
+                        </div>
+                    </template>
+                </div>
+                <template x-if="flattenedDatabase.length === 0">
+                    <p class="text-xs text-gray-400 text-center py-12">Data tidak ditemukan.</p>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sub-modal: description / image prompt generator (one block, driven by subModalType) -->
+    <div x-show="showSubModal" class="fixed inset-0 z-60 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4" @click.self="showSubModal = false" style="display: none;">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-xl rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col max-h-[85vh]">
+            <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                <h4 class="text-xs font-bold text-gray-800 dark:text-gray-200" x-text="subConfig.title"></h4>
+                <button @click="showSubModal = false" class="text-gray-400 hover:text-gray-600 cursor-pointer">
+                    <span class="icon-[ri--close-line] text-lg"></span>
+                </button>
+            </div>
+
+            <div class="p-5 overflow-y-auto space-y-4 flex-grow">
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Hasil Prompt (Live In-Place Render)</label>
+                    <div class="bg-gray-50 dark:bg-gray-950 p-4 rounded-xl border border-gray-200 dark:border-gray-800 text-xs font-mono text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap select-all shadow-inner max-h-52 overflow-y-auto"
+                         x-html="subRendered"></div>
+                    <p class="text-[11px] text-gray-500 dark:text-gray-400" title="Perkiraan kasar (±4 karakter per token). Jumlah sebenarnya tergantung model." x-text="formatStats(subRaw)"></p>
+                </div>
+
+                <template x-if="subParams.length > 0">
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Isi Parameter</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 p-3.5 bg-indigo-50/50 dark:bg-indigo-950/30 rounded-xl border border-indigo-100 dark:border-indigo-900/50">
+                            <template x-for="param in subParams" :key="subModalType + param">
+                                <div>
+                                    <label class="block text-[10px] font-semibold text-gray-600 dark:text-gray-400 uppercase mb-1" x-text="param"></label>
+                                    <input type="text" x-model="dynamicInputs[subConfig.prefix + param]" :placeholder="'Masukkan ' + param + '...'"
+                                           class="w-full px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white outline-none focus:ring-1 focus:ring-indigo-500">
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <div class="px-5 py-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700 flex justify-end">
+                <button @click="copy(subRaw, 'copiedSub')"
+                        class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+                    <span :class="copiedSub ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
+                    <span x-text="copiedSub ? 'Sub-Prompt Berhasil Disalin!' : 'Salin Sub-Prompt'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sub-modal: batch generator (one master prompt per description line) -->
+    <div x-show="showBatchModal" class="fixed inset-0 z-60 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4" @click.self="showBatchModal = false" style="display: none;">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-2xl rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                <h4 class="text-xs font-bold text-gray-800 dark:text-gray-200">Batch Prompt Generator</h4>
+                <button @click="showBatchModal = false" class="text-gray-400 hover:text-gray-600 cursor-pointer">
+                    <span class="icon-[ri--close-line] text-lg"></span>
+                </button>
+            </div>
+
+            <div class="p-5 overflow-y-auto space-y-4 flex-grow">
+                <div class="space-y-1.5">
+                    <div class="flex items-center justify-between">
+                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Daftar Deskripsi (satu per baris)</label>
+                        <div class="flex items-center gap-2">
+                            <button @click="pasteBatch()" class="text-[11px] text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold flex items-center gap-1 cursor-pointer bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-lg transition">
+                                <span class="icon-[ri--clipboard-line]"></span> Paste
+                            </button>
+                            <button x-show="batchInput" @click="batchInput = ''" style="display: none;" class="text-[11px] text-gray-500 hover:text-red-500 font-semibold flex items-center gap-1 cursor-pointer">
+                                <span class="icon-[ri--delete-bin-line]"></span> Hapus
+                            </button>
+                        </div>
+                    </div>
+                    <textarea x-model="batchInput" rows="5" placeholder="Satu deskripsi per baris...&#10;wanita memakai kebaya merah&#10;pria berjas hitam di kota malam"
+                              class="w-full bg-gray-50 dark:bg-gray-950 border border-gray-300 dark:border-gray-700 rounded-xl px-3 py-2 text-xs text-gray-800 dark:text-gray-200 focus:outline-none focus:border-indigo-500 resize-y"></textarea>
+                </div>
+
+                <div class="flex items-center justify-between gap-3">
+                    <span class="text-[11px] font-semibold text-gray-600 dark:text-gray-300" x-text="batchItems.length + ' deskripsi'"></span>
+                    <div class="flex items-center gap-2">
+                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Format</label>
+                        <select x-model="batchFormat" class="px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                            <template x-for="format in batchFormats" :key="format.id">
+                                <option :value="format.id" x-text="format.label"></option>
+                            </template>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <template x-for="item in batchItems" :key="item.id">
+                        <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-3 bg-gray-50 dark:bg-gray-900/50 space-y-2">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400" x-text="'#' + (item.id + 1)"></span>
+                                <button @click="copy(item.prompt, 'copiedBatchIndex', item.id)" class="text-[11px] text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold flex items-center gap-1 cursor-pointer">
+                                    <span :class="copiedBatchIndex === item.id ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
+                                    <span x-text="copiedBatchIndex === item.id ? 'Tersalin' : 'Salin'"></span>
+                                </button>
+                            </div>
+                            <p class="text-xs font-mono text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap max-h-24 overflow-y-auto" x-text="item.prompt"></p>
+                        </div>
+                    </template>
+                    <p x-show="batchItems.length === 0" class="text-xs text-gray-400 text-center py-6">Masukkan deskripsi di atas untuk membuat prompt secara massal.</p>
+                </div>
+            </div>
+
+            <div class="px-5 py-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <p class="text-[11px] text-gray-500 dark:text-gray-400" title="Perkiraan kasar (±4 karakter per token). Jumlah sebenarnya tergantung model." x-text="formatStats(batchOutput)"></p>
+                <button @click="copy(batchOutput, 'copiedBatch')" :disabled="batchItems.length === 0"
+                        class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span :class="copiedBatch ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
+                    <span x-text="copiedBatch ? 'Semua Prompt Berhasil Disalin!' : 'Salin Semua (' + batchItems.length + ')'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: resources & tools -->
+    <div x-show="resourceModalOpen" class="fixed inset-0 z-50 overflow-y-auto px-4 py-6 sm:p-0 flex items-center justify-center" style="display: none;">
+        <div @click="resourceModalOpen = false" class="fixed inset-0 bg-black/60 backdrop-blur-xs"></div>
+
+        <div class="relative w-full max-w-lg bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-5 sm:p-6 z-10 border border-gray-200 dark:border-gray-800 my-auto space-y-4">
+
+            <div class="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-gray-800">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                        <span class="icon-[ri--tools-line] text-base"></span>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-gray-900 dark:text-white">Resources & Files Pendukung</h3>
+                        <p class="text-[11px] text-gray-500 dark:text-gray-400">Kumpulan tool eksternal, generator, dan file terkait.</p>
+                    </div>
+                </div>
+                <button @click="resourceModalOpen = false" class="text-gray-400 hover:text-gray-600 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer">
+                    <span class="icon-[ri--close-line] w-4 h-4"></span>
+                </button>
+            </div>
+
+            <div class="space-y-2.5 max-h-[60vh] overflow-y-auto pr-1">
+                <template x-for="res in resources" :key="res.url">
+                    <a target="_blank" rel="noopener noreferrer" :href="res.url"
+                       class="group flex items-center justify-between p-3.5 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-indigo-500 dark:hover:border-indigo-500 bg-gray-50 dark:bg-gray-900/50 hover:bg-white dark:hover:bg-gray-900 transition-all shadow-xs">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-100 dark:border-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 flex-shrink-0">
+                                <span :class="res.icon || 'icon-[ri--link-m]'" class="text-lg"></span>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" x-text="res.title"></h4>
+                                <p class="text-[11px] text-gray-500 dark:text-gray-400" x-text="res.description"></p>
+                            </div>
+                        </div>
+                        <span class="icon-[ri--arrow-right-up-line] text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors text-base flex-shrink-0"></span>
+                    </a>
+                </template>
+
+                <template x-if="resources.length === 0">
+                    <p class="text-xs text-gray-400 text-center py-8">Belum ada resource atau file pendukung yang ditambahkan.</p>
+                </template>
+            </div>
+
+            <div class="pt-2 border-t border-gray-100 dark:border-gray-800 flex justify-end">
+                <button @click="resourceModalOpen = false" class="px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-xl transition cursor-pointer">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+/* ==========================================================================
+   Constants
+   ========================================================================== */
+const INDEX_URL = './index.json';
+const COPY_FEEDBACK_MS = 2000;
+const AI_KEY_STORAGE = 'gemini_api_key';
+const AI_MODEL_STORAGE = 'prompt_ai_model';
+const AI_DEFAULT_MODEL = 'gemini-2.5-flash';
+const AI_CURSOR_STORAGE = 'prompt_ai_key_cursor';
+const AI_RETRY_STATUS = [401, 403, 429, 500, 503]; // next key/model is tried on these
+const AI_FORMATS = ['auto', 'text', 'markdown', 'json'];
+const MARKDOWN_HINT = /^(#{1,6}\s|\s*[-*+]\s|\s*\d+\.\s|>\s)|\*\*|```/m;
+const AI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models';
+const TOKEN_CHARS_RATIO = 4; // rough average; real tokenizers vary by model and language
+const HIGHLIGHT_CLASS = 'text-indigo-600 dark:text-indigo-400 font-bold bg-indigo-50 dark:bg-indigo-950 px-1 rounded';
+const HUMAN_INPUT_PATTERN = /\[(?:\{humanInput\}|humanInput)\]/g;
+const PLACEHOLDER_PATTERN = /\[(.*?)\]/g;
+const BASE_RESERVED_KEYS = ['character', 'title', 'description', 'input', 'target', 'direction'];
+/** Placeholders owned by the master prompt, so the customization form must ignore them. */
+const BUILDER_RESERVED_KEYS = ['humaninput', '{humaninput}'];
+/** Softer style for the whole input when its [VAR] values are highlighted individually. */
+const HUMAN_INPUT_CLASS = 'text-indigo-600 dark:text-indigo-400 font-bold';
+
+/** Config for the two generators that share the sub-modal. */
+const SUB_PROMPTS = {
+    desc: {
+        title: 'Custom Description Generator',
+        field: 'desc_prompt',
+        prefix: 'desc_',
+        emptyMessage: 'Template desc_prompt belum diatur.',
+        reserved: BASE_RESERVED_KEYS,
+    },
+    image: {
+        title: 'Custom Image Prompt Generator',
+        field: 'image_prompt',
+        prefix: 'img_',
+        emptyMessage: 'Template image_prompt belum diatur.',
+        reserved: [...BASE_RESERVED_KEYS, 'imageprompt'],
+    },
+};
+
+const SUB_MODAL_BUTTONS = [
+    { type: 'desc', label: 'Deskripsi Generator', icon: 'icon-[ri--file-text-line]' },
+    { type: 'image', label: 'Referensi Gambar', icon: 'icon-[ri--image-line]' },
+];
+
+/** How the batch results are joined into one copyable block. */
+const BATCH_FORMATS = [
+    { id: 'blank', label: 'Dipisah baris kosong', join: (prompts) => prompts.join('\n\n') },
+    { id: 'divider', label: 'Dipisah garis (---)', join: (prompts) => prompts.join('\n\n---\n\n') },
+    { id: 'oneline', label: 'Satu baris per prompt', join: (prompts) => prompts.map((p) => p.replace(/\s*\n\s*/g, ' ')).join('\n') },
+];
+
+/* ==========================================================================
+   Pure helpers (no component state)
+   ========================================================================== */
+const HTML_ESCAPES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (ch) => HTML_ESCAPES[ch]);
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const highlight = (value) => `<span class="${HIGHLIGHT_CLASS}">${escapeHtml(value)}</span>`;
+const includesQuery = (query, ...fields) => fields.some((f) => f && f.toLowerCase().includes(query));
+
+/** Size of a text: characters, words and an estimated token count. */
+function formatTextStats(text = '') {
+    const trimmed = text.trim();
+    const chars = [...text].length;
+    const words = trimmed ? trimmed.split(/\s+/).length : 0;
+    const tokens = Math.ceil(chars / TOKEN_CHARS_RATIO);
+    const fmt = (n) => n.toLocaleString('id-ID');
+    return `${fmt(chars)} karakter, ${fmt(words)} kata, ≈ ${fmt(tokens)} token`;
+}
+
+/** Category slug for URLs: explicit alias/slug from index.json, else the folder name without its order prefix ("01-karakter" -> "karakter"). */
+function getCategorySlug(category) {
+    const folder = category.category || '';
+    return category.alias || category.slug || folder.replace(/^\d+-/, '') || folder;
+}
+
+/** "/animasi/15-kendaraan/kendaraan-extract-wheel/index.json" -> "kendaraan-extract-wheel" */
+function getPromptSlug(jsonUrl = '') {
+    const segments = jsonUrl.split('?')[0].replace(/\.json$/i, '').replace(/\/index$/i, '').split('/').filter(Boolean);
+    return segments.pop() || jsonUrl;
+}
+
+/** localStorage can throw (private mode, blocked storage); fail soft. */
+const storage = {
+    get: (key, fallback = '') => { try { return localStorage.getItem(key) || fallback; } catch { return fallback; } },
+    set: (key, value) => { try { localStorage.setItem(key, value); } catch { /* ignore */ } },
+};
+
+async function fetchJson(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+    return res.json();
+}
+
+/** Unique (case-insensitive) [placeholder] names found in a template, minus reserved keys. */
+function extractPlaceholders(text, reserved = []) {
+    const seen = new Set(reserved);
+    return [...(text || '').matchAll(PLACEHOLDER_PATTERN)]
+        .map((m) => m[1].trim())
+        .filter((name) => {
+            const key = name.toLowerCase();
+            if (!name || seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+}
+
+/**
+ * Fill [placeholders] in a template.
+ *  - replacements: case-insensitive reserved keys  { key: value }
+ *  - params/values/prefix: custom placeholders (case-sensitive) read from values[prefix + name]
+ *  - styled: HTML-escape everything and highlight custom values (for x-html); otherwise plain text.
+ */
+function fillTemplate(text, { replacements = {}, params = [], values = {}, prefix = '', styled = false } = {}) {
+    let output = styled ? escapeHtml(text) : text;
+    const format = styled ? escapeHtml : (v) => v;
+
+    for (const [key, value] of Object.entries(replacements)) {
+        output = output.replace(new RegExp(`\\[${escapeRegExp(key)}\\]`, 'gi'), () => format(value));
+    }
+    for (const param of params) {
+        const value = values[prefix + param] || `[${param}]`;
+        // Case-insensitive: Hugo lowercases front-matter keys, so "WAJAH" arrives as "wajah".
+        output = output.replace(new RegExp(`\\[${escapeRegExp(param)}\\]`, 'gi'), () => (styled ? highlight(value) : value));
+    }
+    return output;
+}
+
+/* ==========================================================================
+   AI output formatters (JSON pretty-print + highlight, minimal Markdown)
+   ========================================================================== */
+function tryParseJson(text) {
+    const cleaned = text.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
+    if (!/^[\[{]/.test(cleaned)) return null;
+    try { return JSON.parse(cleaned); } catch { return null; }
+}
+
+/** Highlight an already pretty-printed JSON string; only token text is escaped (the rest is punctuation/whitespace). */
+function highlightJson(pretty) {
+    const tokens = /("(?:\\.|[^\\"])*")(\s*:)?|\b(?:true|false|null)\b|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?/g;
+    return pretty.replace(tokens, (match, str, colon) => {
+        const color = str
+            ? (colon ? 'text-indigo-600 dark:text-indigo-400' : 'text-emerald-600 dark:text-emerald-400')
+            : match === 'null' ? 'text-gray-400'
+            : /^(true|false)$/.test(match) ? 'text-amber-600 dark:text-amber-400'
+            : 'text-sky-600 dark:text-sky-400';
+        return `<span class="${color}">${escapeHtml(str || match)}</span>${colon || ''}`;
+    });
+}
+
+/** Small safe Markdown renderer: headings, bold/italic, inline + fenced code, lists, quotes, rules, links. */
+function renderMarkdown(text) {
+    const codeBlocks = [];
+    const source = escapeHtml(text).replace(/```[^\n]*\n([\s\S]*?)(?:```|$)/g, (_, code) => {
+        codeBlocks.push(`<pre class="mb-3 p-3 rounded-lg bg-gray-100 dark:bg-gray-800 font-mono text-xs overflow-x-auto whitespace-pre">${code}</pre>`);
+        return `\u0000${codeBlocks.length - 1}\u0000`;
+    });
+    const inline = (t) => t
+        .replace(/`([^`]+)`/g, '<code class="px-1 rounded bg-gray-100 dark:bg-gray-800 font-mono text-[0.9em]">$1</code>')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>')
+        .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 underline">$1</a>');
+
+    const out = [];
+    let para = [];
+    let list = null;
+    const flushPara = () => { if (para.length) out.push(`<p class="mb-3">${inline(para.join(' '))}</p>`); para = []; };
+    const flushList = () => {
+        if (!list) return;
+        const style = list.tag === 'ul' ? 'list-disc' : 'list-decimal';
+        out.push(`<${list.tag} class="mb-3 pl-5 space-y-1 ${style}">${list.items.map((i) => `<li>${inline(i)}</li>`).join('')}</${list.tag}>`);
+        list = null;
+    };
+
+    for (const line of source.split('\n')) {
+        let m;
+        if ((m = line.match(/^\u0000(\d+)\u0000$/))) { flushPara(); flushList(); out.push(codeBlocks[m[1]]); }
+        else if ((m = line.match(/^(#{1,6})\s+(.*)/))) { flushPara(); flushList(); out.push(`<p class="${m[1].length <= 2 ? 'text-base' : 'text-sm'} font-bold mt-4 mb-2">${inline(m[2])}</p>`); }
+        else if (/^\s*(---|\*\*\*)\s*$/.test(line)) { flushPara(); flushList(); out.push('<hr class="my-3 border-gray-200 dark:border-gray-700">'); }
+        else if ((m = line.match(/^&gt;\s?(.*)/))) { flushPara(); flushList(); out.push(`<blockquote class="mb-3 pl-3 border-l-2 border-indigo-300 dark:border-indigo-700 text-gray-500 dark:text-gray-400">${inline(m[1])}</blockquote>`); }
+        else if ((m = line.match(/^\s*([-*+]|\d+\.)\s+(.*)/))) {
+            const tag = /\d/.test(m[1]) ? 'ol' : 'ul';
+            if (!list || list.tag !== tag) { flushPara(); flushList(); list = { tag, items: [] }; }
+            list.items.push(m[2]);
+        }
+        else if (!line.trim()) { flushPara(); flushList(); }
+        else { flushList(); para.push(line.trim()); }
+    }
+    flushPara(); flushList();
+    return out.join('');
+}
+
+/* ==========================================================================
+   Alpine component
+   ========================================================================== */
+document.addEventListener('alpine:init', () => {
+    Alpine.data('promptApp', () => ({
+        // --- List / navigation state ---
+        pageData: {},
+        allPrompts: [],
+        isLoadingList: true,
+        selectedCategory: 'all',
+        globalSearchQuery: '',
+        categoryOpen: false,
+        resourceModalOpen: false,
+
+        // --- Detail modal state ---
+        modalOpen: false,
+        isLoadingDetail: false,
+        activePrompt: {},
+        activePromptUrl: '',
+        promptVariables: {},
+
+        // --- Database builder state ---
+        builderInput: '',
+        builderValues: {}, // values for [VAR] placeholders in builderInput
+        builderImage: '',
+        selectedItem: null,
+        showDbPicker: false,
+        dbSearchQuery: '',
+        selectedDbCategory: 'all',
+
+        // --- Batch generator state ---
+        batchFormats: BATCH_FORMATS,
+        showBatchModal: false,
+        batchInput: '',
+        batchFormat: BATCH_FORMATS[0].id,
+
+        // --- Sub-modal state ---
+        showSubModal: false,
+        subModalType: 'desc',
+        dynamicInputs: {},
+
+        // --- AI state (prompts with `use_ai: true`) ---
+        aiApiKey: storage.get(AI_KEY_STORAGE), // one key per line (a single old key still works)
+        aiModelPref: storage.get(AI_MODEL_STORAGE, AI_DEFAULT_MODEL), // one model per line, in fallback order
+        aiKeyCursor: Number(storage.get(AI_CURSOR_STORAGE, '0')) || 0,
+        aiRevealKeys: false,
+        aiStatus: '',
+        aiFormatChoice: 'auto',
+        copiedAiItem: false,
+        aiShowSettings: false,
+        aiLoading: false,
+        aiOutput: '',
+        aiError: '',
+        aiController: null,
+        copiedAi: false,
+
+        // --- Copy feedback ---
+        copiedMaster: false,
+        copiedSub: false,
+        copiedBatch: false,
+        copiedBatchIndex: false, // id of the batch item just copied
+
+        /* ------------------------------------------------------------------
+           Lifecycle
+           ------------------------------------------------------------------ */
+        async init() {
+            const params = new URLSearchParams(window.location.search);
+            this.globalSearchQuery = params.get('search') || '';
+
+            try {
+                this.pageData = await fetchJson(INDEX_URL);
+                this.allPrompts = this.flattenPrompts(this.pageData.categories);
+                this.selectedCategory = this.resolveCategoryParam(params.get('category'));
+
+                const target = this.findPromptByParam(params.get('prompt'));
+                if (target) this.openPromptDetail(target.json_url);
+                this.updateUrlParams(); // rewrites old or invalid links to the clean slug form
+            } catch (err) {
+                console.error('Gagal memuat index prompt:', err);
+            } finally {
+                this.isLoadingList = false;
+            }
+
+            ['selectedCategory', 'globalSearchQuery'].forEach((key) => this.$watch(key, () => this.updateUrlParams()));
+            this.$watch('aiApiKey', (value) => storage.set(AI_KEY_STORAGE, value.trim()));
+            this.$watch('aiModelPref', (value) => storage.set(AI_MODEL_STORAGE, value.trim()));
+        },
+
+        flattenPrompts(categories = []) {
+            return categories.flatMap((cat) =>
+                (cat.prompts || []).map((prompt) => ({
+                    ...prompt,
+                    slug: prompt.alias || prompt.slug || getPromptSlug(prompt.json_url),
+                    categorySlug: getCategorySlug(cat),
+                    categoryTitle: cat.category_title || cat.category,
+                }))
+            );
+        },
+
+        /** Resolve ?category= to a category slug; the old folder-name form ("01-karakter") still works. */
+        resolveCategoryParam(param) {
+            const match = (this.pageData.categories || []).find((c) => getCategorySlug(c) === param || c.category === param);
+            return match ? getCategorySlug(match) : 'all';
+        },
+
+        /** Slug used in the shareable URL (?prompt=...) for the open prompt. */
+        get activePromptSlug() {
+            return this.allPrompts.find((p) => p.json_url === this.activePromptUrl)?.slug || '';
+        },
+
+        /** Resolve ?prompt=: slug/alias first (preferring the selected category), then legacy json_url links. */
+        findPromptByParam(param) {
+            if (!param) return null;
+            const matches = this.allPrompts.filter((p) => p.slug === param);
+            return matches.find((p) => p.categorySlug === this.selectedCategory)
+                || matches[0]
+                || this.allPrompts.find((p) => p.json_url === param || p.json_url.endsWith(param))
+                || null;
+        },
+
+        updateUrlParams() {
+            const url = new URL(window.location);
+            const query = this.globalSearchQuery.trim();
+            const entries = {
+                category: this.selectedCategory !== 'all' ? this.selectedCategory : '',
+                search: query,
+                prompt: this.modalOpen ? this.activePromptSlug : '',
+            };
+            Object.entries(entries).forEach(([key, value]) => {
+                value ? url.searchParams.set(key, value) : url.searchParams.delete(key);
+            });
+            window.history.replaceState({}, '', url);
+        },
+
+        /* ------------------------------------------------------------------
+           List: categories, filtering, labels
+           ------------------------------------------------------------------ */
+        get resources() {
+            return this.pageData.resources || [];
+        },
+
+        get categoryItems() {
+            const categories = (this.pageData.categories || []).map((cat) => ({
+                slug: getCategorySlug(cat),
+                title: cat.category_title || cat.category,
+                count: (cat.prompts || []).length,
+                icon: 'icon-[ri--folder-3-line]',
+            }));
+            return [{ slug: 'all', title: 'Semua', count: this.allPrompts.length, icon: 'icon-[ri--apps-2-line]' }, ...categories];
+        },
+
+        get currentCategoryTitle() {
+            return this.categoryItems.find((c) => c.slug === this.selectedCategory)?.title || '';
+        },
+
+        get categoryTriggerLabel() {
+            return this.selectedCategory === 'all' ? 'Pilih Kategori (Semua)' : `Kategori: ${this.currentCategoryTitle}`;
+        },
+
+        get activeFilterLabel() {
+            if (this.globalSearchQuery) return `Pencarian: "${this.globalSearchQuery}"`;
+            return this.selectedCategory === 'all' ? 'Semua Kategori Aktif' : `Kategori: ${this.currentCategoryTitle}`;
+        },
+
+        get filteredPrompts() {
+            const query = this.globalSearchQuery.toLowerCase().trim();
+            return this.allPrompts.filter((p) =>
+                (this.selectedCategory === 'all' || p.categorySlug === this.selectedCategory) &&
+                (!query || includesQuery(query, p.title, p.description, p.categoryTitle))
+            );
+        },
+
+        selectCategory(slug) {
+            this.selectedCategory = slug;
+        },
+
+        /* ------------------------------------------------------------------
+           Detail modal
+           ------------------------------------------------------------------ */
+        async openPromptDetail(jsonUrl, updateHistory = true) {
+            this.stopAi();
+            Object.assign(this, {
+                aiOutput: '',
+                aiError: '',
+                aiStatus: '',
+                aiFormatChoice: 'auto',
+                copiedAi: false,
+                modalOpen: true,
+                isLoadingDetail: true,
+                activePromptUrl: jsonUrl,
+                copiedMaster: false,
+                copiedSub: false,
+                dbSearchQuery: '',
+                selectedDbCategory: 'all',
+                promptVariables: {},
+                selectedItem: null,
+                builderValues: {},
+                dynamicInputs: {},
+                batchInput: '',
+                copiedBatch: false,
+                copiedBatchIndex: false,
+            });
+            if (updateHistory) this.updateUrlParams();
+
+            try {
+                this.activePrompt = await fetchJson(jsonUrl);
+                const fmt = String(this.activePrompt.ai_output || '').toLowerCase();
+                this.aiFormatChoice = AI_FORMATS.includes(fmt) ? fmt : 'auto';
+                this.initBuilderState();
+            } catch (err) {
+                console.error('Gagal memuat detail prompt:', err);
+            } finally {
+                this.isLoadingDetail = false;
+            }
+        },
+
+        initBuilderState() {
+            if (this.activePrompt.has_database) {
+                this.builderInput = this.activePrompt.default_input || '';
+                this.builderImage = this.activePrompt.image || '';
+                return;
+            }
+            this.builderInput = '';
+            this.builderImage = '';
+            this.promptVariables = Object.fromEntries(this.promptFields.map((f) => [f.name, f.default]));
+        },
+
+        closeModal() {
+            this.stopAi();
+            this.modalOpen = false;
+            this.activePromptUrl = '';
+            this.updateUrlParams();
+        },
+
+        /* ------------------------------------------------------------------
+           AI generation (prompts with `use_ai: true`, regular dynamic form only)
+           Optional per-prompt fields: ai_model, ai_system
+           ------------------------------------------------------------------ */
+        get useAi() {
+            const flag = this.activePrompt.use_ai;
+            return (flag === true || flag === 'true') && !this.activePrompt.has_database;
+        },
+
+        get aiKeys() { return [...new Set(this.aiApiKey.split(/[\s,;]+/).filter(Boolean))]; },
+
+        /** Prompt's own ai_model first, then the default list; later entries are fallbacks. */
+        get aiModels() {
+            const list = [...new Set([this.activePrompt.ai_model, ...this.aiModelPref.split(/[\s,;]+/)].filter(Boolean))];
+            return list.length ? list : [AI_DEFAULT_MODEL];
+        },
+
+        stopAi() { this.aiController?.abort(); },
+
+        /** Output as the chosen format: { kind: 'html' | 'list', html, items, text (what "Salin Hasil" copies) }. */
+        get aiView() {
+            const text = this.aiOutput;
+            if (!text) return { kind: 'html', html: '', text: '' };
+            let mode = this.aiFormatChoice;
+
+            const parsed = mode === 'text' || mode === 'markdown' ? null : tryParseJson(text);
+            if (parsed !== null) {
+                const pretty = JSON.stringify(parsed, null, 2);
+                const isScalarList = Array.isArray(parsed) && parsed.length > 0 && parsed.every((v) => v === null || typeof v !== 'object');
+                if (mode === 'auto' && isScalarList) {
+                    const items = parsed.map(String);
+                    return { kind: 'list', items, text: items.join('\n\n') };
+                }
+                return { kind: 'html', html: `<pre class="font-mono text-xs leading-relaxed whitespace-pre-wrap break-words">${highlightJson(pretty)}</pre>`, text: pretty };
+            }
+
+            if (mode === 'auto') mode = MARKDOWN_HINT.test(text) ? 'markdown' : 'text';
+            if (mode === 'markdown') return { kind: 'html', html: renderMarkdown(text), text };
+            return { kind: 'html', html: `<div class="whitespace-pre-wrap">${escapeHtml(text)}</div>`, text };
+        },
+
+        async generateAi() {
+            if (this.aiLoading) return this.stopAi();
+            const keys = this.aiKeys;
+            if (!keys.length) {
+                this.aiShowSettings = true;
+                this.aiError = 'Isi minimal satu Gemini API key di pengaturan (ikon gear) sebelum generate.';
+                return;
+            }
+
+            const controller = new AbortController();
+            Object.assign(this, { aiController: controller, aiLoading: true, aiOutput: '', aiError: '', aiStatus: '' });
+            this.$nextTick(() => this.$refs.aiPanel?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }));
+
+            // Round-robin start, then every key for the first model, then every key for the next model...
+            const start = this.aiKeyCursor % keys.length;
+            const attempts = this.aiModels.flatMap((model) => keys.map((_, i) => ({ model, keyIndex: (start + i) % keys.length })));
+            let tried = 0;
+            let lastError = '';
+
+            try {
+                for (const { model, keyIndex } of attempts) {
+                    tried++;
+                    this.aiStatus = `Key ${keyIndex + 1}/${keys.length} · ${model}`;
+                    try {
+                        await this.streamAi(model, keys[keyIndex], controller.signal);
+                        this.aiKeyCursor = (keyIndex + 1) % keys.length; // next generate starts with the next key
+                        storage.set(AI_CURSOR_STORAGE, String(this.aiKeyCursor));
+                        lastError = '';
+                        break;
+                    } catch (err) {
+                        if (err.name === 'AbortError') { lastError = ''; break; }
+                        lastError = err.message;
+                        console.warn(`Percobaan ${tried} gagal (${this.aiStatus}):`, err.message);
+                        if (!err.retryable || this.aiOutput) break; // never restart a half-streamed answer
+                    }
+                }
+                if (lastError) this.aiError = `Gagal: ${lastError}${tried > 1 ? ` (sudah mencoba ${tried} kombinasi key/model)` : ''}`;
+            } finally {
+                this.aiLoading = false;
+                this.aiController = null;
+            }
+        },
+
+        /** One streaming request. Throws an Error with `.retryable` when another key/model is worth trying. */
+        async streamAi(model, apiKey, signal) {
+            const prompt = this.activePrompt;
+            const config = {};
+            if (prompt.ai_temperature !== undefined && prompt.ai_temperature !== '' && !Number.isNaN(Number(prompt.ai_temperature))) {
+                config.temperature = Number(prompt.ai_temperature);
+            }
+            if (String(prompt.ai_output).toLowerCase() === 'json') config.responseMimeType = 'application/json';
+
+            const body = { contents: [{ role: 'user', parts: [{ text: this.regularPromptRaw }] }] };
+            if (prompt.ai_system) body.systemInstruction = { parts: [{ text: prompt.ai_system }] };
+            if (Object.keys(config).length) body.generationConfig = config;
+
+            const res = await fetch(`${AI_ENDPOINT}/${encodeURIComponent(model)}:streamGenerateContent?alt=sse`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
+                body: JSON.stringify(body),
+                signal,
+            });
+            if (!res.ok) {
+                const detail = await res.json().catch(() => null);
+                const message = detail?.error?.message || `HTTP ${res.status}`;
+                throw Object.assign(new Error(message), { retryable: AI_RETRY_STATUS.includes(res.status) || /api key/i.test(message) });
+            }
+
+            const reader = res.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = '';
+            for (;;) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop();
+                for (const line of lines) {
+                    if (!line.startsWith('data:')) continue;
+                    const json = line.slice(5).trim();
+                    if (!json) continue;
+                    const chunk = JSON.parse(json);
+                    this.aiOutput += (chunk.candidates?.[0]?.content?.parts || []).map((p) => p.text || '').join('');
+                    this.$nextTick(() => { if (this.$refs.aiBody) this.$refs.aiBody.scrollTop = this.$refs.aiBody.scrollHeight; });
+                }
+            }
+            if (!this.aiOutput) {
+                throw Object.assign(new Error('AI tidak mengembalikan hasil (kemungkinan diblokir filter keamanan). Coba ubah prompt.'), { retryable: false });
+            }
+        },
+
+        /* ------------------------------------------------------------------
+           Regular prompt (form builder)
+           ------------------------------------------------------------------ */
+        get promptFields() {
+            const { raw_content: raw, variables_config: config } = this.activePrompt;
+            if (!raw) return [];
+
+            if (config) {
+                return Object.entries(config).map(([name, cfg]) => ({
+                    name,
+                    type: (cfg.type || 'text').toLowerCase(),
+                    label: cfg.label || name,
+                    placeholder: cfg.placeholder || `Pilih atau ketik ${name}...`,
+                    options: cfg.options || [],
+                    rows: cfg.rows || 3,
+                    default: cfg.default !== undefined ? cfg.default : '',
+                }));
+            }
+
+            return extractPlaceholders(raw).map((name) => ({
+                name,
+                type: 'text',
+                label: name.charAt(0).toUpperCase() + name.slice(1),
+                placeholder: `Masukkan ${name}...`,
+                options: [],
+                default: '',
+            }));
+        },
+
+        renderRegularPrompt(styled) {
+            return fillTemplate(this.activePrompt.raw_content || '', {
+                params: this.promptFields.map((f) => f.name),
+                values: this.promptVariables,
+                styled,
+            });
+        },
+
+        get regularPromptRendered() { return this.renderRegularPrompt(true); },
+        get regularPromptRaw() { return this.renderRegularPrompt(false); },
+
+        /* ------------------------------------------------------------------
+           Database prompt builder
+           ------------------------------------------------------------------ */
+        /** [VAR] names found in the current description (drives the customization form). */
+        get builderParams() { return extractPlaceholders(this.builderInput, BUILDER_RESERVED_KEYS); },
+        get builderFilledCount() { return this.builderParams.filter((name) => this.builderValues[name]).length; },
+
+        /** Fill [VAR] placeholders in any text with the customization form values. */
+        fillBuilderVars(text, styled = false) {
+            const params = extractPlaceholders(text, BUILDER_RESERVED_KEYS);
+            return fillTemplate(text || '', { params, values: this.builderValues, styled });
+        },
+
+        get builderInputResolved() { return this.fillBuilderVars(this.builderInput); },
+
+        get dbPromptRendered() {
+            const inputClass = this.builderParams.length ? HUMAN_INPUT_CLASS : HIGHLIGHT_CLASS;
+            const inputHtml = `<span class="${inputClass}">${this.fillBuilderVars(this.builderInput, true) || '[humanInput]'}</span>`;
+            return escapeHtml(this.activePrompt.raw_content || '').replace(HUMAN_INPUT_PATTERN, () => inputHtml);
+        },
+
+        /** Master prompt with [humanInput] replaced by the given (already resolved) description. */
+        buildMasterPrompt(input) {
+            return (this.activePrompt.raw_content || '').replace(HUMAN_INPUT_PATTERN, () => input);
+        },
+
+        get dbPromptRaw() { return this.buildMasterPrompt(this.builderInputResolved); },
+
+        /* ------------------------------------------------------------------
+           Batch generator: one master prompt per non-empty description line.
+           [VAR] placeholders use the builder's customization values.
+           ------------------------------------------------------------------ */
+        get batchItems() {
+            return this.batchInput
+                .split(/\r?\n/)
+                .map((line) => line.trim())
+                .filter(Boolean)
+                .map((description, id) => ({ id, description, prompt: this.buildMasterPrompt(this.fillBuilderVars(description)) }));
+        },
+
+        get batchOutput() {
+            const format = BATCH_FORMATS.find((f) => f.id === this.batchFormat) || BATCH_FORMATS[0];
+            return format.join(this.batchItems.map((item) => item.prompt));
+        },
+
+        /** True when the prompt ships a non-empty database. `database: false` (or none) hides the picker button. */
+        get hasDatabase() {
+            const db = this.activePrompt.database;
+            return !!db && typeof db === 'object' && Object.keys(db).length > 0;
+        },
+
+        get dbCategories() {
+            return ['all', ...Object.keys(this.activePrompt.database || {})];
+        },
+
+        get flattenedDatabase() {
+            const database = this.activePrompt.database || {};
+            const query = this.dbSearchQuery.toLowerCase().trim();
+
+            return Object.entries(database)
+                .filter(([category]) => this.selectedDbCategory === 'all' || category === this.selectedDbCategory)
+                .flatMap(([, items]) => (Array.isArray(items) ? items : []))
+                .filter((item) => !query || includesQuery(query, item.title, item.description));
+        },
+
+        selectDbItem(item) {
+            // JSON round-trip: structuredClone throws on Alpine's reactive Proxy objects.
+            this.selectedItem = JSON.parse(JSON.stringify(item));
+            this.builderInput = item.description;
+            this.builderImage = item.image;
+            this.builderValues = {};
+            this.dynamicInputs = {};
+            this.showDbPicker = false;
+        },
+
+        /** Read trimmed text from the clipboard; returns '' (after warning the user) when blocked. */
+        async readClipboard() {
+            try {
+                return (await navigator.clipboard.readText()).trim();
+            } catch (err) {
+                console.error('Gagal melakukan paste dari clipboard:', err);
+                alert('Tidak dapat mengakses clipboard. Pastikan browser mengizinkan akses clipboard atau gunakan shortcut Ctrl+V.');
+                return '';
+            }
+        },
+
+        async pasteClipboard() {
+            const text = await this.readClipboard();
+            if (text) this.builderInput = text;
+        },
+
+        async pasteBatch() {
+            const text = await this.readClipboard();
+            if (text) this.batchInput = text;
+        },
+
+        /* ------------------------------------------------------------------
+           Sub-prompts (description & image generators)
+           ------------------------------------------------------------------ */
+        /** Generator buttons to show: only types whose template exists (not missing, false or empty). */
+        get subModalButtons() { return SUB_MODAL_BUTTONS.filter(({ type }) => this.hasSubPrompt(type)); },
+
+        hasSubPrompt(type) {
+            const template = this.activePrompt[SUB_PROMPTS[type].field];
+            return typeof template === 'string' && template.trim() !== '';
+        },
+
+        get subConfig() { return SUB_PROMPTS[this.subModalType]; },
+        get subTemplate() { return this.activePrompt[this.subConfig.field] || ''; },
+        get subParams() { return extractPlaceholders(this.subTemplate, this.subConfig.reserved); },
+
+        /** Values for reserved placeholders such as [character] or [description]. */
+        get subReplacements() {
+            const input = this.builderInputResolved;
+            const item = this.selectedItem;
+            const isImage = this.subModalType === 'image';
+            const itemText = isImage ? item?.imagePrompt || item?.image_prompt || item?.description : item?.description;
+            const description = itemText ? this.fillBuilderVars(itemText) : input;
+
+            return {
+                character: item?.title || input,
+                target: input,
+                direction: input,
+                title: item?.title || '',
+                description,
+                input,
+                ...(isImage && { imageprompt: description }),
+            };
+        },
+
+        renderSubPrompt(styled) {
+            return fillTemplate(this.subTemplate, {
+                replacements: this.subReplacements,
+                params: this.subParams,
+                values: this.dynamicInputs,
+                prefix: this.subConfig.prefix,
+                styled,
+            });
+        },
+
+        get subRendered() { return this.subTemplate ? this.renderSubPrompt(true) : this.subConfig.emptyMessage; },
+        get subRaw() { return this.subTemplate ? this.renderSubPrompt(false) : ''; },
+
+        openSubModal(type) {
+            this.subModalType = type;
+            this.showSubModal = true;
+            this.copiedSub = false;
+        },
+
+        /* ------------------------------------------------------------------
+           Clipboard
+           ------------------------------------------------------------------ */
+        /** Readable size of a text (characters, words, estimated tokens). */
+        formatStats(text) { return formatTextStats(text); },
+
+        /**
+         * Copy text and flash a feedback flag for a moment.
+         * `token` is the value the flag is set to: true, or an item id when several buttons share one flag.
+         */
+        async copy(text, flag, token = true) {
+            try {
+                await navigator.clipboard.writeText(text);
+                this[flag] = token;
+                setTimeout(() => { if (this[flag] === token) this[flag] = false; }, COPY_FEEDBACK_MS);
+            } catch (err) {
+                console.error('Gagal menyalin ke clipboard:', err);
+            }
+        },
+    }));
+});
+</script>

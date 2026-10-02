@@ -18,6 +18,8 @@ dia melakukan monetisasi konten dengan cara memberi paywall atau penghalang agar
 
 sayapun mengide untuk mencobanya juga dan ternyata lumayan mudah
 
+mengisi data, vertifikasi identitas, dan melakukan pengajuan
+
 sempat curiga kenapa lama sekali diterimanya, mungkin karena pengaturan pembayaran belum di-isi
 
 bergegaslah saya melengkapi data pembayaran dengan menggunakan akun jenius yang masih aktif 

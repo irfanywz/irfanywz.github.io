@@ -2,7 +2,7 @@
 title: "Karakter Sprite Sheet"
 slug: "karakter-sprite-sheet"
 description: "Prompt builder untuk merancang urutan animasi (sprite sheet) berbagai aksi dan gerakan karakter kartun secara konsisten dalam satu kanvas bersih"
-image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
+#image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
 has_database: true
 default_input: "Character swinging a wooden sword downward with full anticipation, impact, and follow-through"
 desc_prompt: |
@@ -49,6 +49,11 @@ image_prompt: |
   [note]
 
 database:
+  "#Favorite":
+    - title: "Berjalan (Walk Cycle)"
+      description: "Pose 1 (Frame 1): The character stands in a contact position with the left leg extended forward making contact with the ground and the right leg trailing behind, while the opposite arms swing in coordination.   Pose 2 (Frame 13): The character reaches the passing position with the right leg lifted and passing forward beneath the body while the torso remains upright and balanced.   Pose 3 (Frame 25): The character transitions to the opposite contact position with the right leg extended forward on the ground and the left leg trailing, completing the cycle's stride mirror."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23065f46"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23a7f3d0" font-size="12" font-family="sans-serif">Walk</text></svg>'
+
   "Combat & Aksi":
     - title: "Ayunan Pedang (Sword Swing)"
       description: "Character swinging a wooden sword downward with full anticipation, impact, and follow-through"
@@ -57,15 +62,11 @@ database:
       description: "Character throwing a heavy punch with winding up, extension, and recovery pose"
       image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231e3a8a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23bfdbfe" font-size="12" font-family="sans-serif">Punch</text></svg>'
   "Gerakan & Animasi":
-    - title: "Berjalan (Walk Cycle)"
-      description: "Pose 1 (Frame 1): The character stands in a contact position with the left leg extended forward making contact with the ground and the right leg trailing behind, while the opposite arms swing in coordination.   Pose 2 (Frame 13): The character reaches the passing position with the right leg lifted and passing forward beneath the body while the torso remains upright and balanced.   Pose 3 (Frame 25): The character transitions to the opposite contact position with the right leg extended forward on the ground and the left leg trailing, completing the cycle's stride mirror."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23065f46"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23a7f3d0" font-size="12" font-family="sans-serif">Walk</text></svg>'
     - title: "Melompat (Jump Action)"
       description: "Character jumping sequence showing squat anticipation, take-off, apex peak, and landing"
       image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23581c87"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23e9d5ff" font-size="12" font-family="sans-serif">Jump</text></svg>'
 
-outputs:
-  - JSON
+outputs: ["JSON"]
 ---
 Use the attached character image as the **STRICT CHARACTER REFERENCE**.
 

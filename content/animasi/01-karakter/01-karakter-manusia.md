@@ -2,7 +2,7 @@
 title: "Karakter Manusia"
 slug: "karakter-manusia"
 description: "Prompt builder untuk merancang karakter manusia original baru"
-image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
+#image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
 has_database: true
 default_input: "A young cheerful guy with short messy dark hair, wearing a casual orange hoodie and blue jeans."
 desc_prompt: |
@@ -81,52 +81,18 @@ image_prompt: |
 
 
 database:
-  "Anak":
-    - title: "Raka"
-      description: "A 9-year-old Indonesian boy with a sharp playful face, short spiky black hair, and an active look, wearing a bright orange graphic t-shirt, comfortable shorts, and running sneakers."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23c2410c"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Raka</text></svg>'
-    - title: "Kirana"
-      description: "A 12-year-old Indonesian girl with a bright smile, round bright eyes, long hair in a braided style, wearing a pastel green hoodie, pleated skirt, and casual sneakers."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%2315803d"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Kirana</text></svg>'
-    - title: "Bimo"
-      description: "A 10-year-old Indonesian boy with a chubby cheerful face, short neat black hair, wearing a navy blue scout-style shirt, dark trousers, and sturdy school shoes."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231e3a8a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Bimo</text></svg>'
-    - title: "Alya"
-      description: "A 11-year-old Indonesian girl with an expressive energetic face, short bob hair with neat bangs, wearing a cheerful purple t-shirt, denim overalls, and colorful slip-ons."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%237e22ce"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Alya</text></svg>'
+  "#Favorite":
 
-  "Muda":
-    - title: "Dimas"
-      description: "A 28-year-old Indonesian man with a creative hipster vibe, wavy medium hair, light stubble beard, wearing a flannel overshirt, plain white t-shirt, slim-fit jeans, and leather boots."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230f766e"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Dimas</text></svg>'
-    - title: "Maya"
-      description: "A 26-year-old Indonesian woman with a modern professional style, shoulder-length sleek black hair, confident expression, wearing a stylish blazer, smart casual trousers, and loafers."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%234338ca"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Maya</text></svg>'
-    - title: "Rizky"
-      description: "A 24-year-old Indonesian man with a sporty athletic build, short fade haircut, energetic look, wearing a minimalist sporty jacket, sweatpants, and stylish running shoes."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23b91c1c"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Rizky</text></svg>'
-    - title: "Siti"
-      description: "A 25-year-old Indonesian woman with a calm artistic aura, long wavy hair tied back loosely, wearing an elegant pastel tunic, comfortable loose pants, and flat sandals."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23be185d"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Siti</text></svg>'
-    - title: "Reza"
-      description: "A 27-year-old Indonesian man with a casual urban look, messy dark hair, subtle smiling expression, wearing a dark hoodie, tapered cargo pants, and skate shoes."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23334155"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Reza</text></svg>'
+    - title: "Tahanan"
+      description: "A lean, mature male prisoner with a rectangular face, curly shoulder-length hair, a thin goatee, and deep brown skin, wearing a bright orange long-sleeve jumpsuit with a collared neck, a front zipper, black \"TAHANAN PULICI\" text printed on the left chest, and completely bare feet."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%236C8C1E"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Tahanan</text></svg>' 
+         
+    - title: "Polisi"
+      description: "A lean, mature male Indonesian police officer with a rectangular face, short curly black hair, a thin mustache, and deep brown skin, wearing a short-sleeve grey tactical uniform button-down shirt with shoulder insignia and dual chest pockets, a black tactical belt, dark trousers, and completely bare feet."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23B69624"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Polisi</text></svg>'
 
-  "Ibu & Bapak":
-    - title: "Pak Slamet"
-      description: "A 53-year-old Indonesian man with a kind grandfatherly face, neatly combed white-streaked hair, wearing a traditional batik shirt, dark formal trousers, and leather slip-ons."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23854d0e"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Slamet</text></svg>'
-    - title: "Bu Sri"
-      description: "A 49-year-old Indonesian woman with a warm hospitable smile, tied-back dark hair with gentle gray streaks, wearing a floral patterned blouse, long skirt, and comfortable walking shoes."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%239a3412"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Sri</text></svg>'
-    - title: "Pak Joko"
-      description: "A 56-year-old Indonesian man with a strong build, sharp friendly eyes, short graying hair, wearing a simple polo shirt, relaxed trousers, and classic everyday sandals."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231e293b"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Joko</text></svg>'
-    - title: "Bu Ratna"
-      description: "A 51-year-old Indonesian woman with a neat graceful appearance, short styled black hair, wearing a classic pastel blouse, elegant trousers, and low-heeled formal shoes."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23047857"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Ratna</text></svg>'                     
-outputs:
-  - JSON
+
+outputs: ["JSON"]
 ---
 Use the attached image as the **STRICT STYLE REFERENCE ONLY**.
 

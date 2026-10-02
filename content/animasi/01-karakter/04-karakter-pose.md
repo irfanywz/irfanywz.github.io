@@ -2,7 +2,7 @@
 title: "Karakter Pose"
 slug: "karakter-pose"
 description: "Prompt builder untuk merancang variasi pose karakter kartun original baru"
-image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
+#image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
 has_database: true
 default_input: "A natural standing pose."
 desc_prompt: |
@@ -68,6 +68,52 @@ image_prompt: |
 
 
 database:
+  "#Favorite":
+    - title: "Berdiri Natural"
+      description: "Standing upright in a relaxed natural pose with arms hanging loosely at the sides and feet slightly apart."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231f2937"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%2393c5fd" font-size="12" font-family="sans-serif">Stand</text></svg>'
+      
+    - title: "Diikat ke Bangku"
+      description: "Sitting upright on a chair with hands bound together and torso tied tightly with rope."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23450a0a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fca5a5" font-size="12" font-family="sans-serif">Bound</text></svg>'
+
+    - title: "Megang Roko Sambil Rogoh Kantong"
+      description: "Standing casually with one hand in his pocket and a cigarette held in the OTHER hand."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23374151"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23e5e7eb" font-size="12" font-family="sans-serif">Smoke</text></svg>'
+
+    - title: "Nunjuk ke Kiri"
+      description: "Standing upright with one arm extended sideways and index finger pointing forward."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231e3a8a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23bfdbfe" font-size="12" font-family="sans-serif">Point</text></svg>'
+
+    - title: "Tangan Berbicara"
+      description: "The character stands upright with a slight forward lean, gesturing mid-air with one open hand while the other rests loosely at their side."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23065f46"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23d1fae5" font-size="12" font-family="sans-serif">Talk</text></svg>'
+
+    - title: "Tangan Melambai"
+      description: "One hand waves near the shoulder with fingers slightly spread while the other arm hangs loosely, standing with a relaxed open stance and a slight tilt of the upper body to one side."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230e7490"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23cffafe" font-size="12" font-family="sans-serif">Wave</text></svg>'
+
+    - title: "Tangan Garuk Kepala"
+      description: "Standing upright with one arm bent and hand placed on the back of the head."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23b45309"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fde68a" font-size="12" font-family="sans-serif">Scratch</text></svg>'
+
+    - title: "Megang HP Dua Tangan"
+      description: "Holding a smartphone in both hands with arms bent and looking down at the screen."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%234c1d95"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ddd6fe" font-size="12" font-family="sans-serif">Phone</text></svg>'
+
+    - title: "Megang HP Garuk Kepala"
+      description: "Holding a smartphone in one hand and placing the other hand on the head."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%237c2d12"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fed7aa" font-size="12" font-family="sans-serif">Phone+</text></svg>'
+
+    - title: "Lagi Calling"
+      description: "Holding a smartphone up to the ear with a bent arm."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%2314532d"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23bbf7d0" font-size="12" font-family="sans-serif">Call</text></svg>'
+
+    - title: "Calling Pegang Kepala"
+      description: "Holding a smartphone up to the ear with a bent arm and other hand placed on the back of the head."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23a21caf"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fae8ff" font-size="12" font-family="sans-serif">Call+</text></svg>'
+
+
   "Pose Dasar":
     - title: "Berdiri Natural"
       description: "Standing upright in a relaxed natural pose with arms hanging loosely at the sides and feet slightly apart."
@@ -105,47 +151,9 @@ database:
     - title: "Berdiri Menyandar"
       description: "Standing with the back leaning against a surface, one leg crossed over the other, and arms folded or relaxed."
       image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%2314532d"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23bbf7d0" font-size="12" font-family="sans-serif">Lean</text></svg>'
-  "Example":
-    - title: "Running Fast"
-      description: "Running energetically forward with arms swinging and a dynamic leaning posture."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231f2937"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%2393c5fd" font-size="12" font-family="sans-serif">Run</text></svg>'
-    - title: "Berdiri Natural"
-      description: "Standing upright in a relaxed natural pose with arms hanging loosely at the sides and feet slightly apart."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231f2937"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%2393c5fd" font-size="12" font-family="sans-serif">Stand</text></svg>'
-    - title: "Diikat ke Bangku"
-      description: "Sitting upright on a chair with hands bound together and torso tied tightly with rope."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23450a0a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fca5a5" font-size="12" font-family="sans-serif">Bound</text></svg>'
-    - title: "Megang Roko Sambil Rogoh Kantong"
-      description: "Standing casually with one hand in his pocket and a cigarette held in the OTHER hand."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23374151"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23e5e7eb" font-size="12" font-family="sans-serif">Smoke</text></svg>'
-    - title: "Nunjuk ke Kiri"
-      description: "Standing upright with one arm extended sideways and index finger pointing forward."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231e3a8a"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23bfdbfe" font-size="12" font-family="sans-serif">Point</text></svg>'
-    - title: "Tangan Berbicara"
-      description: "The character stands upright with a slight forward lean, gesturing mid-air with one open hand while the other rests loosely at their side."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23065f46"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23d1fae5" font-size="12" font-family="sans-serif">Talk</text></svg>'
-    - title: "Tangan Melambai"
-      description: "One hand waves near the shoulder with fingers slightly spread while the other arm hangs loosely, standing with a relaxed open stance and a slight tilt of the upper body to one side."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230e7490"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23cffafe" font-size="12" font-family="sans-serif">Wave</text></svg>'
-    - title: "Tangan Garuk Kepala"
-      description: "Standing upright with one arm bent and hand placed on the back of the head."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23b45309"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fde68a" font-size="12" font-family="sans-serif">Scratch</text></svg>'
-    - title: "Megang HP Dua Tangan"
-      description: "Holding a smartphone in both hands with arms bent and looking down at the screen."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%234c1d95"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ddd6fe" font-size="12" font-family="sans-serif">Phone</text></svg>'
-    - title: "Megang HP Garuk Kepala"
-      description: "Holding a smartphone in one hand and placing the other hand on the head."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%237c2d12"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fed7aa" font-size="12" font-family="sans-serif">Phone+</text></svg>'
-    - title: "Lagi Calling"
-      description: "Holding a smartphone up to the ear with a bent arm."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%2314532d"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23bbf7d0" font-size="12" font-family="sans-serif">Call</text></svg>'
-    - title: "Calling Pegang Kepala"
-      description: "Holding a smartphone up to the ear with a bent arm and other hand placed on the back of the head."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23a21caf"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fae8ff" font-size="12" font-family="sans-serif">Call+</text></svg>'
 
 
-outputs:
-  - JSON
+outputs: ["JSON"]
 ---
 Use the attached character image as the **STRICT CHARACTER REFERENCE**.
 

@@ -2,7 +2,7 @@
 title: "Background Decor Remover"
 slug: "background-decor-remover"
 description: "Prompt builder untuk membersihkan seluruh dekorasi, properti, furnitur, dan objek lepas dari background animasi 2D, menyisakan struktur arsitektur dasar yang bersih dan kosong"
-image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
+#image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
 has_database: false
 
 variables_config:
@@ -12,8 +12,7 @@ variables_config:
     placeholder: ""
     default: "Remove all loose objects, paintings, furniture, and clutter from the room, leaving only the bare structural interior."
 
-outputs:
-  - JSON
+outputs: ["JSON"]
 ---
 Use the attached image as the STRICT ENVIRONMENT REFERENCE.
 

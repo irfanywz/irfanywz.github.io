@@ -10,6 +10,7 @@
       {{- range $index, $sec := $sections -}}
       {
         "category": {{ path.Base $sec.File.Dir | jsonify }},
+        "slug": {{ $sec.Slug | jsonify }},
         "category_title": {{ $sec.Title | jsonify }},
         "prompts": [
           {{- /* Mengurutkan halaman berdasarkan nama file markdown (.File.LogicalName) */ -}}
@@ -17,6 +18,7 @@
           {{- range $pIndex, $page := $sortedPages -}}
           {
             "title": {{ $page.Title | jsonify }},
+            "slug": {{ $page.Slug | jsonify }},
             "description": {{ $page.Description | jsonify }},
             "image": {{ $page.Params.image | jsonify }},
             "json_url": {{ ($page.OutputFormats.Get "JSON").RelPermalink | jsonify }}

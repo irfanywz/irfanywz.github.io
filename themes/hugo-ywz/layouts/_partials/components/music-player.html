@@ -1,12 +1,19 @@
-<div x-data="musicPlayerApp()" class="relative">
-    
-    <!-- Tombol Trigger / Floating Button untuk membuka pemutar musik -->
-    <button @click="musicModalOpen = true" class="w-10 h-10 rounded-xl bg-purple-600 hover:bg-purple-700 text-white flex items-center justify-center transition-all shadow-sm cursor-pointer" title="Buka Playlist Musik">
+<div x-data="musicPlayerApp()" @keydown.escape.window="musicModalOpen = false" class="relative">
+
+    <!-- ============================================================
+         Trigger button
+         ============================================================ -->
+    <button @click="musicModalOpen = true"
+            class="w-10 h-10 rounded-xl bg-purple-600 hover:bg-purple-700 text-white flex items-center justify-center transition-all shadow-sm cursor-pointer"
+            title="Buka Playlist Musik">
         <span class="icon-[ri--headphone-line] w-5 h-5"></span>
     </button>
 
-    <!-- Modal Musik Mandiri -->
+    <!-- ============================================================
+         Modal
+         ============================================================ -->
     <div x-show="musicModalOpen" class="fixed inset-0 z-50 overflow-hidden" style="display: none;">
+
         <!-- Backdrop -->
         <div x-show="musicModalOpen"
              x-transition:enter="transition-opacity ease-out duration-300"
@@ -18,7 +25,7 @@
              @click="musicModalOpen = false"
              class="absolute inset-0 bg-black/50 backdrop-blur-xs"></div>
 
-        <!-- Modal Box -->
+        <!-- Modal box -->
         <div x-show="musicModalOpen"
              x-transition:enter="transition-transform ease-out duration-300"
              x-transition:enter-start="translate-y-full"
@@ -27,8 +34,8 @@
              x-transition:leave-start="translate-y-0"
              x-transition:leave-end="translate-y-full"
              class="absolute bottom-0 left-0 right-0 md:w-11/12 lg:w-4/5 md:mx-auto h-[92vh] max-h-[750px] bg-white dark:bg-gray-900 rounded-t-3xl shadow-2xl flex flex-col overflow-hidden">
-            
-            <!-- Header Modal & Search -->
+
+            <!-- ---------- Header: title, search, close ---------- -->
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 z-10 flex items-center justify-between gap-4 flex-shrink-0">
                 <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
                     <span class="icon-[ri--headphone-line] w-5 h-5 text-indigo-500"></span>
@@ -36,47 +43,50 @@
                 </h3>
 
                 <div class="flex items-center gap-3">
-                    <!-- Search Bar -->
                     <div class="relative w-48 sm:w-72">
                         <span class="icon-[ri--search-line] absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></span>
-                        <input type="text" x-model="musicSearch" placeholder="Cari lagu / artis..." 
-                            class="w-full pl-10 pr-9 py-1.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <input type="text" x-model="musicSearch" placeholder="Cari lagu / artis..."
+                               class="w-full pl-10 pr-9 py-1.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none">
                         <button x-show="musicSearch.length > 0" @click="musicSearch = ''" style="display: none;"
-                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                             <span class="icon-[ri--close-circle-fill] w-4 h-4"></span>
                         </button>
                     </div>
 
-                    <button @click="musicModalOpen = false" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer flex-shrink-0">
+                    <button @click="musicModalOpen = false"
+                            class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer flex-shrink-0">
                         <span class="icon-[ri--close-line] w-6 h-6"></span>
                     </button>
                 </div>
             </div>
 
-            <!-- Layout Utama Horizontal (Desktop Style) -->
+            <!-- ---------- Body: player panel (left) + track list (right) ---------- -->
             <div class="flex-1 min-h-0 flex flex-col md:flex-row overflow-hidden bg-gray-50/50 dark:bg-gray-950/50">
-                
-                <!-- Sisi Kiri: Active Player Panel (Fixed & Sticky, Tidak Ikut Scroll) -->
+
+                <!-- ===== Left: active player (does not scroll) ===== -->
                 <div class="w-full md:w-5/12 lg:w-4/12 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 p-6 flex flex-col items-center justify-between relative overflow-hidden border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-800 flex-shrink-0">
+
+                    <!-- Blurred cover as background -->
                     <div class="absolute inset-0 opacity-30 pointer-events-none">
-                        <img :src="currentTrack.cover" class="lazyload w-full h-full object-cover blur-3xl scale-150 transition-all duration-1000">
+                        <img x-show="currentTrack.cover" :src="currentTrack.cover" alt=""
+                             class="w-full h-full object-cover blur-3xl scale-150 transition-all duration-1000">
                     </div>
-                    
-                    <!-- Top Space / Kosong untuk seimbang -->
+
+                    <!-- Spacer to vertically balance the content on desktop -->
                     <div class="hidden md:block"></div>
 
-                    <!-- Main Player Content -->
                     <div class="relative z-10 w-full flex flex-col items-center my-auto">
-                        <!-- Album Cover -->
-                        <div class="relative w-36 h-36 sm:w-52 sm:h-52 rounded-2xl shadow-xl overflow-hidden mb-4 ring-1 ring-white/10 group flex-shrink-0">
-                            <template x-if="playlist.length > 0">
-                                <img :src="currentTrack.cover" alt="Album Cover" class="lazyload w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                            </template>
+
+                        <!-- Album cover -->
+                        <div class="relative w-36 h-36 sm:w-52 sm:h-52 rounded-2xl shadow-xl overflow-hidden mb-4 ring-1 ring-white/10 group flex-shrink-0 bg-gray-300 dark:bg-gray-700 flex items-center justify-center">
+                            <span x-show="!currentTrack.cover" class="icon-[ri--music-2-line] text-5xl text-gray-400"></span>
+                            <img x-show="currentTrack.cover" :src="currentTrack.cover" alt="Album Cover"
+                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         </div>
 
-                        <!-- Judul & Artis -->
+                        <!-- Title & artist -->
                         <div class="text-center w-full mb-4 px-2">
-                            <template x-if="playlist.length > 0">
+                            <template x-if="hasTracks">
                                 <div>
                                     <h4 class="text-base sm:text-lg font-bold truncate text-gray-900 dark:text-white" x-text="currentTrack.title"></h4>
                                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium truncate" x-text="currentTrack.artist"></p>
@@ -84,7 +94,7 @@
                             </template>
                         </div>
 
-                        <!-- Progress Bar -->
+                        <!-- Progress bar -->
                         <div class="w-full mb-4 group px-2">
                             <div @click="seek($event)" class="bg-gray-300 dark:bg-gray-700/50 rounded-full h-1.5 cursor-pointer overflow-hidden relative">
                                 <div class="bg-indigo-500 h-full rounded-full relative" :style="`width: ${progress}%`"></div>
@@ -95,253 +105,359 @@
                             </div>
                         </div>
 
-                        <!-- Tombol Kontrol Utama -->
+                        <!-- Transport controls -->
                         <div class="flex flex-col items-center gap-3 w-full px-2">
                             <div class="flex items-center justify-center gap-4">
-                                <button @click="toggleShuffle()" class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors p-2 rounded-full cursor-pointer" :class="isShuffled ? '!text-indigo-500' : ''">
+                                <button @click="toggleShuffle()"
+                                        class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors p-2 rounded-full cursor-pointer"
+                                        :class="isShuffled && '!text-indigo-500'">
                                     <span class="icon-[ri--shuffle-fill] text-lg"></span>
                                 </button>
                                 <button @click="prevTrack()" class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors p-2 rounded-full cursor-pointer">
                                     <span class="icon-[ri--skip-back-fill] text-xl"></span>
                                 </button>
-                                <button @click="togglePlay()" class="w-12 h-12 flex items-center justify-center bg-indigo-600 hover:bg-indigo-500 rounded-full text-white shadow-md transition-all active:scale-95 disabled:opacity-70 cursor-pointer" :disabled="isLoadingAPI">
+                                <button @click="togglePlay()" :disabled="isLoadingAPI"
+                                        class="w-12 h-12 flex items-center justify-center bg-indigo-600 hover:bg-indigo-500 rounded-full text-white shadow-md transition-all active:scale-95 disabled:opacity-70 cursor-pointer">
                                     <span x-show="isLoadingAPI" class="icon-[ri--loader-4-line] animate-spin text-2xl"></span>
                                     <span x-show="!isLoadingAPI" :class="isPlaying ? 'icon-[ri--pause-fill]' : 'icon-[ri--play-fill]'" class="text-2xl ml-0.5"></span>
                                 </button>
                                 <button @click="nextTrack()" class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors p-2 rounded-full cursor-pointer">
                                     <span class="icon-[ri--skip-forward-fill] text-xl"></span>
                                 </button>
-                                <button @click="toggleLoop()" class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors p-2 rounded-full cursor-pointer" :class="loopMode > 0 ? '!text-indigo-500' : ''">
-                                    <span :class="loopMode === 2 ? 'icon-[ri--repeat-one-fill]' : (loopMode === 1 ? 'icon-[ri--repeat-2-fill]' : 'icon-[ri--repeat-2-line]')" class="text-lg"></span>
+                                <button @click="toggleLoop()"
+                                        class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors p-2 rounded-full cursor-pointer"
+                                        :class="loopMode !== LOOP.OFF && '!text-indigo-500'">
+                                    <span :class="loopIconClass" class="text-lg"></span>
                                 </button>
                             </div>
 
-                            <!-- Kontrol Volume & Mute -->
+                            <!-- Volume -->
                             <div class="flex items-center gap-2.5 w-full max-w-xs mt-1 px-2">
                                 <button @click="toggleMute()" class="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">
-                                    <span :class="isMuted || volume === 0 ? 'icon-[ri--volume-mute-fill]' : (volume < 50 ? 'icon-[ri--volume-down-fill]' : 'icon-[ri--volume-up-fill]')" class="text-lg"></span>
+                                    <span :class="volumeIconClass" class="text-lg"></span>
                                 </button>
-                                <input type="range" min="0" max="100" x-model.number="volume" @input="setVolume(volume)" 
-                                    class="w-full h-1.5 bg-gray-300 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-indigo-600">
+                                <input type="range" min="0" max="100" :value="volume" @input="setVolume(+$event.target.value)"
+                                       class="w-full h-1.5 bg-gray-300 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-indigo-600">
                                 <span class="text-[10px] font-mono text-gray-500 dark:text-gray-400 w-7 text-right" x-text="volume + '%'"></span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Sisi Kanan: List Lagu (Hanya bagian ini yang memiliki Scrollbar Mandiri) -->
+                <!-- ===== Right: track list (only this part scrolls) ===== -->
                 <div class="w-full md:w-7/12 lg:w-8/12 p-4 sm:p-6 overflow-y-auto space-y-2.5 flex-1">
                     <div class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3 px-1">
                         Daftar Putar (<span x-text="filteredPlaylist.length"></span> Lagu)
                     </div>
 
                     <template x-for="track in filteredPlaylist" :key="track.youtubeId">
-                        <div class="group p-3 rounded-xl cursor-pointer transition flex items-center justify-between gap-3 border shadow-2xs"
-                             @click="playTrackDirect(track)"
-                             :class="currentTrack.youtubeId === track.youtubeId ? 'bg-indigo-50 dark:bg-indigo-500/10 border-indigo-200 dark:border-indigo-500/30' : 'bg-white dark:bg-gray-900 border-transparent hover:bg-gray-50 dark:hover:bg-gray-800/60'">
-                            
+                        <div @click="playTrackById(track.youtubeId)"
+                             class="group p-3 rounded-xl cursor-pointer transition flex items-center justify-between gap-3 border shadow-2xs"
+                             :class="isCurrent(track)
+                                ? 'bg-indigo-50 dark:bg-indigo-500/10 border-indigo-200 dark:border-indigo-500/30'
+                                : 'bg-white dark:bg-gray-900 border-transparent hover:bg-gray-50 dark:hover:bg-gray-800/60'">
+
                             <div class="flex items-center gap-3.5 min-w-0">
-                                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiLz4=" :data-src="track.cover" class="lazyload w-11 h-11 rounded-lg object-cover flex-shrink-0 shadow-xs bg-gray-200 dark:bg-gray-800">
+                                <!-- Thumbnail: native lazy loading + fallback icon when missing/broken -->
+                                <div x-data="{ failed: false }"
+                                     class="w-11 h-11 rounded-lg flex-shrink-0 shadow-xs overflow-hidden bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
+                                    <img x-show="track.cover && !failed"
+                                         :src="track.cover" @error="failed = true"
+                                         loading="lazy" decoding="async" alt=""
+                                         class="w-full h-full object-cover">
+                                    <span x-show="!track.cover || failed" class="icon-[ri--music-2-line] text-lg text-gray-400"></span>
+                                </div>
+
                                 <div class="min-w-0">
-                                    <p class="text-xs sm:text-sm font-semibold truncate" :class="currentTrack.youtubeId === track.youtubeId ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-800 dark:text-gray-200'" x-text="track.title"></p>
+                                    <p class="text-xs sm:text-sm font-semibold truncate"
+                                       :class="isCurrent(track) ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-800 dark:text-gray-200'"
+                                       x-text="track.title"></p>
                                     <div class="flex items-center gap-2 mt-1">
                                         <span class="text-[9px] px-1.5 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-medium" x-text="track.categoryTitle"></span>
                                         <span class="text-[11px] text-gray-400 truncate" x-text="track.artist"></span>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex-shrink-0 pr-1">
-                                <span :class="currentTrack.youtubeId === track.youtubeId && isPlaying ? 'icon-[ri--pause-circle-line] text-indigo-600 dark:text-indigo-400' : 'icon-[ri--play-circle-line]'" class="text-2xl"></span>
+                                <span :class="isCurrent(track) && isPlaying ? 'icon-[ri--pause-circle-line] text-indigo-600 dark:text-indigo-400' : 'icon-[ri--play-circle-line]'" class="text-2xl"></span>
                             </div>
                         </div>
                     </template>
-                    
+
                     <template x-if="filteredPlaylist.length === 0">
                         <div class="text-center py-12 text-gray-400 text-xs">
                             Lagu atau artis yang kamu cari tidak ditemukan.
                         </div>
                     </template>
                 </div>
-
             </div>
         </div>
 
-        <!-- Hidden YouTube Player Engine -->
+        <!-- Hidden YouTube player engine -->
         <div id="youtube-player" class="absolute -top-full -left-full"></div>
     </div>
 </div>
 
 <script>
 document.addEventListener('alpine:init', () => {
+
+    // ------------------------------------------------------------------
+    // Configuration
+    // ------------------------------------------------------------------
+    const CONFIG = Object.freeze({
+        playlistUrl: '{{ "playlist-music/index.json" | relURL }}',
+        storageKey: 'musicPlayerSettings',
+        youtubeApiSrc: 'https://www.youtube.com/iframe_api',
+        youtubeScriptId: 'yt-api-script',
+        playerElementId: 'youtube-player',
+        defaultVolume: 80,
+        progressIntervalMs: 500,
+    });
+
+    const LOOP = Object.freeze({ OFF: 0, ALL: 1, ONE: 2 });
+
+    // ------------------------------------------------------------------
+    // Pure helpers (no component state)
+    // ------------------------------------------------------------------
+
+    /** Flatten categories into one track list, with precomputed search text. */
+    function flattenCategories(categories) {
+        return categories.flatMap(cat =>
+            (cat.playlist || []).map(track => ({
+                ...track,
+                categoryTitle: cat.category_title,
+                searchText: [track.title, track.artist, cat.category_title]
+                    .filter(Boolean).join(' ').toLowerCase(),
+            }))
+        );
+    }
+
+    /** Fisher–Yates shuffle; returns a new array. */
+    function shuffled(items) {
+        const copy = [...items];
+        for (let i = copy.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+    }
+
+    function formatTime(seconds) {
+        if (!seconds || isNaN(seconds)) return '0:00';
+        const date = new Date(seconds * 1000);
+        return `${date.getUTCMinutes()}:${String(date.getUTCSeconds()).padStart(2, '0')}`;
+    }
+
+    // ------------------------------------------------------------------
+    // Component
+    // ------------------------------------------------------------------
     Alpine.data('musicPlayerApp', () => ({
-        musicCategories: [],
+        LOOP,
+
+        // --- UI state ---
         musicModalOpen: false,
         musicSearch: '',
-        
-        playlist: [],
-        originalPlaylist: [],
-        loopMode: 0, 
-        autoPlayOnReady: false,
         isLoadingAPI: false,
-        isShuffled: false,
-        volume: 80,
+
+        // --- Playlist state ---
+        originalPlaylist: [],   // canonical order
+        playlist: [],           // current play order (may be shuffled)
+        currentTrackIndex: 0,
+
+        // --- Playback settings (persisted) ---
+        volume: CONFIG.defaultVolume,
+        previousVolume: CONFIG.defaultVolume,
         isMuted: false,
-        previousVolume: 80,
+        loopMode: LOOP.OFF,
+        isShuffled: false,
+
+        // --- Playback state ---
         player: null,
         playerReady: false,
-        currentTrackIndex: 0,
+        autoPlayOnReady: false,
         isPlaying: false,
         duration: 0,
         currentTime: 0,
         progress: 0,
         progressTimer: null,
+        consecutiveErrors: 0,
+
+        // ==============================================================
+        // Lifecycle
+        // ==============================================================
+        async init() {
+            this.loadSettings();
+            await this.loadPlaylist();
+            if (this.isShuffled) this.playlist = shuffled(this.originalPlaylist);
+        },
+
+        destroy() {
+            this.stopProgressTimer();
+            if (this.player && typeof this.player.destroy === 'function') this.player.destroy();
+        },
+
+        async loadPlaylist() {
+            try {
+                const res = await fetch(CONFIG.playlistUrl);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                this.originalPlaylist = flattenCategories(data?.categories || []);
+                this.playlist = [...this.originalPlaylist];
+            } catch (e) {
+                console.error('Gagal memuat playlist:', e);
+            }
+        },
+
+        // ==============================================================
+        // Derived state
+        // ==============================================================
+        get hasTracks() {
+            return this.playlist.length > 0;
+        },
 
         get currentTrack() {
             return this.playlist[this.currentTrackIndex] || {};
         },
 
-        async init() {
-            try {
-                let res = await fetch('{{ "playlist-music/index.json" | relURL }}');
-                if (res.ok) {
-                    let data = await res.json();
-                    if (data && data.categories) {
-                        this.musicCategories = data.categories;
-                        
-                        let allTracks = [];
-                        this.musicCategories.forEach(cat => {
-                            if (cat.playlist) {
-                                cat.playlist.forEach(track => {
-                                    allTracks.push({
-                                        ...track,
-                                        categoryTitle: cat.category_title
-                                    });
-                                });
-                            }
-                        });
-                        this.playlist = allTracks;
-                        this.originalPlaylist = JSON.parse(JSON.stringify(this.playlist));
-                    }
-                }
-            } catch (e) {
-                console.error("Gagal memuat playlist:", e);
-            }
-            this.loadSettings();
-
-            // Watcher otomatis untuk Lazy Load gambar
-            this.$watch('musicModalOpen', (value) => {
-                if (value) this.triggerDefer();
-            });
-            this.$watch('musicSearch', () => {
-                this.triggerDefer();
-            });
-        },
-
-        triggerDefer() {
-            setTimeout(() => {
-                if (window.Defer && typeof Defer.dom === 'function') {
-                    Defer.dom('.lazyload', 0, 'loaded', function(node) {
-                        if (node.dataset.src) {
-                            node.src = node.dataset.src;
-                            node.removeAttribute('data-src');
-                        }
-                    }, { rootMargin: '200px' });
-                }
-            }, 150);
-        },
-
         get filteredPlaylist() {
-            let query = (this.musicSearch || '').toLowerCase();
+            const query = this.musicSearch.trim().toLowerCase();
             if (!query) return this.playlist;
-            
-            return this.originalPlaylist.filter(track => {
-                return (track.title && track.title.toLowerCase().includes(query)) || 
-                       (track.artist && track.artist.toLowerCase().includes(query)) ||
-                       (track.categoryTitle && track.categoryTitle.toLowerCase().includes(query));
-            });
+            return this.playlist.filter(track => track.searchText.includes(query));
         },
 
-        playTrackDirect(track) {
-            let index = this.playlist.findIndex(t => t.youtubeId === track.youtubeId);
-            if (index !== -1) {
-                this.playTrack(index);
-            }
+        get volumeIconClass() {
+            if (this.isMuted || this.volume === 0) return 'icon-[ri--volume-mute-fill]';
+            return this.volume < 50 ? 'icon-[ri--volume-down-fill]' : 'icon-[ri--volume-up-fill]';
         },
 
+        get loopIconClass() {
+            if (this.loopMode === LOOP.ONE) return 'icon-[ri--repeat-one-fill]';
+            return this.loopMode === LOOP.ALL ? 'icon-[ri--repeat-2-fill]' : 'icon-[ri--repeat-2-line]';
+        },
+
+        isCurrent(track) {
+            return this.currentTrack.youtubeId === track.youtubeId;
+        },
+
+        formatTime,
+
+        // ==============================================================
+        // YouTube engine
+        // ==============================================================
         initYoutube() {
             if (window.YT && window.YT.Player) {
                 this.setupPlayer();
                 return;
             }
-            if (document.getElementById('yt-api-script')) return;
+            if (document.getElementById(CONFIG.youtubeScriptId)) return; // already loading
+
+            // Preserve any other callback registered on the page.
+            const previousCallback = window.onYouTubeIframeAPIReady;
+            window.onYouTubeIframeAPIReady = () => {
+                if (typeof previousCallback === 'function') previousCallback();
+                this.setupPlayer();
+            };
 
             const tag = document.createElement('script');
-            tag.id = 'yt-api-script';
-            tag.src = "https://www.youtube.com/iframe_api";
+            tag.id = CONFIG.youtubeScriptId;
+            tag.src = CONFIG.youtubeApiSrc;
             document.head.appendChild(tag);
-
-            window.onYouTubeIframeAPIReady = () => this.setupPlayer();
         },
 
         setupPlayer() {
-            if (this.playlist.length === 0 || this.player) return;
-            this.player = new YT.Player('youtube-player', {
+            if (!this.hasTracks || this.player) return;
+            this.player = new YT.Player(CONFIG.playerElementId, {
                 height: '0',
                 width: '0',
-                videoId: this.currentTrack.youtubeId,
-                playerVars: { 'playsinline': 1 },
+                playerVars: { playsinline: 1 },
                 events: {
-                    'onReady': (e) => {
-                        this.playerReady = true;
-                        this.isLoadingAPI = false;
-                        this.player.setVolume(this.isMuted ? 0 : this.volume);
-                        if (this.autoPlayOnReady) {
-                            this.player.playVideo();
-                            this.autoPlayOnReady = false;
-                        }
-                    },
-                    'onStateChange': (e) => {
-                        if (e.data === YT.PlayerState.PLAYING) {
-                            this.isPlaying = true;
-                            this.duration = this.player.getDuration();
-                            this.startProgressTimer();
-                        } else {
-                            this.isPlaying = false;
-                            this.stopProgressTimer();
-                        }
-                        if (e.data === YT.PlayerState.ENDED) {
-                            if (this.loopMode === 2) {
-                                this.player.seekTo(0);
-                                this.player.playVideo();
-                            } else if (this.loopMode === 1 || this.currentTrackIndex < this.playlist.length - 1) {
-                                this.nextTrack();
-                            } else {
-                                this.isPlaying = false;
-                                this.stopProgressTimer();
-                            }
-                        }
-                    }
-                }
+                    onReady: () => this.onPlayerReady(),
+                    onStateChange: (e) => this.onPlayerStateChange(e),
+                    onError: () => this.onPlayerError(),
+                },
             });
         },
 
+        onPlayerReady() {
+            this.playerReady = true;
+            this.isLoadingAPI = false;
+            this.applyVolume();
+            if (this.autoPlayOnReady) {
+                this.autoPlayOnReady = false;
+                // Load whichever track is selected *now*, not when the player was created.
+                this.loadCurrentTrack();
+            }
+        },
+
+        onPlayerStateChange({ data }) {
+            if (data === YT.PlayerState.PLAYING) {
+                this.isPlaying = true;
+                this.consecutiveErrors = 0;
+                this.duration = this.player.getDuration();
+                this.startProgressTimer();
+            } else {
+                this.isPlaying = false;
+                this.stopProgressTimer();
+            }
+
+            if (data === YT.PlayerState.ENDED) this.onTrackEnded();
+        },
+
+        onTrackEnded() {
+            const isLastTrack = this.currentTrackIndex >= this.playlist.length - 1;
+
+            if (this.loopMode === LOOP.ONE) {
+                this.player.seekTo(0);
+                this.player.playVideo();
+            } else if (this.loopMode === LOOP.ALL || !isLastTrack) {
+                this.nextTrack();
+            }
+        },
+
+        /** Skip unavailable videos, but stop if every track keeps failing. */
+        onPlayerError() {
+            this.consecutiveErrors++;
+            if (this.consecutiveErrors >= this.playlist.length) {
+                this.isPlaying = false;
+                return;
+            }
+            this.nextTrack();
+        },
+
+        /** Returns true when the player can be used right now; otherwise starts loading it. */
         ensurePlayer() {
             if (this.playerReady) return true;
+            if (!this.hasTracks) return false;
+
             this.autoPlayOnReady = true;
             this.isLoadingAPI = true;
             this.initYoutube();
             return false;
         },
 
-        playTrack(index) {
+        loadCurrentTrack() {
+            this.player.loadVideoById(this.currentTrack.youtubeId);
+        },
+
+        // ==============================================================
+        // Playback controls
+        // ==============================================================
+        playTrackById(youtubeId) {
+            const index = this.playlist.findIndex(t => t.youtubeId === youtubeId);
+            if (index === -1) return;
+
             if (index === this.currentTrackIndex && this.playerReady) {
                 this.togglePlay();
                 return;
             }
+            this.selectTrack(index);
+        },
+
+        selectTrack(index) {
             this.currentTrackIndex = index;
-            if (!this.ensurePlayer()) return;
-            this.player.loadVideoById(this.currentTrack.youtubeId);
+            this.resetProgress();
+            if (this.ensurePlayer()) this.loadCurrentTrack();
         },
 
         togglePlay() {
@@ -351,67 +467,13 @@ document.addEventListener('alpine:init', () => {
         },
 
         nextTrack() {
-            this.currentTrackIndex = (this.currentTrackIndex + 1) % this.playlist.length;
-            if (this.ensurePlayer()) this.player.loadVideoById(this.currentTrack.youtubeId);
+            if (!this.hasTracks) return;
+            this.selectTrack((this.currentTrackIndex + 1) % this.playlist.length);
         },
 
         prevTrack() {
-            this.currentTrackIndex = (this.currentTrackIndex - 1 + this.playlist.length) % this.playlist.length;
-            if (this.ensurePlayer()) this.player.loadVideoById(this.currentTrack.youtubeId);
-        },
-
-        setVolume(val) {
-            this.volume = val;
-            if (this.volume > 0) this.isMuted = false;
-            if (this.playerReady && this.player && typeof this.player.setVolume === 'function') {
-                this.player.setVolume(this.volume);
-            }
-            this.saveSettings();
-        },
-
-        toggleMute() {
-            this.isMuted = !this.isMuted;
-            if (this.isMuted) {
-                this.previousVolume = this.volume;
-                this.volume = 0;
-            } else {
-                this.volume = this.previousVolume > 0 ? this.previousVolume : 80;
-            }
-            if (this.playerReady && this.player && typeof this.player.setVolume === 'function') {
-                this.player.setVolume(this.volume);
-            }
-            this.saveSettings();
-        },
-
-        startProgressTimer() {
-            this.stopProgressTimer();
-            this.progressTimer = setInterval(() => {
-                if (this.player && typeof this.player.getCurrentTime === 'function') {
-                    this.currentTime = this.player.getCurrentTime();
-                    this.duration = this.player.getDuration();
-                    this.progress = (this.currentTime / this.duration) * 100 || 0;
-                }
-            }, 500);
-        },
-
-        stopProgressTimer() {
-            clearInterval(this.progressTimer);
-        },
-
-        seek(event) {
-            if (!this.playerReady || !this.duration) return;
-            const progressBar = event.currentTarget;
-            const clickPosition = (event.clientX - progressBar.getBoundingClientRect().left) / progressBar.offsetWidth;
-            const newTime = clickPosition * this.duration;
-            this.player.seekTo(newTime, true);
-            this.currentTime = newTime;
-            this.progress = clickPosition * 100;
-        },
-
-        formatTime(seconds) {
-            if (isNaN(seconds) || seconds === 0) return '0:00';
-            const date = new Date(seconds * 1000);
-            return `${date.getUTCMinutes()}:${date.getUTCSeconds().toString().padStart(2, '0')}`;
+            if (!this.hasTracks) return;
+            this.selectTrack((this.currentTrackIndex - 1 + this.playlist.length) % this.playlist.length);
         },
 
         toggleLoop() {
@@ -421,37 +483,108 @@ document.addEventListener('alpine:init', () => {
 
         toggleShuffle() {
             this.isShuffled = !this.isShuffled;
+
             const currentId = this.currentTrack.youtubeId;
-            if (this.isShuffled) {
-                for (let i = this.playlist.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [this.playlist[i], this.playlist[j]] = [this.playlist[j], this.playlist[i]];
-                }
-            } else {
-                this.playlist = JSON.parse(JSON.stringify(this.originalPlaylist));
-            }
+            this.playlist = this.isShuffled ? shuffled(this.originalPlaylist) : [...this.originalPlaylist];
+
+            // Keep pointing at the same song after reordering.
             const newIndex = this.playlist.findIndex(t => t.youtubeId === currentId);
-            if (newIndex !== -1) this.currentTrackIndex = newIndex;
+            this.currentTrackIndex = newIndex !== -1 ? newIndex : 0;
+
             this.saveSettings();
         },
 
+        // ==============================================================
+        // Volume
+        // ==============================================================
+        applyVolume() {
+            if (this.playerReady && typeof this.player?.setVolume === 'function') {
+                this.player.setVolume(this.isMuted ? 0 : this.volume);
+            }
+        },
+
+        setVolume(value) {
+            this.volume = value;
+            if (value > 0) this.isMuted = false;
+            this.applyVolume();
+            this.saveSettings();
+        },
+
+        toggleMute() {
+            this.isMuted = !this.isMuted;
+            if (this.isMuted) {
+                this.previousVolume = this.volume;
+                this.volume = 0;
+            } else {
+                this.volume = this.previousVolume > 0 ? this.previousVolume : CONFIG.defaultVolume;
+            }
+            this.applyVolume();
+            this.saveSettings();
+        },
+
+        // ==============================================================
+        // Progress
+        // ==============================================================
+        startProgressTimer() {
+            this.stopProgressTimer();
+            this.progressTimer = setInterval(() => {
+                if (typeof this.player?.getCurrentTime !== 'function') return;
+                this.currentTime = this.player.getCurrentTime();
+                this.duration = this.player.getDuration();
+                this.progress = (this.currentTime / this.duration) * 100 || 0;
+            }, CONFIG.progressIntervalMs);
+        },
+
+        stopProgressTimer() {
+            clearInterval(this.progressTimer);
+            this.progressTimer = null;
+        },
+
+        resetProgress() {
+            this.currentTime = 0;
+            this.duration = 0;
+            this.progress = 0;
+        },
+
+        seek(event) {
+            if (!this.playerReady || !this.duration) return;
+            const bar = event.currentTarget;
+            const ratio = (event.clientX - bar.getBoundingClientRect().left) / bar.offsetWidth;
+            const newTime = ratio * this.duration;
+
+            this.player.seekTo(newTime, true);
+            this.currentTime = newTime;
+            this.progress = ratio * 100;
+        },
+
+        // ==============================================================
+        // Persistence
+        // ==============================================================
         loadSettings() {
             try {
-                const s = JSON.parse(localStorage.getItem('musicPlayerSettings'));
-                if (s) {
-                    this.volume = s.volume ?? 80;
-                    this.isMuted = s.isMuted ?? false;
-                    this.loopMode = s.loopMode ?? 0;
-                    this.isShuffled = s.isShuffled ?? false;
-                }
-            } catch (e) {}
+                const saved = JSON.parse(localStorage.getItem(CONFIG.storageKey));
+                if (!saved) return;
+                this.volume = saved.volume ?? CONFIG.defaultVolume;
+                this.isMuted = saved.isMuted ?? false;
+                this.loopMode = saved.loopMode ?? LOOP.OFF;
+                this.isShuffled = saved.isShuffled ?? false;
+            } catch (e) {
+                console.warn('Gagal membaca pengaturan musik:', e);
+            }
         },
 
         saveSettings() {
-            localStorage.setItem('musicPlayerSettings', JSON.stringify({
-                volume: this.volume, isMuted: this.isMuted, loopMode: this.loopMode, isShuffled: this.isShuffled
-            }));
-        }
+            try {
+                localStorage.setItem(CONFIG.storageKey, JSON.stringify({
+                    volume: this.volume,
+                    isMuted: this.isMuted,
+                    loopMode: this.loopMode,
+                    isShuffled: this.isShuffled,
+                }));
+            } catch (e) {
+                console.warn('Gagal menyimpan pengaturan musik:', e);
+            }
+        },
     }));
 });
 </script>

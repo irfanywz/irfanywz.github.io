@@ -2,20 +2,87 @@
 {{ end }}
 
 {{ define "main" }}
-    <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
+    <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300"
+        x-data="{
+            drawerOpen: false,
+            search: '',
+            selectedCategory: 'all',
+            items: [],
+            loading: false,
+            loaded: false,
+            
+            // Fungsi untuk mengambil data dari index.json sekali saja (lazy load)
+            fetchItems() {
+                if (this.loaded || this.loading) return;
+                this.loading = true;
+                
+                // Menggunakan path relatif 'index.json' dari halaman saat ini
+                fetch('/tools/index.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        this.items = data.map(item => ({
+                            title: (item.title || '').toLowerCase(),
+                            description: (item.description || '').toLowerCase(),
+                            permalink: item.permalink,
+                            isExternal: item.isExternal || false,
+                            displayTitle: item.title,
+                            displayDesc: item.description,
+                            icon: item.icon || 'icon-[ri--wrench-line]',
+                            categories: item.categories || ['General']
+                        }));
+                        this.loaded = true;
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        console.error('Gagal memuat index.json:', error);
+                        this.loading = false;
+                    });
+            },
+
+            get categoryCounts() {
+                const counts = {};
+                this.items.forEach(item => {
+                    if (Array.isArray(item.categories)) {
+                        item.categories.forEach(c => {
+                            counts[c] = (counts[c] || 0) + 1;
+                        });
+                    }
+                });
+                return Object.entries(counts).map(([name, count]) => ({ name, count }));
+            },
+
+            get filteredItems() {
+                const s = this.search.toLowerCase();
+                return this.items.filter(item => {
+                    const matchesSearch = item.title.includes(s) || item.description.includes(s);
+                    const matchesCategory = this.selectedCategory === 'all' || 
+                        (Array.isArray(item.categories) && item.categories.includes(this.selectedCategory));
+                    return matchesSearch && matchesCategory;
+                });
+            }
+        }">
+        
+        <!-- Breadcrumb & Tombol Trigger Drawer -->
         <section class="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
-            <div class="container max-w-6xl mx-auto px-4 py-6">
-                <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                    <a href="{{ .CurrentSection.RelPermalink }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1">
+            <div class="container max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+                <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 min-w-0">
+                    <a href="{{ .CurrentSection.RelPermalink }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1 flex-shrink-0">
                         <i class="icon-[ri--tools-line]"></i>
                         {{ with .Parent }}{{ .Title }}{{ end }}
                     </a>
-                    <i class="icon-[ri--arrow-right-s-line]"></i>
+                    <i class="icon-[ri--arrow-right-s-line] flex-shrink-0"></i>
                     <span class="text-gray-900 dark:text-white font-medium truncate">{{ .Title }}</span>
                 </nav>
+
+                <!-- Tombol untuk Membuka Daftar Tools Lainnya & Fetch Data -->
+                <button @click="drawerOpen = true; fetchItems()" class="px-3.5 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 text-xs font-bold flex items-center gap-2 flex-shrink-0 shadow-2xs hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition cursor-pointer">
+                    <span class="icon-[ri--apps-2-line] w-4 h-4"></span>
+                    <span>Daftar Alat Lainnya</span>
+                </button>
             </div>
         </section>
 
+        <!-- Bagian Konten Utama Tool -->
         <section class="py-12">
             <div class="container max-w-6xl mx-auto px-4">
                 <header class="text-center mb-12">
@@ -36,5 +103,120 @@
                 </article>
             </div>
         </section>
-	</main>
+
+        <!-- BOTTOM SHEET DENGAN LAYOUT LIST.HTML (FETCH VIA JSON) -->
+        <div x-show="drawerOpen" class="fixed inset-0 z-50 flex items-end justify-center" style="display: none;">
+            <!-- Backdrop -->
+            <div x-show="drawerOpen"
+                 x-transition:enter="transition-opacity ease-out duration-200"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition-opacity ease-in duration-150"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 @click="drawerOpen = false"
+                 class="absolute inset-0 bg-black/50 backdrop-blur-xs"></div>
+
+            <!-- Panel Drawer di Bawah -->
+            <div x-show="drawerOpen"
+                 x-transition:enter="transition-transform ease-out duration-300"
+                 x-transition:enter-start="translate-y-full"
+                 x-transition:enter-end="translate-y-0"
+                 x-transition:leave="transition-transform ease-in duration-200"
+                 x-transition:leave-start="translate-y-0"
+                 x-transition:leave-end="translate-y-full"
+                 class="relative w-full max-w-5xl bg-white dark:bg-gray-900 shadow-2xl rounded-t-3xl h-[85vh] flex flex-col z-50 border-t border-gray-200 dark:border-gray-800 overflow-hidden">
+                
+                <!-- Indikator Drag / Handle Bar kecil -->
+                <div class="w-full flex justify-center pt-3 pb-1 flex-shrink-0">
+                    <div class="w-12 h-1.5 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+                </div>
+
+                <!-- Header Drawer -->
+                <div class="px-6 pb-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between flex-shrink-0">
+                    <h3 class="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                        <span class="icon-[ri--tools-line] text-indigo-500 w-4 h-4"></span>
+                        Navigasi Alat Cepat
+                    </h3>
+                    <button @click="drawerOpen = false" class="text-gray-400 hover:text-gray-600 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
+                        <span class="icon-[ri--close-line] w-5 h-5"></span>
+                    </button>
+                </div>
+
+                <!-- Bagian Utama: Kolom Kiri (Filter) & Kolom Kanan (List 2 Kolom) -->
+                <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+                    
+                    <!-- Sidebar Kiri: Pencarian & Filter Kategori -->
+                    <div class="w-full md:w-64 p-5 border-b md:border-b-0 md:border-r border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 flex flex-col gap-4 flex-shrink-0 overflow-y-auto">
+                        <div class="relative w-full">
+                            <span class="icon-[ri--search-line] absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></span>
+                            <input type="search" x-model="search" placeholder="Cari alat..." 
+                                class="w-full pl-9 pr-3.5 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                        </div>
+
+                        <!-- Kategori List -->
+                        <div class="flex flex-col gap-1">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1 px-1">Kategori</span>
+                            <button @click="selectedCategory = 'all'"
+                                :class="selectedCategory === 'all' ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-bold' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'"
+                                class="w-full text-left px-3 py-2 rounded-xl text-xs transition cursor-pointer flex items-center justify-between">
+                                <span>Semua Alat</span>
+                                <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-500" x-text="items.length"></span>
+                            </button>
+                            <template x-for="cat in categoryCounts" :key="cat.name">
+                                <button @click="selectedCategory = cat.name"
+                                    :class="selectedCategory === cat.name ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-bold' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'"
+                                    class="w-full text-left px-3 py-2 rounded-xl text-xs transition cursor-pointer flex items-center justify-between capitalize">
+                                    <span x-text="cat.name"></span>
+                                    <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-500" x-text="cat.count"></span>
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Area Kanan: Grid 2 Kolom untuk Daftar Alat -->
+                    <div class="flex-1 overflow-y-auto p-6 relative">
+                        
+                        <!-- Loading State -->
+                        <div x-show="loading" class="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-gray-900/80 z-10">
+                            <div class="flex items-center gap-2 text-xs text-indigo-600 dark:text-indigo-400 font-medium">
+                                <span class="icon-[ri--loader-4-line] animate-spin w-5 h-5"></span>
+                                Memuat daftar alat...
+                            </div>
+                        </div>
+
+                        <!-- Grid Konten -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 content-start">
+                            <template x-for="item in filteredItems" :key="item.permalink">
+                                <a :href="item.permalink" 
+                                   :target="item.isExternal ? '_blank' : ''"
+                                   class="group block bg-gray-50 dark:bg-gray-800/60 rounded-xl p-3.5 border border-gray-200/70 dark:border-gray-700/60 hover:border-indigo-500 dark:hover:border-indigo-500 transition-all">
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-9 h-9 bg-white dark:bg-gray-900 rounded-lg flex items-center justify-center text-indigo-600 dark:text-indigo-400 flex-shrink-0 shadow-2xs border border-gray-100 dark:border-gray-800">
+                                            <i :class="item.icon" class="text-lg"></i>
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <h4 class="text-xs font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate" x-text="item.displayTitle"></h4>
+                                            <p class="text-[11px] text-gray-500 dark:text-gray-400 line-clamp-1 mt-0.5" x-text="item.displayDesc"></p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </template>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div x-show="!loading && filteredItems.length === 0" class="text-center py-16" style="display: none;">
+                            <p class="text-xs text-gray-400">Alat tidak ditemukan.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+{{ end }}
+
+{{ define "footer" }}
 {{ end }}

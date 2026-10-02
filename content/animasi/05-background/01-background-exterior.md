@@ -2,7 +2,7 @@
 title: "Background Exterior"
 slug: "background-exterior"
 description: "Prompt builder untuk background exterior"
-image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
+#image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
 has_database: true
 default_input: "Traditional Indonesian village alley with bamboo fences and tropical trees"
 desc_prompt: |
@@ -49,17 +49,19 @@ image_prompt: |
   - OUTPUT EXACTLY ONE SENTENCE.
 
 database:
-  "Example":
-    - title: "Gang Kampung Padat"
-      description: "Narrow urban Indonesian alley (gang sempit) with brick walls, potted plants, hanging laundry wires, and tiled roofs."
-      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%2378350f"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23fed7aa" font-size="12" font-family="sans-serif">Gang</text></svg>'
+  "#Favorite":
 
+    - title: "Depan Kantor Polisi"
+      description: "Permukaan lantai semen kasar membentuk foreground, melewati jalur koridor penjagaan lapang dan meja pos jaga kosong di middle ground, berlatar deretan dinding sel tahanan berteralis besi tebal di background, di bawah struktur plafon beton terbuka dengan pipa utilitas terekspos di upper area."
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%230339A0"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">Depan Kantor Polisi</text></svg>'
+
+
+  "Example":
     - title: "Pinggir Jalan Raya Kota"
       description: "Indonesian suburban roadside with sidewalk, telephone poles with tangled cables, concrete fences, and shophouses (ruko)."
       image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231e293b"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23cbd5e1" font-size="12" font-family="sans-serif">Jalan</text></svg>'
 
-outputs:
-  - JSON
+outputs: ["JSON"]
 ---
 Use the attached image as the **STRICT STYLE REFERENCE ONLY**.
 

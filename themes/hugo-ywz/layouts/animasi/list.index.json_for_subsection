@@ -1,0 +1,30 @@
+{
+  "section": {{ .Title | jsonify }},
+  "description": {{ .Description | jsonify }},
+  "resources": {{ .Params.resources | jsonify }},
+  "categories": [
+    {{- $promptSection := site.GetPage "animasi/prompt" -}}
+    {{- if $promptSection -}}
+      {{- /* Mengurutkan section berdasarkan path file-nya (.File.Path) agar urutan folder 01, 02, dst. terbaca dengan benar */ -}}
+      {{- $sections := sort $promptSection.Sections "File.Path" "asc" -}}
+      
+      {{- range $index, $sec := $sections -}}
+      {
+        "category": {{ path.Base $sec.File.Dir | jsonify }},
+        "category_title": {{ $sec.Title | jsonify }},
+        "prompts": [
+          {{- $sortedPages := sort $sec.RegularPagesRecursive "File.LogicalName" "asc" -}}
+          {{- range $pIndex, $page := $sortedPages -}}
+          {
+            "title": {{ $page.Title | jsonify }},
+            "description": {{ $page.Description | jsonify }},
+            "image": {{ $page.Params.image | jsonify }},
+            "json_url": {{ ($page.OutputFormats.Get "JSON").RelPermalink | jsonify }}
+          }{{ if lt (add $pIndex 1) (len $sortedPages) }},{{ end }}
+          {{- end -}}
+        ]
+      }{{ if lt (add $index 1) (len $sections) }},{{ end }}
+      {{- end -}}
+    {{- end -}}
+  ]
+}

@@ -2,7 +2,7 @@
 title: "Background Object Addition"
 slug: "background-object-add"
 description: "Prompt builder untuk menambahkan objek atau elemen baru ke dalam background animasi 2D yang ada pada posisi tertentu dengan penyesuaian skala, perspektif, dan gaya seni yang selaras"
-image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
+#image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
 has_database: false
 default_object: "A vintage wooden bench"
 default_placement: "On the empty sidewalk on the right side of the street"
@@ -19,8 +19,7 @@ variables_config:
     placeholder: "Dinding"
     default: ""
 
-outputs:
-  - JSON
+outputs: ["JSON"]
 ---
 Use the attached image as the STRICT BACKGROUND REFERENCE.
 

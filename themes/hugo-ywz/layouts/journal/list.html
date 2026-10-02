@@ -2,225 +2,521 @@
 {{ end }}
 
 {{ define "main" }}
-    <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300" 
-          x-data="journalApp()" 
-          x-init="initData()">
-        
-        <!-- Container Full Width dengan Padding Luas -->
-        <div class="w-full px-4 sm:px-6 lg:px-10 py-6 md:py-10">
-            
-            <!-- SKELETON LOADING STATE -->
-            {{ partial "journal/skeleton.html" . }}
+<main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300 relative"
+      x-data="journalApp()"
+      @keydown.escape.window="mobileFilterOpen = false">
 
-            <!-- Layout Utama Full Width -->
-            <div x-show="!loading" style="display: none;" class="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
-                
-                <!-- SIDEBAR KIRI -->
-                {{ partial "journal/sidebar.html" . }}
+    <div class="w-full px-4 sm:px-6 lg:px-10 py-6 md:py-10">
 
-                <!-- STREAM KONTEN UTAMA -->
-                {{ partial "journal/stream.html" . }}
-
+        <!-- ============================================================
+             Loading skeleton
+             ============================================================ -->
+        <div x-show="loading" class="animate-pulse flex flex-col lg:flex-row gap-8 items-start">
+            <aside class="w-full lg:w-72 xl:w-80 flex-shrink-0 space-y-6">
+                <div class="border-b border-gray-100 dark:border-gray-800 pb-6 space-y-3">
+                    <div class="h-8 bg-gray-200 dark:bg-gray-800 rounded-lg w-2/3"></div>
+                    <div class="h-4 bg-gray-100 dark:bg-gray-800/60 rounded-md w-full"></div>
+                    <div class="h-7 bg-gray-200 dark:bg-gray-800 rounded-lg w-1/2 mt-3"></div>
+                </div>
+                <div class="h-10 bg-gray-200 dark:bg-gray-800 rounded-xl w-full"></div>
+                <div class="space-y-2">
+                    <div class="h-9 bg-gray-200 dark:bg-gray-800 rounded-xl w-full"></div>
+                    <div class="h-9 bg-gray-100 dark:bg-gray-800/60 rounded-xl w-full"></div>
+                </div>
+            </aside>
+            <div class="flex-grow w-full space-y-6">
+                <div class="h-16 bg-gray-200 dark:bg-gray-800 rounded-2xl w-full"></div>
+                <div class="p-6 rounded-2xl bg-gray-50/50 dark:bg-gray-800/25 border border-gray-100 dark:border-gray-800 space-y-4">
+                    <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-28 mb-3"></div>
+                    <div class="h-12 bg-gray-200 dark:bg-gray-800 rounded-xl w-full"></div>
+                </div>
             </div>
         </div>
 
-        <!-- OFFCANVAS PANEL: SEMUA QUOTES PER KATEGORI -->
-        {{ partial "journal/quote-modal.html" . }}
+        <!-- ============================================================
+             Main layout
+             ============================================================ -->
+        <div x-show="!loading" style="display: none;" class="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
 
-    </main>
+            <!-- ==================== Sidebar ==================== -->
+            <aside class="w-full lg:w-72 xl:w-80 flex-shrink-0 lg:sticky lg:top-24 space-y-6 bg-white dark:bg-gray-900">
 
-    <!-- Script Logika Alpine.js & Swiper -->
-    <script>
-        function yearSwiper() {
-            return {
-                swiper: null,
-                initSwiper() {
-                    this.$nextTick(() => {
-                        this.swiper = new Swiper(this.$refs.container, {
-                            modules: window.SwiperModules,
-                            slidesPerView: 'auto',
-                            spaceBetween: 6,
-                            freeMode: true,
-                            grabCursor: true,
-                            mousewheel: { forceToAxis: true },
-                        });
-                    });
-                }
+                <!-- Title & description -->
+                <div class="border-b border-gray-100 dark:border-gray-800 pb-5">
+                    <h1 class="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white mb-1.5 tracking-tight flex items-center gap-2.5">
+                        <span class="icon-[lucide--receipt-text] text-indigo-600 w-7 h-7"></span>
+                        {{ .Title }}
+                    </h1>
+                    {{ if .Description }}
+                        <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{{ .Description }}</p>
+                    {{ end }}
+                </div>
+
+                <!-- Search -->
+                <div class="relative w-full">
+                    <i class="icon-[ri--search-line] absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                    <input type="text" x-model="search" placeholder="Cari di jurnal..."
+                           class="w-full pl-10 pr-9 py-2.5 bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 rounded-xl text-xs sm:text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all shadow-2xs">
+                    <button x-show="search.length > 0" @click="search = ''" type="button" style="display: none;"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+                        <span class="icon-[ri--close-circle-fill] w-4 h-4"></span>
+                    </button>
+                </div>
+
+                <!-- Filters: one set of tabs, one option list (driven by `tabs` in the script) -->
+                <div class="space-y-4">
+
+                    <!-- Tabs (Tahun / Kategori) -->
+                    <div class="flex p-1 bg-gray-100 dark:bg-gray-800 rounded-xl">
+                        <template x-for="tab in tabs" :key="tab.id">
+                            <button type="button" @click="activeTab = tab.id"
+                                    :class="activeTab === tab.id
+                                        ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-xs'
+                                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'"
+                                    class="flex-1 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                                <span :class="tab.icon" class="w-3.5 h-3.5"></span>
+                                <span x-text="tab.label"></span>
+                                <!-- Dot: this tab has an active filter -->
+                                <span class="w-1.5 h-1.5 rounded-full" :class="filters[tab.id] ? 'bg-indigo-600' : 'bg-transparent'"></span>
+                            </button>
+                        </template>
+                    </div>
+
+                    <!-- Mobile: button that opens the filter sheet -->
+                    <div class="block lg:hidden">
+                        <button type="button" @click="mobileFilterOpen = true"
+                                class="w-full flex items-center justify-between px-4 py-2.5 bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-800/60 text-indigo-600 dark:text-indigo-400 rounded-xl text-xs font-bold transition shadow-xs cursor-pointer">
+                            <div class="flex items-center space-x-2 truncate">
+                                <span :class="currentTab.icon" class="text-sm shrink-0"></span>
+                                <span class="truncate" x-text="currentFilterLabel"></span>
+                            </div>
+                            <span class="icon-[ri--arrow-down-s-line] text-base shrink-0 ml-2"></span>
+                        </button>
+                    </div>
+
+                    <!-- Desktop: option list for the active tab -->
+                    <div class="hidden lg:block space-y-2">
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider" x-text="currentTab.sheetTitle"></p>
+
+                        <div class="flex flex-col items-stretch gap-2 overflow-y-auto max-h-[calc(100vh-26rem)] scrollbar-none">
+                            <template x-for="option in currentOptions" :key="activeTab + '|' + option.value">
+                                <button type="button" @click="select(option)" :aria-pressed="isSelected(option)"
+                                        :class="optionClass(option)"
+                                        class="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-between gap-3 cursor-pointer">
+                                    <span class="flex items-center gap-2 min-w-0">
+                                        <span :class="option.icon" class="w-4 h-4 flex-shrink-0"></span>
+                                        <span class="truncate" x-text="option.label"></span>
+                                    </span>
+                                    <span class="px-2 py-0.5 rounded-md text-[10px] font-bold flex-shrink-0"
+                                          :class="badgeClass(option)" x-text="option.count"></span>
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- ==================== Content ==================== -->
+            <div class="flex-grow w-full min-w-0 space-y-6">
+
+                <!-- Tools (music, quotes, vocabulary) -->
+                <div class="flex items-center justify-end gap-2">
+                    {{ partial "components/music-player.html" . }}
+                    {{ partial "components/quote-app.html" . }}
+                    {{ partial "components/kosakata-app.html" . }}
+                </div>
+
+                <!-- Active filter summary -->
+                <template x-if="hasActiveFilters">
+                    <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/40 px-4 py-2.5 rounded-xl border border-gray-200/60 dark:border-gray-700/60">
+                        <span class="flex flex-wrap gap-1 items-center">
+                            <span>Menampilkan hasil filter untuk:</span>
+                            <template x-for="label in activeFilterLabels" :key="label">
+                                <strong class="text-indigo-600 dark:text-indigo-400" x-text="label"></strong>
+                            </template>
+                        </span>
+                        <button type="button" @click="resetFilters()"
+                                class="text-xs text-red-500 hover:underline flex items-center gap-1 font-semibold cursor-pointer flex-shrink-0">
+                            <span class="icon-[ri--refresh-line] w-3.5 h-3.5"></span>
+                            Reset
+                        </button>
+                    </div>
+                </template>
+
+                <!-- Load error -->
+                <template x-if="loadFailed">
+                    <div class="text-center py-16 px-4 bg-red-50 dark:bg-red-950/20 rounded-2xl border border-dashed border-red-200 dark:border-red-900/50">
+                        <span class="icon-[ri--error-warning-line] w-12 h-12 mx-auto text-red-300 dark:text-red-700 mb-3 block"></span>
+                        <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">Jurnal gagal dimuat</p>
+                        <p class="text-xs text-gray-400 mt-1">Muat ulang halaman untuk mencoba lagi.</p>
+                    </div>
+                </template>
+
+                <!-- Empty state -->
+                <template x-if="!loadFailed && groups.length === 0">
+                    <div class="text-center py-16 px-4 bg-gray-50 dark:bg-gray-800/40 rounded-2xl border border-dashed border-gray-200 dark:border-gray-700/80">
+                        <span class="icon-[ri--file-search-line] w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-3 block"></span>
+                        <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">Tidak ada jurnal yang cocok</p>
+                        <p class="text-xs text-gray-400 mt-1">Coba gunakan kata kunci lain atau ubah filter kategori/tahun.</p>
+                    </div>
+                </template>
+
+                <!-- Journals grouped by month -->
+                <div class="flex flex-col gap-6">
+                    <template x-for="group in groups" :key="group.key">
+                        <div class="bg-gray-50/60 dark:bg-gray-800/30 p-4 sm:p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-2xs">
+                            <h3 class="text-xs md:text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-4 pb-2 border-b border-gray-200/80 dark:border-gray-700/80"
+                                x-text="group.label"></h3>
+
+                            <div class="divide-y divide-gray-100 dark:divide-gray-800/80">
+                                <template x-for="item in group.items" :key="item.permalink">
+                                    <a :href="item.permalink"
+                                       class="group flex items-center gap-4 py-3 px-3 rounded-xl hover:bg-white dark:hover:bg-gray-800 transition-all hover:shadow-xs">
+
+                                        <!-- Day badge -->
+                                        <div class="flex-shrink-0 text-center font-mono w-10 py-1.5 rounded-lg bg-white dark:bg-gray-800 border border-gray-200/60 dark:border-gray-700/60 shadow-2xs">
+                                            <span class="block text-base sm:text-lg font-black text-gray-900 dark:text-white leading-none" x-text="item.day"></span>
+                                            <span class="block text-[9px] text-gray-400 uppercase font-bold mt-0.5" x-text="item.dayName"></span>
+                                        </div>
+
+                                        <!-- Title -->
+                                        <div class="flex-grow min-w-0">
+                                            <h2 class="text-sm sm:text-base font-semibold md:font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2 md:line-clamp-1 leading-snug"
+                                                x-text="item.title"></h2>
+                                        </div>
+
+                                        <span x-show="item.draft" style="display: none;"
+                                              class="flex-shrink-0 px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-600 dark:bg-red-900/40 dark:text-red-400 border border-red-200 dark:border-red-800">DRAFT</span>
+
+                                        <div class="flex-shrink-0 text-gray-300 dark:text-gray-600 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:translate-x-1 transition-all">
+                                            <span class="icon-[ri--arrow-right-s-line] w-5 h-5"></span>
+                                        </div>
+                                    </a>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         Mobile filter sheet
+         (kept at the Alpine root so it escapes the sidebar's stacking context)
+         ============================================================ -->
+    <div x-show="mobileFilterOpen" class="fixed inset-0 z-50 overflow-hidden lg:hidden" style="display: none;">
+
+        <div x-show="mobileFilterOpen"
+             x-transition:enter="transition-opacity ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition-opacity ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @click="mobileFilterOpen = false"
+             class="absolute inset-0 bg-black/50 backdrop-blur-xs"></div>
+
+        <div x-show="mobileFilterOpen"
+             x-transition:enter="transition-transform ease-out duration-300"
+             x-transition:enter-start="translate-y-full"
+             x-transition:enter-end="translate-y-0"
+             x-transition:leave="transition-transform ease-in duration-300"
+             x-transition:leave-start="translate-y-0"
+             x-transition:leave-end="translate-y-full"
+             class="absolute bottom-0 left-0 right-0 max-h-[75vh] bg-white dark:bg-gray-900 rounded-t-3xl shadow-2xl flex flex-col overflow-hidden">
+
+            <div class="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+                <h4 class="text-sm font-bold text-gray-900 dark:text-white" x-text="currentTab.sheetTitle"></h4>
+                <button type="button" @click="mobileFilterOpen = false"
+                        class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1.5 rounded-full cursor-pointer">
+                    <span class="icon-[ri--close-line] w-5 h-5"></span>
+                </button>
+            </div>
+
+            <div class="p-4 overflow-y-auto space-y-2">
+                <template x-for="option in currentOptions" :key="activeTab + '|' + option.value">
+                    <button type="button" @click="select(option)" :aria-pressed="isSelected(option)"
+                            :class="optionClass(option)"
+                            class="w-full px-3.5 py-2.5 rounded-xl text-xs font-semibold transition flex items-center justify-between gap-3 cursor-pointer">
+                        <span class="truncate" x-text="option.label"></span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold flex-shrink-0"
+                              :class="badgeClass(option)" x-text="option.count"></span>
+                    </button>
+                </template>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+document.addEventListener('alpine:init', () => {
+
+    // ------------------------------------------------------------------
+    // Configuration
+    // ------------------------------------------------------------------
+    const DATA_URL = '{{ "journal/index.json" | relURL }}';
+
+    /**
+     * One entry per filter. Adding a new filter (e.g. "tag") means adding an
+     * entry here, a `filters` key, and a case in `matchesFilters` / `buildOptions`.
+     */
+    const FILTER_TABS = [
+        {
+            id: 'year',
+            label: 'Tahun',
+            allLabel: 'Semua Tahun',
+            sheetTitle: 'Pilih Tahun',
+            icon: 'icon-[ri--calendar-line]',
+            itemIcon: 'icon-[ri--calendar-line]',
+            summary: (value) => 'Tahun ' + value,
+        },
+        {
+            id: 'category',
+            label: 'Kategori',
+            allLabel: 'Semua Kategori',
+            sheetTitle: 'Pilih Kategori',
+            icon: 'icon-[ri--folder-line]',
+            itemIcon: 'icon-[ri--folder-line]',
+            summary: (value) => 'Kategori [' + value + ']',
+        },
+    ];
+
+    const ALL_ICON = 'icon-[ri--archive-drawer-line]';
+
+    const OPTION_CLASS = {
+        selected: 'bg-indigo-600 text-white shadow-xs',
+        idle: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700',
+    };
+
+    const BADGE_CLASS = {
+        selected: 'bg-indigo-500/40 text-white',
+        idle: 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400',
+    };
+
+    // ------------------------------------------------------------------
+    // Pure helpers
+    // ------------------------------------------------------------------
+
+    /** Normalise a raw journal entry once, so filtering code can stay simple. */
+    function normalizeJournal(raw) {
+        return {
+            ...raw,
+            year: raw.year == null ? '' : String(raw.year),
+            categories: raw.categories || [],
+            titleLower: (raw.title || '').toLowerCase(),
+        };
+    }
+
+    /** Count journals per value. `getValues` returns the values a journal contributes to. */
+    function countBy(journals, getValues) {
+        const counts = new Map();
+        for (const journal of journals) {
+            for (const value of new Set(getValues(journal))) {
+                counts.set(value, (counts.get(value) || 0) + 1);
             }
         }
+        return counts;
+    }
 
-        function categorySwiper() {
-            return {
-                swiper: null,
-                initSwiper() {
-                    this.$nextTick(() => {
-                        this.swiper = new Swiper(this.$refs.catContainer, {
-                            modules: window.SwiperModules,
-                            slidesPerView: 'auto',
-                            spaceBetween: 6,
-                            freeMode: true,
-                            grabCursor: true,
-                            mousewheel: { forceToAxis: true },
-                        });
-                    });
-                }
+    /** Turn counts into option objects, with an "all" option first. */
+    function toOptions(tab, counts, total, compareValues) {
+        const options = [...counts.keys()].sort(compareValues).map(value => ({
+            value,
+            label: value,
+            count: counts.get(value),
+            icon: tab.itemIcon,
+        }));
+        return [{ value: '', label: tab.allLabel, count: total, icon: ALL_ICON }, ...options];
+    }
+
+    function buildOptions(journals) {
+        const [yearTab, categoryTab] = FILTER_TABS;
+        return {
+            year: toOptions(
+                yearTab,
+                countBy(journals, j => [j.year]),
+                journals.length,
+                (a, b) => Number(b) - Number(a)          // newest first
+            ),
+            category: toOptions(
+                categoryTab,
+                countBy(journals, j => j.categories),
+                journals.length,
+                (a, b) => a.localeCompare(b)
+            ),
+        };
+    }
+
+    /**
+     * Group journals by year + month. Grouping by month name alone would merge
+     * e.g. "Januari 2024" and "Januari 2025" into one block when no year is selected.
+     */
+    function groupByMonth(journals, { showYear }) {
+        const groups = new Map();
+        for (const journal of journals) {
+            const key = journal.year + '|' + journal.month;
+            if (!groups.has(key)) {
+                const needsYear = showYear && journal.year && !String(journal.month).includes(journal.year);
+                groups.set(key, {
+                    key,
+                    label: needsYear ? journal.month + ' ' + journal.year : journal.month,
+                    items: [],
+                });
             }
+            groups.get(key).items.push(journal);
         }
+        return [...groups.values()];
+    }
 
-        function journalApp() {
-            return {
-                journals: [],
-                quoteCategories: [],
-                currentQuote: { text: '', author: '' },
-                loading: true,
-                search: '',
-                selectedYear: '',
-                selectedCategory: '',
+    // ------------------------------------------------------------------
+    // Component
+    // ------------------------------------------------------------------
+    Alpine.data('journalApp', () => ({
+        tabs: FILTER_TABS,
 
-                quoteModalOpen: false,
-                quoteSearch: '',
-                selectedCategoryQuote: '',
+        // --- Data ---
+        journals: [],
+        options: { year: [], category: [] },
+        groups: [],                    // filtered journals, grouped by month
+        loading: true,
+        loadFailed: false,
 
-                async initData() {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    this.search = urlParams.get('q') || '';
-                    this.selectedYear = urlParams.get('year') || '';
-                    this.selectedCategory = urlParams.get('category') || '';
+        // --- Filter state (mirrored in the URL) ---
+        search: '',
+        filters: { year: '', category: '' },
 
-                    this.$watch('search', () => this.updateURL());
-                    this.$watch('selectedYear', () => this.updateURL());
-                    this.$watch('selectedCategory', () => this.updateURL());
+        // --- UI state ---
+        activeTab: 'year',
+        mobileFilterOpen: false,
 
-                    try {
-                        await new Promise(resolve => setTimeout(resolve, 600));
+        // ==============================================================
+        // Lifecycle
+        // ==============================================================
+        async init() {
+            this.readStateFromUrl();
 
-                        let [journalRes, quoteRes] = await Promise.all([
-                            fetch('{{ "journal/index.json" | relURL }}'),
-                            fetch('{{ "quote/index.json" | relURL }}').catch(() => null)
-                        ]);
+            // One watcher covers search + every filter.
+            this.$watch('queryString', () => {
+                this.writeStateToUrl();
+                this.applyFilters();
+            });
 
-                        if (journalRes && journalRes.ok) {
-                            this.journals = await journalRes.json();
-                        }
+            await this.loadJournals();
+        },
 
-                        if (quoteRes && quoteRes.ok) {
-                            let quoteData = await quoteRes.json();
-                            if (quoteData && quoteData.categories) {
-                                this.quoteCategories = quoteData.categories;
-                                this.randomizeQuote();
-                            }
-                        }
-                    } catch (error) {
-                        console.error('Gagal meload data:', error);
-                    } finally {
-                        this.loading = false;
-                    }
-                },
+        async loadJournals() {
+            try {
+                const res = await fetch(DATA_URL);
+                if (!res.ok) throw new Error('HTTP ' + res.status);
 
-                randomizeQuote() {
-                    if (!this.quoteCategories || this.quoteCategories.length === 0) return;
-                    let allQuotes = this.quoteCategories.flatMap(cat => cat.quotes || []);
-                    if (allQuotes.length === 0) return;
-                    let randomIndex = Math.floor(Math.random() * allQuotes.length);
-                    this.currentQuote = allQuotes[randomIndex];
-                },
-
-                updateURL() {
-                    const params = new URLSearchParams();
-
-                    if (this.selectedCategory) {
-                        params.set('category', this.selectedCategory);
-                    }
-                    if (this.selectedYear) {
-                        params.set('year', this.selectedYear);
-                    }
-                    if (this.search.trim() !== '') {
-                        params.set('q', this.search.trim());
-                    }
-
-                    const newQuery = params.toString();
-                    const newURL = newQuery 
-                        ? `${window.location.pathname}?${newQuery}` 
-                        : window.location.pathname;
-
-                    window.history.replaceState({}, '', newURL);
-                },
-
-                get availableCategories() {
-                    if (!this.journals) return [];
-                    let cats = this.journals.flatMap(j => j.categories || []);
-                    return [...new Set(cats)].sort();
-                },
-
-                get availableYears() {
-                    if (!this.journals) return [];
-                    let years = this.journals.map(j => j.year);
-                    return [...new Set(years)].sort((a, b) => b - a);
-                },
-
-                countByYear(year) {
-                    if (!this.journals) return 0;
-                    return this.journals.filter(j => j.year === year).length;
-                },
-
-                countByCategory(cat) {
-                    if (!this.journals) return 0;
-                    return this.journals.filter(j => j.categories && j.categories.includes(cat)).length;
-                },
-
-                get filteredGroupedJournals() {
-                    if (!this.journals) return [];
-                    let filtered = this.journals.filter(j => {
-                        let matchesCategory = this.selectedCategory === '' || (j.categories && j.categories.includes(this.selectedCategory));
-                        let matchesYear = this.selectedYear === '' || String(j.year) === String(this.selectedYear);
-                        let matchesSearch = this.search === '' || j.title.toLowerCase().includes(this.search.toLowerCase());
-                        return matchesCategory && matchesYear && matchesSearch;
-                    });
-
-                    let groups = {};
-                    filtered.forEach(j => {
-                        if (!groups[j.month]) {
-                            groups[j.month] = [];
-                        }
-                        groups[j.month].push(j);
-                    });
-
-                    return Object.keys(groups).map(month => {
-                        return {
-                            month: month,
-                            items: groups[month]
-                        };
-                    });
-                },
-
-                get filteredGroupedQuotes() {
-                    let result = [];
-                    if (!this.quoteCategories) return result;
-
-                    this.quoteCategories.forEach(cat => {
-                        if (this.selectedCategoryQuote !== '' && cat.slug !== this.selectedCategoryQuote) {
-                            return;
-                        }
-
-                        let filteredQuotes = (cat.quotes || []).filter(q => {
-                            let query = (this.quoteSearch || '').toLowerCase();
-                            let matchesText = q.text && q.text.toLowerCase().includes(query);
-                            let matchesAuthor = q.author && q.author.toLowerCase().includes(query);
-                            return matchesText || matchesAuthor;
-                        });
-
-                        if (filteredQuotes.length > 0) {
-                            result.push({
-                                categoryTitle: cat.category_title,
-                                categorySlug: cat.slug,
-                                quotes: filteredQuotes
-                            });
-                        }
-                    });
-
-                    return result;
-                }
+                const raw = await res.json();
+                this.journals = raw.map(normalizeJournal);
+                this.options = buildOptions(this.journals);
+                this.applyFilters();
+            } catch (error) {
+                this.loadFailed = true;
+                console.error('Gagal memuat data jurnal:', error);
+            } finally {
+                this.loading = false;
             }
-        }
-    </script>
+        },
+
+        // ==============================================================
+        // URL <-> state
+        // ==============================================================
+        readStateFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            this.search = params.get('q') || '';
+            this.filters.year = params.get('year') || '';
+            this.filters.category = params.get('category') || '';
+        },
+
+        /** Canonical query string for the current state; also the watcher's trigger. */
+        get queryString() {
+            const params = new URLSearchParams();
+            if (this.filters.category) params.set('category', this.filters.category);
+            if (this.filters.year) params.set('year', this.filters.year);
+            if (this.search.trim()) params.set('q', this.search.trim());
+            return params.toString();
+        },
+
+        writeStateToUrl() {
+            const query = this.queryString;
+            const url = query ? window.location.pathname + '?' + query : window.location.pathname;
+            window.history.replaceState({}, '', url);
+        },
+
+        // ==============================================================
+        // Filtering
+        // ==============================================================
+        applyFilters() {
+            const query = this.search.trim().toLowerCase();
+            const { year, category } = this.filters;
+
+            const matches = (journal) =>
+                (!year || journal.year === year) &&
+                (!category || journal.categories.includes(category)) &&
+                (!query || journal.titleLower.includes(query));
+
+            this.groups = groupByMonth(this.journals.filter(matches), { showYear: !year });
+        },
+
+        resetFilters() {
+            this.search = '';
+            this.filters.year = '';
+            this.filters.category = '';
+        },
+
+        get hasActiveFilters() {
+            return this.activeFilterLabels.length > 0;
+        },
+
+        /** Human-readable chips, e.g. ["Kategori [Kerja]", "Tahun 2025", "\"rapat\""]. */
+        get activeFilterLabels() {
+            const labels = this.tabs
+                .filter(tab => this.filters[tab.id])
+                .map(tab => tab.summary(this.filters[tab.id]));
+
+            const query = this.search.trim();
+            if (query) labels.push('"' + query + '"');
+            return labels;
+        },
+
+        // ==============================================================
+        // Filter panel (desktop list + mobile sheet)
+        // ==============================================================
+        get currentTab() {
+            return this.tabs.find(tab => tab.id === this.activeTab);
+        },
+
+        get currentOptions() {
+            return this.options[this.activeTab];
+        },
+
+        /** Label for the mobile trigger button, e.g. "Semua Tahun" or "Tahun: 2025". */
+        get currentFilterLabel() {
+            const value = this.filters[this.activeTab];
+            return value ? this.currentTab.label + ': ' + value : this.currentTab.allLabel;
+        },
+
+        isSelected(option) {
+            return this.filters[this.activeTab] === option.value;
+        },
+
+        select(option) {
+            this.filters[this.activeTab] = option.value;
+            this.mobileFilterOpen = false;
+        },
+
+        optionClass(option) {
+            return this.isSelected(option) ? OPTION_CLASS.selected : OPTION_CLASS.idle;
+        },
+
+        badgeClass(option) {
+            return this.isSelected(option) ? BADGE_CLASS.selected : BADGE_CLASS.idle;
+        },
+    }));
+});
+</script>
 {{ end }}

@@ -1,23 +1,7 @@
 <div x-show="activeTab === 'portofolio'" 
      x-data="{ 
-        selectedFilter: 'all',
-        swiper: null,
-        initSwiper() {
-            if (!this.swiper) {
-                this.swiper = new Swiper(this.$refs.portfolioSwiper, {
-                    modules: window.SwiperModules,
-                    slidesPerView: 'auto',
-                    spaceBetween: 6,
-                    freeMode: true,
-                    grabCursor: true,
-                    mousewheel: {
-                        forceToAxis: true,
-                    },
-                });
-            }
-        }
+        selectedFilter: 'all'
      }" 
-     x-init="$watch('activeTab', value => { if(value === 'portofolio') { $nextTick(() => { this.initSwiper() }) } })"
      class="p-6 sm:p-10" 
      style="display: none;">
     
@@ -33,52 +17,38 @@
             </p>
         </div>
 
-        <!-- Filter Kategori Menggunakan Swiper.js -->
-        <div class="bg-slate-100 dark:bg-gray-800/80 p-1.5 rounded-2xl border border-slate-200/60 dark:border-gray-700/50 relative"
-             x-data
-             x-init="$nextTick(() => { 
-                new Swiper($refs.portfolioSwiper, {
-                    modules: window.SwiperModules,
-                    slidesPerView: 'auto',
-                    spaceBetween: 6,
-                    freeMode: true,
-                    grabCursor: true,
-                    mousewheel: { forceToAxis: true },
-                });
-             })">
-            
-            <div x-ref="portfolioSwiper" class="swiper overflow-hidden">
-                <div class="swiper-wrapper items-center">
-                    
-                    <div class="swiper-slide !w-auto">
-                        <button @click="selectedFilter = 'all'" 
-                                :class="selectedFilter === 'all' ? 'bg-white dark:bg-gray-900 text-cyan-600 dark:text-cyan-400 shadow-sm' : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'"
-                                class="px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all block">
-                            Semua
-                        </button>
-                    </div>
-
-                    {{ range .Params.portfolio_categories }}
-                    <div class="swiper-slide !w-auto">
-                        <button @click="selectedFilter = '{{ .id }}'" 
-                                :class="selectedFilter === '{{ .id }}' ? 'bg-white dark:bg-gray-900 text-cyan-600 dark:text-cyan-400 shadow-sm' : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'"
-                                class="px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5">
-                            {{ if .icon }}<span class="{{ .icon }}"></span>{{ end }}
-                            <span>{{ .label }}</span>
-                        </button>
-                    </div>
-                    {{ end }}
-
-                    <div class="swiper-slide !w-auto">
-                        <button @click="selectedFilter = 'archived'" 
-                                :class="selectedFilter === 'archived' ? 'bg-amber-500 text-white shadow-sm' : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'"
-                                class="px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 border-l border-slate-200 dark:border-gray-700 pl-3">
-                            <span class="icon-[ri--archive-line]"></span>
-                            <span>Arsip Lama</span>
-                        </button>
-                    </div>
-
+        <!-- Filter Kategori Menggunakan Flex & Scrollbar Horizontal CSS -->
+        <div class="bg-slate-100 dark:bg-gray-800/80 p-1.5 rounded-2xl border border-slate-200/60 dark:border-gray-700/50 relative overflow-hidden">
+            <div class="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-0.5 px-0.5">
+                
+                <div class="flex-shrink-0">
+                    <button @click="selectedFilter = 'all'" 
+                            :class="selectedFilter === 'all' ? 'bg-white dark:bg-gray-900 text-cyan-600 dark:text-cyan-400 shadow-sm' : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'"
+                            class="px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all block cursor-pointer">
+                        Semua
+                    </button>
                 </div>
+
+                {{ range .Params.portfolio_categories }}
+                <div class="flex-shrink-0">
+                    <button @click="selectedFilter = '{{ .id }}'" 
+                            :class="selectedFilter === '{{ .id }}' ? 'bg-white dark:bg-gray-900 text-cyan-600 dark:text-cyan-400 shadow-sm' : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'"
+                            class="px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer">
+                        {{ if .icon }}<span class="{{ .icon }}"></span>{{ end }}
+                        <span>{{ .label }}</span>
+                    </button>
+                </div>
+                {{ end }}
+
+                <div class="flex-shrink-0">
+                    <button @click="selectedFilter = 'archived'" 
+                            :class="selectedFilter === 'archived' ? 'bg-amber-500 text-white shadow-sm' : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'"
+                            class="px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 border-l border-slate-200 dark:border-gray-700 pl-3 cursor-pointer">
+                        <span class="icon-[ri--archive-line]"></span>
+                        <span>Arsip Lama</span>
+                    </button>
+                </div>
+
             </div>
         </div>
     </div>
@@ -118,13 +88,11 @@
             
             <article class="flex-grow min-w-0 flex flex-col justify-center">
                 <div class="flex items-start justify-between gap-2">
-                    <!-- Judul portofolio (truncate dihapus agar full text dan bisa wrapping ke bawah) -->
                     <h4 class="text-xs sm:text-base font-bold text-slate-900 dark:text-white group-hover:text-cyan-500 dark:group-hover:text-cyan-400 transition-colors leading-snug">
                         {{ .nama }}
                     </h4>
                     
                     <div class="flex items-center gap-2 shrink-0 pt-0.5">
-                        <!-- Metadata tanggal dibuat lebih kecil dan minimalis -->
                         {{ with .tahun }}
                         {{ $dateObj := time (printf "%s-01" .) }}
                         <span class="text-[9px] sm:text-[10px] text-slate-400 dark:text-gray-500 font-mono">

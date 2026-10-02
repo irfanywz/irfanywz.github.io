@@ -42,15 +42,13 @@ database:
       description: "Anak muda kuliahan dengan gaya kasual, membawa ransel, buku, atau laptop untuk sketsa dunia kampus."
       image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%236d28d9"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="11" font-family="sans-serif">Kampus</text></svg>'
 
-outputs:
-  - JSON
+outputs: ["JSON"]
 ---
-
 Act as a character designer for a 2D animated series.
 
 Based on this input:
 
-[${input}]
+[{humanInput}]
 
 Create a complete list of unique human characters that naturally fit the input.
 

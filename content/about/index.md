@@ -17,16 +17,24 @@ tabs:
 # Pengaturan Konten Tab Support
 support:
   title: "Dukungan"
-  description: "Dukungan kamu sangat membantu kelangsungan konten dan pemeliharaan blog ini kedepannya. Scan QRIS di bawah ini via m-banking atau e-wallet pilihanmu:"
+  description: "Dukungan sangat membantu kelangsungan konten dan pemeliharaan blog ini. Scan QRIS di bawah ini via m-banking atau e-wallet pilihanmu:"
   qr_image: "qris.avif"
   footer_text: "klik gambar untuk memperbesar"
 
 # DAFTAR ORANG BAIK YANG SUPPORTERS
 supporters:
   - nama: "Anonim"
-    nominal: "100***"
+    nominal: "1***"
     pesan: "Terimakasih aplikasinya. bermanfaat"
     link: ""
+  - nama: "RakunBiru"
+    nominal: "8***"
+    pesan: "Makasih aplikasinya"
+    link: ""
+  - nama: "RumahKosong"
+    nominal: "5***"
+    pesan: "Makasih prompt animasinya, membantu sekali"
+    link: ""        
 
 # Pengaturan Konten Tab Portofolio
 portofolio_title: "Portofolio Unggulan"

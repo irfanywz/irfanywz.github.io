@@ -2,7 +2,7 @@
 title: "POV Kendaraan"
 slug: "kendaraan-pov"
 description: "Prompt builder untuk mereproduksi kendaraan 2D yang sama persis dari berbagai sudut pandang kamera (depan, belakang, samping, 3/4, atas) dengan konsistensi bentuk dan gaya yang ketat"
-image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
+#image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png
 has_database: true
 default_input: "front-right 3/4 view"
 desc_prompt: |
@@ -34,6 +34,11 @@ image_prompt: |
   **Output ONE vehicle analysis sentence only.**
 
 database:
+  "#Favorite":
+    - title: "Depan Kaca"
+      description: "A wide-angle, eye-level exterior perspective shot, captured from outside the front windshield, looking inward to reveal the entire front cabin space, including the steering wheel and front seats, framed by the dashboard and windshield pillars"
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%231F3F16"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="12" font-family="sans-serif">DARI DEPAN KACA</text></svg>' 
+       
   "Sudut Pandang Dasar":
     - title: "Tampak Depan"
       description: "front view"
@@ -62,8 +67,7 @@ database:
       description: "rear-right 3/4 view"
       image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23a21caf"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-size="10" font-family="sans-serif">RR 3/4</text></svg>'
 
-outputs:
-  - JSON
+outputs: ["JSON"]
 ---
 Use the attached image as the STRICT MASTER VEHICLE REFERENCE.
 
