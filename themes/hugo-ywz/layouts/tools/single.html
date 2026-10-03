@@ -5,18 +5,17 @@
     <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300"
         x-data="{
             drawerOpen: false,
+            categoryDrawerOpen: false, // State untuk offcanvas filter kategori khusus mobile
             search: '',
             selectedCategory: 'all',
             items: [],
             loading: false,
             loaded: false,
             
-            // Fungsi untuk mengambil data dari index.json sekali saja (lazy load)
             fetchItems() {
                 if (this.loaded || this.loading) return;
                 this.loading = true;
                 
-                // Menggunakan path relatif 'index.json' dari halaman saat ini
                 fetch('/tools/index.json')
                     .then(response => response.json())
                     .then(data => {
@@ -104,7 +103,7 @@
             </div>
         </section>
 
-        <!-- BOTTOM SHEET DENGAN LAYOUT LIST.HTML (FETCH VIA JSON) -->
+        <!-- BOTTOM SHEET UTAMA -->
         <div x-show="drawerOpen" class="fixed inset-0 z-50 flex items-end justify-center" style="display: none;">
             <!-- Backdrop -->
             <div x-show="drawerOpen"
@@ -143,11 +142,31 @@
                     </button>
                 </div>
 
-                <!-- Bagian Utama: Kolom Kiri (Filter) & Kolom Kanan (List 2 Kolom) -->
-                <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+                <!-- Bagian Utama: Kolom Kiri (Filter Desktop) & Kolom Kanan (List 2 Kolom) -->
+                <div class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
                     
-                    <!-- Sidebar Kiri: Pencarian & Filter Kategori -->
-                    <div class="w-full md:w-64 p-5 border-b md:border-b-0 md:border-r border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 flex flex-col gap-4 flex-shrink-0 overflow-y-auto">
+                    <!-- Tombol Trigger Filter Khusus Mobile (Muncul di atas daftar alat pada layar kecil) -->
+                    <div class="md:hidden px-6 pt-3 pb-2 bg-gray-50/80 dark:bg-gray-900/80 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between flex-shrink-0">
+                        <button @click="categoryDrawerOpen = true" class="px-3 py-1.5 rounded-lg bg-gray-200/70 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-semibold flex items-center gap-1.5 cursor-pointer">
+                            <span class="icon-[ri--filter-3-line]"></span>
+                            <span>Filter Kategori</span>
+                            <span class="bg-indigo-600 text-white text-[9px] px-1.5 py-0.2 rounded-full ml-1" x-text="selectedCategory === 'all' ? 'Semua' : selectedCategory"></span>
+                        </button>
+                        <span class="text-xs text-gray-400" x-text="filteredItems.length + ' alat ditemukan'"></span>
+                    </div>
+
+                    <!-- Sidebar Kiri: Pencarian & Filter Kategori (Tampil permanen di Desktop, Offcanvas di Mobile) -->
+                    <div :class="categoryDrawerOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'"
+                         class="absolute md:relative inset-y-0 left-0 z-20 w-72 md:w-64 p-5 border-r border-gray-100 dark:border-gray-800 bg-white md:bg-gray-50/50 dark:bg-gray-900 dark:md:bg-gray-900/50 flex flex-col gap-4 flex-shrink-0 overflow-y-auto transition-transform duration-300">
+                        
+                        <!-- Header khusus di drawer mobile untuk tutup kategori -->
+                        <div class="flex items-center justify-between md:hidden pb-2 border-b border-gray-100 dark:border-gray-800">
+                            <span class="text-xs font-bold text-gray-900 dark:text-white">Pilih Kategori</span>
+                            <button @click="categoryDrawerOpen = false" class="text-gray-400 hover:text-gray-600 p-1 cursor-pointer">
+                                <span class="icon-[ri--close-line] w-4 h-4"></span>
+                            </button>
+                        </div>
+
                         <div class="relative w-full">
                             <span class="icon-[ri--search-line] absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></span>
                             <input type="search" x-model="search" placeholder="Cari alat..." 
@@ -157,14 +176,14 @@
                         <!-- Kategori List -->
                         <div class="flex flex-col gap-1">
                             <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1 px-1">Kategori</span>
-                            <button @click="selectedCategory = 'all'"
+                            <button @click="selectedCategory = 'all'; categoryDrawerOpen = false"
                                 :class="selectedCategory === 'all' ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-bold' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'"
                                 class="w-full text-left px-3 py-2 rounded-xl text-xs transition cursor-pointer flex items-center justify-between">
                                 <span>Semua Alat</span>
                                 <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-500" x-text="items.length"></span>
                             </button>
                             <template x-for="cat in categoryCounts" :key="cat.name">
-                                <button @click="selectedCategory = cat.name"
+                                <button @click="selectedCategory = cat.name; categoryDrawerOpen = false"
                                     :class="selectedCategory === cat.name ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-bold' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'"
                                     class="w-full text-left px-3 py-2 rounded-xl text-xs transition cursor-pointer flex items-center justify-between capitalize">
                                     <span x-text="cat.name"></span>
@@ -175,7 +194,7 @@
                     </div>
 
                     <!-- Area Kanan: Grid 2 Kolom untuk Daftar Alat -->
-                    <div class="flex-1 overflow-y-auto p-6 relative">
+                    <div class="flex-1 overflow-y-auto p-6 relative bg-white dark:bg-gray-900">
                         
                         <!-- Loading State -->
                         <div x-show="loading" class="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-gray-900/80 z-10">

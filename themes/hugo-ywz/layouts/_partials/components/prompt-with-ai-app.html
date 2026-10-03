@@ -308,14 +308,28 @@
 
                         <template x-if="promptFields.length > 0">
                             <div class="p-3.5 bg-indigo-50/50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 rounded-xl space-y-2.5">
-                                <div class="flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400">
-                                    <span class="icon-[ri--input-field]"></span>
-                                    <span>Isi Parameter:</span>
+                                <div class="flex items-center justify-between gap-2">
+                                    <div class="flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                                        <span class="icon-[ri--input-field]"></span>
+                                        <span>Isi Parameter:</span>
+                                    </div>
+                                    <button @click="resetForm()" title="Kembalikan semua isian ke nilai awal"
+                                            class="text-[10px] font-semibold text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-1 cursor-pointer">
+                                        <span class="icon-[ri--restart-line]"></span>
+                                        <span>Reset isian</span>
+                                    </button>
                                 </div>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                                     <template x-for="field in promptFields" :key="field.name">
                                         <div :class="field.type === 'textarea' ? 'sm:col-span-2' : ''">
-                                            <label class="block text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1" x-text="field.label"></label>
+                                            <div class="flex items-center justify-between gap-2 mb-1">
+                                                <label class="block text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider" x-text="field.label"></label>
+                                                <button x-show="hasChoiceDb(field)" style="display: none;" @click="openChoicePicker(field)" :title="'Pilih dari ' + choiceDbTitle(field)"
+                                                        class="text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1 cursor-pointer shrink-0">
+                                                    <span class="icon-[ri--list-check-2]"></span>
+                                                    <span>Pilih dari daftar</span>
+                                                </button>
+                                            </div>
 
                                             <template x-if="field.type === 'select'">
                                                 <select x-model="promptVariables[field.name]" class="w-full px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition">
@@ -361,28 +375,30 @@
                                 <span :class="copiedMaster ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'" class="w-3.5 h-3.5"></span>
                                 <span x-text="copiedMaster ? 'Prompt Berhasil Disalin!' : 'Salin Prompt Ini'"></span>
                             </button>
-                            <button x-show="useAi" @click="generateAi()" style="display: none;"
-                                    class="w-full sm:w-auto px-5 py-2.5 text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
-                                    :class="aiLoading ? 'bg-red-600 hover:bg-red-500' : 'bg-indigo-600 hover:bg-indigo-500'">
-                                <span :class="aiLoading ? 'icon-[ri--stop-circle-line]' : 'icon-[ri--sparkling-2-fill]'" class="w-3.5 h-3.5"></span>
-                                <span x-text="aiLoading ? 'Hentikan' : (aiOutput ? 'Generate Ulang' : 'Generate dengan AI')"></span>
-                            </button>
                         </div>
+
+                        <button x-show="useAi" @click="generateAi()" style="display: none;"
+                                class="w-full px-5 py-3 text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
+                                :class="aiLoading ? 'bg-red-600 hover:bg-red-500' : 'bg-indigo-600 hover:bg-indigo-500'">
+                            <span :class="aiLoading ? 'icon-[ri--stop-circle-line]' : 'icon-[ri--sparkling-2-fill]'" class="w-4 h-4"></span>
+                            <span x-text="aiLoading ? 'Hentikan' : (aiOutput ? 'Generate Ulang' : 'Generate dengan AI')"></span>
+                        </button>
                     </div>
 
                     <!-- AI result panel (right column, only when use_ai: true) -->
                     <template x-if="useAi">
-                        <div x-ref="aiPanel" class="flex flex-col min-w-0 min-h-[360px] lg:h-[560px] rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50/60 dark:bg-gray-950/50 overflow-hidden">
+                        <div x-ref="aiPanel" class="relative flex flex-col min-w-0 min-h-[360px] lg:h-[560px] rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50/60 dark:bg-gray-950/50 overflow-hidden">
                             <div class="flex items-center justify-between gap-2 px-3.5 py-2.5 border-b border-gray-200 dark:border-gray-800">
                                 <div class="flex items-center gap-1.5 min-w-0 text-xs font-bold text-indigo-600 dark:text-indigo-400">
                                     <span class="icon-[ri--sparkling-2-line]"></span>
                                     <span>Hasil AI</span>
-                                    <span class="text-[10px] font-semibold text-gray-400 truncate" x-text="aiStatus || aiModels[0]"></span>
+                                    <span class="text-[10px] font-semibold text-gray-400 truncate" x-text="aiStatus || (aiProviderLabel + ' · ' + aiModels[0])"></span>
                                 </div>
                                 <div class="flex items-center gap-1">
                                     <select x-model="aiFormatChoice" title="Format tampilan hasil"
                                             class="text-[11px] font-semibold bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-lg px-1.5 py-0.5 outline-none cursor-pointer">
                                         <option value="auto">Auto</option>
+                                        <option value="cards">Kartu</option>
                                         <option value="text">Teks</option>
                                         <option value="markdown">Markdown</option>
                                         <option value="json">JSON</option>
@@ -392,46 +408,56 @@
                                         <span :class="copiedAi ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
                                         <span x-text="copiedAi ? 'Tersalin' : 'Salin Hasil'"></span>
                                     </button>
-                                    <button @click="aiShowSettings = !aiShowSettings" title="Pengaturan API"
+                                    <button @click="aiHistoryOpen = !aiHistoryOpen; aiShowSettings = false" title="Riwayat hasil"
+                                            class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer flex items-center gap-0.5">
+                                        <span class="icon-[ri--history-line] text-sm"></span>
+                                        <span x-show="aiHistoryCount" style="display: none;" class="text-[10px] font-bold" x-text="aiHistoryCount"></span>
+                                    </button>
+                                    <button @click="aiShowSettings = !aiShowSettings; aiHistoryOpen = false" title="Pengaturan AI"
                                             class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
                                         <span class="icon-[ri--settings-3-line] text-sm"></span>
                                     </button>
                                 </div>
                             </div>
 
-                            <div x-show="aiShowSettings" style="display: none;" class="px-3.5 py-3 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 space-y-2.5">
-                                <div>
-                                    <div class="flex items-center justify-between mb-1">
-                                        <label class="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Gemini API Key (satu per baris)</label>
-                                        <button @click="aiRevealKeys = !aiRevealKeys" class="text-[10px] font-semibold text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer" x-text="aiRevealKeys ? 'Sembunyikan' : 'Tampilkan'"></button>
-                                    </div>
-                                    <textarea x-model="aiApiKey" rows="3" spellcheck="false" autocomplete="off" placeholder="AIza...&#10;AIza...&#10;AIza..."
-                                              :style="aiRevealKeys ? '' : '-webkit-text-security: disc; text-security: disc;'"
-                                              class="w-full px-3 py-1.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-mono text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none resize-y"></textarea>
-                                    <p class="text-[10px] text-gray-400 mt-1" x-text="aiKeys.length + ' key aktif, dipakai bergiliran setiap generate'"></p>
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">Model (satu per baris, urutan = cadangan)</label>
-                                    <textarea x-model="aiModelPref" rows="2" spellcheck="false" placeholder="gemini-2.5-flash&#10;gemini-2.5-flash-lite"
-                                              class="w-full px-3 py-1.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-mono text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none resize-y"></textarea>
-                                </div>
-                                <p class="text-[10px] text-gray-400 leading-relaxed">Jika sebuah key kena limit atau tidak valid, otomatis pindah ke key berikutnya, lalu ke model cadangan. Disimpan di localStorage browser ini. Per prompt bisa diatur lewat <code>ai_model</code>, <code>ai_output</code>, <code>ai_temperature</code>, <code>ai_system</code>.</p>
-                            </div>
-
                             <div x-ref="aiBody" class="flex-grow overflow-y-auto p-4">
                                 <p x-show="aiError" style="display: none;" class="text-xs font-semibold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/50 rounded-lg px-3 py-2 mb-3" x-text="aiError"></p>
+                                <p x-show="aiView.partial && !aiLoading" style="display: none;" class="text-[11px] font-semibold text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50 rounded-lg px-3 py-2 mb-3">Respons JSON tidak lengkap atau terpotong, jadi tampilan ini hasil perbaikan otomatis. Pilih format Teks untuk melihat respons aslinya.</p>
                                 <div x-show="aiView.kind === 'html' && aiView.html" style="display: none;" class="text-xs sm:text-sm text-gray-800 dark:text-gray-200 leading-relaxed break-words" x-html="aiView.html"></div>
-                                <div x-show="aiView.kind === 'list'" style="display: none;" class="space-y-2">
-                                    <template x-for="(item, i) in (aiView.items || [])" :key="i">
-                                        <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-3 bg-white dark:bg-gray-900 space-y-1.5">
-                                            <div class="flex items-center justify-between gap-2">
-                                                <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400" x-text="'#' + (i + 1)"></span>
-                                                <button @click="copy(item, 'copiedAiItem', i)" class="text-[11px] text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold flex items-center gap-1 cursor-pointer">
-                                                    <span :class="copiedAiItem === i ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
-                                                    <span x-text="copiedAiItem === i ? 'Tersalin' : 'Salin'"></span>
+                                <div x-show="aiView.kind === 'cards'" style="display: none;" class="space-y-3">
+                                    <p x-show="aiView.heading" style="display: none;" class="text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400" x-text="aiView.heading"></p>
+                                    <template x-for="(card, i) in (aiView.cards || [])" :key="i">
+                                        <div class="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 overflow-hidden">
+                                            <div class="flex items-center justify-between gap-2 px-3 py-2 bg-gray-50 dark:bg-gray-950/50 border-b border-gray-200 dark:border-gray-700">
+                                                <div class="flex items-center gap-2 min-w-0">
+                                                    <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400" x-text="'#' + (i + 1)"></span>
+                                                    <span x-show="card.title" style="display: none;" class="text-xs font-bold text-gray-800 dark:text-gray-200 truncate" x-text="card.title"></span>
+                                                </div>
+                                                <button @click="copy(card.text, 'copiedAiItem', 'c' + i)" class="text-[11px] text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold flex items-center gap-1 cursor-pointer shrink-0">
+                                                    <span :class="copiedAiItem === 'c' + i ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
+                                                    <span x-text="copiedAiItem === 'c' + i ? 'Tersalin' : 'Salin kartu'"></span>
                                                 </button>
                                             </div>
-                                            <p class="text-xs font-mono text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap break-words" x-text="item"></p>
+                                            <div class="divide-y divide-gray-100 dark:divide-gray-800">
+                                                <template x-for="(field, j) in card.fields" :key="j">
+                                                    <div class="px-3 py-2.5 space-y-1">
+                                                        <div x-show="field.label" style="display: none;" class="flex items-center justify-between gap-2">
+                                                            <span class="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400" x-text="field.label"></span>
+                                                            <button x-show="card.fields.length > 1" style="display: none;" @click="copy(field.text, 'copiedAiItem', 'f' + i + '.' + j)" class="text-[11px] text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold flex items-center gap-1 cursor-pointer">
+                                                                <span :class="copiedAiItem === 'f' + i + '.' + j ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
+                                                                <span x-text="copiedAiItem === 'f' + i + '.' + j ? 'Tersalin' : 'Salin'"></span>
+                                                            </button>
+                                                        </div>
+                                                        <div x-show="field.type === 'chips'" style="display: none;" class="flex flex-wrap gap-1.5">
+                                                            <template x-for="(chip, k) in (field.items || [])" :key="k">
+                                                                <span class="px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 text-[11px] font-medium" x-text="chip"></span>
+                                                            </template>
+                                                        </div>
+                                                        <pre x-show="field.type === 'code'" style="display: none;" class="font-mono text-[11px] text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words" x-text="field.text"></pre>
+                                                        <p x-show="field.type === 'text'" class="text-xs sm:text-sm text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap break-words" x-text="field.text"></p>
+                                                    </div>
+                                                </template>
+                                            </div>
                                         </div>
                                     </template>
                                 </div>
@@ -446,7 +472,181 @@
                                 </div>
                             </div>
 
-                            <div x-show="aiOutput" style="display: none;" class="px-3.5 py-2 border-t border-gray-200 dark:border-gray-800 text-[11px] text-gray-500 dark:text-gray-400" x-text="formatStats(aiOutput)"></div>
+                            <div x-show="aiOutput" style="display: none;" class="px-3.5 py-2 border-t border-gray-200 dark:border-gray-800 text-[11px] text-gray-500 dark:text-gray-400 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+                                <span x-text="formatStats(aiOutput)"></span>
+                                <span x-show="aiCredits" style="display: none;" class="flex items-center gap-1 font-semibold" :class="aiCredits && aiCredits.low ? 'text-red-600 dark:text-red-400' : 'text-indigo-600 dark:text-indigo-400'">
+                                    <span class="icon-[ri--coin-line]"></span>
+                                    <span x-text="aiCredits ? aiCredits.label : ''"></span>
+                                </span>
+                            </div>
+
+                            <!-- Settings overlay -->
+                            <div x-show="aiShowSettings" style="display: none;" class="absolute inset-0 z-10 flex flex-col bg-white dark:bg-gray-900">
+                                <div class="flex items-center justify-between gap-2 px-3.5 py-2.5 border-b border-gray-200 dark:border-gray-800">
+                                    <span class="flex items-center gap-1.5 text-xs font-bold text-gray-800 dark:text-gray-200">
+                                        <span class="icon-[ri--settings-3-line]"></span><span>Pengaturan AI</span>
+                                    </span>
+                                    <button @click="aiShowSettings = false" title="Tutup" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
+                                        <span class="icon-[ri--close-line] text-sm"></span>
+                                    </button>
+                                </div>
+                                <div class="flex-grow overflow-y-auto p-4 space-y-5">
+                                    <p x-show="aiError" style="display: none;" class="text-xs font-semibold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/50 rounded-lg px-3 py-2" x-text="aiError"></p>
+                                    <div class="flex items-start gap-2.5 rounded-xl border border-indigo-100 dark:border-indigo-900/50 bg-indigo-50 dark:bg-indigo-950/30 px-3.5 py-3">
+                                        <span class="icon-[ri--shield-check-line] text-base text-indigo-600 dark:text-indigo-400 mt-0.5 shrink-0"></span>
+                                        <div class="text-xs leading-relaxed text-gray-700 dark:text-gray-300 space-y-1">
+                                            <p class="font-bold text-gray-900 dark:text-white">API key Anda tidak kami simpan</p>
+                                            <p>Key dan pengaturan ini hanya tersimpan di browser Anda sendiri (localStorage) dan tidak dikirim ke server kami. Key hanya dikirim langsung ke provider yang Anda pilih (Google Gemini atau Kie.ai) saat Anda menekan Generate.</p>
+                                        </div>
+                                    </div>
+
+
+                                    <section class="space-y-2">
+                                        <h3 class="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Provider aktif</h3>
+                                        <div class="grid grid-cols-2 gap-1 p-1 rounded-xl bg-gray-100 dark:bg-gray-800">
+                                            <template x-for="p in aiProviderTabs" :key="p.id">
+                                                <button @click="aiProvider = p.id" x-text="p.label"
+                                                        class="px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer transition"
+                                                        :class="aiProvider === p.id ? 'bg-white dark:bg-gray-900 text-indigo-600 dark:text-indigo-400 shadow-xs' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'"></button>
+                                            </template>
+                                        </div>
+                                        <p class="text-[11px] text-gray-400 leading-relaxed">Provider ini dipakai untuk semua prompt AI, dan pengaturan di bawah berlaku untuknya. Satu prompt bisa menimpanya lewat <code>ai_provider</code>.</p>
+                                    </section>
+
+                                    <section class="space-y-2">
+                                        <div class="flex items-center justify-between gap-2">
+                                            <h3 class="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400" x-text="'API Key ' + aiTab.label + ' (satu per baris)'"></h3>
+                                            <div class="flex items-center gap-3 shrink-0">
+                                                <button @click="aiRevealKeys = !aiRevealKeys" class="text-[10px] font-semibold text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer" x-text="aiRevealKeys ? 'Sembunyikan' : 'Tampilkan'"></button>
+                                                <a :href="aiTab.keyUrl" target="_blank" rel="noopener noreferrer" class="text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
+                                                    <span>Buat API key</span><span class="icon-[ri--external-link-line]"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <textarea x-model="aiCfg[aiProvider].keys" rows="4" spellcheck="false" autocomplete="off"
+                                                  :placeholder="aiTab.keyPlaceholder + '\n' + aiTab.keyPlaceholder"
+                                                  :style="aiRevealKeys ? '' : '-webkit-text-security: disc; text-security: disc;'"
+                                                  class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-mono text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none resize-y"></textarea>
+                                        <div class="flex items-center justify-between gap-2">
+                                            <p class="text-[11px] text-gray-400" x-text="aiKeys.length + ' key aktif, dipakai bergiliran setiap generate'"></p>
+                                            <button @click="checkKeys()" :disabled="aiChecking || !aiKeys.length"
+                                                    class="shrink-0 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-[11px] font-bold text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1.5">
+                                                <span :class="aiChecking ? 'icon-[ri--loader-4-line] animate-spin motion-reduce:animate-none' : 'icon-[ri--shield-check-line]'"></span>
+                                                <span x-text="aiChecking ? 'Memeriksa...' : (aiProvider === 'kie' ? 'Cek key & kredit' : 'Cek key & model')"></span>
+                                            </button>
+                                        </div>
+                                        <ul x-show="aiKeyStatus.length" style="display: none;" class="space-y-1">
+                                            <template x-for="(k, i) in aiKeyStatus" :key="i">
+                                                <li class="flex items-center gap-2 text-[11px]">
+                                                    <span class="w-1.5 h-1.5 rounded-full shrink-0" :class="k.dot"></span>
+                                                    <span class="font-mono text-gray-600 dark:text-gray-300" x-text="k.name"></span>
+                                                    <span class="text-gray-400 truncate" x-text="k.label"></span>
+                                                </li>
+                                            </template>
+                                            <li x-show="aiKeyStatus.some((k) => k.state !== 'ok')" style="display: none;">
+                                                <button @click="resetKeyHealth()" class="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer">Reset cooldown</button>
+                                            </li>
+                                        </ul>
+                                        
+                                    </section>
+
+                                    <section class="space-y-2">
+                                        <h3 class="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Model (satu per baris, urutan = cadangan)</h3>
+                                        <textarea x-model="aiCfg[aiProvider].models" rows="3" spellcheck="false" class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-mono text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none resize-y"></textarea>
+                                        <p x-show="aiProvider === 'kie'" style="display: none;" class="text-[11px] text-gray-400 leading-relaxed">Kie.ai tidak menyediakan daftar model lewat API, jadi isi nama modelnya secara manual.</p>
+                                        <div x-show="aiProvider === 'gemini' && aiModelList.length" style="display: none;" class="space-y-1.5">
+                                            <div class="flex items-center justify-between gap-2">
+                                                <span class="text-[11px] text-gray-400" x-text="aiModelOptions.length + ' model tersedia, klik untuk menambah/menghapus'"></span>
+                                                <label class="flex items-center gap-1.5 text-[11px] text-gray-500 dark:text-gray-400 whitespace-nowrap cursor-pointer">
+                                                    <input type="checkbox" x-model="aiShowAllModels" class="accent-indigo-600"><span>Semua jenis</span>
+                                                </label>
+                                            </div>
+                                            <div class="max-h-52 overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-lg divide-y divide-gray-100 dark:divide-gray-800">
+                                                <template x-for="m in aiModelOptions" :key="m.id">
+                                                    <button @click="toggleModel(m.id)" class="w-full text-left px-3 py-2 flex items-center justify-between gap-2 hover:bg-gray-50 dark:hover:bg-gray-800/60 cursor-pointer">
+                                                        <span class="min-w-0">
+                                                            <span class="block text-xs font-mono text-gray-800 dark:text-gray-200 truncate" x-text="m.id"></span>
+                                                            <span class="block text-[10px] text-gray-400 truncate" x-text="m.displayName + ' · input ' + formatNumber(m.input) + ' / output ' + formatNumber(m.output)"></span>
+                                                        </span>
+                                                        <span class="shrink-0 text-[10px] font-semibold" :class="m.used ? 'text-emerald-600 dark:text-emerald-400' : 'text-indigo-600 dark:text-indigo-400'" x-text="m.used ? 'Dipakai ✓' : '+ Tambah'"></span>
+                                                    </button>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </section>
+
+                                    <section x-show="aiProvider === 'kie'" style="display: none;" class="space-y-2">
+                                        <h3 class="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Reasoning effort</h3>
+                                        <select x-model="aiEffort" class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer">
+                                            <option value="low">low (cepat, hemat kredit)</option>
+                                            <option value="medium">medium</option>
+                                            <option value="high">high</option>
+                                            <option value="xhigh">xhigh (paling teliti, paling lambat)</option>
+                                        </select>
+                                        <p class="text-[11px] text-gray-400">Bisa ditimpa per prompt lewat <code>ai_reasoning</code>.</p>
+                                    </section>
+
+                                    <section>
+                                        <label class="flex items-start gap-2 cursor-pointer">
+                                            <input type="checkbox" x-model="aiFallback" class="mt-0.5 accent-indigo-600">
+                                            <span>
+                                                <span class="block text-xs font-semibold text-gray-800 dark:text-gray-200">Pindah ke provider lain jika semua key gagal</span>
+                                                <span class="block text-[11px] text-gray-400 leading-relaxed">Hanya provider yang sudah punya key yang dicoba. Perlu diingat kie.ai memakai kredit berbayar.</span>
+                                            </span>
+                                        </label>
+                                    </section>
+
+                                    
+                                </div>
+                            </div>
+
+                            <!-- History overlay -->
+                            <div x-show="aiHistoryOpen" style="display: none;" class="absolute inset-0 z-10 flex flex-col bg-white dark:bg-gray-900">
+                                <div class="flex items-center justify-between gap-2 px-3.5 py-2.5 border-b border-gray-200 dark:border-gray-800">
+                                    <span class="flex items-center gap-1.5 text-xs font-bold text-gray-800 dark:text-gray-200">
+                                        <span class="icon-[ri--history-line]"></span><span>Riwayat Hasil</span>
+                                    </span>
+                                    <div class="flex items-center gap-1">
+                                        <button @click="clearHistory()" class="text-[11px] font-semibold text-gray-500 hover:text-red-600 dark:hover:text-red-400 px-2 py-0.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">Hapus semua</button>
+                                        <button @click="aiHistoryOpen = false" title="Tutup" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
+                                            <span class="icon-[ri--close-line] text-sm"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3 px-3.5 py-2 border-b border-gray-200 dark:border-gray-800">
+                                    <input type="search" x-model="aiHistoryQuery" placeholder="Cari riwayat..."
+                                           class="flex-grow min-w-0 px-3 py-1.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                                    <label class="flex items-center gap-1.5 text-[11px] text-gray-500 dark:text-gray-400 whitespace-nowrap cursor-pointer">
+                                        <input type="checkbox" x-model="aiHistoryAll" class="accent-indigo-600"><span x-text="'Semua prompt (' + aiHistory.length + ')'"></span>
+                                    </label>
+                                </div>
+                                <div class="flex-grow overflow-y-auto p-3 space-y-2">
+                                    <template x-for="entry in aiHistoryList" :key="entry.id">
+                                        <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-3 bg-gray-50 dark:bg-gray-950/50 space-y-1.5">
+                                            <div class="flex items-center justify-between gap-2 text-[10px] text-gray-400">
+                                                <span class="truncate" x-text="formatTime(entry.ts) + ' · ' + entry.model"></span>
+                                                <div class="flex items-center gap-1 shrink-0">
+                                                    <button @click="toggleHistoryPin(entry.id)" :title="entry.pinned ? 'Lepas pin' : 'Pin'" class="p-0.5 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer">
+                                                        <span :class="entry.pinned ? 'icon-[ri--pushpin-2-fill] text-indigo-600 dark:text-indigo-400' : 'icon-[ri--pushpin-2-line]'"></span>
+                                                    </button>
+                                                    <button @click="deleteHistory(entry.id)" title="Hapus" class="p-0.5 hover:text-red-600 dark:hover:text-red-400 cursor-pointer">
+                                                        <span class="icon-[ri--delete-bin-line]"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <p x-show="aiHistoryAll" class="text-[11px] font-bold text-gray-700 dark:text-gray-300 truncate" x-text="entry.title"></p>
+                                            <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed break-words" x-text="snippet(entry.output)"></p>
+                                            <button @click="restoreHistory(entry)" class="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer">Pulihkan isian + hasil</button>
+                                        </div>
+                                    </template>
+                                    <div x-show="!aiHistoryList.length" style="display: none;" class="text-center py-10 space-y-2">
+                                        <p class="text-xs text-gray-400" x-text="aiHistoryQuery ? 'Tidak ada riwayat yang cocok.' : (aiHistoryAll ? 'Belum ada riwayat.' : 'Belum ada riwayat untuk prompt ini.')"></p>
+                                        <button x-show="!aiHistoryAll && aiHistoryOthers > 0" style="display: none;" @click="aiHistoryAll = true"
+                                                class="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
+                                                x-text="'Lihat ' + aiHistoryOthers + ' riwayat dari prompt lain'"></button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </template>
                     </div>
@@ -618,6 +818,59 @@
         </div>
     </div>
 
+    <!-- Picker: global choice database for dynamic-form fields (field option `use_db`, data from _index.md `choice_databases`) -->
+    <div x-show="choicePicker.open" class="fixed inset-0 z-60 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4" @click.self="closeChoicePicker()" @keydown.escape.window="closeChoicePicker()" style="display: none;">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-md rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col max-h-[80vh]">
+            <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-start justify-between gap-3">
+                <div class="min-w-0">
+                    <h4 class="text-xs font-bold text-gray-800 dark:text-gray-200" x-text="choiceDb ? choiceDb.title : ''"></h4>
+                    <p x-show="choiceDb && choiceDb.description" style="display: none;" class="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5" x-text="choiceDb ? choiceDb.description : ''"></p>
+                </div>
+                <button @click="closeChoicePicker()" title="Tutup" class="text-gray-400 hover:text-gray-600 cursor-pointer shrink-0">
+                    <span class="icon-[ri--close-line] text-lg"></span>
+                </button>
+            </div>
+
+            <div class="px-5 py-3 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+                <div class="relative w-full">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400"><span class="icon-[ri--search-line] text-xs"></span></span>
+                    <input type="text" x-ref="choiceSearch" x-model="choicePicker.query" placeholder="Cari..."
+                           class="w-full pl-9 pr-8 py-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <button x-show="choicePicker.query" @click="choicePicker.query = ''" style="display: none;" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-gray-400 hover:text-gray-600 cursor-pointer">
+                        <span class="icon-[ri--close-circle-fill] text-xs"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-y-auto flex-grow p-2">
+                <template x-for="group in choiceGroups" :key="group.name">
+                    <div class="mb-1">
+                        <p x-show="group.name" class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-gray-400" x-text="group.name"></p>
+                        <template x-for="item in group.items" :key="item.value">
+                            <button @click="pickChoice(item)" class="w-full text-left px-3 py-2 rounded-lg flex items-center justify-between gap-3 cursor-pointer transition"
+                                    :class="isChoiceSelected(item.value) ? 'bg-indigo-50 dark:bg-indigo-950/40' : 'hover:bg-gray-50 dark:hover:bg-gray-700/50'">
+                                <span class="min-w-0">
+                                    <span class="block text-xs font-semibold text-gray-800 dark:text-gray-200 truncate" x-text="item.label"></span>
+                                    <span x-show="item.description || item.label !== item.value" class="block text-[10px] text-gray-500 dark:text-gray-400 truncate" x-text="item.description || item.value"></span>
+                                </span>
+                                <span x-show="isChoiceSelected(item.value)" class="icon-[ri--check-line] text-indigo-600 dark:text-indigo-400 shrink-0"></span>
+                            </button>
+                        </template>
+                    </div>
+                </template>
+                <p x-show="!choiceGroups.length" class="text-xs text-gray-400 text-center py-10">Tidak ada yang cocok.</p>
+            </div>
+
+            <div class="px-5 py-3 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between gap-3">
+                <button @click="clearChoice()" class="text-[11px] font-semibold text-gray-500 hover:text-red-600 dark:hover:text-red-400 cursor-pointer">Kosongkan isian</button>
+                <div x-show="choiceField && choiceField.multiple" style="display: none;" class="flex items-center gap-3">
+                    <span class="text-[11px] text-gray-500 dark:text-gray-400" x-text="choiceTokens.length + ' dipilih'"></span>
+                    <button @click="closeChoicePicker()" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition cursor-pointer">Selesai</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal: resources & tools -->
     <div x-show="resourceModalOpen" class="fixed inset-0 z-50 overflow-y-auto px-4 py-6 sm:p-0 flex items-center justify-center" style="display: none;">
         <div @click="resourceModalOpen = false" class="fixed inset-0 bg-black/60 backdrop-blur-xs"></div>
@@ -677,14 +930,34 @@
    ========================================================================== */
 const INDEX_URL = './index.json';
 const COPY_FEEDBACK_MS = 2000;
-const AI_KEY_STORAGE = 'gemini_api_key';
-const AI_MODEL_STORAGE = 'prompt_ai_model';
-const AI_DEFAULT_MODEL = 'gemini-2.5-flash';
-const AI_CURSOR_STORAGE = 'prompt_ai_key_cursor';
-const AI_RETRY_STATUS = [401, 403, 429, 500, 503]; // next key/model is tried on these
-const AI_FORMATS = ['auto', 'text', 'markdown', 'json'];
+const AI_PROVIDER_STORAGE = 'prompt_ai_provider';
+const AI_FALLBACK_STORAGE = 'prompt_ai_fallback';
+const AI_EFFORT_STORAGE = 'kie_ai_effort';
+const AI_CURSOR_STORAGE = 'prompt_ai_key_cursors';
+const AI_EFFORTS = ['low', 'medium', 'high', 'xhigh'];
+const AI_RETRY_STATUS = [401, 402, 403, 429, 500, 503]; // next key/model/provider is tried on these
+/** Gemini keeps its original storage keys, so settings saved before multi-provider support still load. */
+const AI_PROVIDERS = {
+    gemini: {
+        label: 'Google Gemini', keyStorage: 'gemini_api_key', modelStorage: 'prompt_ai_model', defaultModel: 'gemini-2.5-flash',
+        keyPlaceholder: 'AIza...', keyUrl: 'https://aistudio.google.com/app/apikey',
+    },
+    kie: {
+        label: 'Kie.ai', keyStorage: 'kie_api_key', modelStorage: 'kie_ai_model', defaultModel: 'gpt-5-5',
+        keyPlaceholder: 'Kie.ai API key', keyUrl: 'https://kie.ai/api-key',
+    },
+};
+const AI_PROVIDER_IDS = Object.keys(AI_PROVIDERS);
+const AI_HISTORY_STORAGE = 'prompt_ai_history';
+const AI_HISTORY_MAX = 50;
+const AI_HEALTH_STORAGE = 'prompt_ai_key_health';
+const FORM_STORAGE_PREFIX = 'prompt_form:';
+const AI_FORMATS = ['auto', 'cards', 'text', 'markdown', 'json'];
 const MARKDOWN_HINT = /^(#{1,6}\s|\s*[-*+]\s|\s*\d+\.\s|>\s)|\*\*|```/m;
 const AI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models';
+const KIE_ENDPOINT = 'https://api.kie.ai/codex/v1/responses';
+const KIE_CREDIT_ENDPOINT = 'https://api.kie.ai/api/v1/chat/credit';
+const NON_TEXT_MODEL = /tts|image|embedding|veo|lyria|transcribe|aqa|robotics|computer-use|antigravity|deep-research/i; // hidden from the model list by default
 const TOKEN_CHARS_RATIO = 4; // rough average; real tokenizers vary by model and language
 const HIGHLIGHT_CLASS = 'text-indigo-600 dark:text-indigo-400 font-bold bg-indigo-50 dark:bg-indigo-950 px-1 rounded';
 const HUMAN_INPUT_PATTERN = /\[(?:\{humanInput\}|humanInput)\]/g;
@@ -759,8 +1032,93 @@ function getPromptSlug(jsonUrl = '') {
 /** localStorage can throw (private mode, blocked storage); fail soft. */
 const storage = {
     get: (key, fallback = '') => { try { return localStorage.getItem(key) || fallback; } catch { return fallback; } },
-    set: (key, value) => { try { localStorage.setItem(key, value); } catch { /* ignore */ } },
+    /** Returns false when the write failed (e.g. quota exceeded). */
+    set: (key, value) => { try { localStorage.setItem(key, value); return true; } catch { return false; } },
+    remove: (key) => { try { localStorage.removeItem(key); } catch { /* ignore */ } },
 };
+
+const loadJson = (key, fallback) => { try { return JSON.parse(storage.get(key)) ?? fallback; } catch { return fallback; } };
+const keyId = (apiKey) => apiKey.slice(-6); // short fingerprint so raw keys are never copied elsewhere
+/**
+ * Global choice databases from _index.md (`choice_databases`). Accepts per database either a plain list or
+ * { title, description, items }. An item is a string or { value, label?, group?, description? }.
+ * Names are lower-cased because Hugo lower-cases front-matter keys.
+ */
+function normalizeChoiceDbs(raw) {
+    const out = {};
+    if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) return out;
+    for (const [name, def] of Object.entries(raw)) {
+        const isList = Array.isArray(def);
+        const list = isList ? def : def?.items;
+        if (!Array.isArray(list)) continue;
+        const seen = new Set();
+        const items = [];
+        for (const it of list) {
+            const plain = it !== null && typeof it === 'object' ? it : { value: it };
+            const value = plain.value ?? plain.label ?? plain.name;
+            if (value === undefined || value === null || String(value).trim() === '' || seen.has(String(value))) continue;
+            seen.add(String(value));
+            items.push({ value: String(value), label: String(plain.label ?? value), group: String(plain.group ?? ''), description: String(plain.description ?? '') });
+        }
+        out[name.toLowerCase()] = {
+            title: (!isList && def.title) ? String(def.title) : name.charAt(0).toUpperCase() + name.slice(1).replace(/[_-]+/g, ' '),
+            description: isList ? '' : String(def.description || ''),
+            items,
+        };
+    }
+    return out;
+}
+
+const splitList = (text) => [...new Set(String(text).split(/[\s,;]+/).filter(Boolean))];
+
+/** Normalise provider errors: Gemini { error: { message } }, Kie.ai { code, msg }. */
+function aiHttpError(status, detail) {
+    const message = detail?.error?.message || detail?.msg || detail?.message || `HTTP ${status}`;
+    const delay = detail?.error?.details?.find?.((d) => d.retryDelay)?.retryDelay; // e.g. "34s"
+    return Object.assign(new Error(message), {
+        status,
+        retryAfter: delay ? parseFloat(delay) : null,
+        dailyQuota: /PerDay/i.test(JSON.stringify(detail || {})),
+        retryable: AI_RETRY_STATUS.includes(status) || /api key/i.test(message),
+    });
+}
+
+/** fetch() that turns network/CORS failures into a readable, retryable error (so fallback providers still run). */
+async function aiFetch(url, init, label) {
+    try { return await fetch(url, init); } catch (err) {
+        if (err.name === 'AbortError') throw err;
+        throw Object.assign(new Error(`Tidak bisa terhubung ke ${label} (jaringan bermasalah atau diblokir CORS oleh browser).`), { retryable: true });
+    }
+}
+
+/** Read a text/event-stream body and call onData(parsedJson) for every `data:` line. */
+async function readSse(res, onData) {
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    const handle = (line) => {
+        if (!line.startsWith('data:')) return;
+        const json = line.slice(5).trim();
+        if (json && json !== '[DONE]') onData(JSON.parse(json));
+    };
+    for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+        lines.forEach(handle);
+    }
+    handle(buffer);
+}
+
+/** Text of a Responses-API result (Kie.ai /codex/v1/responses). */
+const extractKieText = (data) => (data?.output || data?.response?.output || [])
+    .filter((item) => item.type === 'message')
+    .flatMap((item) => item.content || [])
+    .filter((part) => part.type === 'output_text')
+    .map((part) => part.text)
+    .join('');
 
 async function fetchJson(url) {
     const res = await fetch(url);
@@ -805,10 +1163,89 @@ function fillTemplate(text, { replacements = {}, params = [], values = {}, prefi
 /* ==========================================================================
    AI output formatters (JSON pretty-print + highlight, minimal Markdown)
    ========================================================================== */
-function tryParseJson(text) {
-    const cleaned = text.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
+const stripFence = (text) => text.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
+
+/**
+ * Parse JSON that may still be streaming or got cut off: closes open strings/brackets and drops dangling keys/commas.
+ * Returns null if it doesn't look like JSON, else { data, partial } (partial = strict parse failed, data was repaired).
+ */
+function parseJsonLoose(text) {
+    const cleaned = stripFence(text);
     if (!/^[\[{]/.test(cleaned)) return null;
-    try { return JSON.parse(cleaned); } catch { return null; }
+    try { return { data: JSON.parse(cleaned), partial: false }; } catch { /* repair below */ }
+
+    const stack = [];
+    let inString = false;
+    let escaped = false;
+    for (const ch of cleaned) {
+        if (inString) { if (escaped) escaped = false; else if (ch === '\\') escaped = true; else if (ch === '"') inString = false; }
+        else if (ch === '"') inString = true;
+        else if (ch === '{' || ch === '[') stack.push(ch);
+        else if (ch === '}' || ch === ']') stack.pop();
+    }
+    let head = cleaned;
+    if (inString) head = `${escaped ? head.slice(0, -1) : head.replace(/\\u[0-9a-fA-F]{0,3}$/, '')}"`;
+    const closers = stack.reverse().map((c) => (c === '{' ? '}' : ']')).join('');
+    const candidates = [
+        head,
+        head.replace(/,\s*$/, ''),                                   // trailing comma
+        head.replace(/,?\s*"(?:\\.|[^\\"])*"\s*:\s*$/, ''),          // key without value
+        head.replace(/,?\s*"(?:\\.|[^\\"])*"\s*$/, ''),              // key without colon
+    ];
+    for (const candidate of candidates) {
+        try { return { data: JSON.parse(candidate + closers), partial: true }; } catch { /* next */ }
+    }
+    return null;
+}
+
+const isPlainObject = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
+
+/** "song_style" / "songStyle" -> "Song style" */
+const humanize = (key) => {
+    const words = String(key).replace(/[_-]+/g, ' ').replace(/([a-z0-9])([A-Z])/g, '$1 $2').trim().toLowerCase();
+    return words.charAt(0).toUpperCase() + words.slice(1);
+};
+
+function toField(key, value) {
+    const label = humanize(key);
+    if (Array.isArray(value) && value.length && value.every((v) => v === null || typeof v !== 'object')) {
+        const items = value.map(String);
+        return items.every((i) => i.length <= 30)
+            ? { key, label, type: 'chips', items, text: items.join(', ') }
+            : { key, label, type: 'text', text: items.join('\n') };
+    }
+    if (value !== null && typeof value === 'object') return { key, label, type: 'code', text: JSON.stringify(value, null, 2) };
+    return { key, label, type: 'text', text: String(value) };
+}
+
+function objectCard(obj) {
+    const entries = Object.entries(obj);
+    const titleKey = entries.find(([k, v]) => /^(title|name|judul|nama)$/i.test(k) && typeof v === 'string' && v.trim())?.[0];
+    const all = entries.map(([k, v]) => toField(k, v));
+    return {
+        title: titleKey ? obj[titleKey] : '',
+        fields: all.filter((f) => f.key !== titleKey),
+        text: all.map((f) => `${f.label}:\n${f.text}`).join('\n\n'), // what "Salin kartu" copies
+    };
+}
+
+/** Turn parsed JSON into cards: array of objects, array of scalars, one object, or { "anything": [...] }. Null if it doesn't fit. */
+function buildCards(data) {
+    let heading = '';
+    if (isPlainObject(data)) {
+        const keys = Object.keys(data);
+        if (keys.length === 1 && Array.isArray(data[keys[0]])) { heading = humanize(keys[0]); data = data[keys[0]]; }
+        else data = [data];
+    }
+    if (!Array.isArray(data) || !data.length) return null;
+    if (!(data.every(isPlainObject) || data.every((v) => v === null || typeof v !== 'object'))) return null;
+
+    const cards = data
+        .map((item) => (isPlainObject(item)
+            ? objectCard(item)
+            : { title: '', fields: [{ key: '', label: '', type: 'text', text: String(item) }], text: String(item) }))
+        .filter((card) => card.fields.length);
+    return cards.length ? { heading, cards } : null;
 }
 
 /** Highlight an already pretty-printed JSON string; only token text is escaped (the rest is punctuation/whitespace). */
@@ -908,10 +1345,31 @@ document.addEventListener('alpine:init', () => {
         dynamicInputs: {},
 
         // --- AI state (prompts with `use_ai: true`) ---
-        aiApiKey: storage.get(AI_KEY_STORAGE), // one key per line (a single old key still works)
-        aiModelPref: storage.get(AI_MODEL_STORAGE, AI_DEFAULT_MODEL), // one model per line, in fallback order
-        aiKeyCursor: Number(storage.get(AI_CURSOR_STORAGE, '0')) || 0,
+        aiProvider: AI_PROVIDERS[storage.get(AI_PROVIDER_STORAGE)] ? storage.get(AI_PROVIDER_STORAGE) : 'gemini',
+        aiFallback: storage.get(AI_FALLBACK_STORAGE) === '1',
+        aiEffort: AI_EFFORTS.includes(storage.get(AI_EFFORT_STORAGE)) ? storage.get(AI_EFFORT_STORAGE) : 'medium',
+        // Per provider: one API key per line, one model per line (models are tried in order as fallbacks)
+        aiCfg: Object.fromEntries(AI_PROVIDER_IDS.map((id) => [id, {
+            keys: storage.get(AI_PROVIDERS[id].keyStorage),
+            models: storage.get(AI_PROVIDERS[id].modelStorage, AI_PROVIDERS[id].defaultModel),
+        }])),
+        aiKeyCursors: loadJson(AI_CURSOR_STORAGE, {}),
+        aiChecks: {}, // { provider: { keyFingerprint: { ok, label, credits? } } } from "Cek key"
+        aiChecking: false,
+        aiModelList: [], // Gemini models returned for the checked keys
+        aiShowAllModels: false,
+        // Global choice databases (_index.md `choice_databases`), used by fields with `use_db` in variables_config
+        choiceDbs: {},
+        choicePicker: { open: false, fieldName: '', query: '' },
+        aiCredits: null, // { label, low } shown under the output when Kie.ai was used
+        aiCreditsByKey: {}, // last known balance per key fingerprint (to show how much a request used)
         aiRevealKeys: false,
+        aiNow: Date.now(),
+        aiKeyHealth: Object.fromEntries(Object.entries(loadJson(AI_HEALTH_STORAGE, {})).filter(([, h]) => h.until > Date.now())),
+        aiHistory: loadJson(AI_HISTORY_STORAGE, []),
+        aiHistoryOpen: false,
+        aiHistoryAll: false,
+        aiHistoryQuery: '',
         aiStatus: '',
         aiFormatChoice: 'auto',
         copiedAiItem: false,
@@ -937,6 +1395,7 @@ document.addEventListener('alpine:init', () => {
 
             try {
                 this.pageData = await fetchJson(INDEX_URL);
+                this.choiceDbs = normalizeChoiceDbs(this.pageData.choice_databases);
                 this.allPrompts = this.flattenPrompts(this.pageData.categories);
                 this.selectedCategory = this.resolveCategoryParam(params.get('category'));
 
@@ -950,8 +1409,15 @@ document.addEventListener('alpine:init', () => {
             }
 
             ['selectedCategory', 'globalSearchQuery'].forEach((key) => this.$watch(key, () => this.updateUrlParams()));
-            this.$watch('aiApiKey', (value) => storage.set(AI_KEY_STORAGE, value.trim()));
-            this.$watch('aiModelPref', (value) => storage.set(AI_MODEL_STORAGE, value.trim()));
+            this.$watch('promptVariables', () => this.saveFormValues());
+            setInterval(() => { if (this.modalOpen && this.aiShowSettings) this.aiNow = Date.now(); }, 1000); // live cooldown countdown
+            this.$watch('aiCfg', (cfg) => AI_PROVIDER_IDS.forEach((id) => {
+                storage.set(AI_PROVIDERS[id].keyStorage, cfg[id].keys.trim());
+                storage.set(AI_PROVIDERS[id].modelStorage, cfg[id].models.trim());
+            }));
+            this.$watch('aiProvider', (value) => storage.set(AI_PROVIDER_STORAGE, value));
+            this.$watch('aiFallback', (value) => storage.set(AI_FALLBACK_STORAGE, value ? '1' : '0'));
+            this.$watch('aiEffort', (value) => storage.set(AI_EFFORT_STORAGE, value));
         },
 
         flattenPrompts(categories = []) {
@@ -1047,11 +1513,17 @@ document.addEventListener('alpine:init', () => {
            ------------------------------------------------------------------ */
         async openPromptDetail(jsonUrl, updateHistory = true) {
             this.stopAi();
+            this.choicePicker.open = false;
             Object.assign(this, {
                 aiOutput: '',
                 aiError: '',
                 aiStatus: '',
                 aiFormatChoice: 'auto',
+                aiHistoryOpen: false,
+                aiHistoryAll: false,
+                aiHistoryQuery: '',
+                aiShowSettings: false,
+                aiCredits: null,
                 copiedAi: false,
                 modalOpen: true,
                 isLoadingDetail: true,
@@ -1090,11 +1562,99 @@ document.addEventListener('alpine:init', () => {
             }
             this.builderInput = '';
             this.builderImage = '';
-            this.promptVariables = Object.fromEntries(this.promptFields.map((f) => [f.name, f.default]));
+            const defaults = this.formDefaults();
+            this.promptVariables = { ...defaults, ...this.loadSavedForm() };
+            this.promptFields.filter((f) => f.useDb && !this.choiceDbs[f.useDb]).forEach((f) => {
+                console.warn(`Database "${f.useDb}" (field "${f.name}") tidak ditemukan di choice_databases pada _index.md.`);
+            });
         },
+
+        /* ------------------------------------------------------------------
+           Remember form values per prompt (only values that differ from defaults)
+           ------------------------------------------------------------------ */
+        /* ------------------------------------------------------------------
+           Global choice databases: picker for fields with `use_db`
+           ------------------------------------------------------------------ */
+        /** Select fields already list the database as their options; every other type gets a picker button. */
+        hasChoiceDb(field) { return !!field.useDb && field.type !== 'select' && !!this.choiceDbs[field.useDb]; },
+        choiceDbTitle(field) { return this.choiceDbs[field.useDb]?.title || ''; },
+
+        get choiceField() { return this.promptFields.find((f) => f.name === this.choicePicker.fieldName) || null; },
+        get choiceDb() { const field = this.choiceField; return field ? this.choiceDbs[field.useDb] || null : null; },
+
+        get choiceGroups() {
+            const db = this.choiceDb;
+            if (!db) return [];
+            const q = this.choicePicker.query.trim().toLowerCase();
+            const groups = new Map();
+            for (const item of db.items) {
+                if (q && !`${item.label} ${item.value} ${item.group} ${item.description}`.toLowerCase().includes(q)) continue;
+                if (!groups.has(item.group)) groups.set(item.group, []);
+                groups.get(item.group).push(item);
+            }
+            return [...groups].map(([name, items]) => ({ name, items }));
+        },
+
+        /** Values currently in the field (multi-select fields keep a separator-joined list; manual entries are preserved). */
+        get choiceTokens() {
+            const field = this.choiceField;
+            if (!field) return [];
+            const sep = field.separator.trim() || field.separator;
+            return String(this.promptVariables[field.name] ?? '').split(sep).map((t) => t.trim()).filter(Boolean);
+        },
+
+        isChoiceSelected(value) {
+            const field = this.choiceField;
+            if (!field) return false;
+            return field.multiple ? this.choiceTokens.includes(value) : String(this.promptVariables[field.name] ?? '').trim() === value;
+        },
+
+        openChoicePicker(field) {
+            Object.assign(this.choicePicker, { open: true, fieldName: field.name, query: '' });
+            if (window.matchMedia('(min-width: 640px)').matches) this.$nextTick(() => this.$refs.choiceSearch?.focus()); // no keyboard pop-up on phones
+        },
+        closeChoicePicker() { this.choicePicker.open = false; },
+
+        pickChoice(item) {
+            const field = this.choiceField;
+            if (!field) return;
+            if (field.multiple) {
+                const tokens = this.choiceTokens;
+                const next = tokens.includes(item.value) ? tokens.filter((t) => t !== item.value) : [...tokens, item.value];
+                this.promptVariables[field.name] = next.join(field.separator);
+            } else {
+                this.promptVariables[field.name] = item.value;
+                this.closeChoicePicker();
+            }
+        },
+
+        clearChoice() {
+            const field = this.choiceField;
+            if (field) this.promptVariables[field.name] = '';
+        },
+
+        formDefaults() { return Object.fromEntries(this.promptFields.map((f) => [f.name, f.default])); },
+
+        loadSavedForm() {
+            const fields = Object.fromEntries(this.promptFields.map((f) => [f.name, f]));
+            const saved = loadJson(FORM_STORAGE_PREFIX + this.activePromptUrl, {});
+            return Object.fromEntries(Object.entries(saved).filter(([name, value]) =>
+                fields[name] && (fields[name].type !== 'select' || fields[name].options.includes(value))));
+        },
+
+        saveFormValues() {
+            if (this.isLoadingDetail || !this.activePromptUrl || this.activePrompt.has_database) return;
+            const defaults = this.formDefaults();
+            const changed = Object.fromEntries(Object.entries(this.promptVariables).filter(([name, value]) => name in defaults && value !== defaults[name]));
+            const key = FORM_STORAGE_PREFIX + this.activePromptUrl;
+            if (Object.keys(changed).length) storage.set(key, JSON.stringify(changed)); else storage.remove(key);
+        },
+
+        resetForm() { this.promptVariables = this.formDefaults(); },
 
         closeModal() {
             this.stopAi();
+            this.choicePicker.open = false;
             this.modalOpen = false;
             this.activePromptUrl = '';
             this.updateUrlParams();
@@ -1109,70 +1669,324 @@ document.addEventListener('alpine:init', () => {
             return (flag === true || flag === 'true') && !this.activePrompt.has_database;
         },
 
-        get aiKeys() { return [...new Set(this.aiApiKey.split(/[\s,;]+/).filter(Boolean))]; },
+        /** Provider used for this prompt: frontmatter `ai_provider`, else the one chosen in settings. */
+        get aiActiveProvider() { return AI_PROVIDERS[this.activePrompt.ai_provider] ? this.activePrompt.ai_provider : this.aiProvider; },
+        get aiProviderLabel() { return AI_PROVIDERS[this.aiActiveProvider].label; },
+        get aiProviderTabs() { return AI_PROVIDER_IDS.map((id) => ({ id, label: AI_PROVIDERS[id].label })); },
+        get aiTab() { return AI_PROVIDERS[this.aiProvider]; }, // provider being edited in settings
 
-        /** Prompt's own ai_model first, then the default list; later entries are fallbacks. */
-        get aiModels() {
-            const list = [...new Set([this.activePrompt.ai_model, ...this.aiModelPref.split(/[\s,;]+/)].filter(Boolean))];
-            return list.length ? list : [AI_DEFAULT_MODEL];
+        keysOf(id) { return splitList(this.aiCfg[id].keys); },
+
+        /** Prompt's own ai_model first (only for its provider), then the saved list; later entries are fallbacks. */
+        modelsOf(id) {
+            const own = id === this.aiActiveProvider ? [this.activePrompt.ai_model] : [];
+            const list = [...new Set([...own, ...splitList(this.aiCfg[id].models)].filter(Boolean))];
+            return list.length ? list : [AI_PROVIDERS[id].defaultModel];
         },
+
+        get aiKeys() { return this.keysOf(this.aiProvider); }, // shown in settings
+        get aiModels() { return this.modelsOf(this.aiActiveProvider); }, // shown in the panel header
+
+        get aiModelOptions() {
+            const used = new Set(splitList(this.aiCfg[this.aiProvider].models));
+            return this.aiModelList
+                .filter((m) => this.aiShowAllModels || !NON_TEXT_MODEL.test(m.id))
+                .map((m) => ({ ...m, used: used.has(m.id) }));
+        },
+
+        toggleModel(id) {
+            const cfg = this.aiCfg[this.aiProvider];
+            const list = splitList(cfg.models);
+            cfg.models = (list.includes(id) ? list.filter((m) => m !== id) : [...list, id]).join('\n');
+        },
+
+        formatNumber(n) { return Number(n).toLocaleString('id-ID'); },
+
+        /* ------------------------------------------------------------------
+           "Cek key": validates every key of the provider being edited.
+           Gemini -> lists the models each key can use; Kie.ai -> reads the remaining credits.
+           ------------------------------------------------------------------ */
+        async checkKeys() {
+            const provider = this.aiProvider;
+            const keys = this.keysOf(provider);
+            if (!keys.length || this.aiChecking) return;
+            this.aiChecking = true;
+            const results = {};
+            const models = new Map();
+            try {
+                await Promise.all(keys.map(async (key) => {
+                    const id = keyId(key);
+                    try {
+                        results[id] = provider === 'kie' ? await this.checkKie(key) : await this.checkGemini(key, models);
+                        if (results[id].credits === 0) this.markKey(key, '*', { status: 402, message: 'Kredit habis' });
+                        else this.clearInvalid(key);
+                    } catch (err) {
+                        results[id] = { ok: false, label: `gagal: ${err.message}` };
+                        if (err.status !== 429) this.markKey(key, '*', err); // invalid key -> skipped when generating
+                    }
+                }));
+                const known = Object.entries(results).filter(([, r]) => typeof r.credits === 'number').map(([id, r]) => [id, r.credits]);
+                this.aiCreditsByKey = { ...this.aiCreditsByKey, ...Object.fromEntries(known) };
+                this.aiChecks = { ...this.aiChecks, [provider]: results };
+                if (provider === 'gemini') this.aiModelList = [...models.values()].sort((a, b) => a.id.localeCompare(b.id));
+            } finally {
+                this.aiNow = Date.now();
+                this.aiChecking = false;
+            }
+        },
+
+        async checkGemini(apiKey, models) {
+            let token = '';
+            let count = 0;
+            for (let page = 0; page < 10; page++) { // the list is paginated
+                const url = `${AI_ENDPOINT}?pageSize=1000${token ? `&pageToken=${encodeURIComponent(token)}` : ''}`;
+                const res = await aiFetch(url, { headers: { 'x-goog-api-key': apiKey } }, 'Gemini');
+                const data = await res.json().catch(() => null);
+                if (!res.ok) throw aiHttpError(res.status, data);
+                for (const m of data?.models || []) {
+                    if (!m.supportedGenerationMethods?.includes('generateContent')) continue;
+                    const id = String(m.name).replace(/^models\//, '');
+                    count++;
+                    models.set(id, { id, displayName: m.displayName || id, input: m.inputTokenLimit, output: m.outputTokenLimit });
+                }
+                token = data?.nextPageToken;
+                if (!token) break;
+            }
+            return { ok: true, label: `valid · ${count} model tersedia` };
+        },
+
+        async checkKie(apiKey) {
+            const res = await aiFetch(KIE_CREDIT_ENDPOINT, { headers: { Authorization: `Bearer ${apiKey}` } }, 'Kie.ai');
+            const data = await res.json().catch(() => null);
+            if (!res.ok) throw aiHttpError(res.status, data);
+            if (data && data.code !== undefined && Number(data.code) !== 200) throw aiHttpError(Number(data.code), data);
+            const credits = Number(data?.data);
+            if (Number.isNaN(credits)) throw new Error('respons kredit tidak dikenali');
+            return { ok: true, credits, label: credits > 0 ? `valid · kredit ${this.formatNumber(credits)}` : 'valid · kredit habis' };
+        },
+
+        formatCredits(n) { return Number(n).toLocaleString('id-ID', { maximumFractionDigits: 2 }); },
+
+        /** Shows the remaining Kie.ai credits under the output (and how many this request used, if the previous balance is known). */
+        async refreshKieCredits(apiKey) {
+            const id = keyId(apiKey);
+            const before = this.aiCreditsByKey[id];
+            this.aiCredits = { label: 'Sisa kredit Kie.ai: memuat...', low: false };
+            try {
+                const { credits } = await this.checkKie(apiKey);
+                this.aiCreditsByKey = { ...this.aiCreditsByKey, [id]: credits };
+                const used = before !== undefined && before > credits ? before - credits : 0;
+                this.aiCredits = { label: `Sisa kredit Kie.ai: ${this.formatCredits(credits)}${used ? ` (terpakai ${this.formatCredits(used)})` : ''}`, low: credits <= 0 };
+            } catch {
+                this.aiCredits = null; // balance is a nice-to-have; never show an error for it
+            }
+        },
+
+        /** A key that passes the check is no longer "invalid"/"out of credits". */
+        clearInvalid(apiKey) {
+            const id = `${keyId(apiKey)}|*`;
+            if (!this.aiKeyHealth[id]) return;
+            const { [id]: _removed, ...rest } = this.aiKeyHealth;
+            this.aiKeyHealth = rest;
+            storage.set(AI_HEALTH_STORAGE, JSON.stringify(rest));
+        },
+
+
+        /* ------------------------------------------------------------------
+           Key cooldown: 429 pauses a key for that model (honours Google's retryDelay);
+           an invalid key (401/403/"API key") is skipped for every model for a while.
+           ------------------------------------------------------------------ */
+        keyWait(apiKey, model) {
+            const now = Date.now();
+            const until = Math.max(...[`${keyId(apiKey)}|${model}`, `${keyId(apiKey)}|*`].map((id) => this.aiKeyHealth[id]?.until || 0));
+            return until > now ? Math.ceil((until - now) / 1000) : 0;
+        },
+
+        markKey(apiKey, model, err) {
+            let id; let entry;
+            if (err.status === 429) {
+                const seconds = err.retryAfter ?? (err.dailyQuota ? 1800 : 60);
+                id = `${keyId(apiKey)}|${model}`;
+                entry = { until: Date.now() + Math.ceil(seconds) * 1000 + 1000, reason: 'limit' };
+            } else if (err.status === 402) { // Kie.ai: out of credits
+                id = `${keyId(apiKey)}|*`;
+                entry = { until: Date.now() + 3600 * 1000, reason: 'credits' };
+            } else if ([401, 403].includes(err.status) || /api key/i.test(err.message)) {
+                id = `${keyId(apiKey)}|*`;
+                entry = { until: Date.now() + 3600 * 1000, reason: 'invalid' };
+            } else return; // 5xx etc. are not the key's fault
+            this.aiKeyHealth = { ...this.aiKeyHealth, [id]: entry };
+            this.aiNow = Date.now();
+            storage.set(AI_HEALTH_STORAGE, JSON.stringify(this.aiKeyHealth));
+        },
+
+        resetKeyHealth() {
+            this.aiKeyHealth = {};
+            storage.remove(AI_HEALTH_STORAGE);
+        },
+
+        get aiKeyStatus() {
+            const now = this.aiNow;
+            return this.aiKeys.map((apiKey) => {
+                const fp = keyId(apiKey);
+                const chk = this.aiChecks[this.aiProvider]?.[fp];
+                const failed = chk && !chk.ok;
+                const base = { name: `…${apiKey.slice(-4)}`, state: failed ? 'invalid' : 'ok', dot: failed ? 'bg-red-500' : 'bg-emerald-500', label: chk ? chk.label : 'siap' };
+                const hits = Object.entries(this.aiKeyHealth).filter(([id, h]) => id.startsWith(`${fp}|`) && h.until > now);
+                if (!hits.length) return base;
+                const [id, h] = hits.sort((a, b) => b[1].until - a[1].until)[0];
+                const secs = Math.ceil((h.until - now) / 1000);
+                const wait = secs >= 90 ? `${Math.ceil(secs / 60)} mnt` : `${secs} dtk`;
+                if (h.reason === 'invalid') return { ...base, state: 'invalid', dot: 'bg-red-500', label: `tidak valid · dilewati ${wait}` };
+                if (h.reason === 'credits') return { ...base, state: 'invalid', dot: 'bg-red-500', label: `kredit habis · dilewati ${wait}` };
+                return { ...base, state: 'cooldown', dot: 'bg-amber-500', label: `limit · ${id.split('|')[1]} · ${wait}` };
+            });
+        },
+
+        /* ------------------------------------------------------------------
+           Result history (localStorage, newest first, pinned entries survive trimming)
+           ------------------------------------------------------------------ */
+        get aiHistoryCount() { return this.aiHistory.filter((e) => e.url === this.activePromptUrl).length; }, // this prompt only
+        get aiHistoryOthers() { return this.aiHistory.length - this.aiHistoryCount; },
+
+        get aiHistoryList() {
+            const q = this.aiHistoryQuery.trim().toLowerCase();
+            return this.aiHistory
+                .filter((e) => (this.aiHistoryAll || e.url === this.activePromptUrl)
+                    && (!q || `${e.title} ${e.output} ${Object.values(e.values || {}).join(' ')}`.toLowerCase().includes(q)))
+                .sort((a, b) => Number(b.pinned) - Number(a.pinned) || b.ts - a.ts);
+        },
+
+        addHistory(model) {
+            const entry = {
+                id: `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
+                ts: Date.now(),
+                url: this.activePromptUrl,
+                title: this.activePrompt.title || '',
+                model,
+                values: { ...this.promptVariables },
+                output: this.aiOutput,
+                format: this.aiFormatChoice,
+                pinned: false,
+            };
+            const list = [entry, ...this.aiHistory];
+            while (list.length > AI_HISTORY_MAX) {
+                const i = list.findLastIndex((e) => !e.pinned);
+                if (i < 0) break;
+                list.splice(i, 1);
+            }
+            this.persistHistory(list);
+        },
+
+        /** Save; if the browser quota is hit, drop the oldest unpinned entries until it fits. */
+        persistHistory(list) {
+            const next = [...list];
+            while (!storage.set(AI_HISTORY_STORAGE, JSON.stringify(next))) {
+                const i = next.findLastIndex((e) => !e.pinned);
+                if (i < 0) break;
+                next.splice(i, 1);
+            }
+            this.aiHistory = next;
+        },
+
+        toggleHistoryPin(id) { this.persistHistory(this.aiHistory.map((e) => (e.id === id ? { ...e, pinned: !e.pinned } : e))); },
+        deleteHistory(id) { this.persistHistory(this.aiHistory.filter((e) => e.id !== id)); },
+        clearHistory() {
+            if (this.aiHistory.some((e) => !e.pinned) && confirm('Hapus semua riwayat? Entri yang di-pin tetap disimpan.')) {
+                this.persistHistory(this.aiHistory.filter((e) => e.pinned));
+            }
+        },
+
+        async restoreHistory(entry) {
+            if (entry.url !== this.activePromptUrl) await this.openPromptDetail(entry.url);
+            this.promptVariables = { ...this.promptVariables, ...entry.values };
+            Object.assign(this, { aiOutput: entry.output, aiFormatChoice: entry.format, aiError: '', aiStatus: entry.model, aiCredits: null, aiHistoryOpen: false });
+        },
+
+        formatTime(ts) { return new Date(ts).toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' }); },
+        snippet(text) { return String(text).replace(/\s+/g, ' ').trim().slice(0, 140); },
 
         stopAi() { this.aiController?.abort(); },
 
-        /** Output as the chosen format: { kind: 'html' | 'list', html, items, text (what "Salin Hasil" copies) }. */
+        /** Output as the chosen format: { kind: 'html' | 'cards', html, heading, cards, partial, text (what "Salin Hasil" copies) }. */
         get aiView() {
             const text = this.aiOutput;
             if (!text) return { kind: 'html', html: '', text: '' };
             let mode = this.aiFormatChoice;
 
-            const parsed = mode === 'text' || mode === 'markdown' ? null : tryParseJson(text);
-            if (parsed !== null) {
-                const pretty = JSON.stringify(parsed, null, 2);
-                const isScalarList = Array.isArray(parsed) && parsed.length > 0 && parsed.every((v) => v === null || typeof v !== 'object');
-                if (mode === 'auto' && isScalarList) {
-                    const items = parsed.map(String);
-                    return { kind: 'list', items, text: items.join('\n\n') };
+            const json = mode === 'text' || mode === 'markdown' ? null : parseJsonLoose(text);
+            if (json) {
+                const built = mode === 'json' ? null : buildCards(json.data);
+                if (built) {
+                    return { kind: 'cards', ...built, partial: json.partial, text: built.cards.map((c) => c.text).join('\n\n---\n\n') };
                 }
-                return { kind: 'html', html: `<pre class="font-mono text-xs leading-relaxed whitespace-pre-wrap break-words">${highlightJson(pretty)}</pre>`, text: pretty };
+                // Not card-shaped: show highlighted JSON, but never a repaired fragment of unfinished streaming output.
+                if (!json.partial || mode === 'json') {
+                    const pretty = JSON.stringify(json.data, null, 2);
+                    return { kind: 'html', html: `<pre class="font-mono text-xs leading-relaxed whitespace-pre-wrap break-words">${highlightJson(pretty)}</pre>`, partial: json.partial, text: pretty };
+                }
             }
 
-            if (mode === 'auto') mode = MARKDOWN_HINT.test(text) ? 'markdown' : 'text';
+            if (mode === 'auto' || mode === 'cards' || mode === 'json') mode = MARKDOWN_HINT.test(text) ? 'markdown' : 'text';
             if (mode === 'markdown') return { kind: 'html', html: renderMarkdown(text), text };
             return { kind: 'html', html: `<div class="whitespace-pre-wrap">${escapeHtml(text)}</div>`, text };
         },
 
         async generateAi() {
             if (this.aiLoading) return this.stopAi();
-            const keys = this.aiKeys;
-            if (!keys.length) {
+
+            // Providers to try: the active one first, then (optionally) every other provider that has keys.
+            const providers = [this.aiActiveProvider, ...(this.aiFallback ? AI_PROVIDER_IDS.filter((id) => id !== this.aiActiveProvider) : [])]
+                .filter((id) => this.keysOf(id).length);
+            if (!providers.length) {
                 this.aiShowSettings = true;
-                this.aiError = 'Isi minimal satu Gemini API key di pengaturan (ikon gear) sebelum generate.';
+                this.aiHistoryOpen = false;
+                this.aiError = `Isi minimal satu API key ${this.aiProviderLabel} di pengaturan sebelum generate.`;
+                return;
+            }
+
+            // Per provider: round-robin start, then every key for the first model, then every key for the next model...
+            // Keys/models still on cooldown are skipped.
+            const all = providers.flatMap((provider) => {
+                const keys = this.keysOf(provider);
+                const start = (this.aiKeyCursors[provider] || 0) % keys.length;
+                return this.modelsOf(provider).flatMap((model) => keys.map((_, i) => {
+                    const keyIndex = (start + i) % keys.length;
+                    return { provider, model, key: keys[keyIndex], keyIndex, keyCount: keys.length };
+                }));
+            });
+            const attempts = all.filter(({ key, model }) => this.keyWait(key, model) === 0);
+            if (!attempts.length) {
+                const wait = Math.min(...all.map(({ key, model }) => this.keyWait(key, model)));
+                this.aiShowSettings = true;
+                this.aiHistoryOpen = false;
+                this.aiError = `Semua key sedang cooldown (sekitar ${wait} detik lagi). Tunggu sebentar atau reset cooldown di pengaturan.`;
                 return;
             }
 
             const controller = new AbortController();
-            Object.assign(this, { aiController: controller, aiLoading: true, aiOutput: '', aiError: '', aiStatus: '' });
+            Object.assign(this, { aiController: controller, aiLoading: true, aiOutput: '', aiError: '', aiStatus: '', aiCredits: null, aiShowSettings: false, aiHistoryOpen: false });
             this.$nextTick(() => this.$refs.aiPanel?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }));
-
-            // Round-robin start, then every key for the first model, then every key for the next model...
-            const start = this.aiKeyCursor % keys.length;
-            const attempts = this.aiModels.flatMap((model) => keys.map((_, i) => ({ model, keyIndex: (start + i) % keys.length })));
             let tried = 0;
             let lastError = '';
 
             try {
-                for (const { model, keyIndex } of attempts) {
+                for (const { provider, model, key, keyIndex, keyCount } of attempts) {
                     tried++;
-                    this.aiStatus = `Key ${keyIndex + 1}/${keys.length} · ${model}`;
+                    const label = AI_PROVIDERS[provider].label;
+                    this.aiStatus = `${label} · Key ${keyIndex + 1}/${keyCount} · ${model}`;
                     try {
-                        await this.streamAi(model, keys[keyIndex], controller.signal);
-                        this.aiKeyCursor = (keyIndex + 1) % keys.length; // next generate starts with the next key
-                        storage.set(AI_CURSOR_STORAGE, String(this.aiKeyCursor));
+                        await this.streamAi(provider, model, key, controller.signal);
+                        this.aiKeyCursors = { ...this.aiKeyCursors, [provider]: (keyIndex + 1) % keyCount }; // next time start with the next key
+                        storage.set(AI_CURSOR_STORAGE, JSON.stringify(this.aiKeyCursors));
+                        this.addHistory(`${label} · ${model}`);
+                        if (provider === 'kie') this.refreshKieCredits(key); // not awaited: don't delay the UI
                         lastError = '';
                         break;
                     } catch (err) {
                         if (err.name === 'AbortError') { lastError = ''; break; }
                         lastError = err.message;
+                        this.markKey(key, model, err);
                         console.warn(`Percobaan ${tried} gagal (${this.aiStatus}):`, err.message);
                         if (!err.retryable || this.aiOutput) break; // never restart a half-streamed answer
                     }
@@ -1184,52 +1998,78 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        /** One streaming request. Throws an Error with `.retryable` when another key/model is worth trying. */
-        async streamAi(model, apiKey, signal) {
+        /** Dispatch to the provider; throws an Error with `.retryable` when another key/model/provider is worth trying. */
+        async streamAi(provider, model, apiKey, signal) {
+            if (provider === 'kie') await this.streamKie(model, apiKey, signal);
+            else await this.streamGemini(model, apiKey, signal);
+            if (!this.aiOutput) {
+                throw Object.assign(new Error('AI tidak mengembalikan hasil (kemungkinan diblokir filter keamanan). Coba ubah prompt.'), { retryable: false });
+            }
+        },
+
+        scrollAiBody() { this.$nextTick(() => { if (this.$refs.aiBody) this.$refs.aiBody.scrollTop = this.$refs.aiBody.scrollHeight; }); },
+
+        async streamGemini(model, apiKey, signal) {
             const prompt = this.activePrompt;
             const config = {};
             if (prompt.ai_temperature !== undefined && prompt.ai_temperature !== '' && !Number.isNaN(Number(prompt.ai_temperature))) {
                 config.temperature = Number(prompt.ai_temperature);
             }
-            if (String(prompt.ai_output).toLowerCase() === 'json') config.responseMimeType = 'application/json';
+            if (['json', 'cards'].includes(String(prompt.ai_output).toLowerCase())) config.responseMimeType = 'application/json';
 
             const body = { contents: [{ role: 'user', parts: [{ text: this.regularPromptRaw }] }] };
             if (prompt.ai_system) body.systemInstruction = { parts: [{ text: prompt.ai_system }] };
             if (Object.keys(config).length) body.generationConfig = config;
 
-            const res = await fetch(`${AI_ENDPOINT}/${encodeURIComponent(model)}:streamGenerateContent?alt=sse`, {
+            const res = await aiFetch(`${AI_ENDPOINT}/${encodeURIComponent(model)}:streamGenerateContent?alt=sse`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
                 body: JSON.stringify(body),
                 signal,
-            });
-            if (!res.ok) {
-                const detail = await res.json().catch(() => null);
-                const message = detail?.error?.message || `HTTP ${res.status}`;
-                throw Object.assign(new Error(message), { retryable: AI_RETRY_STATUS.includes(res.status) || /api key/i.test(message) });
-            }
+            }, 'Gemini');
+            if (!res.ok) throw aiHttpError(res.status, await res.json().catch(() => null));
 
-            const reader = res.body.getReader();
-            const decoder = new TextDecoder();
-            let buffer = '';
-            for (;;) {
-                const { done, value } = await reader.read();
-                if (done) break;
-                buffer += decoder.decode(value, { stream: true });
-                const lines = buffer.split('\n');
-                buffer = lines.pop();
-                for (const line of lines) {
-                    if (!line.startsWith('data:')) continue;
-                    const json = line.slice(5).trim();
-                    if (!json) continue;
-                    const chunk = JSON.parse(json);
-                    this.aiOutput += (chunk.candidates?.[0]?.content?.parts || []).map((p) => p.text || '').join('');
-                    this.$nextTick(() => { if (this.$refs.aiBody) this.$refs.aiBody.scrollTop = this.$refs.aiBody.scrollHeight; });
+            await readSse(res, (chunk) => {
+                this.aiOutput += (chunk.candidates?.[0]?.content?.parts || []).map((p) => p.text || '').join('');
+                this.scrollAiBody();
+            });
+        },
+
+        /** Kie.ai GPT models: POST /codex/v1/responses (OpenAI Responses format, Bearer auth). */
+        async streamKie(model, apiKey, signal) {
+            const prompt = this.activePrompt;
+            // No documented system field on this endpoint, so the system text is prepended to the user message.
+            const text = prompt.ai_system ? `${prompt.ai_system}\n\n---\n\n${this.regularPromptRaw}` : this.regularPromptRaw;
+            const effort = AI_EFFORTS.includes(String(prompt.ai_reasoning).toLowerCase()) ? String(prompt.ai_reasoning).toLowerCase() : this.aiEffort;
+            const body = { model, stream: true, input: [{ role: 'user', content: [{ type: 'input_text', text }] }], reasoning: { effort } };
+
+            const res = await aiFetch(KIE_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
+                body: JSON.stringify(body),
+                signal,
+            }, 'Kie.ai');
+            if (!res.ok) throw aiHttpError(res.status, await res.json().catch(() => null));
+
+            // Kie.ai sometimes reports errors as HTTP 200 with { code, msg } in the body.
+            const failIfCoded = (data) => { if (data && data.code !== undefined && Number(data.code) !== 200) throw aiHttpError(Number(data.code), data); };
+
+            if (!(res.headers.get('content-type') || '').includes('text/event-stream')) { // plain JSON fallback
+                const data = await res.json();
+                failIfCoded(data);
+                this.aiOutput = extractKieText(data);
+                return;
+            }
+            await readSse(res, (evt) => {
+                failIfCoded(evt);
+                if (evt.type === 'response.output_text.delta' && typeof evt.delta === 'string') this.aiOutput += evt.delta;
+                else if (evt.choices?.[0]?.delta?.content) this.aiOutput += evt.choices[0].delta.content; // chat-completions style
+                else if (evt.type === 'response.completed' && !this.aiOutput) this.aiOutput = extractKieText(evt.response);
+                else if (evt.type === 'response.failed' || evt.type === 'error') {
+                    throw Object.assign(new Error(evt.response?.error?.message || evt.error?.message || evt.message || 'Respons gagal dari Kie.ai'), { retryable: true });
                 }
-            }
-            if (!this.aiOutput) {
-                throw Object.assign(new Error('AI tidak mengembalikan hasil (kemungkinan diblokir filter keamanan). Coba ubah prompt.'), { retryable: false });
-            }
+                this.scrollAiBody();
+            });
         },
 
         /* ------------------------------------------------------------------
@@ -1240,15 +2080,24 @@ document.addEventListener('alpine:init', () => {
             if (!raw) return [];
 
             if (config) {
-                return Object.entries(config).map(([name, cfg]) => ({
-                    name,
-                    type: (cfg.type || 'text').toLowerCase(),
-                    label: cfg.label || name,
-                    placeholder: cfg.placeholder || `Pilih atau ketik ${name}...`,
-                    options: cfg.options || [],
-                    rows: cfg.rows || 3,
-                    default: cfg.default !== undefined ? cfg.default : '',
-                }));
+                return Object.entries(config).map(([name, cfg]) => {
+                    const type = (cfg.type || 'text').toLowerCase();
+                    const useDb = String(cfg.use_db ?? cfg.usedb ?? '').trim().toLowerCase(); // global database name
+                    const db = this.choiceDbs[useDb];
+                    return {
+                        name,
+                        type,
+                        label: cfg.label || name,
+                        placeholder: cfg.placeholder || `Pilih atau ketik ${name}...`,
+                        // select/datalist fields fed by a global database; explicit `options` still win
+                        options: cfg.options || (db && ['select', 'datalist'].includes(type) ? db.items.map((i) => i.value) : []),
+                        rows: cfg.rows || 3,
+                        default: cfg.default !== undefined ? cfg.default : '',
+                        useDb,
+                        multiple: cfg.multiple === true || cfg.multiple === 'true',
+                        separator: cfg.separator !== undefined ? String(cfg.separator) : ', ',
+                    };
+                });
             }
 
             return extractPlaceholders(raw).map((name) => ({

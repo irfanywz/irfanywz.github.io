@@ -60,6 +60,6 @@ document.addEventListener('visibilitychange', function() {
         setFaviconWithDot(true, 15); 
     } else {
         setFaviconWithDot(false);
-        document.title = "irfanywz";
+        // document.title = "irfanywz";
     }
 });

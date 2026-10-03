@@ -2,6 +2,7 @@
   "section": {{ .Title | jsonify }},
   "description": {{ .Description | jsonify }},
   "resources": {{ .Params.resources | jsonify }},
+  "choice_databases": {{ .Params.choice_databases | jsonify }},
   "categories": [
     {{- $promptSection := .Site.GetPage "section" "musik" -}}
     {{- if $promptSection -}}
