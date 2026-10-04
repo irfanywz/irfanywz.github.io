@@ -1,7 +1,7 @@
 ---
-title: "Universal Instrumental"
-slug: universal-instrumental
-description: "Generate Suno AI instrumental music style prompts from a simple music idea."
+title: "Instrumental Universal "
+slug: instrumental-universal
+description: "Menghasilkan prompt gaya musik instrumental Suno AI dari ide musik sederhana."
 outputs: ["JSON"]
 
 use_ai: true

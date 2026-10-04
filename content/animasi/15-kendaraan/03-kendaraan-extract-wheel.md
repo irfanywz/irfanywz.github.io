@@ -1,5 +1,5 @@
 ---
-title: "Ban Kendaraan"
+title: "Ambil Ban Kendaraan"
 slug: "kendaraan-extract-wheel"
 description: "Prompt builder untuk mengekstrak seluruh ban atau roda dari kendaraan referensi menjadi aset modular terpisah yang siap digunakan untuk rig, rotasi, dan animasi 2D"
 #image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiExESY3B5GkDeNZjqXKTVsWe0f1bhSHb4uwMd700wjPutMbm3ynvHe6rRS7kWrt4mM3POzHY_vHhfHNOTDRaMB9qgHlw9OzTFwG5SMKGllDg5fRcwJx9SioUPyEN0Tp5PNITq107nEXFWvzrke1_4K7BtW4TtTqLObSiKdkmX9O42Ew6fNb4cbeYw60uY/s1600/Analisa.png

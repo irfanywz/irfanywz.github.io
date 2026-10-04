@@ -1,6 +1,7 @@
 ---
-title: "Thumbnail Prompt Generator"
-description: "Generate ready-to-use AI image prompts for YouTube thumbnails from a simple topic, title, lyric, or story idea."
+title: "Thumbnail Universal"
+slug: thumbnail-universal
+description: "Menghasilkan prompt gambar AI siap pakai untuk thumbnail YouTube berdasarkan topik, judul, lirik, atau ide cerita sederhana."
 outputs: ["JSON"]
 
 use_ai: true

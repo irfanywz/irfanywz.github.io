@@ -4,7 +4,7 @@ date: 2026-08-22T10:00:00+07:00
 description: "Alat untuk mengonversi kode HTML Blogger (tag a & img) menjadi format markdown gambar atau Hugo shortcode secara instan."
 icon: "icon-[ri--image-line]"
 categories:
-  - "Web"
+  - "Konten"
 ---
 
 <div class="max-w-4xl mx-auto mt-6 space-y-6">

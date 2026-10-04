@@ -840,25 +840,49 @@
                         <span class="icon-[ri--close-circle-fill] text-xs"></span>
                     </button>
                 </div>
+                <div x-show="choiceGroupChips.length || (choiceDb && choiceDb.items.length > 20)" style="display: none;" class="mt-3 flex items-center justify-between gap-3">
+                    <span x-show="choiceGroupChips.length" style="display: none;" class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Filter grup</span>
+                    <span x-show="choiceDb && choiceDb.items.length > 20" style="display: none;" class="ml-auto text-[10px] text-gray-400" x-text="choiceShownCount + ' dari ' + (choiceDb ? choiceDb.items.length : 0) + ' item'"></span>
+                </div>
+                <div x-show="choiceGroupChips.length" style="display: none;" class="mt-1.5 flex flex-wrap gap-1.5 max-h-[5.5rem] overflow-y-auto pr-1">
+                    <button @click="choicePicker.group = ''"
+                            class="pl-3 pr-1.5 py-1 rounded-lg text-[11px] font-semibold border transition cursor-pointer flex items-center gap-2"
+                            :class="choiceChipClass('', -1)">
+                        <span>Semua</span>
+                        <span class="min-w-[1.375rem] px-1.5 py-0.5 rounded-md text-[10px] font-bold tabular-nums text-center" :class="choiceBadgeClass('')"
+                              x-text="choiceGroupChips.reduce((n, g) => n + g.count, 0)"></span>
+                    </button>
+                    <template x-for="g in choiceGroupChips" :key="g.key">
+                        <button @click="choicePicker.group = g.key"
+                                class="pl-3 pr-1.5 py-1 rounded-lg text-[11px] font-semibold border transition cursor-pointer flex items-center gap-2"
+                                :class="choiceChipClass(g.key, g.count)">
+                            <span x-text="g.name"></span>
+                            <span class="min-w-[1.375rem] px-1.5 py-0.5 rounded-md text-[10px] font-bold tabular-nums text-center" :class="choiceBadgeClass(g.key)" x-text="g.count"></span>
+                        </button>
+                    </template>
+                </div>
             </div>
 
             <div class="overflow-y-auto flex-grow p-2">
                 <template x-for="group in choiceGroups" :key="group.name">
                     <div class="mb-1">
-                        <p x-show="group.name" class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-gray-400" x-text="group.name"></p>
+                        <p x-show="group.title" class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-gray-400" x-text="group.title"></p>
                         <template x-for="item in group.items" :key="item.value">
                             <button @click="pickChoice(item)" class="w-full text-left px-3 py-2 rounded-lg flex items-center justify-between gap-3 cursor-pointer transition"
-                                    :class="isChoiceSelected(item.value) ? 'bg-indigo-50 dark:bg-indigo-950/40' : 'hover:bg-gray-50 dark:hover:bg-gray-700/50'">
+                                    :class="item.selected ? 'bg-indigo-50 dark:bg-indigo-950/40' : 'hover:bg-gray-50 dark:hover:bg-gray-700/50'">
                                 <span class="min-w-0">
                                     <span class="block text-xs font-semibold text-gray-800 dark:text-gray-200 truncate" x-text="item.label"></span>
                                     <span x-show="item.description || item.label !== item.value" class="block text-[10px] text-gray-500 dark:text-gray-400 truncate" x-text="item.description || item.value"></span>
                                 </span>
-                                <span x-show="isChoiceSelected(item.value)" class="icon-[ri--check-line] text-indigo-600 dark:text-indigo-400 shrink-0"></span>
+                                <span x-show="item.selected" class="icon-[ri--check-line] text-indigo-600 dark:text-indigo-400 shrink-0"></span>
                             </button>
                         </template>
                     </div>
                 </template>
-                <p x-show="!choiceGroups.length" class="text-xs text-gray-400 text-center py-10">Tidak ada yang cocok.</p>
+                <div x-show="!choiceGroups.length" style="display: none;" class="text-center py-10 space-y-2">
+                    <p class="text-xs text-gray-400">Tidak ada yang cocok.</p>
+                    <button x-show="choicePicker.query || choicePicker.group" style="display: none;" @click="resetChoiceFilter()" class="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer">Reset filter</button>
+                </div>
             </div>
 
             <div class="px-5 py-3 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between gap-3">
@@ -1044,6 +1068,8 @@ const keyId = (apiKey) => apiKey.slice(-6); // short fingerprint so raw keys are
  * { title, description, items }. An item is a string or { value, label?, group?, description? }.
  * Names are lower-cased because Hugo lower-cases front-matter keys.
  */
+const CHOICE_UNGROUPED = '__none__'; // filter key for items without a group
+
 function normalizeChoiceDbs(raw) {
     const out = {};
     if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) return out;
@@ -1360,7 +1386,7 @@ document.addEventListener('alpine:init', () => {
         aiShowAllModels: false,
         // Global choice databases (_index.md `choice_databases`), used by fields with `use_db` in variables_config
         choiceDbs: {},
-        choicePicker: { open: false, fieldName: '', query: '' },
+        choicePicker: { open: false, fieldName: '', query: '', group: '' }, // group: '' = all, else a group name (or CHOICE_UNGROUPED)
         aiCredits: null, // { label, low } shown under the output when Kie.ai was used
         aiCreditsByKey: {}, // last known balance per key fingerprint (to show how much a request used)
         aiRevealKeys: false,
@@ -1582,18 +1608,63 @@ document.addEventListener('alpine:init', () => {
         get choiceField() { return this.promptFields.find((f) => f.name === this.choicePicker.fieldName) || null; },
         get choiceDb() { const field = this.choiceField; return field ? this.choiceDbs[field.useDb] || null : null; },
 
-        get choiceGroups() {
+        /** Does the item match the search box? (label, value, group and description are searched) */
+        choiceMatches(item, q) {
+            return !q || `${item.label} ${item.value} ${item.group} ${item.description}`.toLowerCase().includes(q);
+        },
+
+        /**
+         * Group filter chips: one per group with how many items match the current search.
+         * Only offered when the database really has groups (2+ distinct, at least one named).
+         */
+        get choiceGroupChips() {
             const db = this.choiceDb;
             if (!db) return [];
             const q = this.choicePicker.query.trim().toLowerCase();
+            const counts = new Map();
+            for (const item of db.items) counts.set(item.group, (counts.get(item.group) || 0) + (this.choiceMatches(item, q) ? 1 : 0));
+            const keys = [...counts.keys()];
+            if (keys.length < 2 || !keys.some(Boolean)) return [];
+            return keys
+                .sort((a, b) => (a === '') - (b === '')) // ungrouped ("Lainnya") last, authors' order otherwise
+                .map((key) => ({ key: key || CHOICE_UNGROUPED, name: key || 'Lainnya', count: counts.get(key) }));
+        },
+
+        /** Items after search + group filter, grouped for display. `selected` is precomputed once per render (lists can be long). */
+        get choiceGroups() {
+            const db = this.choiceDb;
+            const field = this.choiceField;
+            if (!db || !field) return [];
+            const q = this.choicePicker.query.trim().toLowerCase();
+            const only = this.choicePicker.group;
+            const picked = new Set(field.multiple ? this.choiceTokens : [String(this.promptVariables[field.name] ?? '').trim()]);
+            const hasNamed = db.items.some((i) => i.group);
             const groups = new Map();
             for (const item of db.items) {
-                if (q && !`${item.label} ${item.value} ${item.group} ${item.description}`.toLowerCase().includes(q)) continue;
+                if (only && (item.group || CHOICE_UNGROUPED) !== only) continue;
+                if (!this.choiceMatches(item, q)) continue;
                 if (!groups.has(item.group)) groups.set(item.group, []);
-                groups.get(item.group).push(item);
+                groups.get(item.group).push({ ...item, selected: picked.has(item.value) });
             }
-            return [...groups].map(([name, items]) => ({ name, items }));
+            return [...groups].map(([name, items]) => ({ name, title: name || (hasNamed ? 'Lainnya' : ''), items }));
         },
+
+        get choiceShownCount() { return this.choiceGroups.reduce((n, g) => n + g.items.length, 0); },
+
+        /** Filter chip: filled when active, dimmed when the current search leaves it empty. */
+        choiceChipClass(key, count) {
+            const on = this.choicePicker.group === key;
+            return [
+                on ? 'bg-indigo-600 border-indigo-600 text-white shadow-sm shadow-indigo-500/20'
+                   : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-indigo-50/60 dark:hover:bg-indigo-950/30',
+                !on && count === 0 ? 'opacity-40' : '',
+            ];
+        },
+        choiceBadgeClass(key) {
+            return this.choicePicker.group === key ? 'bg-white/25 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-300';
+        },
+
+        resetChoiceFilter() { Object.assign(this.choicePicker, { query: '', group: '' }); },
 
         /** Values currently in the field (multi-select fields keep a separator-joined list; manual entries are preserved). */
         get choiceTokens() {
@@ -1610,7 +1681,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         openChoicePicker(field) {
-            Object.assign(this.choicePicker, { open: true, fieldName: field.name, query: '' });
+            Object.assign(this.choicePicker, { open: true, fieldName: field.name, query: '', group: '' });
             if (window.matchMedia('(min-width: 640px)').matches) this.$nextTick(() => this.$refs.choiceSearch?.focus()); // no keyboard pop-up on phones
         },
         closeChoicePicker() { this.choicePicker.open = false; },

@@ -1,6 +1,7 @@
 ---
-title: "Universal Visual Prompt Generator"
-description: "Generate ready-to-use AI image prompts from a title, lyric, story, idea, or reference image."
+title: "Gambar Universal"
+slug: generator-prompt-gambar-universal
+description: "Menghasilkan prompt gambar AI siap pakai dari judul, lirik, cerita, ide, atau gambar referensi."
 outputs: ["JSON"]
 
 use_ai: true

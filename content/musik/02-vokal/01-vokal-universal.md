@@ -1,7 +1,7 @@
 ---
-title: "Universal Vocal"
-slug: universal-vocal
-description: "Generate complete Suno AI music styles and original lyrics from a simple song topic."
+title: "Vokal Universal"
+slug: vokal-universal
+description: "Menghasilkan gaya musik Suno AI lengkap dan lirik orisinal berdasarkan topik lagu sederhana."
 outputs: ["JSON"]
 
 use_ai: true

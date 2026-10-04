@@ -1,7 +1,7 @@
 ---
-title: "Cinematic Instrumental"
-slug: cinematic-instrumental
-description: "Generate cinematic instrumental music prompts for films, stories, games, trailers, and visual scenes."
+title: "Instrumental CInematic"
+slug: instrumental-cinematic
+description: "Menghasilkan prompt musik instrumental sinematik untuk film, cerita, game, trailer, dan adegan visual."
 outputs: ["JSON"]
 
 use_ai: true
