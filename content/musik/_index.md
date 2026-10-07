@@ -11,6 +11,191 @@ resources:
     color: "blue"
 
 choice_databases:
+  instrumental_genre:
+    - { value: "Ambient", group: "Atmospheric" }
+    - { value: "Chillout", group: "Electronic" }
+    - { value: "Lo-fi", group: "Electronic" }
+    - { value: "Jazz", group: "Acoustic" }
+    - { value: "Classical", group: "Orchestral" }
+    - { value: "Cinematic", group: "Orchestral" }
+    - { value: "Folk", group: "Acoustic" }
+    - { value: "Acoustic", group: "Acoustic" }
+    - { value: "Rock", group: "Band" }
+    - { value: "Blues", group: "Band" }
+    - { value: "Funk", group: "Groove" }
+    - { value: "Soul", group: "Groove" }
+    - { value: "Reggae", group: "Groove" }
+    - { value: "Latin", group: "World" }
+    - { value: "World", group: "World" }
+    - { value: "Electronic", group: "Electronic" }
+    - { value: "Synthwave", group: "Electronic" }
+    - { value: "House", group: "Electronic" }
+    - { value: "Downtempo", group: "Electronic" }
+    - { value: "Orchestral", group: "Orchestral" }
+    - { value: "Other", group: "Other" }
+
+
+  instrumental_subgenre:
+    - { value: "Ambient", group: "Ambient & Atmospheric" }
+    - { value: "Dark ambient", group: "Ambient & Atmospheric" }
+    - { value: "Space ambient", group: "Ambient & Atmospheric" }
+    - { value: "Nature ambient", group: "Ambient & Atmospheric" }
+    - { value: "Meditative ambient", group: "Ambient & Atmospheric" }
+    - { value: "Lo-fi beats", group: "Lo-fi & Chill" }
+    - { value: "Chillhop", group: "Lo-fi & Chill" }
+    - { value: "Jazzhop", group: "Lo-fi & Chill" }
+    - { value: "Downtempo", group: "Lo-fi & Chill" }
+    - { value: "Smooth jazz", group: "Jazz" }
+    - { value: "Jazz fusion", group: "Jazz" }
+    - { value: "Cool jazz", group: "Jazz" }
+    - { value: "Bossa nova", group: "Jazz & Latin" }
+    - { value: "Acoustic folk", group: "Acoustic" }
+    - { value: "Fingerstyle", group: "Acoustic" }
+    - { value: "Cinematic score", group: "Cinematic" }
+    - { value: "Epic orchestral", group: "Cinematic" }
+    - { value: "Minimal piano", group: "Cinematic" }
+    - { value: "Post-rock", group: "Rock" }
+    - { value: "Blues rock", group: "Rock & Blues" }
+    - { value: "Funk groove", group: "Funk & Soul" }
+    - { value: "Neo soul instrumental", group: "Funk & Soul" }
+    - { value: "Synthwave", group: "Electronic" }
+    - { value: "Retrowave", group: "Electronic" }
+    - { value: "Deep house instrumental", group: "Electronic" }
+    - { value: "Tropical instrumental", group: "Electronic & World" }
+    - { value: "Latin jazz", group: "Jazz & Latin" }
+    - { value: "Other", group: "Other" }
+
+
+  instrumental_mood:
+    - { value: "Peaceful", group: "Calm" }
+    - { value: "Relaxing", group: "Calm" }
+    - { value: "Calm", group: "Calm" }
+    - { value: "Meditative", group: "Calm" }
+    - { value: "Dreamy", group: "Atmospheric" }
+    - { value: "Ethereal", group: "Atmospheric" }
+    - { value: "Atmospheric", group: "Atmospheric" }
+    - { value: "Nostalgic", group: "Emotional" }
+    - { value: "Melancholic", group: "Emotional" }
+    - { value: "Emotional", group: "Emotional" }
+    - { value: "Warm", group: "Positive" }
+    - { value: "Hopeful", group: "Positive" }
+    - { value: "Uplifting", group: "Positive" }
+    - { value: "Joyful", group: "Positive" }
+    - { value: "Energetic", group: "Energetic" }
+    - { value: "Playful", group: "Energetic" }
+    - { value: "Groovy", group: "Energetic" }
+    - { value: "Funky", group: "Energetic" }
+    - { value: "Dark", group: "Dark" }
+    - { value: "Mysterious", group: "Dark" }
+    - { value: "Haunting", group: "Dark" }
+    - { value: "Tense", group: "Dark" }
+    - { value: "Epic", group: "Cinematic" }
+    - { value: "Dramatic", group: "Cinematic" }
+    - { value: "Other", group: "Other" }
+
+
+  instrumental_tempo:
+    - { value: "Very slow", group: "Slow" }
+    - { value: "Slow", group: "Slow" }
+    - { value: "Slow-mid tempo", group: "Moderate" }
+    - { value: "Mid tempo", group: "Moderate" }
+    - { value: "Laid-back", group: "Moderate" }
+    - { value: "Upbeat", group: "Fast" }
+    - { value: "Fast", group: "Fast" }
+    - { value: "Very fast", group: "Fast" }
+    - { value: "Driving", group: "Rhythmic" }
+    - { value: "Danceable", group: "Rhythmic" }
+    - { value: "Free tempo", group: "Expressive" }
+    - { value: "Rubato", group: "Expressive" }
+    - { value: "Other", group: "Other" }
+
+
+  instrumental_instrument:
+    - { value: "Acoustic guitar", group: "Guitar" }
+    - { value: "Electric guitar", group: "Guitar" }
+    - { value: "Classical guitar", group: "Guitar" }
+    - { value: "Bass guitar", group: "Bass" }
+    - { value: "Piano", group: "Keys" }
+    - { value: "Electric piano", group: "Keys" }
+    - { value: "Organ", group: "Keys" }
+    - { value: "Synthesizer", group: "Synth" }
+    - { value: "Analog synth", group: "Synth" }
+    - { value: "Drums", group: "Percussion" }
+    - { value: "Electronic drums", group: "Percussion" }
+    - { value: "Percussion", group: "Percussion" }
+    - { value: "808 bass", group: "Bass" }
+    - { value: "Violin", group: "Strings" }
+    - { value: "Cello", group: "Strings" }
+    - { value: "String ensemble", group: "Strings" }
+    - { value: "Brass section", group: "Brass" }
+    - { value: "Trumpet", group: "Brass" }
+    - { value: "Saxophone", group: "Brass" }
+    - { value: "Flute", group: "Winds" }
+    - { value: "Harmonica", group: "Winds" }
+    - { value: "Marimba", group: "Percussion" }
+    - { value: "Xylophone", group: "Percussion" }
+    - { value: "Orchestral instruments", group: "Orchestral" }
+    - { value: "Mixed instrumentation", group: "Ensemble" }
+    - { value: "Other", group: "Other" }
+
+
+  instrumental_playing_style:
+    - { value: "Fingerpicked", group: "Fingerstyle & Arpeggio" }
+    - { value: "Gentle fingerpicked", group: "Fingerstyle & Arpeggio" }
+    - { value: "Delicate arpeggiated", group: "Fingerstyle & Arpeggio" }
+    - { value: "Flowing arpeggiated", group: "Fingerstyle & Arpeggio" }
+    - { value: "Soft strumming", group: "Strumming & Chordal" }
+    - { value: "Gentle strumming", group: "Strumming & Chordal" }
+    - { value: "Rhythmic strumming", group: "Strumming & Chordal" }
+    - { value: "Layered chordal", group: "Strumming & Chordal" }
+    - { value: "Steady groove", group: "Groove & Rhythmic" }
+    - { value: "Laid-back groove", group: "Groove & Rhythmic" }
+    - { value: "Syncopated groove", group: "Groove & Rhythmic" }
+    - { value: "Punchy rhythmic", group: "Groove & Rhythmic" }
+    - { value: "Driving rhythm", group: "Groove & Rhythmic" }
+    - { value: "Melodic lead", group: "Lead & Melody" }
+    - { value: "Expressive lead", group: "Lead & Melody" }
+    - { value: "Smooth legato", group: "Lead & Melody" }
+    - { value: "Staccato lead", group: "Lead & Melody" }
+    - { value: "Sustained notes", group: "Ambient & Sustained" }
+    - { value: "Spacious sustained", group: "Ambient & Sustained" }
+    - { value: "Swelling sustained", group: "Ambient & Sustained" }
+    - { value: "Minimal sparse", group: "Minimal & Sparse" }
+    - { value: "Repetitive ostinato", group: "Minimal & Sparse" }
+    - { value: "Simple repetitive", group: "Minimal & Sparse" }
+    - { value: "Layered and evolving", group: "Dynamic & Evolving" }
+    - { value: "Gradual crescendo", group: "Dynamic & Evolving" }
+    - { value: "Cinematic swelling", group: "Dynamic & Evolving" }
+    - { value: "Loose improvisational", group: "Improvisational" }
+    - { value: "Free-flowing improvisation", group: "Improvisational" }
+    - { value: "Other", group: "Other" }
+
+
+  instrumental_rhythm:
+    - { value: "Steady", group: "Basic" }
+    - { value: "Relaxed", group: "Basic" }
+    - { value: "Driving", group: "Basic" }
+    - { value: "Laid-back groove", group: "Groove" }
+    - { value: "Deep groove", group: "Groove" }
+    - { value: "Funky groove", group: "Groove" }
+    - { value: "Bouncy groove", group: "Groove" }
+    - { value: "Syncopated groove", group: "Groove" }
+    - { value: "Straight", group: "Rhythmic Feel" }
+    - { value: "Syncopated", group: "Rhythmic Feel" }
+    - { value: "Rolling", group: "Rhythmic Feel" }
+    - { value: "Pulsing", group: "Rhythmic Feel" }
+    - { value: "Broken rhythm", group: "Rhythmic Feel" }
+    - { value: "Shuffle", group: "Rhythmic Feel" }
+    - { value: "Swing", group: "Rhythmic Feel" }
+    - { value: "Polyrhythmic", group: "Rhythmic Feel" }
+    - { value: "Minimal", group: "Rhythmic Density" }
+    - { value: "Sparse", group: "Rhythmic Density" }
+    - { value: "Layered", group: "Rhythmic Density" }
+    - { value: "Repetitive", group: "Rhythmic Density" }
+    - { value: "Evolving", group: "Rhythmic Density" }
+    - { value: "Free-flowing", group: "Other" }
+    - { value: "Improvisational", group: "Other" }
+    - { value: "Other", group: "Other" }  
 
   # ==========================================
   # GENRE MUSIK

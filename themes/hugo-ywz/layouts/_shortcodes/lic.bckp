@@ -1,0 +1,109 @@
+{{ $app := .Get "app" | default "promise-ety" }}
+{{ $appName := .Get "name" | default $app }}
+
+<div x-data="licenseGenerator('{{ $app }}')" x-init="init()" class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 my-6 not-prose">
+  <!-- Header Widget -->
+  <div class="flex items-center gap-2 mb-5 border-b border-gray-100 dark:border-gray-700 pb-3">
+    <div class="w-1.5 h-5 bg-indigo-600 rounded-full"></div>
+    <h3 class="text-base font-bold text-gray-900 dark:text-white tracking-wide">
+      Instant License Generator - <span class="text-indigo-600 dark:text-indigo-400">{{ $appName }}</span>
+    </h3>
+  </div>
+
+  <div class="space-y-4 text-sm">
+    <!-- Info Singkat atau Peringatan Akses -->
+    <template x-if="!isAuthorized">
+      <div class="p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400 text-xs">
+        <b>Akses Ditolak:</b> Widget ini hanya dapat digunakan langsung dari situs resmi.
+      </div>
+    </template>
+
+    <template x-if="isAuthorized">
+      <div class="space-y-4">
+        <p class="text-xs text-gray-500 dark:text-gray-400">
+          Klik tombol di bawah untuk men-generate kunci lisensi <b>Unlocked</b> baru untuk aplikasi <b>{{ $appName }}</b>.
+        </p>
+
+        <!-- Tombol Generate Utama -->
+        <button @click="generateKey" type="button" class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs sm:text-sm rounded-xl shadow-sm transition-colors cursor-pointer flex items-center justify-center gap-2" :disabled="isGenerating">
+          <span class="icon-[ri--key-2-line] w-4 h-4"></span>
+          <span x-text="isGenerating ? 'Memproses...' : 'Generate License Key'"></span>
+        </button>
+
+        <!-- Kotak Hasil Output -->
+        <div class="mt-4 p-4 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3">
+          <span class="text-xs font-mono break-all text-gray-700 dark:text-gray-300 font-medium" x-text="keyOutput"></span>
+          <button @click="copyResult" type="button" class="w-full sm:w-auto px-4 py-2 text-xs font-medium bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 rounded-lg transition-colors flex-shrink-0 flex items-center justify-center gap-1.5">
+            <span class="icon-[ri--file-copy-line]"></span>
+            <span x-text="copyBtnText">Salin</span>
+          </button>
+        </div>
+      </div>
+    </template>
+  </div>
+</div>
+
+<script>
+function licenseGenerator(appId) {
+  return {
+    endpointUrl: "https://script.google.com/macros/s/AKfycbx2fb-XAKQdhYeHtyOIlo9vaCBSRAcPLUZiQBs5AYk7mfjdI93YBIaKJUbyqslZfdSwYQ/exec",
+    keyOutput: "Kunci yang Anda hasilkan akan muncul di sini...",
+    copyBtnText: "Salin",
+    isGenerating: false,
+    isAuthorized: false,
+    app: appId || "promise-ety",
+
+    init() {
+      const allowedDomains = ["irfanywz.web.id", "www.irfanywz.web.id", "localhost", "127.0.0.1"];
+      const currentHost = window.location.hostname;
+      
+      if (allowedDomains.includes(currentHost)) {
+        this.isAuthorized = true;
+      } else {
+        this.isAuthorized = false;
+      }
+    },
+
+    async generateKey() {
+      if (!this.isAuthorized) return;
+
+      this.isGenerating = true;
+      this.keyOutput = "Membuat kunci...";
+
+      try {
+        const url = `${this.endpointUrl}?app=${encodeURIComponent(this.app)}&origin=${encodeURIComponent(window.location.hostname)}`;
+        const response = await fetch(url, {
+          method: "GET",
+          redirect: "follow"
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          this.keyOutput = data.key;
+        } else {
+          this.keyOutput = "Kesalahan: " + (data.message || "Gagal menggenerate lisensi.");
+        }
+      } catch (error) {
+        console.error("Gagal terhubung ke server:", error);
+        this.keyOutput = "Kesalahan: Tidak dapat terhubung ke server lisensi.";
+      } finally {
+        this.isGenerating = false;
+      }
+    },
+
+    copyResult() {
+      if (!this.isAuthorized) return;
+
+      if (this.keyOutput && !this.keyOutput.startsWith("Kesalahan") && this.keyOutput !== "Kunci yang Anda hasilkan akan muncul di sini...") {
+        navigator.clipboard.writeText(this.keyOutput).then(() => {
+          this.copyBtnText = "Tersalin!";
+          setTimeout(() => {
+            this.copyBtnText = "Salin";
+          }, 1500);
+        });
+      }
+    }
+  };
+}
+</script>

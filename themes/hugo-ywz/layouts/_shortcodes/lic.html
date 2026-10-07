@@ -1,0 +1,48 @@
+{{ $app := .Get "app" | default "promise-ety" }}
+{{ $appName := .Get "name" | default $app }}
+
+<div x-data="licenseGenerator('{{ $app }}')" x-init="init()" class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 my-6 not-prose">
+  <!-- Header Widget -->
+  <div class="flex items-center gap-2 mb-5 border-b border-gray-100 dark:border-gray-700 pb-3">
+    <div class="w-1.5 h-5 bg-indigo-600 rounded-full"></div>
+    <h3 class="text-base font-bold text-gray-900 dark:text-white tracking-wide">
+      License Generator - <span class="text-indigo-600 dark:text-indigo-400">{{ $appName }}</span>
+    </h3>
+  </div>
+
+  <div class="space-y-4 text-sm">
+    <!-- Info Singkat atau Peringatan Akses -->
+    <template x-if="!isAuthorized">
+      <div class="p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400 text-xs">
+        <b>Akses Ditolak:</b> Widget ini hanya dapat digunakan langsung dari situs resmi.
+      </div>
+    </template>
+
+    <template x-if="isAuthorized">
+      <div class="space-y-4">
+        <p class="text-xs text-gray-500 dark:text-gray-400">
+          Klik tombol di bawah untuk men-generate kunci lisensi <b>Unlocked</b> baru untuk aplikasi <b>{{ $appName }}</b>.
+        </p>
+
+        <!-- Tombol Generate Utama -->
+        <button @click="generateKey" type="button" class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs sm:text-sm rounded-xl shadow-sm transition-colors cursor-pointer flex items-center justify-center gap-2" :disabled="isGenerating">
+          <span class="icon-[ri--key-2-line] w-4 h-4"></span>
+          <span x-text="isGenerating ? 'Memproses...' : 'Generate License Key'"></span>
+        </button>
+
+        <!-- Kotak Hasil Output -->
+        <div class="mt-4 p-4 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3">
+          <span class="text-xs font-mono break-all text-gray-700 dark:text-gray-300 font-medium" x-text="keyOutput"></span>
+          <button @click="copyResult" type="button" class="w-full sm:w-auto px-4 py-2 text-xs font-medium bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 rounded-lg transition-colors flex-shrink-0 flex items-center justify-center gap-1.5">
+            <span class="icon-[ri--file-copy-line]"></span>
+            <span x-text="copyBtnText">Salin</span>
+          </button>
+        </div>
+      </div>
+    </template>
+  </div>
+</div>
+
+<script>
+eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)r[e(c)]=k[c]||e(c);k=[function(e){return r[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('K L(a){9{g:"M://N.O.P/Q/s/R-S/T",3:"h i j k l m n o...",b:"p",c:7,4:7,d:a||"U-V",W(){5 q=["r.t.u","X.r.t.u","Y","Z.0.0.1"];5 v=w.x.y;6(q.10(v)){2.4=z}A{2.4=7}},11 12(){6(!2.4)9;2.c=z;2.3="13 14...";15{5 B=`${2.g}?d=${C(2.d)}&16=${C(w.x.y)}`;5 D=E 17(B,{18:"19",1a:"1b"});5 8=E D.1c();6(8.1d){2.3=8.1e}A{2.3="e: "+(8.1f||"F 1g G.")}}1h(f){1i.f("F H I J:",f);2.3="e: 1j 1k H I J G."}1l{2.c=7}},1m(){6(!2.4)9;6(2.3&&!2.3.1n("e")&&2.3!=="h i j k l m n o..."){1o.1p.1q(2.3).1r(()=>{2.b="1s!";1t(()=>{2.b="p"},1u)})}}}}',62,93,'||this|keyOutput|isAuthorized|const|if|false|data|return||copyBtnText|isGenerating|app|Kesalahan|error|endpointUrl|Kunci|yang|Anda|hasilkan|akan|muncul|di|sini|Salin|allowedDomains|irfanywz||web|id|currentHost|window|location|hostname|true|else|url|encodeURIComponent|response|await|Gagal|lisensi|terhubung|ke|server|function|licenseGenerator|https|script|google|com|macros|AKfycbx2fb|XAKQdhYeHtyOIlo9vaCBSRAcPLUZiQBs5AYk7mfjdI93YBIaKJUbyqslZfdSwYQ|exec|promise|ety|init|www|localhost|127|includes|async|generateKey|Membuat|kunci|try|origin|fetch|method|GET|redirect|follow|json|success|key|message|menggenerate|catch|console|Tidak|dapat|finally|copyResult|startsWith|navigator|clipboard|writeText|then|Tersalin|setTimeout|1500'.split('|'),0,{}))
+</script>

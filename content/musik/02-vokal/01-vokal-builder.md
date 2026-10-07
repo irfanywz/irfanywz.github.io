@@ -1,5 +1,6 @@
 ---
 title: "Vokal Builder"
+slug: vokal-builder
 description: "Membangun konsep lagu lengkap berdasarkan ide utama dengan gaya musik, karakter vokal, produksi, dan lirik orisinal."
 outputs: ["JSON"]
 

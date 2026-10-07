@@ -2,7 +2,7 @@
 title: Aplikasi Audio Spektrum
 slug: Aplikasi Audio Spektrum
 description: "membuat visual untuk audio musik dengan mudah, gunakan audiospektrum irfanywz"
-date: 2026-09-27T16:00:00+07:00
+date: 2026-10-04T16:00:00+07:00
 image: audiospektrum.avif
 topics: ["Teknologi"]
 keywords: ["Aplikasi", "Premium"]
@@ -51,6 +51,9 @@ nah yang mau coba atau koleksi aplikasinya, silahkan disedot
 
 {{< donate-download url="https://www.mediafire.com/file/9wypn4g8ar7g2rs/AudioSpektrum.exe/file" text="audio spektrum" >}}
 
+lisensi bisa generate langsung disini
+
+{{< lic app="spektrum" name="Audio Spektrum" >}}
 
 untuk source kodenya saya bagikan khusus member saja agar bisa dikembangin lagi fiturnya, unduh source code
 

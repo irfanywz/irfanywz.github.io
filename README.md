@@ -18,27 +18,14 @@ halaman baru lagi, music > isinya prompt untuk musik
 2 - memperbarui halaman alat
 3 - masih mengerjalan prompt app ai, buat kebutuhan prompt musik
 
-
 ...
 
-audio fade in & out
+https://www.mediafire.com/file/e11av15d209hc8x/Transkriboy.zip/file
 
-efek background: Camera Shake / Beat Flash / Zoom Bump
+perbaikan spektrum: timer judulnya bisa diedit, 
+terus pas export penamaan file bisa diset gak ?
+pas dibian lirik, kasih tombol global buat hapus lirik utama sama terjemahan jadi gak perlu bulak balik klik tab dulu
 
-efek background slider : gak cuma fade, tambahin lain mungkin bisa 
+LIRIC REPAIR, BIAR NADANYA GAK TERLALU ai BANGET, KASIH INTONASI, KASIH VARIASI, DLL
 
-Partikel Baru: Sakura / Falling Petals, Embers / Fire Sparks, Matrix Digital Rain atau Floating Music Notes
-
-Variasi Spektrum Baru: Retro Boombox / Jukebox, Cyber Car / Synthwave Outrun
-
-spectrum karakter animasi tangan menari
-
-Magnetic Snap Guides di Canvas
-
-overlay sama text tambahin fitur effect putar, shake, dll
-
-fitur ticker, jadi ada text berjalan divideo dengan background yang membentang secara horizontal, nah fitur ini bisa diset mau aktif terus, hanya beberapa kali muncul berdasarkan pembagian durasi audionya, dll
-...
-
-add motion preset
-
+aplikasi metadata ke musik, otomatis pakai ai bisa gak yah?
