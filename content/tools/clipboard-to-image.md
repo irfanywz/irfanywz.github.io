@@ -4,7 +4,7 @@ date: 2026-01-26T10:00:00+07:00
 description: "Alat praktis untuk menempelkan tangkapan layar dari clipboard dan menyimpannya sebagai file gambar secara instan."
 icon: "icon-[ri--clipboard-line]"
 categories:
-  - "Web"
+  - "Image"
 ---
 
 <div class="max-w-4xl mx-auto mt-6 space-y-6">

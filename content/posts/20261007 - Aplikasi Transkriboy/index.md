@@ -1,5 +1,5 @@
 ---
-title: Aplikasi Transkriboy
+title: Aplikasi Transkriboy, Mengubah Suara Menjadi Text
 slug: Aplikasi Transkriboy
 description: "Transkrip audio dan hasilkan file .srt untuk kebutuhan visualisasi lirik"
 date: 2026-10-06T16:00:00+07:00

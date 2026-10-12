@@ -4,7 +4,7 @@ date: 2026-09-06T10:00:00+07:00
 description: "Alat untuk mengonversi gambar lokal menjadi format Base64 dalam bentuk tag HTML img yang siap disalin."
 icon: "icon-[ri--file-code-line]"
 categories:
-  - "Web"
+  - "Image"
 ---
 
 <div class="max-w-4xl mx-auto mt-6 space-y-6">

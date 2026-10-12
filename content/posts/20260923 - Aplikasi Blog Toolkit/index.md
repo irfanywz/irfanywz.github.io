@@ -1,5 +1,5 @@
 ---
-title: Aplikasi Blog Toolkit
+title: Aplikasi Blog Toolkit, Convert Gambar dan Penggabungan
 slug: aplikasi-blog-toolkit
 description: "aplikasi convert gambar dan menggabungkan gambar untuk kebutuhan ngeblog, mudah dipakai cukup drag dan drop saja"
 date: 2026-09-23T16:00:00+07:00

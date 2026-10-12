@@ -1,5 +1,5 @@
 ---
-title: Aplikasi Myinstans Batch Download
+title: Aplikasi Myinstans Batch Download, Mengunduh SFX dengan mudah
 slug: Aplikasi Myinstans Batch Download
 description: "memudahkan mengunduh sfx dimyinstans secara batch, cukup masukan url dan klik download"
 date: 2026-09-25T16:00:00+07:00

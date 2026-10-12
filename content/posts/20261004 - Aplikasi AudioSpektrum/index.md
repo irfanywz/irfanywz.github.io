@@ -1,6 +1,6 @@
 ---
-title: Aplikasi Audio Spektrum
-slug: Aplikasi Audio Spektrum
+title: Aplikasi AudioSpektrum, Membuat Visual menarik yang mengikuti tempo musik
+slug: Aplikasi AudioSpektrum
 description: "membuat visual untuk audio musik dengan mudah, gunakan audiospektrum irfanywz"
 date: 2026-10-04T16:00:00+07:00
 image: audiospektrum.avif
@@ -19,11 +19,11 @@ aplikasi ini gua buat seharian penuh, dari pagi kira-kira jam 8 sampe jam 6 sore
 
 mata full menghadap layar, sambil mengetikan kata-kata renyah agar dimengerti oleh ai
 
-jadilah aplikasi ini dengan mvp bisa bikin visual untuk sebuah audio hasil AI 🗿
+jadilah aplikasi ini dengan mvp bisa bikin visual untuk audio hasil AI 🗿
 
 ...
 
-tujuan aplikasi ini gua buat, karena sehari sebelumnya gua melihat live dari praktisi youtube yang spill-spill channel musiknya dan menunjukan RPM yang didapat
+tujuan aplikasi ini gua buat, karena sehari sebelumnya gua melihat live dari praktisi youtube yang spil-spil channel musiknya dan menunjukan RPM yang didapat
 
 dari situ gua bergegas untuk meracik sebuah strategi, gimana caranya membuat konten musik dengan mudah
 
@@ -39,13 +39,9 @@ untungnya integrasi dengan github gampang, jadi source code bisa langsung kepush
 
 setelah aplikasi jadi gua packing jadi exe menggunakan localserver bernama spark, dan jadilah seperti ini
 
-{{< image-grid >}}
+![audiospektrum preview](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj7l55WS5ZioyLg8qC8mMYpMb3235rtlriy32HaRJ1gt0V62bSAJVslAGIc4-SPtJJtDmw7hj6u0_843mJ8Jjb8A2rS7mNLpTC20DQnwZddLOyEHVGAeZD-KIuHQWA7IbizhB19FGUyf7NiNvNAJMAuuJIHR45FIriG-oAua4U4TpPBJXWEhv3-OiyBO_4/s600/audiospektrum-preview.webp)
 
-{{< image-link "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgkttfrGCztLTgIaJm8ACpev0B7X9pvhC-LCWx8A_4mbnkaubryCJRdBf8MWJ1rkx-YkqqtQynwdhpPxYSnHpUNKzyduN3Vgxk10RP4aVOiVEA3xMpBmZ0jsckM_ZFsdESAZGgGqKD6g-_3ajavmqG_PG73p02JFO-Rjn4uAv0s9rWSZCmMocu-9TUmz8M/s320/test.webp" "test.webp" "dhsz" >}}
-
-{{< image-link "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZZogCyW8hYgD2tt0XDiSYL7TCopY7cC3nABLfcMWn581onOtIMR_LxDfSth1mDxmuMNziwvHb7xcocM0epsYDFvz1gW6w4IjH8Dk4smzD3bsoqyvp7TaMmR8C00BGAjblxZilv92VHMTwkETbBkSZc1VNiZKYoJGGR2xaA5beCXXHIDFUQLn08qdtzFA/s1000/exe%20audiospektrum.png" "exe audiospektrum.png" "dhsz" >}}
-
-{{< /image-grid >}}
+...
 
 nah yang mau coba atau koleksi aplikasinya, silahkan disedot 
 
@@ -55,6 +51,6 @@ lisensi bisa generate langsung disini
 
 {{< lic app="spektrum" name="Audio Spektrum" >}}
 
-untuk source kodenya saya bagikan khusus member saja agar bisa dikembangin lagi fiturnya, unduh source code
+untuk lisensi lifetime bisa diakses dibawah ini
 
-{{< paywall enc="0ba991568e9df9b222b9d3fe0e9cfbe49daccbd1346678f2e864bfd867148511698a494bbef892f497a3f36c3ac53f84U2FsdGVkX1++76xuwdlTS5HTTtii9ioW8Csylba08wFRZgmbOMGsalH82VJWgoV8Y8UrEwEpMPFfshleTt5xWnsQ+Nhj4zTMrxb6BZ56SullFHeSwp2+uLlcWZYMba9GsnUEKtA9S3Xn18UKSVvR8/lrf6LfdoZ2jv2ZDZAQ4AZiaRcpKIPwmC5fdCssilrRdfoLpA3mUoN6hy/6220I7SnmokCDARB/F8HMBReTL1Z1rcIHuJWyuY+yx3OFMoMPR8OhIwChEQBBaizgqyEH0iBDDJBYsdPzi3zd72TwFvk=" auth="8ca1c5963ed4f749af93e8cc9e9a3423:zwynafri" >}}
+{{< paywall enc="b8fe4144b9c2d9a447bd05fc427c4c80607f063fbe7802981b3241f22eed9351d370b3636824aca53f015c914406b787U2FsdGVkX1+uuzaErHlbtzI7upHmwxVfkcuuu0llLZhmoRK9JSEhsiYt8baH6+RX" auth="a8a4e55c8810262461edb407b7bff78a:wqwqwqqppp;;ll333--1199" >}}
