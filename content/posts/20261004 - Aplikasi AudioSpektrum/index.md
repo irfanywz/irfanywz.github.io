@@ -1,6 +1,6 @@
 ---
-title: Aplikasi AudioSpektrum, Membuat Visual menarik yang mengikuti tempo musik
-slug: Aplikasi AudioSpektrum
+title: Aplikasi Audio Spektrum, Membuat Visual menarik yang mengikuti tempo musik
+slug: Aplikasi Audio Spektrum
 description: "membuat visual untuk audio musik dengan mudah, gunakan audiospektrum irfanywz"
 date: 2026-10-04T16:00:00+07:00
 image: audiospektrum.avif
