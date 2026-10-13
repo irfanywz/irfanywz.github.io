@@ -62,7 +62,7 @@ dengan mengikuti langkah diatas aplikasi tubyutracer bisa langsung digunakan
 kalau kalian mau mencobanya, tubyutracer bisa diunduh melalui link dibawah ini (<kbd>password: 123</kbd>)
 
 <!-- download linknya belum diiubah -->
-{{< donate-download url="https://www.mediafire.com/file/v35134jp5yx9m37/Dondoen.exe/file" text="Unduh TubyuTracer" >}}
+{{< donate-download url="https://www.mediafire.com/file/ew53l5k7evjix8j/TubyuTracer.exe/file" text="Unduh TubyuTracer" >}}
 
 untuk mendapatkan lisensi keynya, bisa generate disini langsung
 
