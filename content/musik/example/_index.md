@@ -4,4 +4,5 @@ slug: Example
 build:
   render: never
   list: always
+draft: true  
 ---

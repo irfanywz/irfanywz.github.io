@@ -3,7 +3,7 @@
 title: "Contoh Markdown"
 slug: Contoh Markdown
 description: "File Markdown contoh yang mendemonstrasikan seluruh tipe input variables_config yang tersedia."
-outputs: ["JSON"]
+outputs: ["JSON"] # ini pengaturan hugo jangan diubah
 
 use_ai: true
 ai_output: auto
@@ -55,7 +55,9 @@ variables_config:
     use_db: "music_mood"
     multiple: false
 
-# penulisan database bisa seperti ini
+# ini untuk penulisan database bisa seperti ini
+# tapi ini tidak seharusnya ditaruh disini, ini hanya sebagai contoh
+# nanti dipindahkan ke _index.md agar jadi database global
 choice_databases:
   # penulisan harus diawali prefix sesuai jenisnya, ini hanya contoh
   music_genre:

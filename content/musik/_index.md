@@ -9,8 +9,74 @@ resources:
     url: "https://suno.com/create"
     icon: "icon-[ri--code-box-line]"
     color: "blue"
+  - title: "Analisa Musik"
+    description: "Untuk Menganalisa file musik, hasil output berupa style dan lirik"
+    url: "https://share.gemini.google/FfAXNlDtqIAK"
+    icon: "icon-[ri--code-box-line]"
+    color: "blue"
+
 
 choice_databases:
+  music_countries:
+    title: Negara Target
+    description: Pilih negara berdasarkan wilayah pasar musik.
+    items:
+      - { value: United States, group: Amerika Utara }
+      - { value: Canada, group: Amerika Utara }
+      - { value: Mexico, group: Amerika Utara }
+
+      - { value: Brazil, group: Amerika Selatan }
+      - { value: Argentina, group: Amerika Selatan }
+      - { value: Colombia, group: Amerika Selatan }
+      - { value: Chile, group: Amerika Selatan }
+      - { value: Peru, group: Amerika Selatan }
+
+      - { value: United Kingdom, group: Eropa Barat }
+      - { value: Germany, group: Eropa Barat }
+      - { value: France, group: Eropa Barat }
+      - { value: Spain, group: Eropa Barat }
+      - { value: Italy, group: Eropa Barat }
+      - { value: Portugal, group: Eropa Barat }
+      - { value: Netherlands, group: Eropa Barat }
+
+      - { value: Sweden, group: Eropa Utara }
+      - { value: Norway, group: Eropa Utara }
+      - { value: Finland, group: Eropa Utara }
+      - { value: Denmark, group: Eropa Utara }
+
+      - { value: Poland, group: Eropa Timur }
+
+      - { value: Turkey, group: Timur Tengah }
+      - { value: Saudi Arabia, group: Timur Tengah }
+      - { value: United Arab Emirates, group: Timur Tengah }
+
+      - { value: Egypt, group: Afrika }
+      - { value: South Africa, group: Afrika }
+      - { value: Nigeria, group: Afrika }
+      - { value: Ghana, group: Afrika }
+      - { value: Kenya, group: Afrika }
+
+      - { value: India, group: Asia Selatan }
+      - { value: Pakistan, group: Asia Selatan }
+      - { value: Bangladesh, group: Asia Selatan }
+
+      - { value: Japan, group: Asia Timur }
+      - { value: South Korea, group: Asia Timur }
+      - { value: China, group: Asia Timur }
+      - { value: Taiwan, group: Asia Timur }
+      - { value: Hong Kong, group: Asia Timur }
+
+      - { value: Thailand, group: Asia Tenggara }
+      - { value: Vietnam, group: Asia Tenggara }
+      - { value: Philippines, group: Asia Tenggara }
+      - { value: Indonesia, group: Asia Tenggara }
+      - { value: Malaysia, group: Asia Tenggara }
+      - { value: Singapore, group: Asia Tenggara }
+
+      - { value: Australia, group: Oseania }
+      - { value: New Zealand, group: Oseania }
+
+
   instrumental_genre:
     - { value: "Ambient", group: "Atmospheric" }
     - { value: "Chillout", group: "Electronic" }
