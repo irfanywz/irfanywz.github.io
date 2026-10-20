@@ -1,6 +1,6 @@
 ---
-title: Sudah dipertengahan oktober
-slug: Sudah dipertengahan oktober
+title: Kucing Anggora dititpkan
+slug: Kucing Anggora dititpkan
 date: 2026-10-13T21:00:35+07:00
 weather: Cerah
 location: Bogor, Indonesia

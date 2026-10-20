@@ -179,16 +179,16 @@ document.addEventListener('alpine:init', () => {
             });
 
             // 2. Trigger Mobile: Deteksi saat user menekan tombol Back
-            window.addEventListener('popstate', () => {
-                if (!this.hasBeenTriggered) {
-                    history.pushState(null, '', window.location.href);
-                    this.trigger();
-                }
-            });
+            // window.addEventListener('popstate', () => {
+            //     if (!this.hasBeenTriggered) {
+            //         history.pushState(null, '', window.location.href);
+            //         this.trigger();
+            //     }
+            // });
 
-            if (window.history.state === null) {
-                history.pushState(null, '', window.location.href);
-            }
+            // if (window.history.state === null) {
+            //     history.pushState(null, '', window.location.href);
+            // }
         },
 
         trigger() {

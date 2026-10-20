@@ -1,5 +1,5 @@
 ---
-title: Aplikasi TubyuSental, Kelola Channel Youtube dengan kalender konten
+title: Aplikasi TubyuSentral, Kelola Channel Youtube dengan kalender konten
 slug: Aplikasi TubyuSental
 description: "Kelola banyak channel YouTube: kalender konten, todo, catatan, profil Chrome, dan extension status konten. Semua data tersimpan di komputermu."
 date: 2026-10-17T03:00:00+07:00

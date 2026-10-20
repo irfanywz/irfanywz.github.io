@@ -5,11 +5,11 @@ description: "manajemen profil chrome dengan mudah, terdapat fitur tracking link
 date: 2026-10-12T16:00:00+07:00
 image: mazcrum.avif
 topics: ["Teknologi"]
-keywords: ["Aplikasi", "Premium"]
+keywords: ["Aplikasi"]
 series: "Portofolio Aplikasi"
 showAds: false
 adPositions: []
-premium: true
+premium: false
 draft: false
 ---
 
@@ -36,8 +36,3 @@ bagi yang tertarik ingin menggunakan atau sekedar koleksi, aplikasi mazcrum bisa
 
 <!-- download linknya belum diiubah -->
 {{< donate-download url="https://www.mediafire.com/file/vqfozapbek8nifn/MazCrum_Setup_0.6.0.exe/file" text="Unduh MazCrum" >}}
-
-untuk sorce codenya, bisa diakses dibawah ini
-
-<!-- source codenya mana wooo... -->
-{{< paywall enc="43b1c655e90709f34755e3bdfb5ff2ae1ba31ad1a4fd2ec60d3e6e7a2a53c2d293412be58f44df094b80c68da59c0a32U2FsdGVkX1/PVgCyrdkCPemrGfLTgeqVvh5jbBKdsNd+Z041hv2rwJzUQEvr6VqLJHEZnri+/LbQqQAWOuqhLL7/GDP4E5GyjpLRow/gV/0hnFGmRKMfDaEPbJPJkHnAvjLKrKVYQv3kt2ajgHDsJp0+tKoKm0Q4hFZ4GZ+X33xq6sWD2jIzP7VYIY9NIRlxMG4W1A6gXwFvqeYr1O3odZJTzeG3HuaDoLDLYB6YXJ7i06T2plcYGtC1QunUwMHZlpnG6cxYa32S8NV37lHXwtFWvQszGkZI90h8Mm2SgNE=" auth="c70a4445b1a458fcfb4167fb2388bfbb:wawawakkavkkkavkkkav" >}}

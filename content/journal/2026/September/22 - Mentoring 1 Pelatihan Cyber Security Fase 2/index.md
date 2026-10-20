@@ -4,7 +4,7 @@ slug: Mentoring 1 Pelatihan Cyber Security Fase 2
 date: 2026-09-22T14:00:35+07:00
 weather: Cerah
 location: Bogor, Indonesia
-journal_category: ["Penghargaan"]
+journal_category: ["Pelatihan"]
 draft: false
 ---
 

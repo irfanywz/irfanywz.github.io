@@ -5,6 +5,8 @@ Situs personal yang dibuat menggunakan hugo
 
 ## Todo
 
+short code donate download > diperbaiki lagi tombolnya, mungkin ada tahap lain biar bisa munculin langsung qris atau semacamnya ?
+
 halaman membership, memberikan penjelasan keuntung jadi membership, tampilan data post yang butuh membership, tombol cta untuk jadi member, 
 
 modal butuh donasi, untuk keberlangsungan domain web, perlihatkan target tercapai donasi, misal baru 10 ribu doang dari 100 ribu
