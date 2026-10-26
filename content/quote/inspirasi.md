@@ -6,6 +6,15 @@ build:
   render: never
   list: always
 quotes:
+
+  # - text: ""
+  #   author: ywz
+  #   date: 2026-08-26 
+
+  - text: "sugesti adalah kunci, semakin banyak sugesti akan banyak pilihan, kata-kata lambat dan kata-kata cepat akan mulai ditemukan dan mulai diaplikasikan..."
+    author: ywz
+    date: 2026-08-26 
+
   - text: "Jangan pernah meremehkan siapa pun. Hari ini ia mungkin biasa, besok ia bisa jadi penentu jalan suksesmu."
     author: "inspirasi hidup"
     date: 2025-10-15T00:00:00+07:00

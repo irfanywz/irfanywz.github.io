@@ -6,6 +6,24 @@ build:
   render: never
   list: always
 quotes:
+
+  # - text: ""
+  #   author: ywz
+  #   date: 2026-08-26 
+
+  - text: "perbesar wadahnya dulu, maka isinya akan mengikuti..."
+    author: ywz
+    date: 2026-08-26 
+
+
+  - text: "dunia tidak membayar seberapa lelah anda, melainkan seberapa sulit anda digantikan dan seberapa besar dampak dari keputusan anda..."
+    author: ywz
+    date: 2026-08-26  
+
+  - text: otak yang hebat tanpa asupan informasi yang benar, tetap tidak akan bisa menghasilkan kekayaan
+    author: ywz
+    date: 2026-08-26
+
   - text: "Gak semua hal harus kamu kuasai. kuasailah hal yang berkaitan dengan tujuanmu\n\nkalau kamu mau memiliki uang maka kuasailah bagaimana caranya menghasilkan uang"
     author: "catatan keuangan"
     date: 2025-10-07

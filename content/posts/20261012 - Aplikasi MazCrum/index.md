@@ -35,4 +35,4 @@ sedikit info saya membuat aplikasi mazcrum menggunakan claude gratis, hanya berm
 bagi yang tertarik ingin menggunakan atau sekedar koleksi, aplikasi mazcrum bisa diunduh melalui link dibawah ini
 
 <!-- download linknya belum diiubah -->
-{{< donate-download url="https://www.mediafire.com/file/vqfozapbek8nifn/MazCrum_Setup_0.6.0.exe/file" text="Unduh MazCrum" >}}
+{{< donate-download url="https://www.mediafire.com/folder/sh2nhd6wz1s6m/MazCrum" text="Unduh MazCrum" >}}

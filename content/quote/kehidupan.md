@@ -6,6 +6,19 @@ build:
   render: never
   list: always
 quotes:
+
+  # - text: ""
+  #   author: ywz
+  #   date: 2026-08-26
+
+  - text: "berpengaruhnya lingkungan untuk kehidupan kedepannya"
+    author: ywz
+    date: 2026-08-26  
+
+  - text: "softwarenya sudah terinstal (mindset, afirmasi, motivasi), tapi kalau lingkungannya tidak mendukung. apa mungkin bisa berjalan sesuai fungsinya ? bukankah akan sangat berat atau bahkan hanya jalan di tempat..."
+    author: ywz
+    date: 2026-08-26
+
   - text: "apa masalah yang menghalangi selama ini ?"
     author: "catatan kehidupan"
     date: 2024-01-05T00:00:00+07:00

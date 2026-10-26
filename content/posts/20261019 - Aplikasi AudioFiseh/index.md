@@ -2,8 +2,8 @@
 title: Aplikasi AudioFiseh, Memisah Vokal dan Instrumental dengan mudah
 slug: Aplikasi AudioFiseh
 description: "memisah vokal dan instrumental dengan mudah menggunakan aplikasi audiofiseh"
-date: 2026-10-17T03:00:00+07:00
-image: tubyu-sentral.avif
+date: 2026-10-19T03:00:00+07:00
+image: audiofiseh.avif
 topics: ["Teknologi"]
 keywords: ["Aplikasi", "Premium"]
 series: "Portofolio Aplikasi"
@@ -26,7 +26,7 @@ kualitasnya bisa dibilang tidak terlalu bagus tidak terlalu buruk, bisa dibilang
 bagi yang ingin mencobanya atau sekedar koleksi, bisa mengunduh audiofiseh melalui link dibawah ini
 
 <!-- masukin download linknya wooo -->
-{{< donate-download url="https://www.google.com" text="AudioFiseh" >}}
+{{< donate-download url="https://www.mediafire.com/file/az4s1b7jy6sbins/AudioFiseh-v0.6.0-win64.zip/file" text="AudioFiseh" >}}
 
 untuk mendapatkan lisensinya, bisa generate langsung dibawah ini
 
@@ -34,3 +34,4 @@ untuk mendapatkan lisensinya, bisa generate langsung dibawah ini
 
 lisensi lifetime bisa didapat khusus member yang berlangganan, yang bisa diakses dibawah ini
 
+{{< paywall enc="abdaf4e9bba944ef29e87e9501696d41d487a2f9564f869c77dd14aaf9dd6b35ad3af600a4c350d4964646455f8994faU2FsdGVkX180bOutNtbn46QZWkMf5ECzoeaLmVZVbyz5PWkWcJQSBNZMID1ue3sB" auth="86c02c9b0c1b15f8079392568e440895:...eeelweellpopipopakakakakakaeb" >}}

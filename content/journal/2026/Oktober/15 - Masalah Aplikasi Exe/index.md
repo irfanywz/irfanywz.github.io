@@ -19,3 +19,4 @@ karena sudah terlanjur dibuild jadi exe, yasudah saya share apa adanya. yang mau
 tapi memang aplikasi yang terdeteksi virus itu harus diwaspadai, apalagi dijaman yang serba canggih saat ini
 
 ![aplikasi-exe.avif](aplikasi-exe.avif)
+![preview.avif](preview.avif)
