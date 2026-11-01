@@ -1,0 +1,82 @@
+<!-- A: prompt with database builder -->
+<template x-if="activePrompt.has_database">
+    <div class="space-y-4">
+        <div x-show="subModalButtons.length > 0" class="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-gray-800">
+            <span class="text-xs font-bold text-gray-700 dark:text-gray-300">Sub-Prompt Generator:</span>
+            <div class="flex items-center gap-2">
+                <template x-for="btn in subModalButtons" :key="btn.type">
+                    <button @click="openSubModal(btn.type)"
+                            class="text-xs bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-1.5 rounded-xl transition font-medium cursor-pointer flex items-center gap-1.5">
+                        <span :class="btn.icon"></span>
+                        <span x-text="btn.label"></span>
+                    </button>
+                </template>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-[80px_1fr] gap-4 items-center bg-white dark:bg-gray-900 p-3.5 rounded-xl border border-gray-200 dark:border-gray-800">
+            <div class="w-20 h-20 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex items-center justify-center mx-auto">
+                <template x-if="activePrompt.image">
+                    <img decoding="async" loading="lazy" :src="builderImage" alt="Preview" class="w-full h-full object-cover">
+                </template>
+                <template x-if="!activePrompt.image">
+                    <span class="icon-[ri--image-ai-fill] text-indigo-600 dark:text-indigo-400 text-xl"></span>
+                </template>                                
+            </div>
+            <div class="space-y-1">
+                <div class="flex items-center justify-between">
+                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Input Deskripsi Target</label>
+                    <div class="flex items-center gap-2">
+                        <button @click="pasteClipboard()" class="text-[11px] text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold flex items-center gap-1 cursor-pointer bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-lg transition">
+                            <span class="icon-[ri--clipboard-line]"></span> Paste
+                        </button>
+                        <button x-show="hasDatabase" @click="showDbPicker = true" class="text-[11px] text-indigo-600 dark:text-indigo-400 hover:underline font-semibold flex items-center gap-1 cursor-pointer">
+                            <span class="icon-[ri--list-settings-line]"></span> Pilih dari Database
+                        </button>
+                    </div>
+                </div>
+                <input type="text" x-model="builderInput" placeholder="Masukkan deskripsi..." @focus="$el.select()"
+                       class="w-full bg-gray-50 dark:bg-gray-950 border border-gray-300 dark:border-gray-700 rounded-xl px-3 py-2 text-xs text-gray-800 dark:text-gray-200 focus:outline-none focus:border-indigo-500">
+            </div>
+        </div>
+
+        <!-- Dynamic form: one input per [VAR] found in the description -->
+        <template x-if="builderParams.length > 0">
+            <div class="p-3.5 bg-indigo-50/50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 rounded-xl space-y-2.5">
+                <div class="flex items-center justify-between text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                    <span class="flex items-center gap-1.5">
+                        <span class="icon-[ri--input-field]"></span>
+                        <span>Kustomisasi Deskripsi</span>
+                    </span>
+                    <span class="text-[10px] font-semibold" x-text="builderFilledCount + '/' + builderParams.length + ' terisi'"></span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <template x-for="param in builderParams" :key="param">
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1" x-text="param"></label>
+                            <input type="text" x-model="builderValues[param]" :placeholder="'Masukkan ' + param + '...'"
+                                   class="w-full px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition">
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+
+        <div class="bg-gray-50 dark:bg-gray-950 p-4 rounded-xl border border-gray-200 dark:border-gray-800 text-xs font-mono text-gray-800 dark:text-gray-200 leading-relaxed max-h-52 overflow-y-auto shadow-inner whitespace-pre-wrap select-all"
+             x-html="dbPromptRendered"></div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
+            <p class="text-[11px] text-gray-500 dark:text-gray-400 sm:mr-auto" title="Perkiraan kasar (±4 karakter per token). Jumlah sebenarnya tergantung model." x-text="formatStats(dbPromptRaw)"></p>
+            <button @click="showBatchModal = true"
+                    class="w-full sm:w-auto px-4 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-xl transition flex items-center justify-center gap-2 cursor-pointer">
+                <span class="icon-[ri--stack-line] w-3.5 h-3.5"></span>
+                <span>Batch</span>
+            </button>
+            <button @click="copy(dbPromptRaw, 'copiedMaster')"
+                    class="w-full sm:w-auto px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer">
+                <span :class="copiedMaster ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'" class="w-3.5 h-3.5"></span>
+                <span x-text="copiedMaster ? 'Master Prompt Berhasil Disalin!' : 'Salin Master Prompt'"></span>
+            </button>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,76 @@
+<!-- Picker: global choice database for dynamic-form fields (field option `use_db`, data from _index.md `choice_databases`) -->
+<div x-show="choicePicker.open" class="fixed inset-0 z-60 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4" @click.self="closeChoicePicker()" @keydown.escape.window="closeChoicePicker()" style="display: none;">
+    <div class="bg-white dark:bg-gray-800 w-full max-w-md rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col max-h-[80vh]">
+        <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-start justify-between gap-3">
+            <div class="min-w-0">
+                <h4 class="text-xs font-bold text-gray-800 dark:text-gray-200" x-text="choiceDb ? choiceDb.title : ''"></h4>
+                <p x-show="choiceDb && choiceDb.description" style="display: none;" class="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5" x-text="choiceDb ? choiceDb.description : ''"></p>
+            </div>
+            <button @click="closeChoicePicker()" title="Tutup" class="text-gray-400 hover:text-gray-600 cursor-pointer shrink-0">
+                <span class="icon-[ri--close-line] text-lg"></span>
+            </button>
+        </div>
+
+        <div class="px-5 py-3 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+            <div class="relative w-full">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400"><span class="icon-[ri--search-line] text-xs"></span></span>
+                <input type="text" x-ref="choiceSearch" x-model="choicePicker.query" placeholder="Cari..."
+                       class="w-full pl-9 pr-8 py-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                <button x-show="choicePicker.query" @click="choicePicker.query = ''" style="display: none;" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-gray-400 hover:text-gray-600 cursor-pointer">
+                    <span class="icon-[ri--close-circle-fill] text-xs"></span>
+                </button>
+            </div>
+            <div x-show="choiceGroupChips.length || (choiceDb && choiceDb.items.length > 20)" style="display: none;" class="mt-3 flex items-center justify-between gap-3">
+                <span x-show="choiceGroupChips.length" style="display: none;" class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Filter grup</span>
+                <span x-show="choiceDb && choiceDb.items.length > 20" style="display: none;" class="ml-auto text-[10px] text-gray-400" x-text="choiceShownCount + ' dari ' + (choiceDb ? choiceDb.items.length : 0) + ' item'"></span>
+            </div>
+            <div x-show="choiceGroupChips.length" style="display: none;" class="mt-1.5 flex flex-wrap gap-1.5 max-h-[5.5rem] overflow-y-auto pr-1">
+                <button @click="choicePicker.group = ''"
+                        class="pl-3 pr-1.5 py-1 rounded-lg text-[11px] font-semibold border transition cursor-pointer flex items-center gap-2"
+                        :class="choiceChipClass('', -1)">
+                    <span>Semua</span>
+                    <span class="min-w-[1.375rem] px-1.5 py-0.5 rounded-md text-[10px] font-bold tabular-nums text-center" :class="choiceBadgeClass('')"
+                          x-text="choiceGroupChips.reduce((n, g) => n + g.count, 0)"></span>
+                </button>
+                <template x-for="g in choiceGroupChips" :key="g.key">
+                    <button @click="choicePicker.group = g.key"
+                            class="pl-3 pr-1.5 py-1 rounded-lg text-[11px] font-semibold border transition cursor-pointer flex items-center gap-2"
+                            :class="choiceChipClass(g.key, g.count)">
+                        <span x-text="g.name"></span>
+                        <span class="min-w-[1.375rem] px-1.5 py-0.5 rounded-md text-[10px] font-bold tabular-nums text-center" :class="choiceBadgeClass(g.key)" x-text="g.count"></span>
+                    </button>
+                </template>
+            </div>
+        </div>
+
+        <div class="overflow-y-auto flex-grow p-2">
+            <template x-for="group in choiceGroups" :key="group.name">
+                <div class="mb-1">
+                    <p x-show="group.title" class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-gray-400" x-text="group.title"></p>
+                    <template x-for="item in group.items" :key="item.value">
+                        <button @click="pickChoice(item)" class="w-full text-left px-3 py-2 rounded-lg flex items-center justify-between gap-3 cursor-pointer transition"
+                                :class="item.selected ? 'bg-indigo-50 dark:bg-indigo-950/40' : 'hover:bg-gray-50 dark:hover:bg-gray-700/50'">
+                            <span class="min-w-0">
+                                <span class="block text-xs font-semibold text-gray-800 dark:text-gray-200 truncate" x-text="item.label"></span>
+                                <span x-show="item.description || item.label !== item.value" class="block text-[10px] text-gray-500 dark:text-gray-400 truncate" x-text="item.description || item.value"></span>
+                            </span>
+                            <span x-show="item.selected" class="icon-[ri--check-line] text-indigo-600 dark:text-indigo-400 shrink-0"></span>
+                        </button>
+                    </template>
+                </div>
+            </template>
+            <div x-show="!choiceGroups.length" style="display: none;" class="text-center py-10 space-y-2">
+                <p class="text-xs text-gray-400">Tidak ada yang cocok.</p>
+                <button x-show="choicePicker.query || choicePicker.group" style="display: none;" @click="resetChoiceFilter()" class="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer">Reset filter</button>
+            </div>
+        </div>
+
+        <div class="px-5 py-3 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between gap-3">
+            <button @click="clearChoice()" class="text-[11px] font-semibold text-gray-500 hover:text-red-600 dark:hover:text-red-400 cursor-pointer">Kosongkan isian</button>
+            <div x-show="choiceField && choiceField.multiple" style="display: none;" class="flex items-center gap-3">
+                <span class="text-[11px] text-gray-500 dark:text-gray-400" x-text="choiceTokens.length + ' dipilih'"></span>
+                <button @click="closeChoicePicker()" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition cursor-pointer">Selesai</button>
+            </div>
+        </div>
+    </div>
+</div>

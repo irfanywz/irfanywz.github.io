@@ -1,0 +1,22 @@
+{{- /*
+  Prompt page JS: concatenates assets/js/prompt-app/*.js (in the order listed here) into ONE classic script,
+  so the top-level consts/functions of every file share one scope and nothing leaks to window.
+  Keep this tag WITHOUT defer/async: it must register the "alpine:init" listener before Alpine starts,
+  exactly like the old inline <script> did. A new file only needs to be added to $names.
+*/ -}}
+{{- $names := slice "00-constants" "10-helpers" "20-formatters" "30-ai-providers" "40-part-list" "41-part-detail" "42-part-form" "43-part-choice-db" "44-part-builder" "45-part-batch" "46-part-sub-prompt" "47-part-clipboard" "48-part-resources" "49-part-pane-resize" "50-part-ai-config" "51-part-ai-run" "52-part-ai-history" "53-part-ai-gemini" "55-part-ai-openai" "56-part-ai-backup" "90-app" -}}
+{{- $files := slice -}}
+{{- range $names -}}
+  {{- $path := printf "js/prompt-app/%s.js" . -}}
+  {{- with resources.Get $path -}}
+    {{- $files = $files | append . -}}
+  {{- else -}}
+    {{- errorf "prompt-app: assets/%s not found" $path -}}
+  {{- end -}}
+{{- end -}}
+{{- $bundle := $files | resources.Concat "js/prompt-app.js" -}}
+{{- if hugo.IsProduction -}}
+  {{- $bundle = $bundle | minify -}}
+{{- end -}}
+{{- $bundle = $bundle | fingerprint -}}
+<script src="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}"></script>

@@ -15,5 +15,7 @@
   "ai_output": {{ .Params.ai_output | jsonify }},
   "ai_model": {{ .Params.ai_model | jsonify }},
   "ai_temperature": {{ .Params.ai_temperature | jsonify }},
-  "ai_system": {{ .Params.ai_temperature | jsonify }}
+  "ai_system": {{ .Params.ai_temperature | jsonify }},
+  "resources": {{ .Params.resources | jsonify }},
+  "choice_databases": {{ .Params.choice_databases | jsonify }}
 }

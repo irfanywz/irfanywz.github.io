@@ -1,0 +1,47 @@
+<!-- History overlay -->
+<div x-show="aiHistoryOpen" style="display: none;" class="absolute inset-0 z-10 flex flex-col bg-white dark:bg-gray-900">
+    <div class="flex items-center justify-between gap-2 px-3.5 py-2.5 border-b border-gray-200 dark:border-gray-800">
+        <span class="flex items-center gap-1.5 text-xs font-bold text-gray-800 dark:text-gray-200">
+            <span class="icon-[ri--history-line]"></span><span>Riwayat Hasil</span>
+        </span>
+        <div class="flex items-center gap-1">
+            <button @click="clearHistory()" class="text-[11px] font-semibold text-gray-500 hover:text-red-600 dark:hover:text-red-400 px-2 py-0.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">Hapus semua</button>
+            <button @click="aiHistoryOpen = false" title="Tutup" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
+                <span class="icon-[ri--close-line] text-sm"></span>
+            </button>
+        </div>
+    </div>
+    <div class="flex items-center gap-3 px-3.5 py-2 border-b border-gray-200 dark:border-gray-800">
+        <input type="search" x-model="aiHistoryQuery" placeholder="Cari riwayat..."
+               class="flex-grow min-w-0 px-3 py-1.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none">
+        <label class="flex items-center gap-1.5 text-[11px] text-gray-500 dark:text-gray-400 whitespace-nowrap cursor-pointer">
+            <input type="checkbox" x-model="aiHistoryAll" class="accent-indigo-600"><span x-text="'Semua prompt (' + aiHistory.length + ')'"></span>
+        </label>
+    </div>
+    <div class="flex-grow overflow-y-auto p-3 space-y-2">
+        <template x-for="entry in aiHistoryList" :key="entry.id">
+            <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-3 bg-gray-50 dark:bg-gray-950/50 space-y-1.5">
+                <div class="flex items-center justify-between gap-2 text-[10px] text-gray-400">
+                    <span class="truncate" x-text="formatTime(entry.ts) + ' · ' + entry.model"></span>
+                    <div class="flex items-center gap-1 shrink-0">
+                        <button @click="toggleHistoryPin(entry.id)" :title="entry.pinned ? 'Lepas pin' : 'Pin'" class="p-0.5 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer">
+                            <span :class="entry.pinned ? 'icon-[ri--pushpin-2-fill] text-indigo-600 dark:text-indigo-400' : 'icon-[ri--pushpin-2-line]'"></span>
+                        </button>
+                        <button @click="deleteHistory(entry.id)" title="Hapus" class="p-0.5 hover:text-red-600 dark:hover:text-red-400 cursor-pointer">
+                            <span class="icon-[ri--delete-bin-line]"></span>
+                        </button>
+                    </div>
+                </div>
+                <p x-show="aiHistoryAll" class="text-[11px] font-bold text-gray-700 dark:text-gray-300 truncate" x-text="entry.title"></p>
+                <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed break-words" x-text="snippet(entry.output)"></p>
+                <button @click="restoreHistory(entry)" class="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer">Pulihkan isian + hasil</button>
+            </div>
+        </template>
+        <div x-show="!aiHistoryList.length" style="display: none;" class="text-center py-10 space-y-2">
+            <p class="text-xs text-gray-400" x-text="aiHistoryQuery ? 'Tidak ada riwayat yang cocok.' : (aiHistoryAll ? 'Belum ada riwayat.' : 'Belum ada riwayat untuk prompt ini.')"></p>
+            <button x-show="!aiHistoryAll && aiHistoryOthers > 0" style="display: none;" @click="aiHistoryAll = true"
+                    class="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
+                    x-text="'Lihat ' + aiHistoryOthers + ' riwayat dari prompt lain'"></button>
+        </div>
+    </div>
+</div>

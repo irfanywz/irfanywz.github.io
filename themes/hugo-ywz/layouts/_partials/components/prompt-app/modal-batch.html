@@ -1,0 +1,66 @@
+<!-- Sub-modal: batch generator (one master prompt per description line) -->
+<div x-show="showBatchModal" class="fixed inset-0 z-60 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4" @click.self="showBatchModal = false" style="display: none;">
+    <div class="bg-white dark:bg-gray-800 w-full max-w-2xl rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col max-h-[90vh]">
+        <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+            <h4 class="text-xs font-bold text-gray-800 dark:text-gray-200">Batch Prompt Generator</h4>
+            <button @click="showBatchModal = false" class="text-gray-400 hover:text-gray-600 cursor-pointer">
+                <span class="icon-[ri--close-line] text-lg"></span>
+            </button>
+        </div>
+
+        <div class="p-5 overflow-y-auto space-y-4 flex-grow">
+            <div class="space-y-1.5">
+                <div class="flex items-center justify-between">
+                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Daftar Deskripsi (satu per baris)</label>
+                    <div class="flex items-center gap-2">
+                        <button @click="pasteBatch()" class="text-[11px] text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold flex items-center gap-1 cursor-pointer bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-lg transition">
+                            <span class="icon-[ri--clipboard-line]"></span> Paste
+                        </button>
+                        <button x-show="batchInput" @click="batchInput = ''" style="display: none;" class="text-[11px] text-gray-500 hover:text-red-500 font-semibold flex items-center gap-1 cursor-pointer">
+                            <span class="icon-[ri--delete-bin-line]"></span> Hapus
+                        </button>
+                    </div>
+                </div>
+                <textarea x-model="batchInput" rows="5" placeholder="Satu deskripsi per baris...&#10;wanita memakai kebaya merah&#10;pria berjas hitam di kota malam"
+                          class="w-full bg-gray-50 dark:bg-gray-950 border border-gray-300 dark:border-gray-700 rounded-xl px-3 py-2 text-xs text-gray-800 dark:text-gray-200 focus:outline-none focus:border-indigo-500 resize-y"></textarea>
+            </div>
+
+            <div class="flex items-center justify-between gap-3">
+                <span class="text-[11px] font-semibold text-gray-600 dark:text-gray-300" x-text="batchItems.length + ' deskripsi'"></span>
+                <div class="flex items-center gap-2">
+                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Format</label>
+                    <select x-model="batchFormat" class="px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <template x-for="format in batchFormats" :key="format.id">
+                            <option :value="format.id" x-text="format.label"></option>
+                        </template>
+                    </select>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <template x-for="item in batchItems" :key="item.id">
+                    <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-3 bg-gray-50 dark:bg-gray-900/50 space-y-2">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400" x-text="'#' + (item.id + 1)"></span>
+                            <button @click="copy(item.prompt, 'copiedBatchIndex', item.id)" class="text-[11px] text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold flex items-center gap-1 cursor-pointer">
+                                <span :class="copiedBatchIndex === item.id ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
+                                <span x-text="copiedBatchIndex === item.id ? 'Tersalin' : 'Salin'"></span>
+                            </button>
+                        </div>
+                        <p class="text-xs font-mono text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap max-h-24 overflow-y-auto" x-text="item.prompt"></p>
+                    </div>
+                </template>
+                <p x-show="batchItems.length === 0" class="text-xs text-gray-400 text-center py-6">Masukkan deskripsi di atas untuk membuat prompt secara massal.</p>
+            </div>
+        </div>
+
+        <div class="px-5 py-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <p class="text-[11px] text-gray-500 dark:text-gray-400" title="Perkiraan kasar (±4 karakter per token). Jumlah sebenarnya tergantung model." x-text="formatStats(batchOutput)"></p>
+            <button @click="copy(batchOutput, 'copiedBatch')" :disabled="batchItems.length === 0"
+                    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                <span :class="copiedBatch ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
+                <span x-text="copiedBatch ? 'Semua Prompt Berhasil Disalin!' : 'Salin Semua (' + batchItems.length + ')'"></span>
+            </button>
+        </div>
+    </div>
+</div>

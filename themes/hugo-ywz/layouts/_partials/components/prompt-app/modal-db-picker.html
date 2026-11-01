@@ -1,0 +1,51 @@
+<!-- Sub-modal: database picker -->
+<div x-show="showDbPicker" class="fixed inset-0 z-60 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4" @click.self="showDbPicker = false" style="display: none;">
+    <div class="bg-white dark:bg-gray-800 w-full max-w-2xl rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col max-h-[85vh]">
+        <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+            <h4 class="text-xs font-bold text-gray-800 dark:text-gray-200">Pilih dari Database</h4>
+            <button @click="showDbPicker = false" class="text-gray-400 hover:text-gray-600 cursor-pointer">
+                <span class="icon-[ri--close-line] text-lg"></span>
+            </button>
+        </div>
+
+        <div class="px-5 py-3 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 space-y-3">
+            <div class="relative w-full">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                    <span class="icon-[ri--search-line] text-xs"></span>
+                </span>
+                <input type="text" x-model="dbSearchQuery" placeholder="Cari nama atau deskripsi..."
+                       class="w-full pl-9 pr-8 py-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                <button x-show="dbSearchQuery" @click="dbSearchQuery = ''" style="display: none;"
+                        class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-gray-400 hover:text-gray-600">
+                    <span class="icon-[ri--close-circle-fill] text-xs"></span>
+                </button>
+            </div>
+
+            <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                <template x-for="cat in dbCategories" :key="cat">
+                    <button @click="selectedDbCategory = cat"
+                            class="px-4 py-1.5 rounded-full text-xs font-semibold transition-all whitespace-nowrap cursor-pointer border shadow-xs capitalize"
+                            :class="selectedDbCategory === cat ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-indigo-500'"
+                            x-text="cat === 'all' ? 'Semua' : cat"></button>
+                </template>
+            </div>
+        </div>
+
+        <div class="p-5 overflow-y-auto flex-grow">
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <template x-for="(item, index) in flattenedDatabase" :key="index + '-' + (item.title || 'item')">
+                    <div @click="selectDbItem(item)" class="group border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 rounded-xl p-3 cursor-pointer bg-gray-50 dark:bg-gray-900/50 flex flex-col items-center text-center transition">
+                        <div class="w-full h-20 bg-gray-200 dark:bg-gray-800 rounded-lg mb-2 overflow-hidden flex items-center justify-center">
+                            <img decoding="async" loading="lazy" :src="item.image" alt="" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        </div>
+                        <span class="text-xs font-bold text-gray-800 dark:text-gray-200 mb-0.5" x-text="item.title"></span>
+                        <span class="text-[10px] text-gray-500 dark:text-gray-400 line-clamp-2" x-text="item.description"></span>
+                    </div>
+                </template>
+            </div>
+            <template x-if="flattenedDatabase.length === 0">
+                <p class="text-xs text-gray-400 text-center py-12">Data tidak ditemukan.</p>
+            </template>
+        </div>
+    </div>
+</div>

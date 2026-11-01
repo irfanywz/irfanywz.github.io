@@ -1,0 +1,43 @@
+<!-- Sub-modal: description / image prompt generator (one block, driven by subModalType) -->
+<div x-show="showSubModal" class="fixed inset-0 z-60 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4" @click.self="showSubModal = false" style="display: none;">
+    <div class="bg-white dark:bg-gray-800 w-full max-w-xl rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col max-h-[85vh]">
+        <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+            <h4 class="text-xs font-bold text-gray-800 dark:text-gray-200" x-text="subConfig.title"></h4>
+            <button @click="showSubModal = false" class="text-gray-400 hover:text-gray-600 cursor-pointer">
+                <span class="icon-[ri--close-line] text-lg"></span>
+            </button>
+        </div>
+
+        <div class="p-5 overflow-y-auto space-y-4 flex-grow">
+            <div class="space-y-2">
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Hasil Prompt (Live In-Place Render)</label>
+                <div class="bg-gray-50 dark:bg-gray-950 p-4 rounded-xl border border-gray-200 dark:border-gray-800 text-xs font-mono text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap select-all shadow-inner max-h-52 overflow-y-auto"
+                     x-html="subRendered"></div>
+                <p class="text-[11px] text-gray-500 dark:text-gray-400" title="Perkiraan kasar (±4 karakter per token). Jumlah sebenarnya tergantung model." x-text="formatStats(subRaw)"></p>
+            </div>
+
+            <template x-if="subParams.length > 0">
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Isi Parameter</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 p-3.5 bg-indigo-50/50 dark:bg-indigo-950/30 rounded-xl border border-indigo-100 dark:border-indigo-900/50">
+                        <template x-for="param in subParams" :key="subModalType + param">
+                            <div>
+                                <label class="block text-[10px] font-semibold text-gray-600 dark:text-gray-400 uppercase mb-1" x-text="param"></label>
+                                <input type="text" x-model="dynamicInputs[subConfig.prefix + param]" :placeholder="'Masukkan ' + param + '...'"
+                                       class="w-full px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white outline-none focus:ring-1 focus:ring-indigo-500">
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <div class="px-5 py-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700 flex justify-end">
+            <button @click="copy(subRaw, 'copiedSub')"
+                    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+                <span :class="copiedSub ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
+                <span x-text="copiedSub ? 'Sub-Prompt Berhasil Disalin!' : 'Salin Sub-Prompt'"></span>
+            </button>
+        </div>
+    </div>
+</div>

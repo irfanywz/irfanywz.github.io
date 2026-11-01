@@ -1,0 +1,14 @@
+<div class="space-y-4 min-w-0">
+    {{ partial "components/prompt-app/detail-form-preview.html" . }}
+
+    {{ partial "components/prompt-app/detail-form-fields.html" . }}
+
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <p class="text-[11px] text-gray-500 dark:text-gray-400" title="Perkiraan kasar (±4 karakter per token). Jumlah sebenarnya tergantung model." x-text="formatStats(regularPromptRaw)"></p>
+        <button @click="copy(regularPromptRaw, 'copiedMaster')"
+                class="w-full sm:w-auto px-5 py-2.5 text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer bg-indigo-600 hover:bg-indigo-500 text-white">
+            <span :class="copiedMaster ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'" class="w-3.5 h-3.5"></span>
+            <span x-text="copiedMaster ? 'Prompt Berhasil Disalin!' : 'Salin Prompt Ini'"></span>
+        </button>
+    </div>
+</div>

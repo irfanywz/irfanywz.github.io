@@ -87,6 +87,11 @@ variables_config:
     placeholder: "Pilih perkiraan panjang lagu..."
     use_db: "music_length"
 
+resources:
+  - title: Suno
+    description: Suno Website
+    url: https://suno.com/create
+    icon: icon-[ri--figma-line]
 ---
 
 You are an expert music producer, songwriter, and Suno AI prompt engineer.

@@ -1,0 +1,60 @@
+<template x-if="promptFields.length > 0">
+    <div class="space-y-2.5" :class="useAi ? '' : 'p-3.5 bg-indigo-50/50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 rounded-xl'">
+        <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                <span class="icon-[ri--input-field]"></span>
+                <span>Isi Parameter:</span>
+            </div>
+            <button @click="resetForm()" title="Kembalikan semua isian ke nilai awal"
+                    class="text-[10px] font-semibold text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-1 cursor-pointer">
+                <span class="icon-[ri--restart-line]"></span>
+                <span>Reset isian</span>
+            </button>
+        </div>
+        <div class="grid gap-2.5" :class="useAi ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2'">
+            <template x-for="field in promptFields" :key="field.name">
+                <div :class="field.type === 'textarea' && !useAi ? 'sm:col-span-2' : ''">
+                    <div class="flex items-center justify-between gap-2 mb-1">
+                        <label class="block text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider" x-text="field.label"></label>
+                        <button x-show="hasChoiceDb(field)" style="display: none;" @click="openChoicePicker(field)" :title="'Pilih dari ' + choiceDbTitle(field)"
+                                class="text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1 cursor-pointer shrink-0">
+                            <span class="icon-[ri--list-check-2]"></span>
+                            <span>Pilih dari daftar</span>
+                        </button>
+                    </div>
+
+                    <template x-if="field.type === 'select'">
+                        <select x-model="promptVariables[field.name]" class="w-full px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition">
+                            <option value="">Pilih opsi...</option>
+                            <template x-for="opt in field.options" :key="opt">
+                                <option :value="opt" x-text="opt"></option>
+                            </template>
+                        </select>
+                    </template>
+
+                    <template x-if="field.type === 'textarea'">
+                        <textarea x-model="promptVariables[field.name]" :placeholder="field.placeholder" :rows="field.rows"
+                                  class="w-full px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition resize-y"></textarea>
+                    </template>
+
+                    <!-- text, number, datalist -->
+                    <template x-if="field.type !== 'select' && field.type !== 'textarea'">
+                        <div>
+                            <input :type="field.type === 'number' ? 'number' : 'text'"
+                                   :list="field.type === 'datalist' ? 'list-' + field.name : null"
+                                   x-model="promptVariables[field.name]" :placeholder="field.placeholder"
+                                   class="w-full px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition">
+                            <template x-if="field.type === 'datalist'">
+                                <datalist :id="'list-' + field.name">
+                                    <template x-for="opt in field.options" :key="opt">
+                                        <option :value="opt"></option>
+                                    </template>
+                                </datalist>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

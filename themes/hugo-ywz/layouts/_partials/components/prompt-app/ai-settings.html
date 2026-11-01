@@ -1,0 +1,157 @@
+<!-- Settings overlay -->
+<div x-show="aiShowSettings" style="display: none;" class="absolute inset-0 z-10 flex flex-col bg-white dark:bg-gray-900">
+    <div class="flex items-center justify-between gap-2 px-3.5 py-2.5 border-b border-gray-200 dark:border-gray-800">
+        <span class="flex items-center gap-1.5 text-xs font-bold text-gray-800 dark:text-gray-200">
+            <span class="icon-[ri--settings-3-line]"></span><span>Pengaturan AI</span>
+        </span>
+        <button @click="aiShowSettings = false" title="Tutup" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
+            <span class="icon-[ri--close-line] text-sm"></span>
+        </button>
+    </div>
+    <div class="flex-grow overflow-y-auto p-4 space-y-5">
+        <p x-show="aiError" style="display: none;" class="text-xs font-semibold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/50 rounded-lg px-3 py-2" x-text="aiError"></p>
+        <div class="flex items-start gap-2.5 rounded-xl border border-indigo-100 dark:border-indigo-900/50 bg-indigo-50 dark:bg-indigo-950/30 px-3.5 py-3">
+            <span class="icon-[ri--shield-check-line] text-base text-indigo-600 dark:text-indigo-400 mt-0.5 shrink-0"></span>
+            <div class="text-xs leading-relaxed text-gray-700 dark:text-gray-300 space-y-1">
+                <p class="font-bold text-gray-900 dark:text-white">API key Anda tidak kami simpan</p>
+                <p>Key dan pengaturan ini hanya tersimpan di browser Anda sendiri (localStorage) dan tidak dikirim ke server kami. Key hanya dikirim langsung ke provider/endpoint yang Anda pilih saat Anda menekan Generate.</p>
+            </div>
+        </div>
+
+
+        <section class="space-y-2">
+            <h3 class="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Provider aktif</h3>
+            <div class="grid grid-cols-2 gap-1 p-1 rounded-xl bg-gray-100 dark:bg-gray-800">
+                <template x-for="p in aiProviderTabs" :key="p.id">
+                    <button @click="aiProvider = p.id" x-text="p.label"
+                            class="px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer transition"
+                            :class="aiProvider === p.id ? 'bg-white dark:bg-gray-900 text-indigo-600 dark:text-indigo-400 shadow-xs' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'"></button>
+                </template>
+            </div>
+            <p x-show="aiProviderPinned" style="display: none;" class="text-[11px] font-semibold text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50 rounded-lg px-3 py-2 leading-relaxed" x-text="'Prompt ini dikunci ke ' + aiProviderLabel + ' lewat ai_provider, jadi pilihan di sini tidak berlaku untuknya. Hapus ai_provider dari frontmatter prompt agar mengikuti pilihan ini.'"></p>
+            <p class="text-[11px] text-gray-400 leading-relaxed">Provider ini dipakai untuk semua prompt AI, dan pengaturan di bawah berlaku untuknya. Satu prompt bisa menimpanya lewat <code>ai_provider</code>.</p>
+        </section>
+
+        <template x-if="aiTab.type === 'openai'">
+            <section class="space-y-2">
+                <h3 class="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Endpoint URL</h3>
+                <input type="url" x-model.trim="aiCfg[aiProvider].endpoint" spellcheck="false" autocomplete="off"
+                       :placeholder="aiTab.endpointPlaceholder || aiTab.defaultEndpoint"
+                       class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-mono text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                <p class="text-[11px] text-gray-400 leading-relaxed">Format OpenAI Chat Completions. Boleh isi base URL saja (mis. <code>https://api.openai.com/v1</code>), <code>/chat/completions</code> ditambahkan otomatis.</p>
+            </section>
+        </template>
+
+        <section class="space-y-2">
+            <div class="flex items-center justify-between gap-2">
+                <h3 class="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400" x-text="'API Key ' + aiTab.label + ' (satu per baris)'"></h3>
+                <div class="flex items-center gap-3 shrink-0">
+                    <button @click="aiRevealKeys = !aiRevealKeys" class="text-[10px] font-semibold text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer" x-text="aiRevealKeys ? 'Sembunyikan' : 'Tampilkan'"></button>
+                    <a x-show="aiTab.keyUrl" style="display: none;" :href="aiTab.keyUrl" target="_blank" rel="noopener noreferrer" class="text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
+                        <span>Buat API key</span><span class="icon-[ri--external-link-line]"></span>
+                    </a>
+                </div>
+            </div>
+            <textarea x-model="aiCfg[aiProvider].keys" rows="4" spellcheck="false" autocomplete="off"
+                      :placeholder="aiTab.keyPlaceholder + '\n' + aiTab.keyPlaceholder"
+                      :style="aiRevealKeys ? '' : '-webkit-text-security: disc; text-security: disc;'"
+                      class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-mono text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none resize-y"></textarea>
+            <div class="flex items-center justify-between gap-2">
+                <p class="text-[11px] text-gray-400" x-text="aiKeys.length + ' key aktif, dipakai bergiliran setiap generate'"></p>
+                <button @click="checkKeys()" :disabled="aiChecking || !aiKeys.length"
+                        class="shrink-0 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-[11px] font-bold text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1.5">
+                    <span :class="aiChecking ? 'icon-[ri--loader-4-line] animate-spin motion-reduce:animate-none' : 'icon-[ri--shield-check-line]'"></span>
+                    <span x-text="aiChecking ? 'Memeriksa...' : 'Cek key & model'"></span>
+                </button>
+            </div>
+            <ul x-show="aiKeyStatus.length" style="display: none;" class="space-y-1">
+                <template x-for="(k, i) in aiKeyStatus" :key="i">
+                    <li class="flex items-center gap-2 text-[11px]">
+                        <span class="w-1.5 h-1.5 rounded-full shrink-0" :class="k.dot"></span>
+                        <span class="font-mono text-gray-600 dark:text-gray-300" x-text="k.name"></span>
+                        <span class="text-gray-400 truncate" x-text="k.label"></span>
+                    </li>
+                </template>
+                <li x-show="aiKeyStatus.some((k) => k.state !== 'ok')" style="display: none;">
+                    <button @click="resetKeyHealth()" class="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer">Reset cooldown</button>
+                </li>
+            </ul>
+            
+        </section>
+
+        <section class="space-y-2">
+            <h3 class="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Model (satu per baris, urutan = cadangan)</h3>
+            <textarea x-model="aiCfg[aiProvider].models" rows="3" spellcheck="false" class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-mono text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none resize-y"></textarea>
+            <p x-show="aiTab.type === 'openai' && !aiModelList.length" style="display: none;" class="text-[11px] text-gray-400 leading-relaxed">Isi nama model secara manual, atau tekan "Cek key &amp; model" untuk memuat daftar model jika endpoint menyediakannya.</p>
+            <div x-show="aiModelList.length" style="display: none;" class="space-y-1.5">
+                <div class="flex items-center justify-between gap-2">
+                    <span class="text-[11px] text-gray-400" x-text="aiModelOptions.length + ' model tersedia, klik untuk menambah/menghapus'"></span>
+                    <label class="flex items-center gap-1.5 text-[11px] text-gray-500 dark:text-gray-400 whitespace-nowrap cursor-pointer">
+                        <input type="checkbox" x-model="aiShowAllModels" class="accent-indigo-600"><span>Semua jenis</span>
+                    </label>
+                </div>
+                <div class="max-h-52 overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-lg divide-y divide-gray-100 dark:divide-gray-800">
+                    <template x-for="m in aiModelOptions" :key="m.id">
+                        <button @click="toggleModel(m.id)" class="w-full text-left px-3 py-2 flex items-center justify-between gap-2 hover:bg-gray-50 dark:hover:bg-gray-800/60 cursor-pointer">
+                            <span class="min-w-0">
+                                <span class="block text-xs font-mono text-gray-800 dark:text-gray-200 truncate" x-text="m.id"></span>
+                                <span class="block text-[10px] text-gray-400 truncate" x-text="m.displayName + (m.input ? ' · input ' + formatNumber(m.input) + ' / output ' + formatNumber(m.output) : '')"></span>
+                            </span>
+                            <span class="shrink-0 text-[10px] font-semibold" :class="m.used ? 'text-emerald-600 dark:text-emerald-400' : 'text-indigo-600 dark:text-indigo-400'" x-text="m.used ? 'Dipakai ✓' : '+ Tambah'"></span>
+                        </button>
+                    </template>
+                </div>
+            </div>
+        </section>
+
+        <template x-if="aiTab.type === 'openai'">
+            <section class="space-y-2">
+                <h3 class="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Reasoning effort</h3>
+                <select x-model="aiCfg[aiProvider].effort" class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer">
+                    <option value="off">tidak dikirim</option>
+                    <option value="low">low</option>
+                    <option value="medium">medium</option>
+                    <option value="high">high</option>
+                </select>
+                <p class="text-[11px] text-gray-400 leading-relaxed">Dikirim sebagai <code>reasoning_effort</code>. Pilih "tidak dikirim" jika model/endpoint tidak mendukungnya. Bisa ditimpa per prompt lewat <code>ai_reasoning</code>.</p>
+            </section>
+        </template>
+
+        <section>
+            <label class="flex items-start gap-2 cursor-pointer">
+                <input type="checkbox" x-model="aiFallback" class="mt-0.5 accent-indigo-600">
+                <span>
+                    <span class="block text-xs font-semibold text-gray-800 dark:text-gray-200">Pindah ke provider lain jika semua key gagal</span>
+                    <span class="block text-[11px] text-gray-400 leading-relaxed">Hanya provider yang sudah punya key yang dicoba.</span>
+                </span>
+            </label>
+        </section>
+
+        <section class="space-y-2 pt-4 border-t border-gray-100 dark:border-gray-800">
+            <h3 class="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Cadangan (JSON)</h3>
+            <p class="text-[11px] text-gray-400 leading-relaxed">Pengaturan, riwayat hasil, dan nilai form tersimpan hanya ada di browser ini (localStorage). Ekspor untuk cadangan atau pindah browser.</p>
+            <label class="flex items-start gap-2 cursor-pointer">
+                <input type="checkbox" x-model="backupIncludeKeys" class="mt-0.5 accent-indigo-600">
+                <span>
+                    <span class="block text-xs font-semibold text-gray-800 dark:text-gray-200">Sertakan API key</span>
+                    <span class="block text-[11px] text-amber-700 dark:text-amber-400 leading-relaxed">File berisi key dalam teks biasa. Simpan dengan aman dan jangan dibagikan.</span>
+                </span>
+            </label>
+            <div class="flex gap-2">
+                <button @click="exportBackup()" class="flex-1 px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-[11px] font-bold text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer flex items-center justify-center gap-1.5">
+                    <span class="icon-[ri--download-2-line]"></span>
+                    <span>Ekspor JSON</span>
+                </button>
+                <button @click="$refs.backupFile.click()" class="flex-1 px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-[11px] font-bold text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer flex items-center justify-center gap-1.5">
+                    <span class="icon-[ri--upload-2-line]"></span>
+                    <span>Impor JSON</span>
+                </button>
+                <input type="file" x-ref="backupFile" accept="application/json,.json" class="hidden" @change="importBackup($event)">
+            </div>
+            <p x-show="backupMessage" style="display: none;" class="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 leading-relaxed" x-text="backupMessage"></p>
+            <p x-show="backupError" style="display: none;" class="text-[11px] font-semibold text-red-600 dark:text-red-400 leading-relaxed" x-text="backupError"></p>
+        </section>
+
+        
+    </div>
+</div>
