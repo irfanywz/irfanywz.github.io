@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Component part: resources & tools
+   Component part: resources
    One modal, two scopes: site-wide resources (`resources` in _index.md, delivered through index.json)
    and the open prompt's own resources (`resources` in that prompt's front matter, delivered in its JSON).
    ========================================================================== */

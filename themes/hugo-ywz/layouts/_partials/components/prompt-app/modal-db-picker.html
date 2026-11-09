@@ -34,7 +34,9 @@
         <div class="p-5 overflow-y-auto flex-grow">
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 <template x-for="(item, index) in flattenedDatabase" :key="index + '-' + (item.title || 'item')">
-                    <div @click="selectDbItem(item)" class="group border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 rounded-xl p-3 cursor-pointer bg-gray-50 dark:bg-gray-900/50 flex flex-col items-center text-center transition">
+                    <div @click="selectDbItem(item)" class="group relative border rounded-xl p-3 cursor-pointer flex flex-col items-center text-center transition"
+                         :class="isSelectedDbItem(item) ? 'border-indigo-500 ring-2 ring-indigo-500/40 bg-indigo-50 dark:bg-indigo-950/40' : 'border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-500 bg-gray-50 dark:bg-gray-900/50'">
+                        <span x-show="isSelectedDbItem(item)" style="display: none;" class="absolute top-1.5 right-1.5 z-10 icon-[ri--checkbox-circle-fill] text-indigo-600 dark:text-indigo-400 text-base bg-white dark:bg-gray-900 rounded-full"></span>
                         <div class="w-full h-20 bg-gray-200 dark:bg-gray-800 rounded-lg mb-2 overflow-hidden flex items-center justify-center">
                             <img decoding="async" loading="lazy" :src="item.image" alt="" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                         </div>

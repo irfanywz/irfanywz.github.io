@@ -61,6 +61,21 @@ const builderPart = () => ({
             .filter((item) => !query || includesQuery(query, item.title, item.description));
     },
 
+    /** True when `item` is the entry currently chosen from the database (picker highlight). */
+    isSelectedDbItem(item) {
+        const sel = this.selectedItem;
+        return !!sel && sel.title === item.title && sel.description === item.description;
+    },
+
+    /** The description was edited after picking an item from the database. */
+    get dbItemEdited() { return !!this.selectedItem && this.builderInput !== this.selectedItem.description; },
+
+    /** Unlink the chosen database item; the description text stays as it is. */
+    clearDbItem() {
+        this.selectedItem = null;
+        this.builderImage = this.activePrompt.image || '';
+    },
+
     selectDbItem(item) {
         // JSON round-trip: structuredClone throws on Alpine's reactive Proxy objects.
         this.selectedItem = JSON.parse(JSON.stringify(item));

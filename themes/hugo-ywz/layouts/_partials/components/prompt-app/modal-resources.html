@@ -1,4 +1,4 @@
-<!-- Modal: resources & tools -->
+<!-- Modal: resource -->
 <div x-show="resourceModalOpen" class="fixed inset-0 z-50 overflow-y-auto px-4 py-6 sm:p-0 flex items-center justify-center" style="display: none;">
     <div @click="resourceModalOpen = false" class="fixed inset-0 bg-black/60 backdrop-blur-xs"></div>
 
@@ -7,11 +7,11 @@
         <div class="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-gray-800">
             <div class="flex items-center gap-2">
                 <div class="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
-                    <span class="icon-[ri--tools-line] text-base"></span>
+                    <span class="icon-[ri--folder-shared-line] text-base"></span>
                 </div>
                 <div>
-                    <h3 class="text-sm font-bold text-gray-900 dark:text-white" x-text="resourceScope === 'prompt' ? 'Resources prompt ini' : 'Resources & Files Pendukung'">Resources & Files Pendukung</h3>
-                    <p class="text-[11px] text-gray-500 dark:text-gray-400" x-text="resourceScope === 'prompt' ? 'Tool dan file khusus untuk prompt ini.' : 'Kumpulan tool eksternal, generator, dan file terkait.'">Kumpulan tool eksternal, generator, dan file terkait.</p>
+                    <h3 class="text-sm font-bold text-gray-900 dark:text-white" x-text="resourceScope === 'prompt' ? 'Resource prompt ini' : 'Resource'">Resource</h3>
+                    <p class="text-[11px] text-gray-500 dark:text-gray-400" x-text="resourceScope === 'prompt' ? 'Khusus untuk prompt ini.' : 'Kumpulan Resource untuk kebutuhan Prompt'">Kumpulan Resource untuk kebutuhan Prompt</p>
                 </div>
             </div>
             <button @click="resourceModalOpen = false" class="text-gray-400 hover:text-gray-600 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer">
@@ -37,7 +37,7 @@
             </template>
 
             <template x-if="shownResources.length === 0">
-                <p class="text-xs text-gray-400 text-center py-8">Belum ada resource atau file pendukung yang ditambahkan.</p>
+                <p class="text-xs text-gray-400 text-center py-8">Belum ada resource.</p>
             </template>
         </div>
 

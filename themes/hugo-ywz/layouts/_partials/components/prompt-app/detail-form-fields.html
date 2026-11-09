@@ -16,11 +16,17 @@
                 <div :class="field.type === 'textarea' && !useAi ? 'sm:col-span-2' : ''">
                     <div class="flex items-center justify-between gap-2 mb-1">
                         <label class="block text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider" x-text="field.label"></label>
-                        <button x-show="hasChoiceDb(field)" style="display: none;" @click="openChoicePicker(field)" :title="'Pilih dari ' + choiceDbTitle(field)"
-                                class="text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1 cursor-pointer shrink-0">
-                            <span class="icon-[ri--list-check-2]"></span>
-                            <span>Pilih dari daftar</span>
-                        </button>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <button x-show="useAi && String(promptVariables[field.name] ?? '') !== ''" style="display: none;" @click="clearField(field.name)" title="Kosongkan isian ini"
+                                    class="text-gray-400 hover:text-red-500 flex items-center cursor-pointer">
+                                <span class="icon-[ri--close-circle-fill] text-sm"></span>
+                            </button>
+                            <button x-show="hasChoiceDb(field)" style="display: none;" @click="openChoicePicker(field)" :title="'Pilih dari ' + choiceDbTitle(field)"
+                                    class="text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1 cursor-pointer">
+                                <span class="icon-[ri--list-check-2]"></span>
+                                <span>Pilih dari daftar</span>
+                            </button>
+                        </div>
                     </div>
 
                     <template x-if="field.type === 'select'">

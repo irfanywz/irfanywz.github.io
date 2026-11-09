@@ -2637,19 +2637,6 @@
     mask-size: 100% 100%;
     --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='black' d='m24 12l-5.657 5.657l-1.414-1.414L21.172 12l-4.243-4.243l1.414-1.414zM2.828 12l4.243 4.243l-1.414 1.414L0 12l5.657-5.657L7.07 7.757zm6.96 9H7.66l6.552-18h2.128z'/%3E%3C/svg%3E");
   }
-  .icon-\[ri--coin-line\] {
-    display: inline-block;
-    width: 1em;
-    height: 1em;
-    background-color: currentColor;
-    -webkit-mask-image: var(--svg);
-    mask-image: var(--svg);
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-    --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='black' d='M12.005 4.003c6.075 0 11 2.686 11 6v4c0 3.314-4.925 6-11 6c-5.967 0-10.824-2.591-10.995-5.823l-.005-.177v-4c0-3.314 4.925-6 11-6m0 12c-3.72 0-7.01-1.008-9-2.55v.55c0 1.882 3.883 4 9 4c5.01 0 8.838-2.03 8.995-3.882l.005-.118l.001-.55c-1.99 1.542-5.28 2.55-9.001 2.55m0-10c-5.117 0-9 2.118-9 4s3.883 4 9 4s9-2.118 9-4s-3.883-4-9-4'/%3E%3C/svg%3E");
-  }
   .icon-\[ri--customer-service-2-line\] {
     display: inline-block;
     width: 1em;
@@ -4980,6 +4967,9 @@
   .min-h-0 {
     min-height: calc(var(--spacing) * 0);
   }
+  .min-h-72 {
+    min-height: calc(var(--spacing) * 72);
+  }
   .min-h-\[1\.2em\] {
     min-height: 1.2em;
   }
@@ -7077,6 +7067,9 @@
   .text-amber-700 {
     color: var(--color-amber-700);
   }
+  .text-amber-800 {
+    color: var(--color-amber-800);
+  }
   .text-amber-900 {
     color: var(--color-amber-900);
   }
@@ -7565,6 +7558,12 @@
     --tw-shadow-color: color-mix(in srgb, oklch(92.9% 0.013 255.508) 50%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       --tw-shadow-color: color-mix(in oklab, color-mix(in oklab, var(--color-slate-200) 50%, transparent) var(--tw-shadow-alpha), transparent);
+    }
+  }
+  .ring-indigo-500\/40 {
+    --tw-ring-color: color-mix(in srgb, oklch(58.5% 0.233 277.117) 40%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      --tw-ring-color: color-mix(in oklab, var(--color-indigo-500) 40%, transparent);
     }
   }
   .ring-indigo-600 {
@@ -9532,6 +9531,11 @@
       height: auto;
     }
   }
+  .sm\:min-h-96 {
+    @media (width >= 40rem) {
+      min-height: calc(var(--spacing) * 96);
+    }
+  }
   .sm\:min-h-\[360px\] {
     @media (width >= 40rem) {
       min-height: 360px;
@@ -10718,11 +10722,6 @@
       width: calc(var(--spacing) * 72);
     }
   }
-  .lg\:w-\[380px\] {
-    @media (width >= 64rem) {
-      width: 380px;
-    }
-  }
   .lg\:w-\[calc\(100\%\+8rem\)\] {
     @media (width >= 64rem) {
       width: calc(100% + 8rem);
@@ -10776,12 +10775,6 @@
   .lg\:gap-12 {
     @media (width >= 64rem) {
       gap: calc(var(--spacing) * 12);
-    }
-  }
-  .lg\:border-r {
-    @media (width >= 64rem) {
-      border-right-style: var(--tw-border-style);
-      border-right-width: 1px;
     }
   }
   .lg\:px-8 {
@@ -11227,6 +11220,14 @@
       background-color: color-mix(in srgb, oklch(27.9% 0.077 45.635) 30%, transparent);
       @supports (color: color-mix(in lab, red, red)) {
         background-color: color-mix(in oklab, var(--color-amber-950) 30%, transparent);
+      }
+    }
+  }
+  .dark\:bg-amber-950\/40 {
+    &:where(.dark, .dark *) {
+      background-color: color-mix(in srgb, oklch(27.9% 0.077 45.635) 40%, transparent);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-amber-950) 40%, transparent);
       }
     }
   }

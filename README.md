@@ -13,6 +13,8 @@ modal butuh donasi, untuk keberlangsungan domain web, perlihatkan target tercapa
 
 halaman baru lagi, music > isinya prompt untuk musik
 
+oktober 
+
 2 - tab support ada tombol konfirmasinya, kirim ke email
 2 - memperbaiki tampilan quote, menambahkan kosakata dihalaman jurnal
 2 - menghapus partial nav-topics tidak terlalu dibutuhkan
@@ -22,12 +24,11 @@ halaman baru lagi, music > isinya prompt untuk musik
 
 ...
 
-https://www.mediafire.com/file/e11av15d209hc8x/Transkriboy.zip/file
+resource & tools disederhanakan textnya, jadi Resource saja, teris dimodalnya juga sama disederhanain, deskripsinya dibuat jadi ringkas juga "Kumpulan Resource untuk kebutuhan Prompt"
 
-perbaikan spektrum: timer judulnya bisa diedit, 
-terus pas export penamaan file bisa diset gak ?
-pas dibian lirik, kasih tombol global buat hapus lirik utama sama terjemahan jadi gak perlu bulak balik klik tab dulu
+tambahin indikator ketika memilih data dari database ? ini untuk has_database: true
 
-LIRIC REPAIR, BIAR NADANYA GAK TERLALU ai BANGET, KASIH INTONASI, KASIH VARIASI, DLL
+ada tombol icon reset kecil untuk hapus input value, khusus mode use_ai: true
 
-aplikasi metadata ke musik, otomatis pakai ai bisa gak yah?
+masih dimode use_ai: true, gua pengen prompt bisa diedit, gak cuma read only ?
+

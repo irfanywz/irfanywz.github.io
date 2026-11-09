@@ -17,7 +17,7 @@
         </div>
         <div class="flex-shrink-0 border-t border-gray-200 dark:border-gray-800 p-3 space-y-2.5">
             <div class="flex items-center justify-between gap-2">
-                <p class="text-[11px] text-gray-500 dark:text-gray-400" title="Perkiraan kasar (±4 karakter per token). Jumlah sebenarnya tergantung model." x-text="formatStats(regularPromptRaw)"></p>
+                <p class="text-[11px] text-gray-500 dark:text-gray-400" title="Perkiraan kasar (±4 karakter per token). Jumlah sebenarnya tergantung model." x-text="formatStats(regularPromptRaw) + (promptOverride !== null ? ' · diedit manual' : '')"></p>
                 <button @click="copy(regularPromptRaw, 'copiedMaster')" class="text-[11px] font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-1 cursor-pointer">
                     <span :class="copiedMaster ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
                     <span x-text="copiedMaster ? 'Tersalin' : 'Salin prompt'"></span>

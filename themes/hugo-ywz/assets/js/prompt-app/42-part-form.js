@@ -3,6 +3,7 @@
    Dynamic form for regular prompts, plus remembering the values per prompt (only values that differ from defaults).
    ========================================================================== */
 const formPart = () => ({
+    promptOverride: null, // manually edited prompt text (use_ai layout only); null = follow the form
     /* ------------------------------------------------------------------
        Regular prompt (form builder)
        ------------------------------------------------------------------ */
@@ -51,7 +52,16 @@ const formPart = () => ({
 
     get regularPromptRendered() { return this.renderRegularPrompt(true); },
 
-    get regularPromptRaw() { return this.renderRegularPrompt(false); },
+    /** Prompt built from the form only (ignores manual edits). */
+    get promptAuto() { return this.renderRegularPrompt(false); },
+
+    /** The prompt that is copied and sent to the AI: the manual edit when there is one, else the form result. */
+    get regularPromptRaw() { return this.promptOverride ?? this.promptAuto; },
+
+    /** Textarea input: text equal to the form result means "not edited". */
+    editPrompt(text) { this.promptOverride = text === this.promptAuto ? null : text; },
+
+    resetPromptOverride() { this.promptOverride = null; },
 
     formDefaults() { return Object.fromEntries(this.promptFields.map((f) => [f.name, f.default])); },
 
@@ -59,7 +69,7 @@ const formPart = () => ({
         const fields = Object.fromEntries(this.promptFields.map((f) => [f.name, f]));
         const saved = loadJson(FORM_STORAGE_PREFIX + this.activePromptUrl, {});
         return Object.fromEntries(Object.entries(saved).filter(([name, value]) =>
-            fields[name] && (fields[name].type !== 'select' || fields[name].options.includes(value))));
+            fields[name] && (fields[name].type !== 'select' || value === '' || fields[name].options.includes(value))));
     },
 
     saveFormValues() {
@@ -71,6 +81,9 @@ const formPart = () => ({
     },
 
     resetForm() { this.promptVariables = this.formDefaults(); },
+
+    /** Empty one field (small clear button, use_ai layout). */
+    clearField(name) { this.promptVariables[name] = ''; },
 
     /** Remember the form values of the open prompt. */
     watchFormValues() {

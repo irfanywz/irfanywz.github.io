@@ -37,6 +37,7 @@ const detailPart = () => ({
             dbSearchQuery: '',
             selectedDbCategory: 'all',
             promptVariables: {},
+            promptOverride: null,
             promptChoiceDbs: {},
             selectedItem: null,
             builderValues: {},
@@ -82,6 +83,7 @@ const detailPart = () => ({
         this.stopAi();
         this.choicePicker.open = false;
         this.modalOpen = false;
+        this.promptOverride = null;
         this.promptChoiceDbs = {};
         this.activePromptUrl = '';
         this.updateUrlParams();
