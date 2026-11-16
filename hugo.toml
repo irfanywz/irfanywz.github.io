@@ -16,6 +16,7 @@ pygmentscodefences = true
 pygmentscodefencesguesssyntax = true
 
 [params]
+
   # title for seo
   title = "irfanywz"
   address = "irfanywz.web.id"
@@ -66,6 +67,13 @@ pygmentscodefencesguesssyntax = true
   # Exit Popup
   exitIntentTitle = "Tunggu jangan pergi"
   exitIntentContent = "ada artikel menarik lainnya yang bisa dilihat"
+
+  # Donasi Domain
+  donationTarget = 60000
+  donationCurrent = 0
+  donationTitle = "Dukungan"
+  donationContent = "Bantu saya memperpanjang domain agar web ini tetap aktif"
+  domainExpiryDate = "2027-01-30" # Format: Tahun-Bulan-Hari
 
 
 # Menu Header

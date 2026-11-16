@@ -1,5 +1,7 @@
 ---
-title: Tubyu 
+title: Landing Page
+layout: landing
+draft: false
 ---
 
 <!DOCTYPE html>

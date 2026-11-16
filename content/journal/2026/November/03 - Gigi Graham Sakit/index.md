@@ -25,3 +25,5 @@ ketika malam hari sudah mulai muncul gejala pipi bengkak, badan panas dan sediki
 mengompress pipi dengan es batu meredakan sakit nyut-nyutan yang terasa
 
 saya mencoba untuk tidak makan makanan yang ada rasanya dulu untuk penyembuhan...
+
+![obat-gigi-berlubang.avif](obat-gigi-berlubang.avif)

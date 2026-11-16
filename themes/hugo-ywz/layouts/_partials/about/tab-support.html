@@ -14,21 +14,29 @@
 
         <!-- Kotak QRIS -->
         <div class="p-4 bg-slate-50 dark:bg-gray-800/50 rounded-2xl border border-slate-200 dark:border-gray-700 inline-block shadow-inner mb-6">
-            <img src="{{ with .Params.support }}{{ .qr_image }}{{ end }}" 
+            {{ $qrImg := "" }}
+            {{ with .Params.support }}
+                {{ $qrImg = .qr_image }}
+                {{ if and $qrImg (not (strings.HasPrefix $qrImg "/")) }}
+                    {{ $qrImg = printf "/%s" $qrImg }}
+                {{ end }}
+            {{ end }}
+
+            <img src="{{ $qrImg | relURL }}" 
                  class="w-72 h-72 sm:w-80 sm:h-80 mx-auto rounded-xl object-contain bg-white p-2 cursor-pointer hover:opacity-90 transition-opacity"
                  x-data 
-                 @click="$store.lightbox.open('{{ with .Params.support }}{{ .qr_image }}{{ end }}', 'QRIS', 'QRIS Support')"
+                 @click="$store.lightbox.open('{{ $qrImg | relURL }}', 'QRIS', 'QRIS Support')"
                  alt="QRIS Donasi" 
                  title="Klik untuk memperbesar"
                  loading="lazy">
             <p class="text-xs text-slate-400 dark:text-gray-500 my-3">
                 {{ with .Params.support }}{{ .footer_text }}{{ end }}
-            </p>                 
+            </p>                
         </div>
 
         <!-- TOMBOL KONFIRMASI DUKUNGAN -->
         <div class="mb-8">
-            <button @click="showModal = true" class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm transition-all shadow-lg shadow-indigo-500/25">
+            <button @click="showModal = true" class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm transition-all shadow-lg shadow-indigo-500/25 cursor-pointer">
                 <span class="icon-[ri--checkbox-circle-line] w-5 h-5"></span>
                 Konfirmasi Dukungan
             </button>
@@ -47,11 +55,11 @@
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0">
         
-        <div @click.away="showModal = false" 
+        <div @click.outside="showModal = false" 
              class="bg-white dark:bg-gray-900 w-full max-w-md rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-gray-800 shadow-2xl text-left relative">
             
             <!-- Tombol Close (X) -->
-            <button @click="showModal = false" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 dark:hover:text-gray-200">
+            <button @click="showModal = false" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 dark:hover:text-gray-200 cursor-pointer">
                 <span class="icon-[ri--close-line] w-6 h-6"></span>
             </button>
 
@@ -59,12 +67,11 @@
                 <span class="icon-[ri--heart-3-fill] text-red-500"></span> Form Konfirmasi Donasi
             </h4>
             <p class="text-xs text-slate-500 dark:text-gray-400 mb-6">
-                Isi data di bawah setelah Anda melakukan scan QRIS agar nama Anda bisa disematkan dihalaman ini
+                Isi data di bawah setelah Anda melakukan scan QRIS agar nama Anda bisa disematkan di halaman ini
             </p>
 
             <!-- FORM WEB3FORMS -->
             <form id="support-form" class="space-y-4">
-                <!-- Ganti dengan Access Key Web3Forms Anda yang valid -->
                 <input type="hidden" name="access_key" value="feedd383-8f73-47a0-8f20-f20696999a1a">
                 <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
                 <input type="hidden" name="subject" value="Konfirmasi Dukungan Baru Masuk!">
@@ -87,7 +94,7 @@
                            class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500">
                 </div>
 
-                <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm transition-all shadow-md">
+                <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm transition-all shadow-md cursor-pointer">
                     Kirim Konfirmasi
                 </button>
             </form>
@@ -143,7 +150,7 @@
     </div>
     {{ end }}
 
-    <!-- JAVASCRIPT KHUSUS FORM SUPPORT TERPISAH DI SINI -->
+    <!-- JAVASCRIPT FORM SUPPORT -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('support-form');

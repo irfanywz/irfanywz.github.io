@@ -13,3 +13,5 @@ nyobain buat panel live streming youtube yang bisa di install divps, tapi saat i
 ngide buat aplikasi ini karena dapat bansos live streaming gratis, jadi cukup masukin gambar referensi panelnya nanti dibuatin
 
 untuk panel adminnya pure ai yang mikir, untuk panel usernya ngambil dari referensi
+
+![tubylivepanel.avif](tubylivepanel.avif)

@@ -1,6 +1,16 @@
 {{ $url := .Get "url" }}
 {{ $text := .Get "text" | default "Unduh" }}
 
+{{/* Ambil data front matter dari halaman about */}}
+{{ $aboutPage := .Site.GetPage "/about/index.md" }}
+{{ $qrImage := "" }}
+{{ $qrDesc := "" }}
+
+{{ if and $aboutPage $aboutPage.Params.support }}
+    {{ $qrImage = $aboutPage.Params.support.qr_image }}
+    {{ $qrDesc = $aboutPage.Params.support.description }}
+{{ end }}
+
 <span x-data="{
     donateModalOpen: false,
     downloadLink: '',
@@ -29,7 +39,7 @@
         <span class="underline">{{ $text }}</span>
     </button>
 
-    <!-- Modal Support -->
+    <!-- Modal Support & QRIS -->
     <div x-show="donateModalOpen" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" x-transition.opacity>
         <div @click.outside="closeModal()" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 relative border border-gray-200 dark:border-gray-700 not-prose" x-transition.scale>
             <button @click="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer">
@@ -37,51 +47,55 @@
             </button>
             
             <div class="text-center">
-                <!-- Ikon Timer / Jam di Bagian Atas -->
-                <div class="w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span class="icon-[ri--timer-line] w-8 h-8"></span>
+                <!-- Ikon / Judul -->
+                <div class="w-12 h-12 bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span class="icon-[ri--heart-3-line] w-6 h-6"></span>
                 </div>
                 
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Suka dengan konten ini ?</h3>
-                <p class="text-gray-600 dark:text-gray-300 mb-6 text-sm">
-                     Boleh banget kalau mau scan-scan QRnya, klik tombol beri dukungan
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Dukung Blog Ini</h3>
+                
+                {{/* Deskripsi ambil dari front matter about */}}
+                <p class="text-gray-600 dark:text-gray-300 mb-4 text-xs leading-relaxed">
+                    {{ with $qrDesc }}{{ . }}{{ else }}Scan QRIS di bawah ini via m-banking atau e-wallet pilihanmu jika ingin memberikan dukungan.{{ end }}
                 </p>
             
-<div class="flex flex-col gap-3">
-    <!-- Tombol Support dengan Ikon Hati (Warna Rose/Pink) -->
-    <a href="{{ "about/#support" | relURL }}" target="_blank" class="w-full py-3 px-4 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-sm shadow-sm">
-        <span class="icon-[ri--heart-3-line]"></span>
-        Beri Dukungan
-    </a>
-    
-    <div class="relative py-2">
-        <div class="absolute inset-0 flex items-center" aria-hidden="true">
-            <div class="w-full border-t border-gray-200 dark:border-gray-700"></div>
-        </div>
-        <div class="relative flex justify-center">
-            <span class="bg-white dark:bg-gray-800 px-2 text-xs text-gray-500">
-                <template x-if="timeLeft > 0">
-                    <span>Tautan siap dalam <span x-text="timeLeft" class="font-bold text-rose-600 dark:text-rose-400"></span>s</span>
-                </template>
-                <template x-if="timeLeft <= 0">
-                    <span class="text-emerald-600 dark:text-emerald-400 font-semibold">Tautan siap digunakan!</span>
-                </template>
-            </span>
-        </div>
-    </div>
+                {{/* Bagian Gambar QRIS */}}
+                {{ if $qrImage }}
+                <div class="mb-5 bg-gray-50 dark:bg-gray-900/50 p-3 rounded-2xl border border-gray-100 dark:border-gray-700/50 inline-block">
+                    <img src="{{ $qrImage | relURL }}" alt="QRIS Dukungan" class="w-64 h-64 mx-auto rounded-xl object-contain shadow-sm">
+                    <span class="block mt-2 text-[10px] text-gray-400 dark:text-gray-500 italic">klik gambar untuk memperbesar (opsional)</span>
+                </div>
+                {{ end }}
 
-    <!-- Tombol Lanjutkan Akses -->
-    <div>
-        <a :href="timeLeft <= 0 ? downloadLink : '#'"
-           @click="if(timeLeft > 0) $event.preventDefault()"
-           :disabled="timeLeft > 0"
-           :class="timeLeft > 0 ? 'bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer shadow-sm'"
-           class="w-full py-3 px-4 rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-sm" target="_blank">
-            <span class="icon-[heroicons--arrow-down-tray]"></span>
-            Lanjutkan Akses
-        </a>
-    </div>
-</div>
+                <div class="flex flex-col gap-3">
+                    <div class="relative py-1">
+                        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                            <div class="w-full border-t border-gray-200 dark:border-gray-700"></div>
+                        </div>
+                        <div class="relative flex justify-center">
+                            <span class="bg-white dark:bg-gray-800 px-2 text-xs text-gray-500">
+                                <template x-if="timeLeft > 0">
+                                    <span>Tautan siap dalam <span x-text="timeLeft" class="font-bold text-rose-600 dark:text-rose-400"></span>s</span>
+                                </template>
+                                <template x-if="timeLeft <= 0">
+                                    <span class="text-emerald-600 dark:text-emerald-400 font-semibold">Tautan siap digunakan!</span>
+                                </template>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Lanjutkan Akses -->
+                    <div>
+                        <a :href="timeLeft <= 0 ? downloadLink : '#'"
+                            @click="if(timeLeft > 0) $event.preventDefault()"
+                            :disabled="timeLeft > 0"
+                            :class="timeLeft > 0 ? 'bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer shadow-sm'"
+                            class="w-full py-3 px-4 rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-sm" target="_blank">
+                            <span class="icon-[heroicons--arrow-down-tray]"></span>
+                            Lanjutkan Akses
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
