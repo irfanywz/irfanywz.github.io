@@ -4,6 +4,33 @@ description: Riwayat perubahan pada situs web. fitur baru, perbaikan bug, dan pe
 date: 2025-10-09T00:00:00+08:00
 
 changelog:
+  
+  - version: "2.9.2"
+    date: "17 November 2026"
+    changes:
+      - tag: "Fitur Baru"
+        description: "Shortcode download donate menampilkan QRIS langsung, bukan tombol"
+      - tag: "Fitur Baru"
+        description: "Modal donasi untuk perpanjangan domain"
+
+  - version: "2.9.1"
+    date: "6 Oktober 2026"
+    changes:
+      - tag: "Fitur Baru"
+        description: "Tab support dilengkapi tombol konfirmasi dan pengiriman ke email"
+      - tag: "Fitur Baru"
+        description: "Menambahkan kosakata di halaman jurnal"
+      - tag: "Fitur Baru"
+        description: "Prompt app AI untuk kebutuhan musik selesai"
+      - tag: "Perbaikan"
+        description: "Memperbaiki tampilan quote"
+      - tag: "Pembaruan"
+        description: "Memperbarui halaman alat"
+      - tag: "Pembaruan"
+        description: "Menghapus partial nav-topics yang tidak terlalu dibutuhkan"
+      - tag: "Pembaruan"
+        description: "Menghapus Swiper JS yang sudah tidak dibutuhkan"
+
   - version: "2.9.0"
     date: "2 Oktober 2026"
     changes:

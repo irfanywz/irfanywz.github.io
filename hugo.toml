@@ -1,8 +1,8 @@
 baseURL = "https://irfanywz.web.id/"
 theme = "hugo-ywz"
 locale = "en-us"
-title = "Personal blog Muhamad Irfan"
-copyright = "Muhamad Irfan"
+title = "Personal blog irfanywz"
+copyright = "irfanywz"
 
 enableEmoji = true
 enableGitInfo = true
@@ -31,9 +31,9 @@ pygmentscodefencesguesssyntax = true
   logo = "logo.avif"
   logoText = "logo-text.avif"
 
-  author = "Muhamad Irfan"
-  description = "Personal blog Muhamad Irfan, menulis dan berbagi hal menarik seputar teknologi."
-  keywords = "Muhamad Irfan, Konten kreator pemula, lagi belajar Storytelling, muhamadirfan300899, Bogor, Personal Blog"
+  author = "irfanywz"
+  description = "Personal blog irfanywz, menulis dan berbagi hal menarik seputar teknologi."
+  keywords = "irfanywz, Konten kreator pemula, lagi belajar Storytelling, muhamadirfan300899, Bogor, Personal Blog"
 
   # ads on post
   showAds = false 
@@ -69,6 +69,7 @@ pygmentscodefencesguesssyntax = true
   exitIntentContent = "ada artikel menarik lainnya yang bisa dilihat"
 
   # Donasi Domain
+  enableDonationModal = true 
   donationTarget = 60000
   donationCurrent = 0
   donationTitle = "Dukungan"

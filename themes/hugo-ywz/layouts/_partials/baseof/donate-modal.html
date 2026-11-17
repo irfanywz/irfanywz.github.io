@@ -1,121 +1,126 @@
-{{/* Ambil data front matter dari halaman about */}}
-{{ $aboutPage := .Site.GetPage "/about/index.md" }}
-{{ $qrImage := "" }}
-{{ $qrDesc := "" }}
+{{/* Cek apakah modal donasi diaktifkan di hugo.toml (default: true kalau tidak diisi) */}}
+{{ $enableModal := .Site.Params.enableDonationModal | default true }}
 
-{{ if and $aboutPage $aboutPage.Params.support }}
-    {{ $qrImage = $aboutPage.Params.support.qr_image }}
-    {{ $qrDesc = $aboutPage.Params.support.description }}
-{{ end }}
+{{ if $enableModal }}
+    {{/* Ambil data front matter dari halaman about */}}
+    {{ $aboutPage := .Site.GetPage "/about/index.md" }}
+    {{ $qrImage := "" }}
+    {{ $qrDesc := "" }}
 
-{{/* Hitung sisa hari domain kedaluwarsa */}}
-{{ $expiryDateStr := .Site.Params.domainExpiryDate | default "2026-12-31" }}
-{{ $expiryTime := time $expiryDateStr }}
-{{ $currentTime := now }}
-{{ $duration := sub $expiryTime.Unix $currentTime.Unix }}
-{{ $daysLeft := div $duration 86400 | int }}
+    {{ if and $aboutPage $aboutPage.Params.support }}
+        {{ $qrImage = $aboutPage.Params.support.qr_image }}
+        {{ $qrDesc = $aboutPage.Params.support.description }}
+    {{ end }}
 
-<!-- Donation / Support Modal Partial (Dynamic via About Front Matter) -->
-<div 
-    x-data="{
-        isOpen: false,
-        init() {
-            const hideUntil = localStorage.getItem('donation_modal_hide_until');
-            const now = new Date().getTime();
+    {{/* Hitung sisa hari domain kedaluwarsa */}}
+    {{ $expiryDateStr := .Site.Params.domainExpiryDate | default "2026-12-31" }}
+    {{ $expiryTime := time $expiryDateStr }}
+    {{ $currentTime := now }}
+    {{ $duration := sub $expiryTime.Unix $currentTime.Unix }}
+    {{ $daysLeft := div $duration 86400 | int }}
 
-            if (!hideUntil || now > hideUntil) {
-                setTimeout(() => {
-                    this.isOpen = true;
-                }, 1500);
-            }
-        },
-        dismissForOneDay() {
-            const oneDay = 24 * 60 * 60 * 1000;
-            localStorage.setItem('donation_modal_hide_until', new Date().getTime() + oneDay);
-            this.isOpen = false;
-        }
-    }"
-    @open-donation.window="isOpen = true"
-    @keydown.escape.window="isOpen = false"
-    x-show="isOpen"
-    x-transition:enter="transition ease-out duration-300"
-    x-transition:enter-start="opacity-0"
-    x-transition:enter-end="opacity-100"
-    x-transition:leave="transition ease-in duration-200"
-    x-transition:leave-start="opacity-100"
-    x-transition:leave-end="opacity-0"
-    class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
-    style="display: none;">
-
-    <!-- Modal Box -->
+    <!-- Donation / Support Modal Partial (Dynamic with Enable/Disable Parameter) -->
     <div 
-        @click.outside="isOpen = false"
+        x-data="{
+            isOpen: false,
+            init() {
+                const hideUntil = localStorage.getItem('donation_modal_hide_until');
+                const now = new Date().getTime();
+
+                if (!hideUntil || now > hideUntil) {
+                    setTimeout(() => {
+                        this.isOpen = true;
+                    }, 1500);
+                }
+            },
+            dismissForOneDay() {
+                const oneDay = 24 * 60 * 60 * 1000;
+                localStorage.setItem('donation_modal_hide_until', new Date().getTime() + oneDay);
+                this.isOpen = false;
+            }
+        }"
+        @open-donation.window="isOpen = true"
+        @keydown.escape.window="isOpen = false"
         x-show="isOpen"
         x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0 scale-95"
-        x-transition:enter-end="opacity-100 scale-100"
-        class="relative bg-white dark:bg-gray-800 rounded-3xl shadow-2xl w-full max-w-md p-6 md:p-7 border border-gray-100 dark:border-gray-700/60 text-center not-prose">
-        
-        <!-- Header -->
-        <div class="inline-flex items-center justify-center gap-2 text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-1 tracking-tight">
-            <span class="icon-[ri--heart-3-line] w-5 h-5 text-rose-500 shrink-0"></span>
-            <h2>{{ .Site.Params.donationTitle }}</h2>
-        </div>
-        
-        <!-- Deskripsi Dinamis -->
-        <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-            {{ .Site.Params.donationContent }}
-        </p>
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+        style="display: none;">
 
-        <!-- Progress Bar & Info Sisa Waktu Domain -->
-        {{ $target := .Site.Params.donationTarget | default 100000 }}
-        {{ $current := .Site.Params.donationCurrent | default 0 }}
-        {{ $percentage := mul (div (float $current) (float $target)) 100 }}
-        
-        <div class="bg-gray-50 dark:bg-gray-900/50 p-3.5 rounded-2xl border border-gray-100 dark:border-gray-800 mb-4 text-left">
-            <div class="flex justify-between text-[11px] font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
-                <span>Terkumpul: <strong class="text-rose-500">Rp {{ $current | lang.FormatNumber 0 }}</strong></span>
-                <span class="text-gray-400">Target: Rp {{ $target | lang.FormatNumber 0 }}</span>
+        <!-- Modal Box -->
+        <div 
+            @click.outside="isOpen = false"
+            x-show="isOpen"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-95"
+            x-transition:enter-end="opacity-100 scale-100"
+            class="relative bg-white dark:bg-gray-800 rounded-3xl shadow-2xl w-full max-w-md p-6 md:p-7 border border-gray-100 dark:border-gray-700/60 text-center not-prose">
+            
+            <!-- Header -->
+            <div class="inline-flex items-center justify-center gap-2 text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-1 tracking-tight">
+                <span class="icon-[ri--heart-3-line] w-5 h-5 text-rose-500 shrink-0"></span>
+                <h2>{{ .Site.Params.donationTitle }}</h2>
             </div>
             
-            <div class="w-full h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden p-0.5 mb-2.5">
-                <div class="h-full bg-gradient-to-r from-rose-500 to-pink-500 rounded-full transition-all duration-500" style="width: {{ $percentage }}%;"></div>
+            <!-- Deskripsi Dinamis -->
+            <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+                {{ .Site.Params.donationContent }}
+            </p>
+
+            <!-- Progress Bar & Info Sisa Waktu Domain -->
+            {{ $target := .Site.Params.donationTarget | default 100000 }}
+            {{ $current := .Site.Params.donationCurrent | default 10000 }}
+            {{ $percentage := mul (div (float $current) (float $target)) 100 }}
+            
+            <div class="bg-gray-50 dark:bg-gray-900/50 p-3.5 rounded-2xl border border-gray-100 dark:border-gray-800 mb-4 text-left">
+                <div class="flex justify-between text-[11px] font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
+                    <span>Terkumpul: <strong class="text-rose-500">Rp {{ $current | lang.FormatNumber 0 }}</strong></span>
+                    <span class="text-gray-400">Target: Rp {{ $target | lang.FormatNumber 0 }}</span>
+                </div>
+                
+                <div class="w-full h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden p-0.5 mb-2.5">
+                    <div class="h-full bg-gradient-to-r from-rose-500 to-pink-500 rounded-full transition-all duration-500" style="width: {{ $percentage }}%;"></div>
+                </div>
+
+                <!-- Teks Domain Expired / Sisa Hari -->
+                <div class="flex items-center justify-between text-[11px] pt-1 border-t border-gray-200/60 dark:border-gray-800 text-gray-500 dark:text-gray-400">
+                    <span>Masa aktif domain:</span>
+                    <span class="font-bold text-amber-600 dark:text-amber-400">
+                        {{ if gt $daysLeft 0 }}
+                            Tersisa {{ $daysLeft }} hari lagi
+                        {{ else if eq $daysLeft 0 }}
+                            Berheard hari ini!
+                        {{ else }}
+                            Sudah kedaluwarsa
+                        {{ end }}
+                    </span>
+                </div>
             </div>
 
-            <!-- Teks Domain Expired / Sisa Hari -->
-            <div class="flex items-center justify-between text-[11px] pt-1 border-t border-gray-200/60 dark:border-gray-800 text-gray-500 dark:text-gray-400">
-                <span>Masa aktif domain:</span>
-                <span class="font-bold text-amber-600 dark:text-amber-400">
-                    {{ if gt $daysLeft 0 }}
-                        Tersisa {{ $daysLeft }} hari lagi
-                    {{ else if eq $daysLeft 0 }}
-                        Berakhir hari ini!
-                    {{ else }}
-                        Sudah kedaluwarsa
-                    {{ end }}
-                </span>
+            <!-- Gambar QRIS Dinamis dari Front Matter About -->
+            {{ if $qrImage }}
+            <div class="bg-white dark:bg-gray-900 p-3 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-inner mb-4 inline-block w-full">
+                <div class="w-64 h-64 mx-auto bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden p-2 flex items-center justify-center border border-gray-100 dark:border-gray-800">
+                    <img src="{{ $qrImage | relURL }}" alt="QRIS Dukungan" class="w-full h-full object-contain rounded-lg">
+                </div>
+                <span class="block mt-2 text-[10px] text-gray-400 dark:text-gray-500 italic">Scan via m-banking atau e-wallet pilihanmu</span>
             </div>
-        </div>
+            {{ end }}
 
-        <!-- Gambar QRIS Dinamis dari Front Matter About -->
-        {{ if $qrImage }}
-        <div class="bg-white dark:bg-gray-900 p-3 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-inner mb-4 inline-block w-full">
-            <div class="w-64 h-64 mx-auto bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden p-2 flex items-center justify-center border border-gray-100 dark:border-gray-800">
-                <img src="{{ $qrImage | relURL }}" alt="QRIS Dukungan" class="w-full h-full object-contain rounded-lg">
+            <!-- Tombol Aksi Bawah -->
+            <div class="flex flex-col gap-2">
+                <button @click="isOpen = false" class="w-full py-2.5 px-4 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700/50 dark:hover:bg-gray-700 rounded-xl transition-colors cursor-pointer">
+                    Tutup
+                </button>
+
+                <button @click="dismissForOneDay()" class="text-[11px] text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors mt-0.5 cursor-pointer">
+                    Jangan tampilkan lagi untuk 1 hari
+                </button>
             </div>
-            <span class="block mt-2 text-[10px] text-gray-400 dark:text-gray-500 italic">Scan via m-banking atau e-wallet pilihanmu</span>
-        </div>
-        {{ end }}
-
-        <!-- Tombol Aksi Bawah -->
-        <div class="flex flex-col gap-2">
-            <button @click="isOpen = false" class="w-full py-2.5 px-4 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700/50 dark:hover:bg-gray-700 rounded-xl transition-colors cursor-pointer">
-                Tutup
-            </button>
-
-            <button @click="dismissForOneDay()" class="text-[11px] text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors mt-0.5 cursor-pointer">
-                Jangan tampilkan lagi untuk 1 hari
-            </button>
         </div>
     </div>
-</div>
+{{ end }}
