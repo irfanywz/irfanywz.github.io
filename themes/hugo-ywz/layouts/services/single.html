@@ -1,4 +1,8 @@
 {{ define "main" }}
+{{/* Bayar via QR: default aktif untuk item berbayar. Matikan per item dengan payment_qr: false */}}
+{{ $payQr := true }}
+{{ if or .Params.free (eq (printf "%v" .Params.payment_qr) "false") }}{{ $payQr = false }}{{ end }}
+{{ $qr := .CurrentSection.Params.qr_image | default "/qrcode.avif" | relURL }}
 {{ $images := slice }}
 {{ if .Params.gallery }}
     {{ $images = .Params.gallery }}
@@ -9,9 +13,11 @@
     <div class="max-w-6xl mx-auto px-4 py-8 md:py-12"
          x-data="productPurchase({
             product: {
-                name: '{{ .Title }}',
-                type: '{{ .Params.shop_type }}',
+                name: {{ .Title | jsonify }},
+                type: {{ .Params.shop_type | jsonify }},
                 variants: {{ .Params.variants | jsonify }},
+                free: {{ if .Params.free }}true{{ else }}false{{ end }},
+                payQr: {{ if $payQr }}true{{ else }}false{{ end }},
                 price: {{ .Params.price | default 0 }}
             },
             contact: {
@@ -121,9 +127,9 @@
                 <!-- Mobile Checkout -->
                 <div class="lg:hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 space-y-4">
                     <h3 class="font-bold text-xl text-gray-900 dark:text-white leading-tight">{{ .Title }}</h3>
-                    <div class="text-3xl font-bold text-gray-900 dark:text-white" x-text="formatRupiah(finalPrice)"></div>
+                    <div class="text-3xl font-bold text-gray-900 dark:text-white" x-text="priceLabel"></div>
                     <a href="#checkout" class="w-full bg-indigo-600 text-white py-3 font-medium text-md hover:bg-indigo-700 transition-colors rounded-lg flex items-center justify-center">
-                        Beli Sekarang
+                        {{ if .Params.free }}Dapatkan Sekarang{{ else }}Beli Sekarang{{ end }}
                     </a>
                 </div>
 
@@ -227,12 +233,18 @@
                     <div id="checkout" class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
                         <div class="p-6 border-b border-gray-100 dark:border-gray-700">
                             <h1 class="text-xl font-bold text-gray-900 dark:text-white leading-tight">{{ .Title }}</h1>
-                            <div class="flex items-center gap-2 mt-3">
-                                <span class="px-2.5 py-0.5 text-xs font-medium rounded-full
-                                    {{ if eq .Params.shop_type "product" }} bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300
+                            <div class="flex flex-wrap items-center gap-2 mt-3">
+                                <span class="px-2.5 py-0.5 text-xs font-medium rounded-full capitalize
+                                    {{ if eq .Params.shop_type "produk" }} bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300
                                     {{ else }} bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 {{ end }}">
                                     {{ .Params.shop_type }}
                                 </span>
+                                {{ with .Params.category }}
+                                <span class="px-2.5 py-0.5 text-xs font-medium rounded-full capitalize bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">{{ . }}</span>
+                                {{ end }}
+                                {{ if .Params.free }}
+                                <span class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">Gratis</span>
+                                {{ end }}
                                 {{ if .Params.available }}
                                 <span class="flex items-center gap-1 text-xs font-bold text-green-600 dark:text-green-400">
                                     <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Tersedia
@@ -245,11 +257,16 @@
                             </div>
                         </div>
 
-                        <div class="p-6">
-                            <!-- Variants -->
-                            {{ if .Params.variants }}
-                            <div class="mb-6">
-                                <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3 block">Pilih Varian</label>
+                        <div class="p-6 space-y-6">
+                            {{ $step := 0 }}
+
+                            <!-- Langkah 1: Pilih Varian -->
+                            {{ if and .Params.variants (not .Params.free) }}
+                            <div>
+                                <label class="flex items-center gap-2 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                                    {{ if $payQr }}{{ $step = add $step 1 }}<span class="w-5 h-5 rounded-full bg-indigo-600 text-white text-[10px] flex items-center justify-center">{{ $step }}</span>{{ end }}
+                                    Pilih Varian
+                                </label>
                                 <div class="space-y-3">
                                     <template x-for="variant in product.variants" :key="variant.name">
                                         <div @click="selectedVariant = variant"
@@ -272,63 +289,143 @@
                             {{ end }}
 
                             <!-- Total -->
-                            <div class="flex justify-between items-center mb-6">
+                            <div class="flex justify-between items-center">
                                 <span class="text-base font-semibold text-gray-900 dark:text-white">Total</span>
-                                <span class="text-2xl font-bold text-indigo-600 dark:text-indigo-400" x-text="formatRupiah(finalPrice)"></span>
+                                <span class="text-2xl font-bold text-indigo-600 dark:text-indigo-400" x-text="priceLabel"></span>
                             </div>
 
-                            <!-- CTA Dinamis (WhatsApp & Telegram) -->
-                            <div class="grid gap-3" 
-                                 :class="{
-                                     'grid-cols-2': contact.wa && contact.telegram, 
-                                     'grid-cols-1': !contact.wa || !contact.telegram
-                                 }" 
-                                 {{ if not .Params.available }}x-data="{}" x-tooltip.raw="Produk tidak tersedia"{{ end }}>
-                                
-                                <template x-if="contact.wa">
-                                    <button @click="sendTo('whatsapp')" :disabled="{{ not .Params.available }}"
-                                            class="py-3 px-4 rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-all shadow-lg shadow-green-500/20 bg-[#25D366] hover:bg-[#20bd5a] hover:-translate-y-0.5 active:translate-y-0 disabled:bg-gray-400 disabled:shadow-none disabled:cursor-not-allowed">
-                                        <i class="icon-[ri--whatsapp-fill] text-xl"></i>
-                                        <span>WhatsApp</span>
-                                    </button>
-                                </template>
+                            <!-- Tombol Aksi: Download / Landing Page / Panduan -->
+                            {{ if or .Params.download_url .Params.landing_url .Params.guide_url }}
+                            <div class="grid gap-3">
+                                {{ with .Params.download_url }}
+                                    {{ if $.Params.available }}
+                                    <a href="{{ . | relURL }}" download rel="noopener noreferrer"
+                                       class="py-3 px-4 rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-all shadow-lg shadow-indigo-500/20 bg-indigo-600 hover:bg-indigo-700 hover:-translate-y-0.5 active:translate-y-0">
+                                        <i class="icon-[ri--download-2-line] text-xl"></i>
+                                        <span>{{ $.Params.download_label | default "Download" }}</span>
+                                    </a>
+                                    {{ else }}
+                                    <span aria-disabled="true"
+                                          class="py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed">
+                                        <i class="icon-[ri--download-2-line] text-xl"></i>
+                                        <span>{{ $.Params.download_label | default "Download" }}</span>
+                                    </span>
+                                    {{ end }}
+                                {{ end }}
 
-                                <template x-if="contact.telegram">
-                                    <button @click="sendTo('telegram')" :disabled="{{ not .Params.available }}"
-                                            class="py-3 px-4 rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-500/20 bg-[#0088cc] hover:bg-[#0077b5] hover:-translate-y-0.5 active:translate-y-0 disabled:bg-gray-400 disabled:shadow-none disabled:cursor-not-allowed">
-                                        <i class="icon-[ri--telegram-fill] text-xl"></i>
-                                        <span>Telegram</span>
-                                    </button>
-                                </template>
+                                {{ with .Params.landing_url }}
+                                <a href="{{ . | relURL }}" target="_blank" rel="noopener noreferrer"
+                                   class="py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors border-2 border-indigo-600 text-indigo-600 dark:border-indigo-500 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20">
+                                    <i class="icon-[ri--global-line] text-xl"></i>
+                                    <span>{{ $.Params.landing_label | default "Kunjungi Landing Page" }}</span>
+                                </a>
+                                {{ end }}
+
+                                {{ with .Params.guide_url }}
+                                <a href="{{ . | relURL }}" target="_blank" rel="noopener noreferrer"
+                                   class="py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600">
+                                    <i class="icon-[ri--book-open-line] text-xl"></i>
+                                    <span>{{ $.Params.guide_label | default "Baca Panduan" }}</span>
+                                </a>
+                                {{ end }}
                             </div>
-                            <p class="text-center text-[10px] text-gray-400 dark:text-gray-500 mt-4">Transaksi aman dan langsung terhubung ke admin.</p>
-                        </div>
-                    </div>
+                            {{ end }}
 
-                    <!-- Metode Pembayaran -->
-                    {{ with .CurrentSection.Params.payments }}
-                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5">
-                        <h3 class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Metode Pembayaran</h3>
-                        <div class="space-y-2.5">
-                            {{ range . }}
-                            <div class="flex items-center justify-between p-2.5 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-100 dark:border-gray-700/50">
-                                <div class="flex items-center gap-2.5">
-                                    <div class="w-8 h-8 rounded-md bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-sm font-bold">
-                                        <i class="icon-[ri--bank-card-line]"></i>
+                            <!-- Langkah 2: Bayar via QR -->
+                            {{ if and $payQr .Params.available }}
+                            <div>
+                                <p class="flex items-center gap-2 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                                    {{ $step = add $step 1 }}<span class="w-5 h-5 rounded-full bg-indigo-600 text-white text-[10px] flex items-center justify-center">{{ $step }}</span>
+                                    Bayar via QR
+                                </p>
+                                <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 p-4 text-center space-y-3">
+                                    <button type="button" @click="qrOpen = true" aria-label="Perbesar QR"
+                                            class="block mx-auto bg-white p-2 rounded-lg border border-gray-200 cursor-zoom-in">
+                                        <img src="{{ $qr }}" alt="QR Pembayaran" class="w-48 h-48 object-contain" loading="lazy">
+                                    </button>
+                                    {{ with .CurrentSection.Params.qr_account_name }}
+                                    <p class="text-xs font-medium text-gray-700 dark:text-gray-300">{{ . }}</p>
+                                    {{ end }}
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Scan pakai e-wallet / mobile banking apa saja. Ketuk QR untuk memperbesar.</p>
+
+                                    <div class="flex items-center justify-between gap-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-2 text-left">
+                                        <div>
+                                            <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Nominal bayar</p>
+                                            <p class="font-bold text-indigo-600 dark:text-indigo-400" x-text="priceLabel"></p>
+                                        </div>
+                                        <button type="button" @click="copyAmount()"
+                                                class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs font-bold bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors">
+                                            <span :class="copied ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
+                                            <span x-text="copied ? 'Tersalin' : 'Salin'"></span>
+                                        </button>
                                     </div>
-                                    <div>
-                                        <p class="text-xs font-bold text-gray-900 dark:text-white">{{ .name }}</p>
-                                        <p class="text-[10px] text-gray-500 dark:text-gray-400">{{ .account_name }}</p>
-                                    </div>
+
+                                    <a href="{{ $qr }}" download="qr-pembayaran" class="inline-flex items-center gap-1 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">
+                                        <span class="icon-[ri--download-2-line]"></span> Simpan QR
+                                    </a>
                                 </div>
-                                <span class="text-xs font-mono font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50/50 dark:bg-indigo-950/50 px-2 py-1 rounded">
-                                    {{ .account_number }}
-                                </span>
+
+                                <!-- QR Modal -->
+                                <template x-teleport="body">
+                                    <div x-show="qrOpen" style="display: none;"
+                                         x-transition.opacity
+                                         @keydown.window.escape="qrOpen = false"
+                                         @click.self="qrOpen = false"
+                                         class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+                                        <div class="relative bg-white rounded-2xl p-4 w-full max-w-sm">
+                                            <button type="button" @click="qrOpen = false" aria-label="Tutup"
+                                                    class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-gray-900 text-white flex items-center justify-center shadow">
+                                                <span class="icon-[ri--close-line] text-xl"></span>
+                                            </button>
+                                            <img src="{{ $qr }}" alt="QR Pembayaran" class="w-full h-auto object-contain">
+                                            <p class="mt-2 text-center text-sm font-bold text-gray-900" x-text="priceLabel"></p>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                            {{ end }}
+
+                            <!-- Langkah 3: Konfirmasi / Kontak -->
+                            {{ if or .CurrentSection.Params.contact_wa .CurrentSection.Params.contact_telegram }}
+                            <div>
+                                <p class="flex items-center gap-2 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider {{ if $payQr }}mb-1{{ else }}mb-3{{ end }}">
+                                    {{ if $payQr }}{{ $step = add $step 1 }}<span class="w-5 h-5 rounded-full bg-indigo-600 text-white text-[10px] flex items-center justify-center">{{ $step }}</span>{{ end }}
+                                    {{ if $payQr }}Konfirmasi Pembayaran{{ else if .Params.free }}Ada pertanyaan?{{ else }}Pesan via{{ end }}
+                                </p>
+                                {{ if $payQr }}
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Sudah bayar? Kirim bukti pembayaran lewat salah satu kontak di bawah.</p>
+                                {{ end }}
+
+                                <div class="grid gap-3"
+                                     :class="{
+                                         'grid-cols-2': contact.wa && contact.telegram,
+                                         'grid-cols-1': !contact.wa || !contact.telegram
+                                     }"
+                                     {{ if not .Params.available }}x-data="{}" x-tooltip.raw="Produk tidak tersedia"{{ end }}>
+
+                                    <template x-if="contact.wa">
+                                        <button @click="sendTo('whatsapp')" :disabled="{{ not .Params.available }}"
+                                                class="py-3 px-4 rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-all shadow-lg shadow-green-500/20 bg-[#25D366] hover:bg-[#20bd5a] hover:-translate-y-0.5 active:translate-y-0 disabled:bg-gray-400 disabled:shadow-none disabled:cursor-not-allowed">
+                                            <i class="icon-[ri--whatsapp-fill] text-xl"></i>
+                                            <span>WhatsApp</span>
+                                        </button>
+                                    </template>
+
+                                    <template x-if="contact.telegram">
+                                        <button @click="sendTo('telegram')" :disabled="{{ not .Params.available }}"
+                                                class="py-3 px-4 rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-500/20 bg-[#0088cc] hover:bg-[#0077b5] hover:-translate-y-0.5 active:translate-y-0 disabled:bg-gray-400 disabled:shadow-none disabled:cursor-not-allowed">
+                                            <i class="icon-[ri--telegram-fill] text-xl"></i>
+                                            <span>Telegram</span>
+                                        </button>
+                                    </template>
+                                </div>
+                                <p class="text-center text-[10px] text-gray-400 dark:text-gray-500 mt-4">
+                                    {{ if $payQr }}Pesanan diproses setelah admin menerima bukti pembayaran.{{ else }}Transaksi aman dan langsung terhubung ke admin.{{ end }}
+                                </p>
                             </div>
                             {{ end }}
                         </div>
                     </div>
-                    {{ end }}
 
                     <div class="space-y-4">
                         {{ with .Params.support_info }}
@@ -387,9 +484,11 @@
             product: config.product,
             contact: config.contact,
             selectedVariant: null,
+            copied: false,
+            qrOpen: false,
     
             init() {
-                if (this.product.variants && this.product.variants.length > 0) {
+                if (!this.product.free && this.product.variants && this.product.variants.length > 0) {
                     this.selectedVariant = this.product.variants[0];
                 }
             },
@@ -401,6 +500,18 @@
                 return this.product.price || 0;
             },
     
+            get priceLabel() {
+                return this.product.free ? 'Gratis' : this.formatRupiah(this.finalPrice);
+            },
+
+            async copyAmount() {
+                try {
+                    await navigator.clipboard.writeText(String(this.finalPrice));
+                    this.copied = true;
+                    setTimeout(() => { this.copied = false; }, 2000);
+                } catch (e) {}
+            },
+
             formatRupiah(number) {
                 return new Intl.NumberFormat('id-ID', {
                     style: 'currency',
@@ -414,14 +525,20 @@
                 const isTelegram = platform === 'telegram';
                 const bold = (text) => isTelegram ? `**${text}**` : `*${text}*`;
 
-                let message = `Halo, saya tertarik dengan ${this.product.type} ${bold(this.product.name)}\n\n`;
-                
+                const paid = this.product.payQr;
+                let message = paid
+                    ? `Halo, saya sudah melakukan pembayaran untuk ${this.product.type} ${bold(this.product.name)}\n\n`
+                    : `Halo, saya tertarik dengan ${this.product.type} ${bold(this.product.name)}\n\n`;
+
                 if (this.selectedVariant) {
                     message += `Varian: ${bold(this.selectedVariant.name)}\n`;
                 }
-                
-                message += `Harga: ${bold(this.formatRupiah(this.finalPrice))}\n`;
+
+                message += `${paid ? 'Total dibayar' : 'Harga'}: ${bold(this.priceLabel)}\n`;
                 message += `Link: ${window.location.href}`;
+                if (paid) {
+                    message += `\n\nBukti pembayaran saya lampirkan di chat ini.`;
+                }
     
                 let url = '';
                 if (platform === 'whatsapp') {
@@ -435,4 +552,4 @@
         }));
     });
 </script>
-{{ end }}
+{{ end }}

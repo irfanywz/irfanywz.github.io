@@ -92,7 +92,7 @@ weight = 20
 
 
 [[menu.main]]
-name = "Layanan"
+name = "Toko"
 url = "/services/"
 pre = "icon-[ri--store-2-line]"
 weight = 30
@@ -212,7 +212,7 @@ pre = "icon-[ri--hashtag]"
 weight = 20
 
 [[menu.bottom]]
-name = "Layanan"
+name = "Toko"
 url = "/services/"
 pre = "icon-[ri--store-2-line]"
 weight = 30

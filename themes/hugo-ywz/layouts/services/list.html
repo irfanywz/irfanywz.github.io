@@ -1,129 +1,270 @@
 {{ define "main" }}
-{{ $productCount := len (where .Pages "Params.shop_type" "product") }}
-{{ $serviceCount := len (where .Pages "Params.shop_type" "service") }}
-<main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300" 
-      x-data="{ 
-          activeCategory: 'all',
-          counts: {
-              all: {{ len .Pages }},
-              product: {{ $productCount }},
-              service: {{ $serviceCount }}
-          }
-      }">
+{{/* Data ringkas untuk filter sisi client (Alpine). id = urutan di .Pages */}}
+{{ $items := slice }}
+{{ range $i, $p := .Pages }}
+    {{ $items = $items | append (dict
+        "id" $i
+        "type" ($p.Params.shop_type | default "")
+        "category" ($p.Params.category | default "")
+        "free" (or $p.Params.free false)
+        "available" (or $p.Params.available false)
+        "title" (lower $p.Title)) }}
+{{ end }}
+{{/* Daftar kategori unik, diambil otomatis dari front matter `category` */}}
+{{ $cats := slice }}
+{{ range .Pages }}{{ with .Params.category }}{{ $cats = $cats | append . }}{{ end }}{{ end }}
+{{ if $cats }}{{ $cats = sort (uniq $cats) }}{{ end }}
 
-    <!-- Header like Journal -->
+<main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300"
+      x-data="shopList({{ $items | jsonify }}, {{ $cats | jsonify }})">
+
     <div class="container max-w-6xl mx-auto px-4 py-12">
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-gray-100 dark:border-gray-800 pb-8">
-            <div class="max-w-2xl">
-                <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tight flex items-center gap-3">
-                    <span class="{{ .Params.icon }} text-indigo-600 dark:text-indigo-400"></span>
-                    {{ .Title }}
-                </h1>
-                <p class="text-lg text-gray-500 dark:text-gray-400">{{ .Description }}</p>
-            </div>
 
-            <!-- Filter -->
-            <div class="inline-flex bg-white dark:bg-gray-900 p-1 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm w-full sm:w-auto">
-                <button @click="activeCategory = 'all'" 
-                        :class="activeCategory === 'all' ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 font-bold shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'"
-                        class="flex-1 sm:flex-initial px-4 py-1.5 rounded-lg text-sm transition-all text-center">
-                    Semua
-                </button>
-                <button @click="activeCategory = 'product'" 
-                        :class="activeCategory === 'product' ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 font-bold shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'"
-                        class="flex-1 sm:flex-initial px-4 py-1.5 rounded-lg text-sm transition-all text-center">
-                    Produk
-                </button>
-                <button @click="activeCategory = 'service'" 
-                        :class="activeCategory === 'service' ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 font-bold shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'"
-                        class="flex-1 sm:flex-initial px-4 py-1.5 rounded-lg text-sm transition-all text-center">
-                    Jasa
-                </button>
-            </div>
+        <!-- Header -->
+        <div class="mb-10 border-b border-gray-100 dark:border-gray-800 pb-8 max-w-2xl">
+            <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tight flex items-center gap-3">
+                <span class="{{ .Params.icon }} text-indigo-600 dark:text-indigo-400"></span>
+                {{ .Title }}
+            </h1>
+            <p class="text-lg text-gray-500 dark:text-gray-400">{{ .Description }}</p>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {{ range .Pages }}
-            {{ $type := .Params.shop_type }}
-            <a href="{{ .RelPermalink }}"
-               x-show="activeCategory === 'all' || activeCategory === '{{ $type }}'"
-               x-transition.opacity.duration.300ms
-               class="group bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
+        <div class="grid lg:grid-cols-12 gap-8 items-start">
 
-                <!-- Image Area -->
-                <div class="relative aspect-square overflow-hidden bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                    {{ if .Params.image }}
-                        {{ $img := .Resources.GetMatch .Params.image }}
-                        <img src="{{ if $img }}{{ $img.RelPermalink }}{{ else }}{{ .Params.image | relURL }}{{ end }}" 
-                             alt="{{ .Title }}" 
-                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                             loading="lazy">
-                    {{ else }}
-                        <div class="w-full h-full flex items-center justify-center text-4xl text-gray-300 dark:text-gray-600 bg-gray-50 dark:bg-gray-800/50">
-                            <i class="{{ if eq $type "product" }}icon-[ri--box-3-line]{{ else }}icon-[ri--service-line]{{ end }}"></i>
+            <!-- ============ SIDEBAR FILTER ============ -->
+            <aside class="lg:col-span-3 lg:sticky lg:top-8 self-start">
+
+                <!-- Toggle (mobile only) -->
+                <button type="button" @click="filterOpen = !filterOpen"
+                        class="lg:hidden w-full flex items-center justify-between px-4 py-3 mb-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-bold text-gray-900 dark:text-white">
+                    <span class="flex items-center gap-2">
+                        <span class="icon-[ri--filter-3-line] text-lg"></span>
+                        Filter
+                        <span x-show="activeCount > 0" x-text="activeCount"
+                              class="px-1.5 min-w-[1.25rem] text-center text-[10px] rounded-full bg-indigo-600 text-white" style="display: none;"></span>
+                    </span>
+                    <span :class="filterOpen ? 'icon-[ri--arrow-up-s-line]' : 'icon-[ri--arrow-down-s-line]'" class="text-xl"></span>
+                </button>
+
+                <div :class="filterOpen ? 'block' : 'hidden lg:block'"
+                     class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-5 space-y-6">
+
+                    <!-- Search -->
+                    <div class="relative">
+                        <span class="icon-[ri--search-line] absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></span>
+                        <input type="search" x-model.debounce.200ms="q" placeholder="Cari nama..."
+                               class="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+
+                    <!-- Filter groups (Tipe, Harga) -->
+                    <template x-for="g in groups" :key="g.key">
+                        <div>
+                            <h3 class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2" x-text="g.title"></h3>
+                            <div class="space-y-1 max-h-60 overflow-y-auto">
+                                <template x-for="opt in g.options" :key="opt.value">
+                                    <button type="button" @click="filters[g.key] = opt.value"
+                                            :class="filters[g.key] === opt.value
+                                                ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 font-bold'
+                                                : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50'"
+                                            class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors text-left">
+                                        <span x-text="opt.label"></span>
+                                        <span class="text-xs opacity-70" x-text="count(g.key, opt.value)"></span>
+                                    </button>
+                                </template>
+                            </div>
                         </div>
-                    {{ end }}
+                    </template>
 
-                    {{ if not .Params.available }}
-                    <div class="absolute inset-0 bg-white/60 dark:bg-black/60 flex items-center justify-center backdrop-blur-[2px] z-10">
-                        <span class="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded-full uppercase tracking-wider shadow-sm">Tidak Tersedia</span>
+                    <!-- Ketersediaan -->
+                    <div>
+                        <h3 class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Ketersediaan</h3>
+                        <label class="flex items-center gap-2 px-3 py-2 cursor-pointer text-sm text-gray-600 dark:text-gray-300">
+                            <input type="checkbox" x-model="onlyAvailable"
+                                   class="rounded border-gray-300 dark:border-gray-600 text-indigo-600 focus:ring-indigo-500">
+                            Hanya yang tersedia
+                        </label>
                     </div>
-                    {{ end }}
 
-                    <!-- Type Badge -->
-                    <div class="absolute top-2 right-2 z-10">
-                        <span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md shadow-sm backdrop-blur-md
-                            {{ if eq $type "product" }} bg-blue-500/80 text-white
-                            {{ else }} bg-emerald-500/80 text-white {{ end }}">
-                            {{ $type }}
-                        </span>
-                    </div>
+                    <!-- Reset -->
+                    <button type="button" x-show="activeCount > 0" @click="reset()" style="display: none;"
+                            class="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 dark:text-gray-400 border border-dashed border-gray-300 dark:border-gray-600 hover:text-red-600 hover:border-red-300 transition-colors">
+                        <span class="icon-[ri--close-circle-line]"></span> Reset filter
+                    </button>
                 </div>
+            </aside>
 
-                <div class="p-4 flex flex-col flex-grow">
-                    <!-- Judul Full Tanpa Truncate / Kepotong -->
-                    <h3 class="text-sm md:text-base font-bold text-gray-900 dark:text-white mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                        {{ .Title }}
-                    </h3>
+            <!-- ============ DAFTAR PRODUK ============ -->
+            <section class="lg:col-span-9">
+                <p class="mb-4 text-sm text-gray-500 dark:text-gray-400">
+                    Menampilkan
+                    <span class="font-bold text-gray-900 dark:text-white" x-text="visibleCount"></span>
+                    dari <span x-text="items.length"></span> item
+                </p>
 
-                    <div class="mt-auto pt-3 flex items-end justify-between">
-                        <div class="flex flex-col">
-                            {{ if .Params.variants }}
-                                <span class="text-[10px] text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider">Mulai dari</span>
-                                <span class="text-sm md:text-lg font-black text-indigo-600 dark:text-indigo-400">
-                                    {{ $min := 999999999 }}
-                                    {{ range .Params.variants }}
-                                        {{ if lt .price $min }} {{ $min = .price }} {{ end }}
-                                    {{ end }}
-                                    {{ range .Params.variants }}
-                                        {{ if eq .price $min }} {{ .display_price }} {{ end }}
-                                    {{ end }}
-                                </span>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                    {{ range $i, $p := .Pages }}
+                    {{ $type := $p.Params.shop_type }}
+                    <a href="{{ $p.RelPermalink }}"
+                       x-show="isVisible({{ $i }})"
+                       x-transition.opacity.duration.300ms
+                       class="group bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
+
+                        <!-- Image Area -->
+                        <div class="relative aspect-square overflow-hidden bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                            {{ if $p.Params.image }}
+                                {{ $img := $p.Resources.GetMatch $p.Params.image }}
+                                <img src="{{ if $img }}{{ $img.RelPermalink }}{{ else }}{{ $p.Params.image | relURL }}{{ end }}"
+                                     alt="{{ $p.Title }}"
+                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                     loading="lazy">
                             {{ else }}
-                                <span class="text-[10px] text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider">Harga</span>
-                                <span class="text-sm md:text-lg font-black text-indigo-600 dark:text-indigo-400">{{ .Params.display_price }}</span>
+                                <div class="w-full h-full flex items-center justify-center text-4xl text-gray-300 dark:text-gray-600 bg-gray-50 dark:bg-gray-800/50">
+                                    <i class="{{ if eq $type "produk" }}icon-[ri--box-3-line]{{ else }}icon-[ri--service-line]{{ end }}"></i>
+                                </div>
                             {{ end }}
+
+                            {{ if not $p.Params.available }}
+                            <div class="absolute inset-0 bg-white/60 dark:bg-black/60 flex items-center justify-center backdrop-blur-[2px] z-10">
+                                <span class="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded-full uppercase tracking-wider shadow-sm">Tidak Tersedia</span>
+                            </div>
+                            {{ end }}
+
+                            <!-- Free Badge -->
+                            {{ if $p.Params.free }}
+                            <div class="absolute top-2 left-2 z-20">
+                                <span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md shadow-sm bg-amber-500 text-white">Gratis</span>
+                            </div>
+                            {{ end }}
+
+                            <!-- Type Badge -->
+                            <div class="absolute top-2 right-2 z-20">
+                                <span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md shadow-sm backdrop-blur-md
+                                    {{ if eq $type "produk" }} bg-blue-500/80 text-white
+                                    {{ else }} bg-emerald-500/80 text-white {{ end }}">
+                                    {{ $type }}
+                                </span>
+                            </div>
                         </div>
 
-                        {{ if .Params.variants }}
-                        <span class="text-[10px] px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-gray-500 dark:text-gray-400 font-medium">
-                            {{ len .Params.variants }} Varian
-                        </span>
-                        {{ end }}
-                    </div>
-                </div>
-            </a>
-            {{ end }}
+                        <div class="p-4 flex flex-col flex-grow">
+                            {{ with $p.Params.category }}
+                            <span class="text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-0.5">{{ . }}</span>
+                            {{ end }}
+                            <h3 class="text-sm md:text-base font-bold text-gray-900 dark:text-white mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                {{ $p.Title }}
+                            </h3>
 
-            <!-- Empty State -->
-            <div x-show="counts[activeCategory] === 0" class="col-span-full flex flex-col items-center justify-center py-20 text-center" style="display: none;">
-                <div class="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
-                    <i class="icon-[ri--inbox-line] text-4xl text-gray-400 dark:text-gray-500"></i>
+                            <div class="mt-auto pt-3 flex items-end justify-between">
+                                <div class="flex flex-col">
+                                    {{ if $p.Params.free }}
+                                        <span class="text-[10px] text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider">Harga</span>
+                                        <span class="text-sm md:text-lg font-black text-amber-600 dark:text-amber-400">Gratis</span>
+                                    {{ else if $p.Params.variants }}
+                                        {{ $cheapest := index (sort $p.Params.variants "price") 0 }}
+                                        <span class="text-[10px] text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider">Mulai dari</span>
+                                        <span class="text-sm md:text-lg font-black text-indigo-600 dark:text-indigo-400">{{ $cheapest.display_price }}</span>
+                                    {{ else }}
+                                        <span class="text-[10px] text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider">Harga</span>
+                                        <span class="text-sm md:text-lg font-black text-indigo-600 dark:text-indigo-400">{{ $p.Params.display_price }}</span>
+                                    {{ end }}
+                                </div>
+
+                                {{ if and $p.Params.variants (not $p.Params.free) }}
+                                <span class="text-[10px] px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-gray-500 dark:text-gray-400 font-medium">
+                                    {{ len $p.Params.variants }} Varian
+                                </span>
+                                {{ end }}
+                            </div>
+                        </div>
+                    </a>
+                    {{ end }}
                 </div>
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Tidak ada item ditemukan</h3>
-                <p class="text-gray-500 dark:text-gray-400 text-sm">Belum ada produk atau layanan untuk kategori ini.</p>
-            </div>
+
+                <!-- Empty State -->
+                <div x-show="visibleCount === 0" class="flex flex-col items-center justify-center py-20 text-center" style="display: none;">
+                    <div class="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
+                        <i class="icon-[ri--inbox-line] text-4xl text-gray-400 dark:text-gray-500"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Tidak ada item ditemukan</h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Coba ubah kata kunci atau filter yang dipakai.</p>
+                    <button type="button" x-show="activeCount > 0" @click="reset()"
+                            class="px-4 py-2 rounded-lg text-sm font-bold bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors">
+                        Reset filter
+                    </button>
+                </div>
+            </section>
         </div>
     </div>
 </main>
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('shopList', (items, categories) => ({
+            items: items,
+            categories: categories || [],
+            q: '',
+            filters: { type: 'all', category: 'all', price: 'all' },
+            onlyAvailable: false,
+            filterOpen: false,
+
+            get groups() {
+                const g = [
+                    { key: 'type', title: 'Tipe', options: [
+                        { value: 'all', label: 'Semua' },
+                        { value: 'produk', label: 'Produk' },
+                        { value: 'jasa', label: 'Jasa' }
+                    ]}
+                ];
+                if (this.categories.length) {
+                    g.push({ key: 'category', title: 'Kategori', options: [
+                        { value: 'all', label: 'Semua' },
+                        ...this.categories.map(c => ({ value: c, label: c }))
+                    ]});
+                }
+                g.push({ key: 'price', title: 'Harga', options: [
+                    { value: 'all', label: 'Semua' },
+                    { value: 'free', label: 'Gratis' },
+                    { value: 'paid', label: 'Berbayar' }
+                ]});
+                return g;
+            },
+
+            matches(item) {
+                const q = this.q.trim().toLowerCase();
+                if (q && !item.title.includes(q)) return false;
+                if (this.filters.type !== 'all' && item.type !== this.filters.type) return false;
+                if (this.filters.category !== 'all' && item.category !== this.filters.category) return false;
+                if (this.filters.price === 'free' && !item.free) return false;
+                if (this.filters.price === 'paid' && item.free) return false;
+                if (this.onlyAvailable && !item.available) return false;
+                return true;
+            },
+            isVisible(id) {
+                return this.matches(this.items[id]);
+            },
+            get visibleCount() {
+                return this.items.filter(i => this.matches(i)).length;
+            },
+            get activeCount() {
+                return (this.q.trim() ? 1 : 0)
+                    + (this.filters.type !== 'all' ? 1 : 0)
+                    + (this.filters.category !== 'all' ? 1 : 0)
+                    + (this.filters.price !== 'all' ? 1 : 0)
+                    + (this.onlyAvailable ? 1 : 0);
+            },
+            count(key, value) {
+                if (value === 'all') return this.items.length;
+                if (key === 'type') return this.items.filter(i => i.type === value).length;
+                if (key === 'category') return this.items.filter(i => i.category === value).length;
+                if (key === 'price') return this.items.filter(i => value === 'free' ? i.free : !i.free).length;
+                return 0;
+            },
+            reset() {
+                this.q = '';
+                this.filters = { type: 'all', category: 'all', price: 'all' };
+                this.onlyAvailable = false;
+            }
+        }));
+    });
+</script>
 {{ end }}

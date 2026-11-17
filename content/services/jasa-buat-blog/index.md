@@ -3,7 +3,7 @@ title: "Jasa Bikin Blog"
 description: "Pembuatan blog rapi, siap pakai, dan mudah dikelola untuk pemula, penulis, maupun personal branding."
 shop_type: "service"
 date: 2026-08-26
-draft: false
+draft: true
 available: false
 icon: "icon-[ri--global-line]"
 image: "blog-service.avif"

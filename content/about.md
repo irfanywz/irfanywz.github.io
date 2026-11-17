@@ -12,7 +12,7 @@ draft: false
 tabs:
   tab_kenalan: "Perkenalan"
   tab_support: "Dukungan"
-  tab_portofolio: "Pekerjaan"
+  tab_portofolio: "Proyek"
 
 # Pengaturan Konten Tab Support
 support:
@@ -287,6 +287,6 @@ pemikiran untuk mengubah web ini menjadi sebuah blog akhirnya muncul, langsungla
 
 sampai akhirnya jadilah seperti sekarang ini webnya
 
-## Pencapaian
+<!-- ## Pencapaian
 
-Belum ada sama sekali, ![rat smile](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg7jWxv-K-CJj3pO7YJAhYOZrsYDt6UaGbpy-3wFMyAnOrcoK8xAPxGgOUsaE8jGz4SZRJvH8NNG-eOYbEoPtfMcglyJNY5Bc-Kd6R_TTTp4iyqz0GPBaXs3HxyOY5xCeC-dB9FjRQezF3GUT0TwsX4aVUWzx_KjNArKvNJsKGH6eLBB0VrPZSxMgIgtdM/s320/rat-smile.webp)
+Belum ada sama sekali, ![rat smile](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg7jWxv-K-CJj3pO7YJAhYOZrsYDt6UaGbpy-3wFMyAnOrcoK8xAPxGgOUsaE8jGz4SZRJvH8NNG-eOYbEoPtfMcglyJNY5Bc-Kd6R_TTTp4iyqz0GPBaXs3HxyOY5xCeC-dB9FjRQezF3GUT0TwsX4aVUWzx_KjNArKvNJsKGH6eLBB0VrPZSxMgIgtdM/s320/rat-smile.webp) -->

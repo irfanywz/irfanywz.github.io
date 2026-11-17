@@ -1,18 +1,15 @@
 ---
-title: "Layanan"
-description: "Daftar produk dan layanan yang tersedia"
+title: "Toko"
+description: "Produk digital dan jasa yang tersedia. Pilih, bayar via QR, lalu konfirmasi ke admin."
 icon: "icon-[ri--store-2-line]"
-# contact_wa: "6281389215100"
+
+# Kontak admin: dipakai tombol konfirmasi pembayaran di halaman detail
+# WhatsApp: nomor format internasional tanpa + / spasi. Telegram: username tanpa @
+# Kosongkan salah satu kalau tidak dipakai, tombolnya otomatis hilang.
+# contact_wa: "6281234567890"
 contact_telegram: "irfanywz"
 
-payments:
-  - name: "QRIS"
-    account_number: "Scan QR"
-    account_name: "Bayar Lewat QRIS"
-    image: "/about/qriz.avif" 
-    type: "qris"
-  - name: "E-Wallet DANA"
-    account_number: "-"
-    account_name: "Bayar Lewat DANA"
-    type: "ewallet"
+# QR pembayaran (QRIS dll). File ada di static/qrcode.avif -> diakses lewat "/qrcode.avif"
+qr_image: "/qrcode.avif"
+qr_account_name: "Bayar Lewat Qris"   # opsional, tampil di bawah QR
 ---

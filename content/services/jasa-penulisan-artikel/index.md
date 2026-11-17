@@ -3,7 +3,7 @@ title: "Jasa Penulisan Artikel & Content Writer"
 description: "Layanan penulisan artikel SEO, blog post, dan copywriting profesional untuk meningkatkan visibilitas dan trafik website Anda."
 shop_type: "service"
 date: 2026-08-26
-draft: false
+draft: true
 available: false
 icon: "icon-[ri--article-line]"
 image: "content-writer.avif"

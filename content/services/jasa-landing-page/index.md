@@ -3,7 +3,7 @@ title: "Jasa Pembuatan Landing Page"
 description: "Landing page cepat, modern, rapi, dan siap pakai menggunakan Hugo atau platform web statis."
 shop_type: "service"
 date: 2026-09-07
-draft: false
+draft: true
 available: false
 icon: "icon-[ri--layout-masonry-line]"
 image: "landing-page-service.avif"

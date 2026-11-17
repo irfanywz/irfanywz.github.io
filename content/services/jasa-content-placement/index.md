@@ -18,7 +18,7 @@ testimonials:
     comment: "Pengerjaan cepat dan hasilnya rapi banget! Penjualan produk langsung meningkat setelah pakai landing page ini."
 
 image: jasa-content-placement.avif
-draft: false
+draft: true
 ---
 
 Mau pasang artikel, review produk, atau sekadar nambah backlink untuk website baru kamu? Kamu bisa titip *content placement* di **irfanywz.web.id**. 
