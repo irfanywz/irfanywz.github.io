@@ -1,3 +1,4 @@
+{{ partial "components/inline-bundle.html" (dict "src" "js/features/exit-intent.js") }}
 <!-- Exit Intent Popup -->
 <div 
     x-data="{
@@ -44,10 +45,10 @@
         <div class="text-center mb-5">
             <h2 class="inline-flex items-center justify-center gap-2 text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-1.5 tracking-tight">
                 <span class="icon-[ri--information-line] w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0"></span>
-                <span>{{ .Site.Params.exitIntentTitle }}</span>
+                <span>{{ site.Params.exitIntentTitle }}</span>
             </h2>
             <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 leading-relaxed max-w-sm mx-auto">
-                {{ .Site.Params.exitIntentContent }}
+                {{ site.Params.exitIntentContent }}
             </p>
         </div>
 

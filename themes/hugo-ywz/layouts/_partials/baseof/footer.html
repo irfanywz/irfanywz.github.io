@@ -4,7 +4,7 @@
             <!-- Left Column: Title -->
             <div class="text-sm text-gray-500 dark:text-gray-400 text-center md:text-start space-y-1">
                 <p>
-                    &copy; {{ now.Year }} {{ .Site.Copyright }}
+                    &copy; {{ now.Year }} {{ site.Copyright }}
                     • 
                     <a href="{{ "change-log/" | relURL }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                         {{ $changelogPage := site.GetPage "change-log.md" }}
@@ -30,7 +30,7 @@
 
             <!-- Middle Column: Social Icons -->
             <div class="flex gap-4 grow justify-center">
-                {{ with .Site.GetPage "/contact.md" }}
+                {{ with site.GetPage "/contact.md" }}
                     
                     {{ with .Params.github }}
                     <a href="{{ . }}" target="_blank" rel="noopener noreferrer" class="text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" aria-label="GitHub">

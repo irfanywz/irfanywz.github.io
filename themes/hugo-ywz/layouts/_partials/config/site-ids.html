@@ -1,0 +1,37 @@
+{{- /*
+  config/site-ids.html — ID layanan eksternal, dibaca dari hugo.toml [params].
+
+  Return (dict):
+    adsense       string  params.adsensePublisherId      (ca-pub-xxxxxxxxxxxxxxxx)
+    analytics     string  params.googleAnalyticsId       (G-XXXXXXXXXX)
+    verification  string  params.googleSiteVerification  (token Search Console)
+    firebase      string  params.firebaseDatabaseUrl     (Realtime Database untuk view-count/reaksi)
+
+  Kalau param belum diisi, dipakai nilai lama (fallback) dan Hugo menulis warning
+  saat build. Fallback ini sementara: hapus setelah hugo.toml di semua environment
+  sudah memuat ketiga param di atas.
+*/ -}}
+{{- $adsense      := site.Params.adsensePublisherId | default "" -}}
+{{- $analytics    := site.Params.googleAnalyticsId | default "" -}}
+{{- $verification := site.Params.googleSiteVerification | default "" -}}
+{{- $firebase     := site.Params.firebaseDatabaseUrl | default "" -}}
+
+{{- if not $adsense -}}
+  {{- warnf "config/site-ids: params.adsensePublisherId belum diisi di hugo.toml, memakai nilai lama (deprecated)" -}}
+  {{- $adsense = "ca-pub-2846006866814506" -}}
+{{- end -}}
+{{- if not $analytics -}}
+  {{- warnf "config/site-ids: params.googleAnalyticsId belum diisi di hugo.toml, memakai nilai lama (deprecated)" -}}
+  {{- $analytics = "G-VVGW3VPZZG" -}}
+{{- end -}}
+{{- if not $verification -}}
+  {{- warnf "config/site-ids: params.googleSiteVerification belum diisi di hugo.toml, memakai nilai lama (deprecated)" -}}
+  {{- $verification = "lDWGSmP0hlTFnz59wlaQqzwpVJeznar9HRdFtgZnnEI" -}}
+{{- end -}}
+
+{{- if not $firebase -}}
+  {{- warnf "config/site-ids: params.firebaseDatabaseUrl belum diisi di hugo.toml, memakai nilai lama (deprecated)" -}}
+  {{- $firebase = "https://counter-view-ddf90-default-rtdb.asia-southeast1.firebasedatabase.app" -}}
+{{- end -}}
+
+{{- return (dict "adsense" $adsense "analytics" $analytics "verification" $verification "firebase" $firebase) -}}

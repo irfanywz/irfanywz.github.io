@@ -43,7 +43,7 @@ testimonials:
     comment: "Hasilnya sesuai harapan, pengerjaan tepat waktu."
 
 date: 2026-11-18T00:00:00+07:00
-draft: false
+draft: true
 ---
 
 Melayani pembuatan website sesuai kebutuhan bisnis Anda, dari landing page sederhana sampai toko online.

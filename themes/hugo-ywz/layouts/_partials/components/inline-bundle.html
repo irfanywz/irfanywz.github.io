@@ -1,0 +1,25 @@
+{{- /*
+  components/inline-bundle.html — build entry JS dengan js.Build (esbuild), lalu sisipkan hasilnya
+  sebagai <script> INLINE. Pengganti components/inline-js.html untuk script yang butuh `import`.
+
+  Kenapa inline: komponen Alpine harus terdaftar sebelum Alpine.start() (main.js, defer). Script
+  inline jalan saat parsing, jadi urutannya terjamin. Yang didapat dari js.Build: `import` antar
+  modul, minify (di production), dan @params (menggantikan token __URL__ + escape manual).
+
+  Args (dict):
+    src     string  wajib. Entry di assets/, mis. "js/pages/journal/index.js"
+    params  dict    opsional. Dibaca di JS lewat:  import * as params from '@params'
+
+  Hasil build berformat IIFE: tidak ada variabel global; daftarkan komponen lewat
+  Alpine.data('nama', ...) di dalam 'alpine:init'.
+*/ -}}
+{{- with resources.Get .src -}}
+  {{- $opts := dict "minify" (not hugo.IsDevelopment) "params" ($.params | default (dict)) -}}
+  {{- with . | js.Build $opts -}}
+<script>
+{{ .Content | safeJS }}
+</script>
+  {{- end -}}
+{{- else -}}
+  {{- errorf "components/inline-bundle: assets/%s tidak ditemukan" .src -}}
+{{- end -}}

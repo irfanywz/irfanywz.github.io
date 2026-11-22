@@ -1,0 +1,12 @@
+# Semua file teks disimpan dengan LF di repo.
+* text=auto eol=lf
+
+# File biner, jangan disentuh.
+*.ico  binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.avif binary
+*.woff2 binary

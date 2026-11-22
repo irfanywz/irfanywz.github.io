@@ -1,0 +1,55 @@
+{{- /* layouts/partials/premium-post-card.html — dipanggil dengan context = page post */ -}}
+{{- $img := "" -}}
+{{- if .Params.image -}}
+  {{- with .Resources.GetMatch .Params.image -}}
+    {{- $img = .RelPermalink -}}
+  {{- else -}}
+    {{- with resources.Get $.Params.image -}}
+      {{- $img = .RelPermalink -}}
+    {{- else -}}
+      {{- if or (strings.HasPrefix $.Params.image "http") (strings.HasPrefix $.Params.image "/") -}}
+        {{- $img = $.Params.image -}}
+      {{- else -}}
+        {{- $img = printf "/%s" $.Params.image | relURL -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+<a href="{{ .RelPermalink }}" class="group flex flex-col overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-amber-300 dark:hover:border-amber-500/40 hover:shadow-lg hover:shadow-amber-500/10 transition-all">
+  <div class="relative aspect-video overflow-hidden bg-gray-100 dark:bg-gray-800">
+    {{- if $img }}
+    <img src="{{ $img }}" alt="{{ .Title }}" loading="lazy" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+    {{- else }}
+    <div class="h-full w-full flex items-center justify-center text-amber-500/60">
+      <span class="icon-[lucide--crown] text-5xl"></span>
+    </div>
+    {{- end }}
+    <span class="absolute top-3 left-3 inline-flex items-center gap-1 rounded-full bg-amber-500 px-2.5 py-1 text-[11px] font-bold text-gray-950 shadow">
+      <span class="icon-[lucide--crown]"></span>
+      <span data-premium-label>Premium</span>
+    </span>
+  </div>
+
+  <div class="flex flex-1 flex-col gap-2 p-5">
+    {{- with .Params.topics }}
+    <div class="flex flex-wrap gap-1.5">
+      {{- range first 2 . }}
+      <span class="rounded-full bg-gray-100 dark:bg-gray-800 px-2 py-0.5 text-[11px] font-medium text-gray-600 dark:text-gray-300">{{ . }}</span>
+      {{- end }}
+    </div>
+    {{- end }}
+
+    <h3 class="font-semibold leading-snug text-gray-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">{{ .Title }}</h3>
+
+    {{- $desc := .Description | default (.Summary | plainify | truncate 110) }}
+    {{- with $desc }}
+    <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-2">{{ . }}</p>
+    {{- end }}
+
+    <div class="mt-auto flex items-center gap-3 pt-2 text-xs text-gray-500 dark:text-gray-400">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_medium" }}</time>
+      <span class="flex items-center gap-1"><span class="icon-[lucide--clock]"></span>{{ .ReadingTime }} menit baca</span>
+    </div>
+  </div>
+</a>

@@ -1,0 +1,200 @@
+{{ $file := .Get "file" }}
+
+{{ if $file }}
+    {{ $pagePath := printf "services/%s" $file }}
+    {{ $p := site.GetPage $pagePath }}
+
+    {{ if $p }}
+        {{ $productUrl := $p.RelPermalink }}
+
+        {{/* Ambil data QRIS dari halaman about untuk modal download */}}
+        {{ $aboutPage := site.GetPage "/about/index.md" }}
+        {{ $qrImage := "" }}
+        {{ $qrDesc := "" }}
+        {{ if and $aboutPage $aboutPage.Params.support }}
+            {{ $qrImage = $aboutPage.Params.support.qr_image }}
+            {{ $qrDesc = $aboutPage.Params.support.description }}
+        {{ end }}
+
+        {{ $displayPrice := "" }}
+        {{ if $p.Params.free }}
+            {{ $displayPrice = "Gratis" }}
+        {{ else if $p.Params.variants }}
+            {{ $firstVar := index $p.Params.variants 0 }}
+            {{ $displayPrice = $firstVar.display_price }}
+        {{ else if $p.Params.display_price }}
+            {{ $displayPrice = $p.Params.display_price }}
+        {{ end }}
+
+        {{/* Cek ketersediaan produk (default true jika tidak didefinisikan) */}}
+        {{ $isAvailable := true }}
+        {{ if isset $p.Params "available" }}
+            {{ $isAvailable = $p.Params.available }}
+        {{ end }}
+
+        <div class="my-6 w-full" x-data="{
+            donateModalOpen: false,
+            downloadLink: '',
+            timeLeft: 3,
+            timer: null,
+            initDownload(url) {
+                this.downloadLink = url;
+                this.donateModalOpen = true;
+                this.timeLeft = 3;
+                if (this.timer) clearInterval(this.timer);
+                this.timer = setInterval(() => {
+                    this.timeLeft--;
+                    if (this.timeLeft <= 0) {
+                        clearInterval(this.timer);
+                    }
+                }, 1000);
+            },
+            closeModal() {
+                this.donateModalOpen = false;
+                if (this.timer) clearInterval(this.timer);
+            }
+        }">
+            <!-- Card Container -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row items-center gap-5 relative">
+                
+                <!-- Thumbnail Produk -->
+                {{ if $p.Params.image }}
+                    <div class="w-full sm:w-32 h-32 shrink-0 bg-gray-100 dark:bg-gray-900 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 relative">
+                        <img src="{{ $p.Params.image }}" alt="{{ $p.Params.title }}" class="w-full h-full object-cover" loading="lazy">
+                        {{ if not $isAvailable }}
+                            <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-white bg-red-600/90 px-2.5 py-1 rounded-full shadow-sm">Habis / Tutup</span>
+                            </div>
+                        {{ end }}
+                    </div>
+                {{ else }}
+                    <div class="w-full sm:w-32 h-32 shrink-0 bg-gray-100 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 flex items-center justify-center relative">
+                        <span class="icon-[ri--shopping-bag-3-line] w-8 h-8 text-gray-400"></span>
+                        {{ if not $isAvailable }}
+                            <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-white bg-red-600/90 px-2.5 py-1 rounded-full shadow-sm">Habis / Tutup</span>
+                            </div>
+                        {{ end }}
+                    </div>
+                {{ end }}
+
+                <!-- Informasi Produk -->
+                <div class="flex-grow w-full text-center sm:text-left">
+                    {{ if $p.Params.category }}
+                        <span class="inline-block text-[10px] font-semibold uppercase bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 px-2.5 py-1 rounded-full mb-2">
+                            {{ $p.Params.category }}
+                        </span>
+                    {{ end }}
+                    
+                    <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-1 leading-snug">
+                        {{ $p.Params.title }}
+                    </h3>
+
+                    {{ if $p.Params.description }}
+                        <p class="text-xs text-gray-600 dark:text-gray-300 line-clamp-2 mb-3">
+                            {{ $p.Params.description }}
+                        </p>
+                    {{ end }}
+
+                    <div class="flex flex-wrap items-center justify-center sm:justify-between gap-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+                        {{ if $displayPrice }}
+                            <div class="text-sm sm:text-base font-extrabold text-red-600 dark:text-red-400">
+                                {{ $displayPrice }}
+                            </div>
+                        {{ else }}
+                            <div></div>
+                        {{ end }}
+
+                        <div class="flex items-center gap-2">
+                            <!-- Tombol Download (Akan dinonaktifkan jika available: false) -->
+                            {{ if $p.Params.download_url }}
+                                {{ if $isAvailable }}
+                                    <button @click="initDownload('{{ $p.Params.download_url }}')" 
+                                       class="inline-flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 text-xs font-bold px-3.5 py-2 rounded-xl transition-all duration-200 cursor-pointer">
+                                        <span class="icon-[heroicons--arrow-down-tray] w-4 h-4"></span>
+                                        <span>{{ $p.Params.download_label | default "Download" }}</span>
+                                    </button>
+                                {{ else }}
+                                    <button disabled 
+                                       class="inline-flex items-center gap-1.5 bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-600 text-xs font-bold px-3.5 py-2 rounded-xl cursor-not-allowed">
+                                        <span class="icon-[heroicons--lock-closed] w-4 h-4"></span>
+                                        <span>Tidak Tersedia</span>
+                                    </button>
+                                {{ end }}
+                            {{ end }}
+
+                            <!-- Tombol Lihat Detail Produk -->
+                            <a href="{{ $productUrl }}" 
+                               class="inline-flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all duration-200 shadow-sm no-underline">
+                                <span>Lihat Produk</span>
+                                <span class="icon-[ri--arrow-right-s-line] w-4 h-4"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Support & QRIS -->
+            <div x-show="donateModalOpen" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" x-transition.opacity>
+                <div @click.outside="closeModal()" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 relative border border-gray-200 dark:border-gray-700 not-prose" x-transition.scale>
+                    <button @click="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer">
+                        <span class="icon-[ri--close-line] w-6 h-6"></span>
+                    </button>
+                    
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="icon-[ri--heart-3-line] w-6 h-6"></span>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Dukung Blog Ini</h3>
+                        
+                        <p class="text-gray-600 dark:text-gray-300 mb-4 text-xs leading-relaxed">
+                            {{ with $qrDesc }}{{ . }}{{ else }}Scan QRIS di bawah ini via m-banking atau e-wallet pilihanmu jika ingin memberikan dukungan.[cite: 4] {{ end }}
+                        </p>
+                    
+                        {{ if $qrImage }}
+                        <div class="mb-5 bg-gray-50 dark:bg-gray-900/50 p-3 rounded-2xl border border-gray-100 dark:border-gray-700/50 inline-block">
+                            <img src="{{ $qrImage | relURL }}" alt="QRIS Dukungan" class="w-64 h-64 mx-auto rounded-xl object-contain shadow-sm">
+                            <span class="block mt-2 text-[10px] text-gray-400 dark:text-gray-500 italic">klik gambar untuk memperbesar (opsional)</span>
+                        </div>
+                        {{ end }}
+
+                        <div class="flex flex-col gap-3">
+                            <div class="relative py-1">
+                                <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                                    <div class="w-full border-t border-gray-200 dark:border-gray-700"></div>
+                                </div>
+                                <div class="relative flex justify-center">
+                                    <span class="bg-white dark:bg-gray-800 px-2 text-xs text-gray-500">
+                                        <template x-if="timeLeft > 0">
+                                            <span>Tautan siap dalam <span x-text="timeLeft" class="font-bold text-rose-600 dark:text-rose-400"></span>s</span>
+                                        </template>
+                                        <template x-if="timeLeft <= 0">
+                                            <span class="text-emerald-600 dark:text-emerald-400 font-semibold">Tautan siap digunakan!</span>
+                                        </template>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <a :href="timeLeft <= 0 ? downloadLink : '#'"
+                                    @click="if(timeLeft > 0) $event.preventDefault()"
+                                    :disabled="timeLeft > 0"
+                                    :class="timeLeft > 0 ? 'bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer shadow-sm'"
+                                    class="w-full py-3 px-4 rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-sm no-underline" target="_blank">
+                                    <span class="icon-[heroicons--arrow-down-tray]"></span>
+                                    Lanjutkan Akses
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{ else }}
+        <div class="p-4 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-xs rounded-xl border border-red-200 dark:border-red-800 my-4">
+            ⚠️ Produk dengan file <strong>"services/{{ $file }}"</strong> tidak ditemukan.
+        </div>
+    {{ end }}
+{{ end }}

@@ -1,21 +1,21 @@
 ---
 # ===== PRODUK GRATIS =====
-title: "Subtitle Cleaner (Gratis)"
+title: "Example Produk"
 slug: subtitle-cleaner
-description: "Tool kecil untuk merapikan file subtitle .srt. Gratis, tanpa registrasi."
+description: "deskripsi produk"
 shop_type: "produk"
 category: "Software"                 # dipakai untuk filter Kategori di halaman list
-available: true
+available: false
 
 # free: true -> harga tampil "Gratis", badge Gratis muncul,
 # price / display_price / variants diabaikan.
 free: true
 
 # Tombol aksi. File lokal: taruh di static/downloads/ lalu tulis "/downloads/nama-file.zip"
-download_url: "/downloads/subtitle-cleaner-v1.0.zip"
-download_label: "Download v1.0 (Windows)"
-landing_url: "https://example.com/subtitle-cleaner"
-guide_url: "https://example.com/subtitle-cleaner/docs"
+download_url: "https://google.com/ncr"
+download_label: "Download v1.0"
+# landing_url: "https://google.com/"
+guide_url: "https://google.com/"
 
 # image: "subtitle-cleaner.avif"
 
@@ -28,7 +28,7 @@ benefits:
     text: "Update Berkala"
 
 date: 2026-11-18T00:00:00+07:00
-draft: false
+draft: true
 ---
 
 Subtitle Cleaner membantu merapikan file subtitle `.srt`: menghapus tag sisa, baris kosong berlebih, dan memperbaiki penomoran otomatis.

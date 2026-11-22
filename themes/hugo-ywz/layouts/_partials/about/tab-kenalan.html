@@ -5,7 +5,7 @@
     
     <div class="mt-8 pt-6 border-t border-slate-100 dark:border-gray-800 flex items-center justify-between flex-wrap gap-4">
         <span class="text-sm text-slate-500 dark:text-gray-400">Ingin sekadar ngobrol?</span>
-        {{ with .Site.GetPage "/contact.md" }}
+        {{ with site.GetPage "/contact.md" }}
             {{ $tele := .Params.telegram_link }}
             <a href="{{ $tele }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-all shadow-sm">
                 <span class="icon-[ri--telegram-line] w-4 h-4"></span>

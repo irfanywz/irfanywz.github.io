@@ -1,6 +1,5 @@
 // assets/js/footer.js
-import './weather-time.js';
-import './ga-lazyload.js';
-import './google-lazyload.js';
+import './nav-widget/index.js';
+import './third-party/index.js';
 import './cursor.js';
 import './favicon-dot.js';

@@ -3,7 +3,7 @@
   "description": {{ .Description | jsonify }},
   "resources": {{ .Params.resources | jsonify }},
   "categories": [
-    {{- $promptSection := .Site.GetPage "section" "prompt" -}}
+    {{- $promptSection := site.GetPage "section" "prompt" -}}
     {{- if $promptSection -}}
       {{- /* Mengurutkan section berdasarkan nama direktori/folder */ -}}
       {{- $sections := sort $promptSection.Sections "File.Dir" "asc" -}}

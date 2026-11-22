@@ -138,65 +138,6 @@
 
 {{ define "footer" }}
 
-    <script>
-        const form = document.getElementById('form');
-        const result = document.getElementById('result');
-        
-        // Tampilkan elemen result di awal (untuk memastikan styling diterapkan)
-        result.style.display = "block"; 
-
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // 1. Persiapan Data
-            const formData = new FormData(form);
-            const object = Object.fromEntries(formData);
-            const json = JSON.stringify(object);
-            
-            // 2. Tampilkan pesan tunggu
-            result.innerHTML = "Mohon tunggu sebentar...";
-            result.className = "mt-4 p-4 rounded-lg text-sm bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"; // Terapkan styling loading
-
-            // 3. Kirim data menggunakan Fetch API
-            fetch('https://api.web3forms.com/submit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: json
-            })
-            .then(async (response) => {
-                let resJson = await response.json();
-                
-                if (response.status === 200) {
-                    // Sukses
-                    result.innerHTML = "Pesan berhasil terkirim! Terima kasih.";
-                    result.className = "mt-4 p-4 rounded-lg text-sm bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"; 
-                } else {
-                    // Error dari Web3Forms (misalnya key salah)
-                    console.error("Web3Forms Error:", resJson);
-                    result.innerHTML = resJson.message || "Terjadi kesalahan saat mengirim pesan.";
-                    result.className = "mt-4 p-4 rounded-lg text-sm bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400";
-                }
-            })
-            .catch(error => {
-                // Error koneksi/jaringan
-                console.error("Fetch Error:", error);
-                result.innerHTML = "Terjadi kesalahan jaringan! Coba lagi.";
-                result.className = "mt-4 p-4 rounded-lg text-sm bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400";
-            })
-            .finally(function() {
-                // Dijalankan setelah sukses atau error
-                form.reset();
-                // Pesan akan hilang setelah 5 detik
-                setTimeout(() => {
-                    // Mengganti display dengan innerHTML kosong lebih baik
-                    result.innerHTML = ""; 
-                    result.className = "mt-4 p-4 rounded-lg text-sm"; // Reset class
-                }, 5000); 
-            });
-        });
-    </script>
+    {{ partial "components/inline-bundle.html" (dict "src" "js/pages/contact/index.js") }}
     
 {{ end }}

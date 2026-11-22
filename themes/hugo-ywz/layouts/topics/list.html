@@ -32,7 +32,7 @@
             <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                 
                 <!-- Loop custom taxonomy 'topics' -->
-                {{ range $name, $taxonomy := .Site.Taxonomies.topics }}
+                {{ range $name, $taxonomy := site.Taxonomies.topics }}
                     
                     {{ $termPage := $taxonomy.Page }}
                     {{ $filteredPages := where $taxonomy.Pages "Section" "posts" }}

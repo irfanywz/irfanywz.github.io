@@ -1,0 +1,25 @@
+{{- /*
+  components/inline-js.html — sisipkan file JS dari assets/ sebagai <script> inline.
+
+  Kenapa inline, bukan <script src>: komponen Alpine harus terdaftar SEBELUM Alpine.start()
+  (main.js, defer). Script inline jalan saat parsing, jadi urutannya terjamin; file eksternal
+  defer yang diletakkan di body akan jalan sesudah main.js. Source tetap di assets/js/ supaya
+  bisa di-lint/diedit sebagai JS biasa.
+
+  Args (dict):
+    src      string  wajib. Path di assets/, mis. "js/pages/go-redirect.js"
+    replace  dict    opsional. token → nilai string, diganti di isi file sebelum disisipkan.
+                     Nilai harus sudah aman untuk dipakai di dalam string JS bertanda kutip
+                     (escape "/" jadi "\/" seperti yang dulu dilakukan html/template).
+*/ -}}
+{{- with resources.Get .src -}}
+  {{- $code := .Content -}}
+  {{- range $token, $value := $.replace -}}
+    {{- $code = replace $code $token $value -}}
+  {{- end -}}
+<script>
+{{ $code | safeJS }}
+</script>
+{{- else -}}
+  {{- errorf "components/inline-js: assets/%s tidak ditemukan" .src -}}
+{{- end -}}

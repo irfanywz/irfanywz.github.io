@@ -4,7 +4,7 @@ slug: Rekap Bulan Oktober, Ngapain Aja
 date: 2026-11-01T19:00:35+07:00
 weather: Cerah
 location: Bogor, Indonesia
-journal_category: [""]
+journal_category: ["Refleksi"]
 draft: false
 ---
 

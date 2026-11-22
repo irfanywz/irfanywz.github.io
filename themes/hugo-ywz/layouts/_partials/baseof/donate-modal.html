@@ -1,9 +1,9 @@
 {{/* Cek apakah modal donasi diaktifkan di hugo.toml (default: true kalau tidak diisi) */}}
-{{ $enableModal := .Site.Params.enableDonationModal | default true }}
+{{ $enableModal := site.Params.enableDonationModal | default true }}
 
 {{ if $enableModal }}
     {{/* Ambil data front matter dari halaman about */}}
-    {{ $aboutPage := .Site.GetPage "/about/index.md" }}
+    {{ $aboutPage := site.GetPage "/about/index.md" }}
     {{ $qrImage := "" }}
     {{ $qrDesc := "" }}
 
@@ -13,7 +13,7 @@
     {{ end }}
 
     {{/* Hitung sisa hari domain kedaluwarsa */}}
-    {{ $expiryDateStr := .Site.Params.domainExpiryDate | default "2026-12-31" }}
+    {{ $expiryDateStr := site.Params.domainExpiryDate | default "2026-12-31" }}
     {{ $expiryTime := time $expiryDateStr }}
     {{ $currentTime := now }}
     {{ $duration := sub $expiryTime.Unix $currentTime.Unix }}
@@ -63,17 +63,17 @@
             <!-- Header -->
             <div class="inline-flex items-center justify-center gap-2 text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-1 tracking-tight">
                 <span class="icon-[ri--heart-3-line] w-5 h-5 text-rose-500 shrink-0"></span>
-                <h2>{{ .Site.Params.donationTitle }}</h2>
+                <h2>{{ site.Params.donationTitle }}</h2>
             </div>
             
             <!-- Deskripsi Dinamis -->
             <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-                {{ .Site.Params.donationContent }}
+                {{ site.Params.donationContent }}
             </p>
 
             <!-- Progress Bar & Info Sisa Waktu Domain -->
-            {{ $target := .Site.Params.donationTarget | default 100000 }}
-            {{ $current := .Site.Params.donationCurrent | default 10000 }}
+            {{ $target := site.Params.donationTarget | default 60000 }}
+            {{ $current := site.Params.donationCurrent | default 0 }}
             {{ $percentage := mul (div (float $current) (float $target)) 100 }}
             
             <div class="bg-gray-50 dark:bg-gray-900/50 p-3.5 rounded-2xl border border-gray-100 dark:border-gray-800 mb-4 text-left">

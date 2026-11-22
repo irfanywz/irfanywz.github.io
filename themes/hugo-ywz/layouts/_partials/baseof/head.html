@@ -5,15 +5,15 @@
 {{ if .IsHome }}
 	{{ site.Title }}
 {{ else }}
-	{{ printf "%s | %s" .Title .Site.Params.title }}
+	{{ printf "%s | %s" .Title site.Params.title }}
 {{ end }}
 </title>
 
 <!-- Deskripsi & Author -->
 {{ $description := "" }}
 {{ if .IsHome }}
-	{{ $description = .Site.Params.description }}
-	<meta name="author" content="{{ .Site.Params.author }}" />
+	{{ $description = site.Params.description }}
+	<meta name="author" content="{{ site.Params.author }}" />
 {{ else if .Description }}
 	{{ $description = .Description }}
 {{ else if .Summary }}
@@ -43,7 +43,7 @@
     <meta name="keywords" content="{{ $keywords }}" />
 {{ end }}
 
-{{ $noIndex := or (.Scratch.Get "noIndex") (eq .Params.noindex true) }}
+{{ $noIndex := or (.Store.Get "noIndex") (eq .Params.noindex true) }}
 {{ if $noIndex }}
 	<meta name="robots" content="noindex" />
 	<meta name="googlebot" content="noindex" />
@@ -71,22 +71,23 @@
 <link rel="canonical" href="{{ .Permalink }}" itemprop="url" />
 <link rel="sitemap" type="application/xml" title="Sitemap" href='{{ "sitemap.xml" | absURL }}' />
 
-<meta name="google-site-verification" content="lDWGSmP0hlTFnz59wlaQqzwpVJeznar9HRdFtgZnnEI" />
-<meta name="google-adsense-account" content="ca-pub-2846006866814506">
+{{ $ids := partialCached "config/site-ids.html" "ids" }}
+<meta name="google-site-verification" content="{{ $ids.verification }}" />
+<meta name="google-adsense-account" content="{{ $ids.adsense }}">
 
-{{ if isset .Site.Params "favicon" }}
+{{ if isset site.Params "favicon" }}
     <link rel="icon" type="image/png" id="favicon" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="irfanywz" />
+    <meta name="apple-mobile-web-app-title" content="{{ site.Params.title | default site.Title }}" />
     <link rel="manifest" href="/site.webmanifest" />
 {{ end }}
 
 
 {{ with .OutputFormats.Get "RSS" }}
-  <link href="{{ .Permalink }}" rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" />
-  <link href="{{ .Permalink }}" rel="feed" type="application/rss+xml" title="{{ $.Site.Title }}" />
+  <link href="{{ .Permalink }}" rel="alternate" type="application/rss+xml" title="{{ site.Title }}" />
+  <link href="{{ .Permalink }}" rel="feed" type="application/rss+xml" title="{{ site.Title }}" />
 {{ end }}
 
 {{ $imgURL := "" }}

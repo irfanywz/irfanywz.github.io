@@ -24,8 +24,8 @@
 
         <!-- Brand -->
         <div class="flex-shrink-0">
-            <a href="{{ .Site.BaseURL }}" class="flex items-center">
-                <img src='{{ .Site.Params.logoText | relURL }}' alt="{{ .Site.Title }} logo" decoding="async" class="h-10 w-auto mr-2">
+            <a href="{{ site.BaseURL }}" class="flex items-center">
+                <img src='{{ site.Params.logoText | relURL }}' alt="{{ site.Title }} logo" decoding="async" class="h-10 w-auto mr-2">
             </a>
         </div>
 
@@ -33,7 +33,7 @@
 
         <!-- Desktop Nav -->
         <nav class="hidden md:flex items-center gap-8">
-            {{ range .Site.Menus.main }}
+            {{ range site.Menus.main }}
                 {{ $menu_item_url := .URL | relLangURL }}
                 {{ $page_url := $.Page.RelPermalink | relLangURL }}
                 {{ $page_split := index (split $page_url "/") 1 }}

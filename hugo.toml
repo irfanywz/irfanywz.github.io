@@ -11,32 +11,33 @@ canonifyURLs = true
 
 pagination.pagerSize = 6
 
-pygmentsstyle = "vs"
-pygmentscodefences = true
-pygmentscodefencesguesssyntax = true
-
 [params]
 
   # title for seo
   title = "irfanywz"
   address = "irfanywz.web.id"
 
-
-	# browser icon
+  # browser icon
   favicon = "favicon.ico"
 
-	# Optional 64x64 avatar image.
-	# avatar = "https://avatars.githubusercontent.com/u/117440754?v=4"
+  # Optional 64x64 avatar image.
+  # avatar = "https://avatars.githubusercontent.com/u/117440754?v=4"
   avatar = "avatar.avif"
   logo = "logo.avif"
   logoText = "logo-text.avif"
 
   author = "irfanywz"
+
+  # ID layanan eksternal (dibaca layouts/_partials/config/site-ids.html)
+  adsensePublisherId = "ca-pub-2846006866814506"
+  googleAnalyticsId = "G-VVGW3VPZZG"
+  googleSiteVerification = "lDWGSmP0hlTFnz59wlaQqzwpVJeznar9HRdFtgZnnEI"
+  firebaseDatabaseUrl = "https://counter-view-ddf90-default-rtdb.asia-southeast1.firebasedatabase.app"
   description = "Personal blog irfanywz, menulis dan berbagi hal menarik seputar teknologi."
   keywords = "irfanywz, Konten kreator pemula, lagi belajar Storytelling, muhamadirfan300899, Bogor, Personal Blog"
 
   # ads on post
-  showAds = false 
+  showAds = false
   adInterval = 4
   adCode = '''
     <div class="w-full">
@@ -65,17 +66,30 @@ pygmentscodefencesguesssyntax = true
   '''
 
   # Exit Popup
+  # Popup exit-intent dimatikan. Ubah ke true untuk menyalakan (butuh exitIntentTitle/exitIntentContent di bawah).
+  enableExitIntent = false
+
+  # GA dan AdSense dimuat setelah load + interaksi pertama (keydown/mousemove/mousedown/touchstart/wheel; scroll TIDAK dihitung).
+  # Isi (mis. 5000) agar keduanya tetap dimuat sekian ms setelah load walau tanpa interaksi. 0 = hanya menunggu interaksi.
+  thirdPartyFallbackMs = 0
+
+  # Koordinat widget cuaca di navigasi (Open-Meteo).
+  weatherLatitude = -6.455069401623014
+  weatherLongitude = 106.85066008971673
   exitIntentTitle = "Tunggu jangan pergi"
   exitIntentContent = "ada artikel menarik lainnya yang bisa dilihat"
 
   # Donasi Domain
-  enableDonationModal = true 
+  enableDonationModal = true
   donationTarget = 60000
   donationCurrent = 0
   donationTitle = "Dukungan"
   donationContent = "Bantu saya memperpanjang domain agar web ini tetap aktif"
   domainExpiryDate = "2027-01-30" # Format: Tahun-Bulan-Hari
 
+[params.swg]
+  productId   = "CAowmczhCw:member"
+  productName = "Member"
 
 # Menu Header
 [[menu.main]]
@@ -89,7 +103,6 @@ name = "Topik"
 url = "/topics/"
 pre = "icon-[ri--hashtag]"
 weight = 20
-
 
 [[menu.main]]
 name = "Toko"
@@ -109,8 +122,6 @@ url = "/about/"
 pre = "icon-[lucide--user-round-pen]"
 weight = 40
 
-
-
 # menu offcanvas
 # ======================
 
@@ -129,7 +140,7 @@ url = "/musik/"
 pre = "icon-[ri--music-2-line]"
 weight = 15
 [menu.footer.params]
-  color = "text-blue-500"  
+  color = "text-blue-500"
 
 [[menu.footer]]
 name = "Prompt"
@@ -147,6 +158,14 @@ weight = 50
 [menu.footer.params]
   color = "text-orange-500"
 
+[[menu.footer]]
+name = "Membership"
+url = "/membership"
+pre = "icon-[lucide--crown]"
+weight = 55
+[menu.footer.params]
+  color = "text-amber-500"
+
 # [[menu.footer]]
 # name = "Prompt"
 # url = "/animasi/prompt/"
@@ -155,8 +174,8 @@ weight = 50
 # [menu.footer.params]
 #   group = "Animasi"
 #   group_url = "/animasi/"
-#   dropdown_title = "Animasi" 
-#   dropdown_icon = "icon-[ri--movie-line]"  
+#   dropdown_title = "Animasi"
+#   dropdown_icon = "icon-[ri--movie-line]"
 #   color = "text-rose-500"
 
 # [[menu.footer]]
@@ -166,7 +185,7 @@ weight = 50
 # weight = 6
 # [menu.footer.params]
 #   group = "Animasi"
-#   color = "text-violet-500"   
+#   color = "text-violet-500"
 
 # [[menu.footer]]
 # name = "Affiliate"
@@ -175,7 +194,6 @@ weight = 50
 # weight = 30
 # [menu.footer.params]
 #   color = "text-blue-500"
-
 
 # menu offcanvas social
 # =======================
@@ -194,7 +212,7 @@ url = "/about/#support"
 pre = "icon-[ri--heart-3-line]"
 weight = 4
 [menu.social.params]
-  color = "text-rose-500"  
+  color = "text-rose-500"
 
 # menu bottom mobile
 # ======================
@@ -229,7 +247,6 @@ url = "/about/"
 pre = "icon-[lucide--user-round-pen]"
 weight = 40
 
-
 [markup]
   [markup.highlight]
     codeFences = true
@@ -249,24 +266,24 @@ weight = 40
   posts = "/:slug/"
 
 # allow html to content .md
-[markup.goldmark.renderer] 
-	unsafe= true
+[markup.goldmark.renderer]
+  unsafe = true
 
 # allow shortcodes
 [security]
-	enableInlineShortcodes = true	
+  enableInlineShortcodes = true
 
 # output format
 [outputs]
-  home = ["HTML", "JSON", "RSS"]  
+  home = ["HTML", "JSON", "RSS"]
   section = ["HTML"] #force section only generate HTML not with RSS
 
-[outputFormats] 
+[outputFormats]
 [outputFormats.JSON]
   mediaType = "application/json"
   baseName = "index"
   isPlainText = true
-  notAlternative = true    
+  notAlternative = true
 
 [languages.id]
 label = "Indonesian"

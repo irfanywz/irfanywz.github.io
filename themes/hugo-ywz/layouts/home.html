@@ -4,7 +4,7 @@
 
     <main class="flex-grow bg-white dark:bg-gray-900 transition-colors duration-300">
         
-        {{ $paginator := .Paginate (where .Site.RegularPages "Section" "in" (slice "posts")) }}
+        {{ $paginator := .Paginate (where site.RegularPages "Section" "in" (slice "posts")) }}
             
         <div class="container max-w-6xl mx-auto px-4 sm:px-6 py-6 md:py-8">
 

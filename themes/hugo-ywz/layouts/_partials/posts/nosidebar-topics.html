@@ -1,10 +1,10 @@
 <!-- Nosidebar Tabbed Widget: Topics & Keywords (Mediumish Editorial Style, No Rounded/Border Card) -->
-{{ $showSidebarTabbed := .Site.Params.showSidebarTabbed | default true }}
+{{ $showSidebarTabbed := site.Params.showSidebarTabbed | default true }}
 {{ if $showSidebarTabbed }}
 
     <!-- 1. Ambil & Filter Topics -->
     {{ $validTopics := slice }}
-    {{ range .Site.Taxonomies.topics }}
+    {{ range site.Taxonomies.topics }}
         {{ $filteredPages := where .Pages "Section" "posts" }}
         {{ $filteredCount := len $filteredPages }}
         {{ if gt $filteredCount 0 }}
@@ -15,7 +15,7 @@
 
     <!-- 2. Ambil & Filter Keywords -->
     {{ $validKeywords := slice }}
-    {{ range .Site.Taxonomies.keywords }}
+    {{ range site.Taxonomies.keywords }}
         {{ $filteredPages := where .Pages "Section" "posts" }}
         {{ $filteredCount := len $filteredPages }}
         {{ if gt $filteredCount 0 }}

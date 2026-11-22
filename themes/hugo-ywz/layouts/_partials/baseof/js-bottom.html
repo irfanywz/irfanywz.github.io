@@ -1,7 +1,9 @@
+{{- $ids := partialCached "config/site-ids.html" "ids" -}}
 {{- $footerOpts := dict
     "minify" (not hugo.IsDevelopment)
     "sourceMap" (cond hugo.IsDevelopment "external" "")
     "targetPath" "js/footer.min.js"
+    "params" (dict "gaId" $ids.analytics "adsenseId" $ids.adsense "fallbackMs" (int (site.Params.thirdPartyFallbackMs | default 0)) "weatherLatitude" (float (site.Params.weatherLatitude | default -6.455069401623014)) "weatherLongitude" (float (site.Params.weatherLongitude | default 106.85066008971673)))
 }}
 
 {{- with resources.Get "js/footer.js" }}
@@ -15,21 +17,3 @@
         {{- end }}
     {{- end }}
 {{- end }}
-
-
-{{ if eq (now.Format "01") "09" }}
-<!-- <script src="{{ $.Site.BaseURL }}js/angin.js"></script> -->
-{{ end }}
-
-{{/* only show hallowen in october  */}}
-{{ if eq (now.Format "01") "10" }}
-    <!-- <script src="{{ $.Site.BaseURL }}js/hallowen-widget.js"></script> -->
-{{ end }}
-
-
-{{/* only show snow in december  */}}
-{{ if eq (now.Format "01") "12" }}
-    <!-- <script src="{{ $.Site.BaseURL }}js/natal-widget.js"></script> -->
-{{ end }}
-
-<!-- {{ partial "google_analytics.html" . }} -->

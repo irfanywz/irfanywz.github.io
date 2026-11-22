@@ -1,17 +1,24 @@
+{{- /* layouts/partials/components/swg-metadata.html
+       Markup Subscribe with Google. Nilai diambil dari hugo.toml:
+       [params.swg]
+         productId   = "CAowmczhCw:member"
+         productName = "Member"
+*/ -}}
+{{- $swg := site.Params.swg | default dict -}}
+{{- with $swg.productId }}
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "NewsArticle",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "{{ .Permalink }}"
-  },
-  "headline": "{{ .Title }}",
-  "isAccessibleForFree": false,
-  "isPartOf": {
-    "@type": ["CreativeWork", "Product"],
-    "name": "Member",
-    "productID": "CAowmczhCw:member"
-  }
-}
+{{ dict
+  "@context" "https://schema.org"
+  "@type" "NewsArticle"
+  "mainEntityOfPage" (dict "@type" "WebPage" "@id" $.Permalink)
+  "headline" $.Title
+  "isAccessibleForFree" false
+  "isPartOf" (dict
+    "@type" (slice "CreativeWork" "Product")
+    "name" ($swg.productName | default "Member")
+    "productID" .)
+  | jsonify | safeJS }}
 </script>
+{{- else }}
+  {{- warnf "swg-metadata: params.swg.productId belum diisi di hugo.toml, markup SwG tidak dibuat" }}
+{{- end }}

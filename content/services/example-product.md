@@ -68,7 +68,7 @@ testimonials:
     comment: "Fitur splitter-nya juara, rapi dan cepat."
 
 date: 2026-03-06T00:00:00+07:00
-draft: false
+draft: true
 ---
 
 Music Max adalah aplikasi desktop untuk membantu membuat konten musik playlist. Dengan kumpulan alat yang ada, pembuatan konten musik siap upload jadi lebih mudah dan cepat.

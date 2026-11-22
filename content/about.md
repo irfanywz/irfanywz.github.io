@@ -1,9 +1,6 @@
 ---
-title: "Tentang Blog"
-# description: "ikan lohan ikan gabus, direndam dulu baru direbus, agar silahturahmi tidak terputus, pinjam dulu seratus. 😜"
-# description: "Beli bubur dicampur kuah,Dimakan hangat di atas kardus,Agar silaturahmi tidak terputus,Pinjam dulu seratus. 😆"
-# description: "Pergi ke pasar membeli mangga, pulangnya naik kereta cepat. Selamat datang di halaman saya, semoga ada ilmu yang bermanfaat."
-description: "Pergi ke pasar membeli mangga, Selamat datang di halaman saya 🤓"
+title: "Tentang Penulis"
+description: "Hal-hal baik akan sering datang dan terjadi kedalam kehidupanmu"
 layout: "about"
 profile_picture: "avatar.avif"
 draft: false

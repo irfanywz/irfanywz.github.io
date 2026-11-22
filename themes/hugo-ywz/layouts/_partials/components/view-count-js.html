@@ -1,7 +1,9 @@
+{{- $ids := partialCached "config/site-ids.html" "ids" -}}
 {{- $jsOpts := dict
     "minify" (not hugo.IsDevelopment)
     "sourceMap" (cond hugo.IsDevelopment "external" "")
     "targetPath" "js/view-count.min.js"
+    "params" (dict "databaseUrl" $ids.firebase)
 }}
 
 {{- with resources.Get "js/view-count.js" }}

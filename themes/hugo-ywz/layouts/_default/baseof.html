@@ -16,14 +16,14 @@
 
 <body class="bg-white dark:bg-gray-900">
 
-    {{ $hideHeader := .Scratch.Get "hideHeader" }}
+    {{ $hideHeader := .Store.Get "hideHeader" }}
     {{ if not $hideHeader }}
         {{ partial "baseof/header.html" . }}
     {{ end }}
 
     {{ block "main" . }}{{ end }}
 
-    {{ $hideFooter := .Scratch.Get "hideFooter" }}
+    {{ $hideFooter := .Store.Get "hideFooter" }}
     {{ if not $hideFooter }}
         {{ partial "baseof/footer.html" . }}
         {{ partial "baseof/nav-bottom.html" . }}
@@ -41,7 +41,7 @@
     {{ partialCached "baseof/donate-modal.html" . }}
 
     <!-- Exit Intent Popup Component -->
-    <!-- {{ partialCached "baseof/exit-intent-popup.html" . }} -->
+    {{ if site.Params.enableExitIntent }}{{ partialCached "baseof/exit-intent-popup.html" . }}{{ end }}
     
     {{ partialCached "baseof/page-loader.html" . }}
 

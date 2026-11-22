@@ -11,11 +11,6 @@ canonifyURLs = true
 
 pagination.pagerSize = 6
 
-pygmentsstyle = "vs"
-pygmentscodefences = true
-pygmentscodefencesguesssyntax = true
-
-
 [params]
   version = "2.0.12"
   # browser icon
@@ -60,7 +55,6 @@ url = "/shop/"
 pre = "icon-[ri--shopping-bag-line]"
 weight = 35
 
-
 [[menu.main]]
 name = "Kontak"
 url = "/contact/"
@@ -69,7 +63,6 @@ weight = 40
 
 # menu offcanvas
 # ======================
-
 
 [[menu.footer]]
 name = "Jurnal"
@@ -85,7 +78,7 @@ url = "/projects/"
 pre = "icon-[ri--briefcase-2-line]"
 weight = 30
 [menu.footer.params]
-  color = "text-indigo-500"  
+  color = "text-indigo-500"
 
 # [[menu.footer]]
 # name = "Belajar"
@@ -168,7 +161,6 @@ url = "/"
 pre = "icon-[ri--home-line]"
 weight = 10
 
-
 [[menu.bottom]]
 name = "Belajar"
 url = "/learn/"
@@ -216,23 +208,23 @@ weight = 40
   tag = 'tags'
 
 # allow html to content .md
-[markup.goldmark.renderer] 
-  unsafe= true
+[markup.goldmark.renderer]
+  unsafe = true
 
 # allow shortcodes
 [security]
-  enableInlineShortcodes = true 
+  enableInlineShortcodes = true
 
 # output format
 [outputs]
-  home = ["HTML", "RSS", "JSON"]  
+  home = ["HTML", "RSS", "JSON"]
 
 [outputFormats]
 [outputFormats.JSON]
   mediaType = "application/json"
   baseName = "index"
   isPlainText = true
-  notAlternative = true  
+  notAlternative = true
 
 [languages.id]
 label = "Indonesian"

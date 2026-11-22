@@ -1,6 +1,6 @@
 <!-- AdSense Placeholder -->
-{{ if .Site.Params.showAdsSidebar }}
-{{ with .Site.Params.adCodeSidebar }}
+{{ if site.Params.showAdsSidebar }}
+{{ with site.Params.adCodeSidebar }}
 <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl text-center text-sm text-gray-400 border border-gray-100 dark:border-gray-700 min-h-[250px] flex items-center justify-center">
         {{ . | safeHTML }}
 </div>   

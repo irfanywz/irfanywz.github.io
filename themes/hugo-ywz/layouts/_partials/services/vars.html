@@ -1,0 +1,17 @@
+{{- /*
+  services/vars.html — nilai turunan halaman layanan, dipakai bersama oleh single.html,
+  details.html dan purchase-card.html.
+  Context: halaman layanan (.)
+  Return (dict): payQr bool, qr string (URL gambar QR), images slice
+*/ -}}
+{{- /* Bayar via QR: default aktif untuk item berbayar. Matikan per item dengan payment_qr: false */ -}}
+{{- $payQr := true -}}
+{{- if or .Params.free (eq (printf "%v" .Params.payment_qr) "false") -}}{{- $payQr = false -}}{{- end -}}
+{{- $qr := .CurrentSection.Params.qr_image | default "/qrcode.avif" | relURL -}}
+{{- $images := slice -}}
+{{- if .Params.gallery -}}
+    {{- $images = .Params.gallery -}}
+{{- else if .Params.image -}}
+    {{- $images = slice .Params.image -}}
+{{- end -}}
+{{- return (dict "payQr" $payQr "qr" $qr "images" $images) -}}

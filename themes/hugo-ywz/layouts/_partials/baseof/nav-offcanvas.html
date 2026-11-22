@@ -36,7 +36,7 @@
     {{ $page_split := index (split $page_url "/") 1 }}
     
     {{/* 1. Kumpulkan semua item menu yang sudah diurutkan berdasarkan Weight */}}
-    {{ $sortedMenu := sort .Site.Menus.footer "Weight" }}
+    {{ $sortedMenu := sort site.Menus.footer "Weight" }}
 
     {{/* 2. Buat list grup unik dengan mendeteksi kemunculan pertama, agar urutan grupnya ngikutin weight item di dalamnya */}}
     {{ $groups := slice }}
@@ -50,7 +50,7 @@
     openDropdowns: {
         {{ range $index, $groupName := $groups }}
             {{ $isThisGroupActive := false }}
-            {{ range $.Site.Menus.footer }}
+            {{ range site.Menus.footer }}
                 {{ if eq .Params.group $groupName }}
                     {{ $menu_item_url := .URL | relLangURL }}
                     {{ $page_url := $.Page.RelPermalink | relLangURL }}
@@ -65,7 +65,7 @@
 }">
     
     {{ $page_url := $.Page.RelPermalink | relLangURL }}
-    {{ $sortedMenu := sort .Site.Menus.footer "Weight" }}
+    {{ $sortedMenu := sort site.Menus.footer "Weight" }}
     {{ $renderedGroups := slice }}
 
     {{ range $sortedMenu.ByWeight }}
@@ -90,7 +90,7 @@
             {{ $isThisGroupActive := false }}
 
             {{/* Ambil konfigurasi dropdown dan group_url dari item-item di dalam grup ini */}}
-            {{ range $.Site.Menus.footer }}
+            {{ range site.Menus.footer }}
                 {{ if eq .Params.group $groupKey }}
                     {{ if .Params.dropdown_title }}{{ $groupTitle = .Params.dropdown_title }}{{ end }}
                     {{ if .Params.dropdown_icon }}{{ $groupIcon = .Params.dropdown_icon }}{{ end }}
@@ -130,7 +130,7 @@
 
             {{/* Daftar Item di dalam Dropdown */}}
             <div x-show="openDropdowns['{{ $groupKey }}']" x-transition.origin.top.duration.200ms class="space-y-1 pt-1 pl-2" style="display: none;">
-                {{ range $.Site.Menus.footer.ByWeight }}
+                {{ range site.Menus.footer.ByWeight }}
                     {{ if eq .Params.group $groupKey }}
                         {{ $menu_item_url := .URL | relLangURL }}
                         {{ $active := and (eq $menu_item_url $page_url) (not $.IsHome) }}
@@ -149,11 +149,11 @@
 </div>
 
         <!-- Bagian Social Links -->
-        {{ if .Site.Menus.social }}
+        {{ if site.Menus.social }}
         <div class="pt-4 border-t border-gray-100 dark:border-gray-800">
             <span class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-3 px-1">Personal</span>
             <div class="grid grid-cols-2 gap-2">
-                {{ range .Site.Menus.social }}
+                {{ range site.Menus.social }}
                 <a href="{{ .URL }}" class="flex items-center gap-2.5 p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 border border-gray-200/60 dark:border-gray-700/60 transition-all text-xs font-medium">
                     <span class="{{ .Pre }} w-4 h-4 {{ .Params.color }}"></span>
                     <span class="truncate">{{ .Name }}</span>

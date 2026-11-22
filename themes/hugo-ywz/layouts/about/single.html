@@ -44,7 +44,7 @@
                     {{ if .Params.profile_picture }}
                     <div class="relative flex-shrink-0 group">
                         <div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-300"></div>
-                        <img src="{{ .Params.profile_picture | relURL }}" alt="Foto Profil {{ .Site.Title }}" class="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full object-cover shadow-inner border-4 border-white dark:border-gray-900">
+                        <img src="{{ .Params.profile_picture | relURL }}" alt="Foto Profil {{ site.Title }}" class="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full object-cover shadow-inner border-4 border-white dark:border-gray-900">
                     </div>
                     {{ end }}
 

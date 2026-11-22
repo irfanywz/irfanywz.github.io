@@ -1,6 +1,6 @@
 ---
 title: "Toko"
-description: "Produk digital dan jasa yang tersedia. Pilih, bayar via QR, lalu konfirmasi ke admin."
+description: "Jelajahi Layanan dan Aplikasi yang ditawarkan"
 icon: "icon-[ri--store-2-line]"
 
 # Kontak admin: dipakai tombol konfirmasi pembayaran di halaman detail

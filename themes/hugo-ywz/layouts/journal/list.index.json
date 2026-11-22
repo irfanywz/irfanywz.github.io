@@ -1,8 +1,12 @@
-{{- $journalSection := .Site.GetPage "section" "journal" -}}
+{{- $journalSection := site.GetPage "section" "journal" -}}
 {{- $pages := where $journalSection.RegularPages "Params.hidden" "ne" true -}}
 
 {{- $data := slice -}}
 {{- range $pages -}}
+  {{- $cats := slice -}}
+  {{- range (.Params.journal_category | default slice) -}}
+    {{- with trim . " " }}{{ $cats = $cats | append . }}{{ end -}}
+  {{- end -}}
   {{- $item := dict 
     "title" .Title 
     "permalink" .RelPermalink 
@@ -12,7 +16,7 @@
     "day" (.Date.Format "02") 
     "dayName" (lower (slicestr (i18n .Date.Weekday) 0 3)) 
     "draft" .Draft 
-    "categories" (.Params.journal_category | default slice)
+    "categories" $cats
   -}}
   {{- $data = $data | append $item -}}
 {{- end -}}

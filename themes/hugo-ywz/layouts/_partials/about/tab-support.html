@@ -151,57 +151,5 @@
     {{ end }}
 
     <!-- JAVASCRIPT FORM SUPPORT -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('support-form');
-            const result = document.getElementById('support-result');
-            
-            if (form && result) {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const formData = new FormData(form);
-                    const object = Object.fromEntries(formData);
-                    const json = JSON.stringify(object);
-                    
-                    result.style.display = "block";
-                    result.innerHTML = "Mohon tunggu sebentar...";
-                    result.className = "mt-4 p-3 rounded-xl text-xs bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400";
-
-                    fetch('https://api.web3forms.com/submit', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: json
-                    })
-                    .then(async (response) => {
-                        let resJson = await response.json();
-                        
-                        if (response.status === 200) {
-                            result.innerHTML = "Konfirmasi berhasil terkirim! Terima kasih banyak dukungannya ❤️";
-                            result.className = "mt-4 p-3 rounded-xl text-xs bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400";
-                        } else {
-                            console.error("Web3Forms Error:", resJson);
-                            result.innerHTML = resJson.message || "Terjadi kesalahan saat mengirim.";
-                            result.className = "mt-4 p-3 rounded-xl text-xs bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400";
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Fetch Error:", error);
-                        result.innerHTML = "Terjadi kesalahan jaringan! Coba lagi.";
-                        result.className = "mt-4 p-3 rounded-xl text-xs bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400";
-                    })
-                    .finally(function() {
-                        form.reset();
-                        setTimeout(() => {
-                            result.innerHTML = "";
-                            result.style.display = "none";
-                        }, 6000);
-                    });
-                });
-            }
-        });
-    </script>
+    {{ partial "components/inline-bundle.html" (dict "src" "js/pages/about/support-form.js") }}
 </div>

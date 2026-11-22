@@ -2,7 +2,7 @@
 {{ $isPostAdEnabled := .Params.showAds | default false }}
 
 {{/* Pastikan juga tombol master global di hugo.toml menyala (opsional, untuk pengaman utama) */}}
-{{ $isGlobalAllowed := .Site.Params.showAds | default true }}
+{{ $isGlobalAllowed := site.Params.showAds | default true }}
 
 {{ if and $isGlobalAllowed $isPostAdEnabled }}
     
@@ -23,7 +23,7 @@
         
         {{ if in $targetPositions $currentParagraphNum }}
             <div class="my-6 p-4 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm text-center">
-                {{ $.Site.Params.adCode | safeHTML }}
+                {{ site.Params.adCode | safeHTML }}
             </div>
         {{ end }}
     {{ end }}

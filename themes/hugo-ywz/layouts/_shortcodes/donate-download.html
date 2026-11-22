@@ -2,7 +2,7 @@
 {{ $text := .Get "text" | default "Unduh" }}
 
 {{/* Ambil data front matter dari halaman about */}}
-{{ $aboutPage := .Site.GetPage "/about/index.md" }}
+{{ $aboutPage := site.GetPage "/about/index.md" }}
 {{ $qrImage := "" }}
 {{ $qrDesc := "" }}
 

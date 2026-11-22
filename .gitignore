@@ -10,3 +10,4 @@ resources
 
 node_modules
 plan
+.hugo_build.lock

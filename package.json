@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx @tailwindcss/cli -i ./themes/hugo-ywz/assets/css/input.css -o ./themes/hugo-ywz/assets/css/output.css --watch",
-    "build": "npx @tailwindcss/cli -i ./themes/hugo-ywz/assets/css/input.css -o ./themes/hugo-ywz/assets/css/output.css --minify"
+    "build": "npx @tailwindcss/cli -i ./themes/hugo-ywz/assets/css/input.css -o ./themes/hugo-ywz/assets/css/output.css --minify",
+    "start": "node scripts/dev.mjs",
+    "test": "node scripts/test.mjs",
+    "check": "node scripts/check.mjs"
   },
   "repository": {
     "type": "git",

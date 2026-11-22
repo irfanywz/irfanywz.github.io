@@ -9,24 +9,7 @@
     {{ partial "baseof/css.html" . }}
 
     <!-- Script Redirect Otomatis -->
-    <script>
-        (function() {
-            const currentPath = window.location.pathname;
-            
-            // 1. Redirect untuk URL lama /posts/
-            if (currentPath.startsWith('/posts/')) {
-                const newPath = currentPath.replace('/posts/', '/');
-                window.location.replace(window.location.origin + newPath);
-                return;
-            }
-
-            // 2. Redirect khusus untuk URL /docs/ ke halaman portfolio
-            if (currentPath === '/docs' || currentPath === '/docs/' || currentPath.startsWith('/docs/')) {
-                window.location.replace('/about/#portofolio');
-                return;
-            }
-        })();
-    </script>
+    {{ partial "components/inline-js.html" (dict "src" "js/pages/404-redirect.js") }}
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen flex items-center justify-center p-4">
     <div class="text-center space-y-6 max-w-md">
@@ -35,7 +18,7 @@
         <p class="text-gray-600 dark:text-gray-400 text-lg">
             Maaf, halaman yang Anda cari tidak dapat ditemukan.
         </p>
-        <a href="{{ .Site.BaseURL }}" class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors shadow-sm">
+        <a href="{{ site.BaseURL }}" class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors shadow-sm">
             <i class="icon-[ri--arrow-left-line]"></i>
             <span>Kembali ke Beranda</span>
         </a>    </div>

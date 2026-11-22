@@ -4,7 +4,7 @@
   "resources": {{ .Params.resources | jsonify }},
   "choice_databases": {{ .Params.choice_databases | jsonify }},
   "categories": [
-    {{- $promptSection := .Site.GetPage "section" "musik" -}}
+    {{- $promptSection := site.GetPage "section" "musik" -}}
     {{- if $promptSection -}}
       {{- /* Mengurutkan section berdasarkan nama direktori/folder */ -}}
       {{- $sections := sort $promptSection.Sections "File.Dir" "asc" -}}

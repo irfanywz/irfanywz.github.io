@@ -1,0 +1,297 @@
+baseURL = "https://irfanywz.web.id/"
+theme = "hugo-ywz"
+locale = "en-us"
+title = "irfanywz"
+copyright = "irfanywz"
+
+enableEmoji = true
+enableGitInfo = true
+enableRobotsTXT = true
+canonifyURLs = true
+
+pagination.pagerSize = 6
+
+pygmentsstyle = "vs"
+pygmentscodefences = true
+pygmentscodefencesguesssyntax = true
+
+[params]
+
+  # title for seo
+  title = "irfanywz"
+  address = "irfanywz.web.id"
+
+
+	# browser icon
+  favicon = "favicon.ico"
+
+	# Optional 64x64 avatar image.
+	# avatar = "https://avatars.githubusercontent.com/u/117440754?v=4"
+  avatar = "avatar.avif"
+  logo = "logo.avif"
+  logoText = "logo-text.avif"
+
+  author = "irfanywz"
+  description = "Personal blog irfanywz, menulis dan berbagi hal menarik seputar teknologi." 
+  keywords = "irfanywz, Konten kreator pemula, lagi belajar Storytelling, muhamadirfan300899, Bogor, Personal Blog"
+
+  # ads on post
+  showAds = false 
+  adInterval = 4
+  adCode = '''
+    <div class="w-full">
+        <span class="block text-xs font-semibold tracking-wider text-gray-400 uppercase mb-2">Advertisement</span>
+        <div class="text-sm text-gray-500 dark:text-gray-400">
+            <!-- Contoh jika pakai script AdSense atau banner kustom -->
+            <span>-- Slot Iklan Global dari Confige --</span>
+        </div>
+    </div>
+  '''
+
+  # sidebar configuration
+  showSidebarTopics = true
+  showSidebarPartner = false
+
+  # ads sidebar
+  showAdsSidebar = false
+  adCodeSidebar = '''
+    <div class="w-full">
+        <span class="block text-xs font-semibold tracking-wider text-gray-400 uppercase mb-2">Advertisement</span>
+        <div class="text-sm text-gray-500 dark:text-gray-400">
+            <!-- Contoh jika pakai script AdSense atau banner kustom -->
+            <span>-- Slot Iklan Global dari Config --</span>
+        </div>
+    </div>
+  '''
+
+  # Exit Popup
+  exitIntentTitle = "Tunggu jangan pergi"
+  exitIntentContent = "ada artikel menarik lainnya yang bisa dilihat"
+
+  # Donasi Domain
+  enableDonationModal = true 
+  donationTarget = 60000
+  donationCurrent = 0
+  donationTitle = "Dukungan"
+  donationContent = "Bantu saya memperpanjang domain agar web ini tetap aktif"
+  domainExpiryDate = "2027-01-30" # Format: Tahun-Bulan-Hari
+
+[params.author_box]
+  name = "Penulis"
+  description = "Halo pengunjung selamat datang diweb irfanywz, saya menulis dan berbagi hal menarik seputar teknologi."
+
+[params.swg]
+  productId   = "CAowmczhCw:member"
+  productName = "Member"
+
+# Menu Header
+[[menu.main]]
+name = "Beranda"
+url = "/"
+pre = "icon-[ri--home-line]"
+weight = 10
+
+[[menu.main]]
+name = "Topik"
+url = "/topics/"
+pre = "icon-[ri--hashtag]"
+weight = 20
+
+
+[[menu.main]]
+name = "Toko"
+url = "/services/"
+pre = "icon-[ri--store-2-line]"
+weight = 30
+
+[[menu.main]]
+name = "Kontak"
+url = "/contact/"
+pre = "icon-[ri--mail-line]"
+weight = 35
+
+[[menu.main]]
+name = "Tentang"
+url = "/about/"
+pre = "icon-[lucide--user-round-pen]"
+weight = 40
+
+
+
+# menu offcanvas
+# ======================
+
+[[menu.footer]]
+name = "Animasi"
+url = "/animasi/"
+pre = "icon-[ri--movie-line]"
+weight = 10
+[menu.footer.params]
+  # group = "animasiz"
+  color = "text-rose-500"
+
+[[menu.footer]]
+name = "Musik"
+url = "/musik/"
+pre = "icon-[ri--music-2-line]"
+weight = 15
+[menu.footer.params]
+  color = "text-blue-500"  
+
+[[menu.footer]]
+name = "Prompt"
+url = "/prompt/"
+pre = "icon-[ri--magic-line]"
+weight = 20
+[menu.footer.params]
+  color = "text-emerald-500"
+
+[[menu.footer]]
+name = "Alat"
+url = "/tools/"
+pre = "icon-[ri--wrench-line]"
+weight = 50
+[menu.footer.params]
+  color = "text-orange-500"
+
+[[menu.footer]]
+name = "Membership"
+url = "/membership"
+pre = "icon-[lucide--crown]"
+weight = 55
+[menu.footer.params]
+  color = "text-amber-500"  
+
+# [[menu.footer]]
+# name = "Prompt"
+# url = "/animasi/prompt/"
+# pre = "icon-[ri--magic-line]"
+# weight = 5
+# [menu.footer.params]
+#   group = "Animasi"
+#   group_url = "/animasi/"
+#   dropdown_title = "Animasi" 
+#   dropdown_icon = "icon-[ri--movie-line]"  
+#   color = "text-rose-500"
+
+# [[menu.footer]]
+# name = "SFX"
+# url = "/animasi/sfx/"
+# pre = "icon-[ri--music-2-line]"
+# weight = 6
+# [menu.footer.params]
+#   group = "Animasi"
+#   color = "text-violet-500"   
+
+# [[menu.footer]]
+# name = "Affiliate"
+# url = "/affiliate/"
+# pre = "icon-[ri--stack-line]"
+# weight = 30
+# [menu.footer.params]
+#   color = "text-blue-500"
+
+
+# menu offcanvas social
+# =======================
+
+[[menu.social]]
+name = "Jurnal"
+url = "/journal"
+pre = "icon-[ri--newspaper-line]"
+weight = 3
+[menu.social.params]
+  color = "text-blue-500"
+
+[[menu.social]]
+name = "Dukungan"
+url = "/about/#support"
+pre = "icon-[ri--heart-3-line]"
+weight = 4
+[menu.social.params]
+  color = "text-rose-500"  
+
+# menu bottom mobile
+# ======================
+
+[[menu.bottom]]
+name = "Beranda"
+url = "/"
+pre = "icon-[ri--home-line]"
+weight = 10
+
+[[menu.bottom]]
+name = "Topik"
+url = "/topics/"
+pre = "icon-[ri--hashtag]"
+weight = 20
+
+[[menu.bottom]]
+name = "Toko"
+url = "/services/"
+pre = "icon-[ri--store-2-line]"
+weight = 30
+
+[[menu.bottom]]
+name = "Kontak"
+url = "/contact/"
+pre = "icon-[ri--mail-line]"
+weight = 35
+
+[[menu.bottom]]
+name = "Tentang"
+url = "/about/"
+pre = "icon-[lucide--user-round-pen]"
+weight = 40
+
+
+[markup]
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    lineNoStart = 1
+    lineNos = false
+    lineNumbersInTable = true
+    noClasses = false
+    style = "dracula"  # or any other chroma style
+    tabWidth = 2
+
+[taxonomies]
+  keyword = 'keywords'
+  topic = "topics"
+
+[permalinks]
+  posts = "/:slug/"
+
+# allow html to content .md
+[markup.goldmark.renderer] 
+	unsafe= true
+
+# allow shortcodes
+[security]
+	enableInlineShortcodes = true	
+
+# output format
+[outputs]
+  home = ["HTML", "JSON", "RSS"]  
+  section = ["HTML"] #force section only generate HTML not with RSS
+
+[outputFormats] 
+[outputFormats.JSON]
+  mediaType = "application/json"
+  baseName = "index"
+  isPlainText = true
+  notAlternative = true    
+
+[languages.id]
+label = "Indonesian"
+locale = "id"
+
+[privacy]
+  [privacy.googleAnalytics]
+    disable = false
+    respectDoNotTrack = false
+
+[services]
+  [services.googleAnalytics]
+    id = 'G-VVGW3VPZZG'
