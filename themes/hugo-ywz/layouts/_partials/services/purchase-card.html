@@ -4,7 +4,6 @@
 */ -}}
 {{- $v := partial "services/vars.html" . -}}
 {{- $payQr := $v.payQr -}}
-{{- $qr := $v.qr -}}
 <aside class="lg:col-span-4 self-start sticky top-8 h-max">
     <div class="space-y-6">
         <div id="checkout" class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
@@ -108,58 +107,10 @@
                 </div>
                 {{ end }}
 
-                <!-- Langkah 2: Bayar via QR -->
+                <!-- Langkah 2: Bayar via QR (QRIS dinamis bila qris_static diisi) -->
                 {{ if and $payQr .Params.available }}
-                <div>
-                    <p class="flex items-center gap-2 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
-                        {{ $step = add $step 1 }}<span class="w-5 h-5 rounded-full bg-indigo-600 text-white text-[10px] flex items-center justify-center">{{ $step }}</span>
-                        Bayar via QR
-                    </p>
-                    <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 p-4 text-center space-y-3">
-                        <button type="button" @click="qrOpen = true" aria-label="Perbesar QR"
-                                class="block mx-auto bg-white p-2 rounded-lg border border-gray-200 cursor-zoom-in">
-                            <img src="{{ $qr }}" alt="QR Pembayaran" class="w-48 h-48 object-contain" loading="lazy">
-                        </button>
-                        {{ with .CurrentSection.Params.qr_account_name }}
-                        <p class="text-xs font-medium text-gray-700 dark:text-gray-300">{{ . }}</p>
-                        {{ end }}
-                        <p class="text-xs text-gray-500 dark:text-gray-400">Scan pakai e-wallet / mobile banking apa saja. Ketuk QR untuk memperbesar.</p>
-
-                        <div class="flex items-center justify-between gap-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-2 text-left">
-                            <div>
-                                <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Nominal bayar</p>
-                                <p class="font-bold text-indigo-600 dark:text-indigo-400" x-text="priceLabel"></p>
-                            </div>
-                            <button type="button" @click="copyAmount()"
-                                    class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs font-bold bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors">
-                                <span :class="copied ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
-                                <span x-text="copied ? 'Tersalin' : 'Salin'"></span>
-                            </button>
-                        </div>
-
-                        <a href="{{ $qr }}" download="qr-pembayaran" class="inline-flex items-center gap-1 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">
-                            <span class="icon-[ri--download-2-line]"></span> Simpan QR
-                        </a>
-                    </div>
-
-                    <!-- QR Modal -->
-                    <template x-teleport="body">
-                        <div x-show="qrOpen" style="display: none;"
-                             x-transition.opacity
-                             @keydown.window.escape="qrOpen = false"
-                             @click.self="qrOpen = false"
-                             class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-                            <div class="relative bg-white rounded-2xl p-4 w-full max-w-sm">
-                                <button type="button" @click="qrOpen = false" aria-label="Tutup"
-                                        class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-gray-900 text-white flex items-center justify-center shadow">
-                                    <span class="icon-[ri--close-line] text-xl"></span>
-                                </button>
-                                <img src="{{ $qr }}" alt="QR Pembayaran" class="w-full h-auto object-contain">
-                                <p class="mt-2 text-center text-sm font-bold text-gray-900" x-text="priceLabel"></p>
-                            </div>
-                        </div>
-                    </template>
-                </div>
+                {{ $step = add $step 1 }}
+                {{ partial "services/qr-payment.html" (dict "page" . "step" $step) }}
                 {{ end }}
 
                 <!-- Langkah 3: Konfirmasi / Kontak -->

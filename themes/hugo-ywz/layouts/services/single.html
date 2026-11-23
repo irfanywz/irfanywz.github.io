@@ -1,6 +1,8 @@
 {{ define "main" }}
 {{ $v := partial "services/vars.html" . }}
 {{ $payQr := $v.payQr }}
+{{/* QRIS dinamis: qris_static (string QRIS statis) di _index.md. Kosong = pakai gambar qr_image */}}
+{{ $qrImage := $v.qr }}
 <main class="w-full bg-gray-50 dark:bg-gray-900/50 transition-colors duration-300">
     <div class="max-w-6xl mx-auto px-4 py-8 md:py-12"
          x-data="productPurchase({
@@ -15,7 +17,9 @@
             contact: {
                 wa: '{{ .CurrentSection.Params.contact_wa }}',
                 telegram: '{{ .CurrentSection.Params.contact_telegram }}'
-            }
+            },
+            qris: {{ .CurrentSection.Params.qris_static | default "" | jsonify }},
+            qrImage: {{ $qrImage | jsonify }}
          })">
         
         <div class="grid lg:grid-cols-12 gap-8 items-start">

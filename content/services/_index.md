@@ -12,4 +12,5 @@ contact_telegram: "irfanywz"
 # QR pembayaran (QRIS dll). File ada di static/qrcode.avif -> diakses lewat "/qrcode.avif"
 qr_image: "/qrcode.avif"
 qr_account_name: "Bayar Lewat Qris"   # opsional, tampil di bawah QR
+qris_static: "00020101021126570011ID.DANA.WWW011893600915397629935902099762993590303UMI51440014ID.CO.QRIS.WWW0215ID10254258792160303UMI5204504553033605802ID5908irfanywz6010Kab. Bogor6105169166304F041"
 ---

@@ -1,0 +1,75 @@
+{{/*
+    Langkah "Bayar via QR" untuk kartu pembelian.
+    Panggil dari purchase-card.html (menggantikan blok QR lama):
+
+        {{ $step = add $step 1 }}
+        {{ partial "services/qr-payment.html" (dict "page" . "step" $step) }}
+
+    Memakai komponen Alpine productPurchase: qrDisplaySrc, isDynamicQr, priceLabel,
+    copyAmount, copied, qrOpen, downloadQr, qrImage.
+*/}}
+<div>
+    <p class="flex items-center gap-2 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+        <span class="w-5 h-5 rounded-full bg-indigo-600 text-white text-[10px] flex items-center justify-center">{{ .step }}</span>
+        Bayar via QR
+    </p>
+    <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 p-4 text-center space-y-3">
+        <button type="button" @click="qrOpen = true" aria-label="Perbesar QR"
+                class="block mx-auto bg-white p-2 rounded-lg border border-gray-200 cursor-zoom-in">
+            <img :src="qrDisplaySrc" alt="QR Pembayaran" class="w-48 h-48 object-contain" loading="lazy">
+        </button>
+
+        <span x-show="isDynamicQr" style="display: none;"
+              class="inline-flex items-center gap-1 px-2.5 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
+            <span class="icon-[ri--flashlight-line]"></span> QRIS dinamis · nominal terisi otomatis
+        </span>
+
+        {{ with .page.CurrentSection.Params.qr_account_name }}
+        <p class="text-xs font-medium text-gray-700 dark:text-gray-300">{{ . }}</p>
+        {{ end }}
+        <p class="text-xs text-gray-500 dark:text-gray-400"
+           x-text="isDynamicQr
+               ? 'Scan pakai e-wallet / mobile banking apa saja. Nominal sudah terisi, ketuk QR untuk memperbesar.'
+               : 'Scan pakai e-wallet / mobile banking apa saja. Ketuk QR untuk memperbesar.'"></p>
+
+        <div class="flex items-center justify-between gap-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-2 text-left">
+            <div>
+                <p class="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Nominal bayar</p>
+                <p class="font-bold text-indigo-600 dark:text-indigo-400" x-text="priceLabel"></p>
+            </div>
+            <button type="button" @click="copyAmount()"
+                    class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs font-bold bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors">
+                <span :class="copied ? 'icon-[ri--check-line]' : 'icon-[ri--file-copy-line]'"></span>
+                <span x-text="copied ? 'Tersalin' : 'Salin'"></span>
+            </button>
+        </div>
+
+        <!-- Simpan: PNG hasil render (dinamis) atau file gambar statis -->
+        <button type="button" x-show="isDynamicQr" @click="downloadQr()" style="display: none;"
+                class="inline-flex items-center gap-1 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">
+            <span class="icon-[ri--download-2-line]"></span> Simpan QR
+        </button>
+        <a x-show="!isDynamicQr" :href="qrImage" download="qr-pembayaran"
+           class="inline-flex items-center gap-1 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">
+            <span class="icon-[ri--download-2-line]"></span> Simpan QR
+        </a>
+    </div>
+
+    <!-- QR Modal -->
+    <template x-teleport="body">
+        <div x-show="qrOpen" style="display: none;"
+             x-transition.opacity
+             @keydown.window.escape="qrOpen = false"
+             @click.self="qrOpen = false"
+             class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+            <div class="relative bg-white rounded-2xl p-4 w-full max-w-sm">
+                <button type="button" @click="qrOpen = false" aria-label="Tutup"
+                        class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-gray-900 text-white flex items-center justify-center shadow">
+                    <span class="icon-[ri--close-line] text-xl"></span>
+                </button>
+                <img :src="qrDisplaySrc" alt="QR Pembayaran" class="w-full h-auto object-contain">
+                <p class="mt-2 text-center text-sm font-bold text-gray-900" x-text="priceLabel"></p>
+            </div>
+        </div>
+    </template>
+</div>

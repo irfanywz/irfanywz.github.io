@@ -1,4 +1,5 @@
 import { formatRupiah } from '../../lib/format.js';
+import { buildDynamicQr } from '../../lib/dynamic-qr.js';
 
 /**
  * Teks pesan untuk WhatsApp/Telegram. Telegram memakai **tebal**, WhatsApp *tebal*.
@@ -33,7 +34,7 @@ export function contactUrl(platform, contact, message) {
     return '';
 }
 
-/** Kartu pembelian di halaman produk. Dipakai: x-data="productPurchase({ product, contact })". */
+/** Kartu pembelian di halaman produk. Dipakai: x-data="productPurchase({ product, contact, qris, qrImage })". */
 export function productPurchase(config) {
     return {
         product: config.product,
@@ -42,10 +43,60 @@ export function productPurchase(config) {
         copied: false,
         qrOpen: false,
 
+        // --- QRIS dinamis ---
+        qrisStatic: config.qris || '',   // string QRIS statis (qris_static di _index.md)
+        qrImage: config.qrImage || '',   // gambar QR statis, dipakai bila QRIS dinamis tidak tersedia
+        qrSrc: '',                       // data URI QR dinamis ('' = pakai gambar statis)
+        qrPayload: '',
+
         init() {
             if (!this.product.free && this.product.variants && this.product.variants.length > 0) {
                 this.selectedVariant = this.product.variants[0];
             }
+            this.refreshQr();
+            // QR dibuat ulang setiap kali varian (nominal) berganti
+            this.$watch('selectedVariant', () => this.refreshQr());
+        },
+
+        refreshQr() {
+            if (this.product.free || !this.product.payQr) {
+                this.qrSrc = '';
+                this.qrPayload = '';
+                return;
+            }
+            const qr = buildDynamicQr(this.qrisStatic, this.finalPrice);
+            this.qrSrc = qr.src;
+            this.qrPayload = qr.payload;
+        },
+
+        get isDynamicQr() {
+            return this.qrSrc !== '';
+        },
+
+        get qrDisplaySrc() {
+            return this.qrSrc || this.qrImage;
+        },
+
+        /** Simpan QR dinamis sebagai PNG (nama file memuat nominal). */
+        downloadQr() {
+            if (!this.qrSrc) return;
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.naturalWidth || 720;
+                canvas.height = img.naturalHeight || 720;
+                const ctx = canvas.getContext('2d');
+                ctx.imageSmoothingEnabled = false;
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob((blob) => {
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = `qris-${this.finalPrice}.png`;
+                    a.click();
+                    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+                }, 'image/png');
+            };
+            img.src = this.qrSrc;
         },
 
         get finalPrice() {
